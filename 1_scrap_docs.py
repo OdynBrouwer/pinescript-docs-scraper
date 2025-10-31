@@ -75,8 +75,14 @@ class PineScriptDocsCrawler:
         return url
 
     async def get_all_doc_urls(self) -> List[str]:
-        """Extract all documentation URLs from the navigation menu"""
-        urls = set()
+        """Extract all documentation URLs from the navigation menu
+
+        NOTE: use a list (with membership checks) instead of a set so we
+        preserve the order the links appear in the navigation. Using a set
+        then calling sorted() loses the original navbar order which caused
+        filenames to be written out of order.
+        """
+        urls = []
         print("Starting to collect URLs...")
         
         # Start with main sections from left navigation
@@ -98,19 +104,23 @@ class PineScriptDocsCrawler:
                         href = link.get('href')
                         if href:
                             full_url = self.normalize_url(href)
-                            if full_url:
-                                urls.add(full_url)
+                            if full_url and full_url not in urls:
+                                urls.append(full_url)
                                 print(f"Found URL: {full_url}")
             else:
                 print(f"Failed to access main page: {result.error_message}")
         
-        urls_list = sorted(list(urls))
+        # Preserve the collected order (do not re-sort)
+        urls_list = list(urls)
         print(f"Total URLs found: {len(urls_list)}")
         return urls_list
 
     async def crawl_docs(self, urls: List[str]):
         """Crawl documentation pages with both structure and content extraction"""
+        # Ensure base output directory exists and create an `unprocessed` subfolder
         os.makedirs(self.output_dir, exist_ok=True)
+        unprocessed_dir = os.path.join(self.output_dir, "unprocessed")
+        os.makedirs(unprocessed_dir, exist_ok=True)
         timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
         
         print(f"Created output directory: {self.output_dir}")
@@ -135,6 +145,8 @@ class PineScriptDocsCrawler:
         async with AsyncWebCrawler(config=browser_config) as crawler:
             success = 0
             failed = 0
+            # Keep a running index for filenames so saved files are prefixed in order
+            page_index = 1
             
             with open(combined_path, "w", encoding="utf-8") as combined_file, \
                  open(failed_path, "w", encoding="utf-8") as failed_file:
@@ -154,12 +166,13 @@ class PineScriptDocsCrawler:
                             )
                             
                             if result.success:
-                                # Save as individual file
+                                # Save as individual file (put raw markdown into `unprocessed`), prefixed with its index
                                 page_name = url.rstrip('/').split('/')[-1] or 'index'
-                                file_path = f"{self.output_dir}/{page_name}_{timestamp}.md"
+                                file_name = f"{page_index}_{page_name}_{timestamp}.md"
+                                file_path = os.path.join(unprocessed_dir, file_name)
                                 
                                 with open(file_path, "w", encoding="utf-8") as f:
-                                    f.write(f"# {page_name}\n\n")
+                                    f.write(f"# {page_index}_{page_name}\n\n")
                                     f.write(f"Source: {url}\n\n")
                                     # Handle both string and MarkdownGenerationResult object
                                     if isinstance(result.markdown, str):
@@ -169,7 +182,7 @@ class PineScriptDocsCrawler:
                                     f.write(content)
                                 
                                 # Add to combined file
-                                combined_file.write(f"\n\n# {page_name}\n\n")
+                                combined_file.write(f"\n\n# {page_index}_{page_name}\n\n")
                                 combined_file.write(f"Source: {url}\n\n")
                                 # Handle both string and MarkdownGenerationResult object
                                 if isinstance(result.markdown, str):
@@ -180,7 +193,7 @@ class PineScriptDocsCrawler:
                                 combined_file.write("\n\n---\n\n")
                                 
                                 success += 1
-                                print(f"Successfully saved: {page_name}")
+                                print(f"Successfully saved: {file_name}")
                             else:
                                 print(f"Failed to crawl {url}: {result.error_message}")
                                 failed_file.write(f"{url}: {result.error_message}\n")
@@ -190,6 +203,10 @@ class PineScriptDocsCrawler:
                             print(f"Error processing {url}: {str(e)}")
                             failed_file.write(f"{url}: {str(e)}\n")
                             failed += 1
+                        finally:
+                            # Increment the page index regardless of success so numbering matches the
+                            # order of the original URL list.
+                            page_index += 1
                     
                     # Rate limiting between batches
                     await asyncio.sleep(2)
@@ -200,7 +217,7 @@ class PineScriptDocsCrawler:
         print(f"\nOutputs saved to:")
         print(f"- Combined content: {combined_path}")
         print(f"- Failed URLs: {failed_path}")
-        print(f"- Individual pages: {self.output_dir}/*.md")
+        print(f"- Individual pages (unprocessed): {unprocessed_dir}/*.md")
 
     async def run(self):
         """Main execution method"""
