@@ -2,3 +2,6 @@
 .github
 .env
 pinescript_docs
+
+.vscode
+.pytest_cache/
