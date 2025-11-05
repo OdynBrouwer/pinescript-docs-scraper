@@ -24,7 +24,7 @@ class Config(BaseSettings):
     # OpenAI configuration
     openai_api_key: str = Field(..., description="OpenAI API key")
     embedding_model: str = Field(
-        default="text-embedding-3-large",
+        default="text-embedding-3-small",
         description="OpenAI embedding model"
     )
     llm_model: str = Field(

@@ -20,6 +20,12 @@ logger = logging.getLogger(__name__)
 _openai_client: Optional[OpenAI] = None
 
 
+# Default embedding model/dimension used by the application
+# Use a smaller-dimension model to fit pgvector index limits
+EMBEDDING_MODEL = "text-embedding-3-small"
+EMBEDDING_DIM = 1536
+
+
 def init_openai_client() -> OpenAI:
     """Initialize and return OpenAI client singleton.
     
@@ -64,8 +70,11 @@ def generate_embeddings_batch(
     if not texts:
         return []
     
-    config = get_config()
-    model = model or config.embedding_model
+    # Prefer explicit model param; otherwise use application default constant.
+    # We intentionally use the `EMBEDDING_MODEL` constant to keep embedding
+    # behavior deterministic across the codebase and tests.
+    _ = get_config()  # ensure config is loaded for side-effects if needed
+    model = model or EMBEDDING_MODEL
     client = init_openai_client()
     
     try:

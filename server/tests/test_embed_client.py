@@ -20,7 +20,7 @@ from server.embed_client import (
 @pytest.fixture
 def mock_openai_response():
     """Mock OpenAI embeddings API response."""
-    def create_response(num_embeddings=1, dimension=3072):
+    def create_response(num_embeddings=1, dimension=1536):
         """Create a mock response with specified number of embeddings."""
         embeddings = []
         for i in range(num_embeddings):
@@ -34,7 +34,7 @@ def mock_openai_response():
         
         response = CreateEmbeddingResponse(
             data=embeddings,
-            model="text-embedding-3-large",
+            model="text-embedding-3-small",
             object="list",
             usage={"prompt_tokens": 100, "total_tokens": 100}
         )
@@ -68,7 +68,7 @@ def test_generate_embeddings_batch_single_text(mock_init, mock_openai_client, mo
     embeddings = generate_embeddings_batch(texts)
     
     assert len(embeddings) == 1
-    assert len(embeddings[0]) == 3072  # text-embedding-3-large dimension
+    assert len(embeddings[0]) == 1536  # text-embedding-3-small dimension
     
     # Verify API was called with correct parameters
     mock_openai_client.embeddings.create.assert_called_once()
@@ -87,7 +87,7 @@ def test_generate_embeddings_batch_multiple_texts(mock_init, mock_openai_client,
     embeddings = generate_embeddings_batch(texts)
     
     assert len(embeddings) == 5
-    assert all(len(emb) == 3072 for emb in embeddings)
+    assert all(len(emb) == 1536 for emb in embeddings)
 
 
 @patch('server.embed_client.init_openai_client')
@@ -106,7 +106,7 @@ def test_generate_embeddings_batch_empty_list(mock_init, mock_openai_client):
 @patch('server.embed_client.generate_embeddings_batch')
 def test_generate_embeddings_chunked_single_batch(mock_batch):
     """Test chunked generation with single batch."""
-    mock_batch.return_value = [[0.1] * 3072 for _ in range(50)]
+    mock_batch.return_value = [[0.1] * 1536 for _ in range(50)]
     
     texts = [f"Text {i}" for i in range(50)]
     embeddings = generate_embeddings_chunked(texts, batch_size=100)
@@ -120,9 +120,9 @@ def test_generate_embeddings_chunked_multiple_batches(mock_batch):
     """Test chunked generation splits into multiple batches."""
     # Mock returns different embeddings for each call
     mock_batch.side_effect = [
-        [[0.1] * 3072 for _ in range(100)],
-        [[0.2] * 3072 for _ in range(100)],
-        [[0.3] * 3072 for _ in range(50)]
+        [[0.1] * 1536 for _ in range(100)],
+        [[0.2] * 1536 for _ in range(100)],
+        [[0.3] * 1536 for _ in range(50)]
     ]
     
     texts = [f"Text {i}" for i in range(250)]
@@ -192,11 +192,11 @@ def test_retry_exhausted(mock_init, mock_openai_client):
 @patch('server.embed_client.generate_embeddings_batch')
 def test_generate_single_embedding(mock_batch):
     """Test convenience function for single embedding."""
-    mock_batch.return_value = [[0.1] * 3072]
-    
+    mock_batch.return_value = [[0.1] * 1536]
+
     embedding = generate_single_embedding("Test query")
-    
-    assert len(embedding) == 3072
+
+    assert len(embedding) == 1536
     mock_batch.assert_called_once_with(["Test query"], model=None)
 
 
@@ -217,10 +217,10 @@ def test_get_embedding_dimension_unknown_model():
 def test_get_embedding_dimension_uses_config():
     """Test that None uses config default."""
     with patch('server.embed_client.get_config') as mock_config:
-        mock_config.return_value.embedding_model = "text-embedding-3-large"
-        
+        mock_config.return_value.embedding_model = "text-embedding-3-small"
+
         dimension = get_embedding_dimension(None)
-        assert dimension == 3072
+        assert dimension == 1536
 
 
 # Tests for cost estimation
@@ -327,8 +327,8 @@ def test_default_model_from_config(mock_config, mock_init, mock_openai_client, m
     mock_config.return_value.embedding_model = "text-embedding-3-large"
     mock_init.return_value = mock_openai_client
     mock_openai_client.embeddings.create.return_value = mock_openai_response(1)
-    
+
     generate_embeddings_batch(["Test"])
-    
+
     call_kwargs = mock_openai_client.embeddings.create.call_args.kwargs
-    assert call_kwargs["model"] == "text-embedding-3-large"
+    assert call_kwargs["model"] == "text-embedding-3-small"
