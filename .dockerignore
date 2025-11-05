@@ -1,0 +1,44 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual environments
+.venv/
+venv/
+ENV/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Environment
+.env
+.env.local
+
+# Server artifacts
+server/tests/
+*.log
+
+# Local docs that may be large
+pinescript_docs/all_docs_*.md
+pinescript_docs/processed/*.md
+
+# Documentation build
+docs/_build/
+
+# OS
+.DS_Store
+Thumbs.db
