@@ -137,3 +137,34 @@ class ChatResponse(BaseModel):
             }
         }
     )
+
+
+
+class RetrievedDocument(BaseModel):
+    """Internal DTO for retrieved documents used by the retriever.
+
+    This model is intentionally minimal: it contains the fields necessary for
+    ordering, context assembly and provenance reporting.
+    """
+
+    id: str
+    content: str
+    source_filename: str
+    chunk_index: int
+    token_count: int
+    similarity_score: float
+    excerpt: str
+
+    model_config = ConfigDict(
+        json_schema_extra={
+            "example": {
+                "id": "abc123...",
+                "content": "...",
+                "source_filename": "processed_3_first-indicator_20251031_113440.md",
+                "chunk_index": 0,
+                "token_count": 120,
+                "similarity_score": 0.94,
+                "excerpt": "Your first indicator will use..."
+            }
+        }
+    )

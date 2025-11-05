@@ -61,6 +61,31 @@ class Config(BaseSettings):
         default=150,
         description="Token overlap between chunks"
     )
+    # Retrieval & LLM tuning
+    retrieval_top_k: int = Field(
+        default=12,
+        description="Default number of neighbors to request from vector search"
+    )
+    prompt_token_budget: int = Field(
+        default=3000,
+        description="Target token budget for assembled prompt context (prompt only)"
+    )
+    llm_model_primary: str = Field(
+        default="gpt-4o",
+        description="Preferred LLM model"
+    )
+    llm_model_fallback: str = Field(
+        default="gpt-4o-mini",
+        description="Fallback LLM model used when prompt budget is exceeded"
+    )
+    llm_max_completion_tokens: int = Field(
+        default=1024,
+        description="Maximum tokens to request for completions"
+    )
+    hybrid_bm25_weight: float = Field(
+        default=0.3,
+        description="Weight applied to BM25 scores when merging with vector similarity (0..1)"
+    )
     
     @field_validator("log_level")
     @classmethod

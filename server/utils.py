@@ -124,3 +124,25 @@ def generate_doc_id(source_filename: str, chunk_index: int = 0) -> str:
 
 # Logger for this module
 logger = logging.getLogger(__name__)
+
+
+def estimate_prompt_tokens(parts: list[str], model: str = "gpt-4o") -> int:
+    """Estimate total tokens for a list of prompt parts.
+
+    Args:
+        parts: List of strings that will be concatenated into the prompt (system, context passages, user query)
+        model: Model name used for token encoding
+
+    Returns:
+        Estimated token count for the concatenated prompt
+    """
+    if not parts:
+        return 0
+
+    # Simple conservative estimate: count tokens per part and add small overhead per message
+    overhead_per_part = 3
+    total = 0
+    for p in parts:
+        total += count_tokens(p, model=model) + overhead_per_part
+
+    return total
