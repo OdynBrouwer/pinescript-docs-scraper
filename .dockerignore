@@ -32,6 +32,10 @@ htmlcov/
 server/tests/
 *.log
 
+# Local docs that may be large
+pinescript_docs/all_docs_*.md
+pinescript_docs/processed/*.md
+
 # Documentation build
 docs/_build/
 

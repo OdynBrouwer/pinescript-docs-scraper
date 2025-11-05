@@ -18,21 +18,25 @@ FROM python:3.11-slim
 WORKDIR /app
 
 # Copy installed packages from builder
+# Copy installed packages from builder
 COPY --from=builder /root/.local /root/.local
 
 # Copy application code
-COPY server/ ./server/
-COPY pinescript_docs/processed/ ./pinescript_docs/processed/
-
+COPY . /app
 # Add local bin to PATH
 ENV PATH=/root/.local/bin:$PATH
 
 # Expose port
 EXPOSE 8000
 
-# Health check
+# Health check - keep lightweight and optional
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
-    CMD python -c "import requests; requests.get('http://localhost:8000/status').raise_for_status()"
+    CMD ["/bin/sh", "-c", "curl -f http://localhost:8000/status || exit 1"]
 
-# Run application
-CMD ["uvicorn", "server.app:app", "--host", "0.0.0.0", "--port", "8000"]
+# Allow configuring Gunicorn args via env (e.g. --timeout)
+# Default: 3 minute timeout and a short graceful timeout
+ENV GUNICORN_CMD_ARGS="--timeout 180 --graceful-timeout 60"
+
+# Run application with Uvicorn in production mode. Use `$GUNICORN_CMD_ARGS` so
+# runtime overrides are easy (docker run -e GUNICORN_CMD_ARGS="..." ...).
+CMD ["sh", "-c", "gunicorn -k uvicorn.workers.UvicornWorker -w 4 -b 0.0.0.0:8000 server.app:app $GUNICORN_CMD_ARGS --log-level info"]

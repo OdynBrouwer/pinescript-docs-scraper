@@ -26,3 +26,5 @@ python-jose[cryptography]>=3.3.0
 slowapi>=0.1.9
 pytest>=7.4.0
 httpx>=0.25.0  # for FastAPI TestClient
+gunicorn>=20.1.0
+pydantic-settings>=0.5.0
