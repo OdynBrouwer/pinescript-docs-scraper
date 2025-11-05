@@ -60,3 +60,64 @@ ON file_manifest(content_hash);
 
 CREATE INDEX IF NOT EXISTS idx_file_manifest_last_indexed 
 ON file_manifest(last_indexed DESC);
+
+-- -----------------------------------------------------------------------------
+-- RPC: match_documents
+-- Adds a convenience PL/pgSQL function to return documents ordered by
+-- similarity to a provided query embedding
+-- -----------------------------------------------------------------------------
+
+CREATE OR REPLACE FUNCTION public.match_documents(
+    query_embedding vector(1536),
+    match_threshold DOUBLE PRECISION,
+    match_count INTEGER
+)
+RETURNS TABLE (
+    id TEXT,
+    content TEXT,
+    source_filename TEXT,
+    chunk_index INTEGER,
+    chunk_count INTEGER,
+    section_heading TEXT,
+    token_count INTEGER,
+    code_snippet BOOLEAN,
+    metadata JSONB,
+    embedding vector(1536),
+    created_at TIMESTAMP WITH TIME ZONE,
+    updated_at TIMESTAMP WITH TIME ZONE,
+    similarity DOUBLE PRECISION
+)
+LANGUAGE plpgsql
+STABLE
+AS $$
+BEGIN
+    RETURN QUERY
+    SELECT
+        d.id,
+        d.content,
+        d.source_filename,
+        d.chunk_index,
+        d.chunk_count,
+        d.section_heading,
+        d.token_count,
+        d.code_snippet,
+        d.metadata,
+        d.embedding,
+        d.created_at,
+        d.updated_at,
+        1 - (d.embedding <=> query_embedding) AS similarity
+    FROM documents d
+    WHERE d.embedding IS NOT NULL
+    ORDER BY d.embedding <=> query_embedding
+    LIMIT match_count;
+END;
+$$;
+
+-- Notes:
+-- - Uses vector cosine distance operator `<=>` (pgvector). Lower distance = more similar.
+-- - The `similarity` returned is `1 - distance` which maps distance in [0..1+] to a rough
+--   similarity score. You may wish to clamp/normalise this in client code.
+-- - `match_threshold` is currently unused by the function body; extend the WHERE clause
+--   (e.g. `AND 1 - (d.embedding <=> query_embedding) >= match_threshold`) to filter by
+--   similarity within the database if desired.
+
