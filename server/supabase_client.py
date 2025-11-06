@@ -8,6 +8,8 @@ import logging
 from supabase import create_client, Client
 from server.config import get_config
 from server.models import Document, FileManifest
+import json
+import time
 
 logger = logging.getLogger(__name__)
 
@@ -266,16 +268,47 @@ def search_similar_documents(
     try:
         # Use Supabase's vector similarity function
         # Note: This uses cosine distance where lower is more similar
-        result = client.rpc(
-            "match_documents",
-            {
-                "query_embedding": query_embedding,
-                "match_threshold": 1 - similarity_threshold,  # Convert to distance
-                "match_count": limit
-            }
-        ).execute()
+        # Wrap the RPC call in a small retry loop to handle transient network
+        # errors such as HTTP/2 stream resets that have been observed on
+        # some platforms.
+        payload = {
+            "query_embedding": query_embedding,
+            "match_threshold": 1 - similarity_threshold,  # Convert to distance
+            "match_count": limit
+        }
+
+        max_attempts = 3
+        result = None
+        for attempt in range(1, max_attempts + 1):
+            try:
+                # Log payload size to help debugging intermittent errors
+                try:
+                    payload_size = len(json.dumps(payload))
+                except Exception:
+                    payload_size = None
+
+                logger.info(
+                    "Searching similar documents (attempt %d/%d, payload_bytes=%s)",
+                    attempt,
+                    max_attempts,
+                    payload_size,
+                )
+
+                result = client.rpc("match_documents", payload).execute()
+                break
+            except Exception as e:
+                logger.warning(
+                    "Search attempt %d failed: %s", attempt, e, exc_info=False
+                )
+                # small backoff before retrying
+                if attempt < max_attempts:
+                    time.sleep(attempt)
+                else:
+                    # re-raise after final attempt
+                    logger.error("All search attempts failed")
+                    raise
         
-        documents = result.data if result.data else []
+        documents = result.data if result and result.data else []
         logger.info(f"Found {len(documents)} similar documents")
         
         return documents
