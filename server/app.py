@@ -66,6 +66,18 @@ app.add_middleware(
 )
 
 
+# Lightweight health endpoint used by load balancers and platform checks.
+@app.get("/health")
+async def health():
+    """Simple health check endpoint that avoids external calls.
+
+    Returns a minimal 200 response so platforms (Render, load balancers)
+    can reliably check service health without triggering rate limits or
+    expensive startup checks.
+    """
+    return {"status": "ok"}
+
+
 @app.get("/status")
 @limiter.limit("30/minute")
 async def get_status(request: Request):
