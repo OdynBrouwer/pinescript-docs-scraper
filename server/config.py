@@ -107,6 +107,12 @@ class Config(BaseSettings):
         default=0.3,
         description="Weight applied to BM25 scores when merging with vector similarity (0..1)"
     )
+
+    # Optional allowlist for JWT subjects (comma-separated emails)
+    allowed_emails: Optional[str] = Field(
+        default=None,
+        description="Comma-separated list of allowed user emails (optional)"
+    )
     
     @field_validator("log_level")
     @classmethod

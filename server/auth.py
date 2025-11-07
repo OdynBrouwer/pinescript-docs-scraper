@@ -90,6 +90,13 @@ async def verify_jwt_token(
                 issuer=config.jwt_issuer or None,
             )
             logger.debug("JWT verified with HS secret: sub=%s", payload.get("sub"))
+            # Enforce optional allowlist (if configured)
+            sub = payload.get("sub")
+            if sub and config.allowed_emails:
+                allowed = {e.strip().lower() for e in config.allowed_emails.split(",") if e.strip()}
+                if sub.lower() not in allowed:
+                    logger.warning("JWT subject not in allowed_emails: %s", sub)
+                    raise HTTPException(status_code=403, detail="Email not allowed")
             return payload
 
         # Otherwise, try JWKS flow for RS256
@@ -123,6 +130,13 @@ async def verify_jwt_token(
                 issuer=config.jwt_issuer or None,
             )
             logger.debug("JWT verified via JWKS: sub=%s", payload.get("sub"))
+            # Enforce optional allowlist (if configured)
+            sub = payload.get("sub")
+            if sub and config.allowed_emails:
+                allowed = {e.strip().lower() for e in config.allowed_emails.split(",") if e.strip()}
+                if sub.lower() not in allowed:
+                    logger.warning("JWT subject not in allowed_emails: %s", sub)
+                    raise HTTPException(status_code=403, detail="Email not allowed")
             return payload
 
         # No verification method configured
