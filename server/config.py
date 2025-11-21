@@ -93,7 +93,8 @@ class Config(BaseSettings):
         description="Default number of neighbors to request from vector search"
     )
     prompt_token_budget: int = Field(
-        default=3000,
+        # Increased to allow larger assembled prompts (system + context + query)
+        default=16000,
         description="Target token budget for assembled prompt context (prompt only)"
     )
     llm_model_primary: str = Field(
