@@ -79,9 +79,7 @@ class Source(BaseModel):
 
 class ChatRequest(BaseModel):
     """Request model for /chat endpoint."""
-    
-        # Allow larger user queries (e.g. big scripts). Keep a practical upper bound.
-        query: str = Field(..., min_length=1, max_length=32000, description="User query")
+    query: str = Field(..., min_length=1, max_length=50000, description="User query")
     conversation_history: Optional[List[Dict[str, str]]] = Field(
         None,
         description="Previous conversation turns with 'role' and 'content'"
