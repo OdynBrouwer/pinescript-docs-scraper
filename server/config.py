@@ -106,7 +106,7 @@ class Config(BaseSettings):
         description="Fallback LLM model used when prompt budget is exceeded"
     )
     llm_max_completion_tokens: int = Field(
-        default=1024,
+        default=16384,
         description="Maximum tokens to request for completions"
     )
     hybrid_bm25_weight: float = Field(
