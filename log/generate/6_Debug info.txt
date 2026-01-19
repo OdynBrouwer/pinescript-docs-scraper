@@ -1,0 +1,43 @@
+﻿2026-01-19T14:26:31.7306689Z ##[group]Run python -V
+2026-01-19T14:26:31.7306972Z [36;1mpython -V[0m
+2026-01-19T14:26:31.7307173Z [36;1mpip show crawl4ai || true[0m
+2026-01-19T14:26:31.7307395Z [36;1mls -la[0m
+2026-01-19T14:26:31.7341064Z shell: /usr/bin/bash -e {0}
+2026-01-19T14:26:31.7341298Z env:
+2026-01-19T14:26:31.7341718Z   pythonLocation: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-01-19T14:26:31.7342140Z   PKG_CONFIG_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib/pkgconfig
+2026-01-19T14:26:31.7342552Z   Python_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-01-19T14:26:31.7342907Z   Python2_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-01-19T14:26:31.7343267Z   Python3_ROOT_DIR: /opt/hostedtoolcache/Python/3.11.14/x64
+2026-01-19T14:26:31.7343618Z   LD_LIBRARY_PATH: /opt/hostedtoolcache/Python/3.11.14/x64/lib
+2026-01-19T14:26:31.7343916Z ##[endgroup]
+2026-01-19T14:26:31.7418337Z Python 3.11.14
+2026-01-19T14:26:32.0520849Z Name: Crawl4AI
+2026-01-19T14:26:32.0522173Z Version: 0.8.0
+2026-01-19T14:26:32.0524962Z Summary: 🚀🤖 Crawl4AI: Open-source LLM Friendly Web Crawler & scraper
+2026-01-19T14:26:32.0525997Z Home-page: https://github.com/unclecode/crawl4ai
+2026-01-19T14:26:32.0527439Z Author: Unclecode
+2026-01-19T14:26:32.0529441Z Author-email: Unclecode <unclecode@kidocode.com>
+2026-01-19T14:26:32.0530820Z License-Expression: Apache-2.0
+2026-01-19T14:26:32.0533051Z Location: /opt/hostedtoolcache/Python/3.11.14/x64/lib/python3.11/site-packages
+2026-01-19T14:26:32.0536358Z Requires: aiofiles, aiohttp, aiosqlite, alphashape, anyio, beautifulsoup4, brotli, chardet, click, cssselect, fake-useragent, httpx, humanize, lark, litellm, lxml, nltk, numpy, patchright, pillow, playwright, psutil, pydantic, pyOpenSSL, python-dotenv, PyYAML, rank-bm25, requests, rich, shapely, snowballstemmer, tf-playwright-stealth, xxhash
+2026-01-19T14:26:32.0538302Z Required-by: 
+2026-01-19T14:26:32.0870389Z total 2772
+2026-01-19T14:26:32.0870837Z drwxr-xr-x 7 runner runner    4096 Jan 19 14:24 .
+2026-01-19T14:26:32.0871351Z drwxr-xr-x 3 runner runner    4096 Jan 19 14:24 ..
+2026-01-19T14:26:32.0871775Z -rw-r--r-- 1 runner runner     430 Jan 19 14:24 .dockerignore
+2026-01-19T14:26:32.0872215Z drwxr-xr-x 7 runner runner    4096 Jan 19 14:24 .git
+2026-01-19T14:26:32.0872591Z drwxr-xr-x 3 runner runner    4096 Jan 19 14:24 .github
+2026-01-19T14:26:32.0873008Z -rw-r--r-- 1 runner runner      68 Jan 19 14:24 .gitignore
+2026-01-19T14:26:32.0873488Z -rw-r--r-- 1 runner runner   10405 Jan 19 14:24 1_scrap_docs.py
+2026-01-19T14:26:32.0874340Z -rw-r--r-- 1 runner runner    7666 Jan 19 14:24 2_process_docs.py
+2026-01-19T14:26:32.0875017Z -rw-r--r-- 1 runner runner    4845 Jan 19 14:24 3_scrap_and_process.py
+2026-01-19T14:26:32.0875658Z -rw-r--r-- 1 runner runner    1338 Jan 19 14:24 Dockerfile
+2026-01-19T14:26:32.0876041Z -rw-r--r-- 1 runner runner    5201 Jan 19 14:24 README.md
+2026-01-19T14:26:32.0876441Z -rw-r--r-- 1 runner runner    7221 Jan 19 14:24 SUPABASE_SCHEMA.md
+2026-01-19T14:26:32.0876849Z drwxr-xr-x 2 runner runner    4096 Jan 19 14:24 docs
+2026-01-19T14:26:32.0877234Z drwxr-xr-x 2 runner runner    4096 Jan 19 14:24 migrations
+2026-01-19T14:26:32.0877664Z -rw-r--r-- 1 runner runner 2742893 Jan 19 14:24 processed_all_docs.md
+2026-01-19T14:26:32.0878108Z -rw-r--r-- 1 runner runner     306 Jan 19 14:24 pyproject.toml
+2026-01-19T14:26:32.0878532Z -rw-r--r-- 1 runner runner     588 Jan 19 14:24 requirements.txt
+2026-01-19T14:26:32.0878940Z drwxr-xr-x 3 runner runner    4096 Jan 19 14:24 server
