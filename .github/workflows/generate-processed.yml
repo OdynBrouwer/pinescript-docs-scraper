@@ -43,6 +43,11 @@ jobs:
       - name: Run scrape & process
         run: python 3_scrap_and_process.py
 
+      - name: Cleanup old processed files
+        run: |
+          echo "Running cleanup: keep only latest per page..."
+          python scripts/cleanup_processed.py || true
+
       - name: Check for processed files and changes
         id: check
         run: |
@@ -53,6 +58,8 @@ jobs:
             git add -f pinescript_docs/processed || true
             # Also add combined output file if present
             git add -f processed_all_docs.md || true
+            # Stage deletions and other changes so they're included in commit
+            git add -A
             # Show staged files for debugging
             git status --porcelain
             if git diff --cached --quiet; then
