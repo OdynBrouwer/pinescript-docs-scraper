@@ -17,6 +17,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: true
+          fetch-depth: 0
 
       - name: Set up Python
         uses: actions/setup-python@v4
@@ -42,12 +43,28 @@ jobs:
       - name: Run scrape & process
         run: python 3_scrap_and_process.py
 
+      - name: Check for processed files and changes
+        id: check
+        run: |
+          echo "Checking for processed files..."
+          if [ -d pinescript_docs/processed ] && [ "$(ls -A pinescript_docs/processed)" ]; then
+            echo "Found files in pinescript_docs/processed"
+            git add pinescript_docs/processed
+            if git diff --cached --quiet; then
+              echo "changed=false" >> $GITHUB_OUTPUT
+            else
+              echo "changed=true" >> $GITHUB_OUTPUT
+            fi
+          else
+            echo "No processed files present"
+            echo "changed=false" >> $GITHUB_OUTPUT
+          fi
+
       - name: Commit processed files
-        uses: EndBug/add-and-commit@v9
-        with:
-          author_name: "github-actions[bot]"
-          author_email: "41898282+github-actions[bot]@users.noreply.github.com"
-          message: "Automated: regenerate processed docs"
-          add: "pinescript_docs/processed/**"
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: steps.check.outputs.changed == 'true'
+        run: |
+          echo "Committing processed files..."
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git commit -m "Automated: regenerate processed docs"
+          git push origin HEAD:main
