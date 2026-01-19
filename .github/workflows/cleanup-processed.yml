@@ -1,0 +1,43 @@
+name: Cleanup old processed files
+
+on:
+  push:
+    paths:
+      - 'pinescript_docs/processed/**'
+  workflow_dispatch: {}
+
+jobs:
+  cleanup:
+    # avoid infinite loop when this workflow itself pushes commits
+    if: github.actor != 'github-actions'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python 3.x
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.10'
+
+      - name: Run cleanup script 🔧
+        run: |
+          python3 scripts/cleanup_processed.py
+
+      - name: Show git status
+        run: git status --porcelain
+
+      - name: Commit & push deletions ✅
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add -A
+            git commit -m "Automated: cleanup old processed files"
+            git push
+          else
+            echo "No changes to commit"
+          fi
