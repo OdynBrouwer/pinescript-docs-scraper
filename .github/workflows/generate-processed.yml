@@ -49,7 +49,12 @@ jobs:
           echo "Checking for processed files..."
           if [ -d pinescript_docs/processed ] && [ "$(ls -A pinescript_docs/processed)" ]; then
             echo "Found files in pinescript_docs/processed"
-            git add pinescript_docs/processed
+            # Force-add files even if pinescript_docs is gitignored
+            git add -f pinescript_docs/processed || true
+            # Also add combined output file if present
+            git add -f processed_all_docs.md || true
+            # Show staged files for debugging
+            git status --porcelain
             if git diff --cached --quiet; then
               echo "changed=false" >> $GITHUB_OUTPUT
             else
