@@ -1,4 +1,4 @@
-## 70_to-pine-version-2_20260122_034655
+## 70_to-pine-version-2_20260125_035308
 # 70_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
