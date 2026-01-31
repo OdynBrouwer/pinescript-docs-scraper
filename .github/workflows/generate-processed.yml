@@ -30,7 +30,7 @@ jobs:
           pip install -r requirements.txt
           playwright install --with-deps
 
-      - name: Run scrape & process
+      - name: Run scrape and process
         run: python 3_scrap_and_process.py
 
       - name: Commit processed files
