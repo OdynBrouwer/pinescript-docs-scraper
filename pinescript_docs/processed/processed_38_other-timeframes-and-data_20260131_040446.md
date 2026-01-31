@@ -1,6 +1,6 @@
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
-              
+                
 
 NoteThroughout this page, and in other parts of our documentation that discuss `request.*()` functions, we often use the term _“context”_ to describe the symbol, timeframe, and any modifications — such as price adjustments, session settings, and non-standard chart types — that apply to a chart or the data retrieved by a script.
 These are the signatures of the functions in the `request.*` namespace:
@@ -56,6 +56,13 @@ request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, cur
 
 
 request.economic(country_code, field, gaps, ignore_invalid_symbol) → series float
+
+
+
+
+
+
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
 
 
 
@@ -244,7 +251,7 @@ Note that:
 
 NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]] operator.
 ### Dynamic requests
-By default, unlike all previous Pine Script versions, all v6 script’s `request.*()` functions are _dynamic_.
+By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
 In contrast to non-dynamic requests, dynamic requests can:
   * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
   * Execute within the local scopes of conditional structures, loops, and exported functions.
@@ -2421,6 +2428,153 @@ WS | Wholesale Sales
 YUR | Youth Unemployment Rate  
 ZCC | ZEW Current Conditions
 
+## ​`request.footprint()`​
+The request.footprint() function enables scripts to retrieve volume footprint data for the bars in the datasets on which they run. For a given bar, a volume footprint categorizes volume values from lower timeframes as “buy” (upward) or “sell” (downward) based on intrabar price action, then collects the categorized volume data into equally sized rows that cover the bar’s price range. Programmers can use retrieved footprint data to inspect the distribution of “buy”, “sell”, and total volume across the rows for a bar’s range, identify a bar’s Point of Control (POC) and other significant price levels, calculate volume delta information, detect volume imbalances, and more.
+NoteVolume footprints are available exclusively to users who have a Premium or Ultimate plan. Accounts with lower-tier plans **cannot** use scripts that request volume footprint data with the request.footprint() function.
+The function’s signature is as follows:
+```
+
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
+
+```
+
+The `ticks_per_row` parameter specifies the size of each row in the calculated volume footprint, in ticks. It requires a positive “simple int” value representing a multiplier for the instrument’s minimum tick size. For example, if the argument is 100, the price range of each row equals the value of `100 * syminfo.mintick`. The specified row size affects the total number of rows in each bar’s footprint. Increase the value for fewer rows with a larger size, or decrease the value for the opposite.
+The `va_percent` parameter accepts a “simple float” value specifying the percentage of the footprint’s total volume to use for calculating the bar’s _Value Area (VA)_ , where a value of 100 represents 100% of the total volume. Specifying an argument is optional. The default value is 70, meaning that the footprint’s VA includes 70% of the total volume.
+The `imbalance_percent` parameter accepts a “simple float” value specifying the required percentage difference between “buy” and “sell” volume in adjacent footprint rows for detecting _volume imbalances_ :
+  * The footprint considers a row to have a _buy imbalance_ if the row’s “buy” volume exceeds the “sell” volume of the row _below_ it by the specified percentage.
+  * The footprint considers a row to have a _sell imbalance_ if the row’s “sell” volume exceeds the “buy” volume of the row _above_ it by the given percentage.
+
+
+Including an `imbalance_percent` argument is optional. The default value is 300, meaning that the “buy” or “sell” volume of a footprint row must be three times (300%) larger than the opposing volume of an adjacent row to signify an imbalance.
+A call to the request.footprint() function returns either the _reference (ID)_ of a footprint object that contains the volume footprint data for the current bar, or na if no footprint is available for that bar.
+NoticeScripts cannot perform more than **one** footprint request with the request.footprint() function. If a script contains multiple calls to this function, it raises a _runtime error_.
+Scripts can use any returned footprint ID that is not na in calls to the built-in `footprint.*()` functions to retrieve data from a bar’s volume footprint.
+For example, the following script calls request.footprint() on each bar to request the ID of a footprint object that contains the bar’s volume footprint data. If the requested data is available, the script then uses the returned ID in calls to four `footprint.*()` functions — footprint.total_volume(), footprint.buy_volume(), footprint.sell_volume(), and footprint.delta() — to retrieve the footprint’s total volume, total “buy” and “sell” volume, and overall volume delta.
+The script plots the “buy” volume, the negative “sell” volume, and the volume delta as columns for visual comparison. It also displays a color-coded label at each bar’s high price to indicate whether the bar’s “buy” volume exceeds its “sell” volume or vice versa. Hovering over a label reveals a tooltip that shows the corresponding bar’s total volume and volume delta:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Requesting volume footprint data demo", max_labels_count = 500)  
+  
+//@variable The number of ticks to use as the price interval for each footprint row.  
+int numTicksInput = input.int(100, "Ticks per footprint row", minval = 1)  
+  
+//@variable References a `footprint` object for the current bar, or holds `na` if no footprint data is available.  
+footprint reqFootprint = request.footprint(numTicksInput)  
+//@variable Is `true` if the requested `footprint` ID is not `na`, and `false` otherwise.  
+bool hasFootprint = not na(reqFootprint)  
+  
+// Retrieve the bar's total, "buy", and "sell" volume sums and overall volume delta from the `footprint` object.  
+float totalVolume = hasFootprint ? footprint.total_volume(reqFootprint) : na  
+float buyVolume   = hasFootprint ? footprint.buy_volume(reqFootprint)   : na  
+float sellVolume  = hasFootprint ? footprint.sell_volume(reqFootprint)  : na  
+float deltaVolume = hasFootprint ? footprint.delta(reqFootprint)        : na  
+  
+// Plot the total "buy" and "sell" volume as bidirectional columns, where "buy" volume increases in the  
+// positive direction (upward plot), and "sell" volume increases in the negative direction (downward plot).  
+plot(buyVolume,       "Total buy volume",  #6eb21c, style = plot.style_columns)  
+plot(sellVolume * -1, "Total sell volume", #b21c2b, style = plot.style_columns)  
+// Plot bar's volume delta on top of the bidirectional columns to show the difference between "buy" and "sell" volume.  
+plot(deltaVolume, "Volume delta", #e8a93c, style = plot.style_columns)  
+hline(0, "Zero line", #d6d6d8, hline.style_solid)  
+  
+// Draw a label at the bar's high. The label is green if the volume delta is positive or zero, and red otherwise.  
+// The label includes a tooltip that shows the bar's total volume and volume delta.  
+label.new(  
+    bar_index, high, color = deltaVolume >= 0 ? #6eb21c : #b21c2b, size = 14,  
+    tooltip = str.format("Total volume: \t{0}\nVolume delta: \t{1}", totalVolume, deltaVolume), force_overlay = true  
+)  
+`
+Note that:
+  * The `id` parameter of each `footprint.*()` function does not allow na arguments. Therefore, this script uses ternary operations that execute `footprint.*()` calls only if the retrieved footprint ID is not na. If no data is available, the operations return na directly without executing the calls.
+  * On timeframes higher than or equal to “1D”, a footprint’s total volume might differ significantly from the value of the volume variable. Such differences occur for some instruments because _EOD_ data feeds can include data from block trades, OTC trades, and other sources, whereas requested _intraday_ data feeds do not. See the Data feeds section to learn more about the types of data feeds and their differences.
+
+
+While some of the `footprint.*()` functions retrieve values representing overall metrics for a requested volume footprint, as shown above, others retrieve the IDs of volume_row objects that contain data for _individual rows_ from the footprint for more detailed analysis. For instance, the footprint.poc() function retrieves the ID of the volume_row object that contains data for a footprint’s _Point of Control_ row (i.e., the row with the highest total volume), and the footprint.rows() function constructs an array containing the volume_row IDs for _every_ row within a footprint.
+Scripts can use non-na IDs of the volume_row type in calls to the built-in `volume_row.*()` functions to retrieve data for a specific footprint row, including the row’s price levels, volume sums, volume delta, and buy or sell imbalances.
+The advanced example below retrieves and displays detailed volume footprint information for visible chart bars. On each visible bar, the script requests a footprint ID using request.footprint(). If the ID is not na, the script calls footprint.rows() to create an array containing the volume_row IDs for all rows in the footprint, and uses other `footprint.*()` calls to retrieve the individual IDs for the footprint’s POC and Value Area rows.
+Afterward, the script loops through the array using a `for...in` loop. It calls multiple `volume_row.*()` functions within the loop to retrieve price levels, categorized volume values, volume delta, and imbalance states for each row. On each iteration, the script formats the retrieved “buy” and “sell” volume, volume delta, and imbalance information for the current row into a string, and then displays the text in a box drawn at the row’s price range in a separate pane. Each box uses a gradient background color based on the row’s volume delta and its total volume relative to the POC row’s total volume. The text color of each box is the chart’s foreground color if the row is the POC, purple if the row is a VA boundary, and gray otherwise.
+The script also plots the retrieved POC levels and the VA boundaries as circles on the main chart pane for visual reference:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Retrieving footprint row data demo", max_boxes_count = 500)  
+  
+//@variable The size of each footprint row, expressed in ticks.  
+int numTicksInput = input.int(100, "Ticks per footprint row", 1)  
+//@variable The percentage difference in opposing volume between rows for detecting volume imbalances.  
+int imbalanceInput = input.int(300, "Imbalance percentage", 1)  
+  
+//@variable References a `footprint` object for the current bar, or holds `na` if no footprint data is available.  
+footprint reqFootprint = request.footprint(numTicksInput, imbalance_percent = imbalanceInput)  
+  
+// Declare a tuple of variables to hold the values returned by the `if` structure for plotting.  
+// The values are not `na` only if the bar is visible and the `reqFootprint` variable does not hold `na`.  
+[pocHigh, pocLow, vaHigh, vaLow] = if (  
+    time >= chart.left_visible_bar_time and time <= chart.right_visible_bar_time and not na(reqFootprint)  
+)  
+    //@variable References an array containing a `volume_row` ID for each row in the volume footprint.  
+    array<volume_row> volumeRowsArray = reqFootprint.rows()  
+  
+    // Retrieve `volume_row` IDs for the footprint's Point of Control, Value Area High, and Value Area Low rows.  
+    volume_row poc = reqFootprint.poc()  
+    volume_row vah = reqFootprint.vah()  
+    volume_row val = reqFootprint.val()  
+  
+    // Loop through the array. The `row` variable holds a `volume_row` ID, starting with the one for the *lowest* row.  
+    for row in volumeRowsArray  
+        // Get the upper and lower price levels of the current row.  
+        float upPrice = row.up_price(), float dnPrice = row.down_price()  
+        // Get the row's "buy" and "sell" volume values and the volume delta.  
+        float buyVol = row.buy_volume(), float sellVol = row.sell_volume(), float delta = row.delta()  
+        // Get the row's buy and sell imbalance states.  
+        bool buyImbalance = row.has_buy_imbalance(), bool sellImbalance = row.has_sell_imbalance()  
+  
+        //@variable A string representing the row's buy volume, sell volume, volume delta, and imbalances, respectively.  
+        string boxText = str.format(  
+            "B: {0} | S: {1} | D: {2} | I: {3}", str.tostring(buyVol, format.volume),  
+            str.tostring(sellVol, format.volume), str.tostring(delta, format.volume),  
+            buyImbalance and sellImbalance ? "Both" : buyImbalance ? "Buy" : sellImbalance ? "Sell" : "None"  
+        )  
+  
+        // Calculate a green (for positive delta) or red (for negative delta) gradient color based on the row's volume   
+        // relative to the POC volume.  
+        color deltaColor = delta >= 0 ? color.green : color.red  
+        color boxColor = color.from_gradient(  
+            row.total_volume() / poc.total_volume(),  0, 1, color.new(deltaColor, 100), color.new(deltaColor, 70)  
+        )  
+        // Draw a box at the price range of the row, in a separate pane, to display the `boxText` value.  
+        box rowBox = box.new(  
+            bar_index, upPrice, bar_index + 1, dnPrice, #787b8650, 1, text = boxText,  
+            text_color = #787b86, text_halign = text.align_left, bgcolor = boxColor  
+        )  
+        // Update the text color and formatting of the box if the current row is a Value Area boundary or the POC.  
+        if upPrice == vah.up_price() or upPrice == val.up_price()  
+            rowBox.set_text_color(color.purple)  
+            rowBox.set_text_formatting(text.format_bold)  
+        if upPrice == poc.up_price()  
+            rowBox.set_text_color(chart.fg_color)  
+            rowBox.set_text_formatting(text.format_bold)  
+    // Return the POC and VA levels for use in the global scope.  
+    [poc.up_price(), poc.down_price(), vah.up_price(), val.down_price()]  
+  
+// Plot the retrieved POC and VA levels on the main chart pane.  
+plot(pocHigh, "POC top",    chart.fg_color,  5, plot.style_circles, force_overlay = true)  
+plot(pocLow,  "POC bottom", chart.fg_color,  5, plot.style_circles, force_overlay = true)  
+plot(vaHigh,  "VAH top",    color.purple,  3, plot.style_circles, force_overlay = true)  
+plot(vaLow,   "VAH bottom", color.purple,  3, plot.style_circles, force_overlay = true)  
+`
+Note that:
+  * As with the built-in functions for most other reference types, scripts can call `footprint.*()` and `volume_row.*()` built-ins as functions or methods. This script calls the built-ins using _method syntax_.
+  * The array created by footprint.rows() sorts its elements in _ascending order_ by price level, where the first element refers to the volume_row object for the row with the lowest prices, and the last refers to the one for the row with the highest prices.
+  * The results of volume_row.has_buy_imbalance() and volume_row.has_sell_imbalance() calls depend on the `imbalance_percent` argument of the request.footprint() call that creates the parent footprint object. In this example, the “Imbalance percentage” input controls the argument, and therefore controls the behavior of the script’s `volume_row.has_*_imbalance()` calls.
+
+
+To learn more about the footprint and volume_row types, and the available functions in their namespaces, refer to the footprint and volume_row section of the Type system page.
+For more information about volume footprints and how they work, refer to the Volume footprint charts article in our Help Center.
+
 ## ​`request.seed()`​
 TradingView aggregates a vast amount of data from its many providers, including price and volume information on tradable instruments, financials, economic data, and more, which users can retrieve in Pine Script using the functions discussed in the sections above, as well as multiple built-in variables.
 To further expand the horizons of possible data one can analyze on TradingView, we have Pine Seeds, which allows users to supply custom _user-maintained_ EOD data feeds via GitHub for use on TradingView charts and within Pine Script code.
@@ -2506,6 +2660,7 @@ Note that:
   * `request.economic()`
   * Country/region codes
   * Field codes
+  * `request.footprint()`
   * `request.seed()`
 
 
@@ -2569,6 +2724,13 @@ request.economic(country_code, field, gaps, ignore_invalid_symbol) → series fl
 
 
 
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
+
+
+
+
+
+
 request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count) → series <type>
 ```
 
@@ -2608,6 +2770,10 @@ request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, cur
 
 ```pine
 request.economic(country_code, field, gaps, ignore_invalid_symbol) → series float
+```
+
+```pine
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
 ```
 
 ```pine
@@ -2709,7 +2875,7 @@ Note that:
 
 NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) operator.
 ### Dynamic requests
-By default, unlike all previous Pine Script versions, all v6 script’s `request.*()` functions are _dynamic_.
+By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
 In contrast to non-dynamic requests, dynamic requests can:
   * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
   * Execute within the local scopes of conditional structures, loops, and exported functions.

@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260128_034434
+# processed_1_welcome_20260131_040446
 
-## 1_welcome_20260128_034434
+## 1_welcome_20260131_040446
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -43,7 +43,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260128_034434
+# processed_2_first-steps_20260131_040446
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -129,7 +129,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260128_034434
+# processed_3_first-indicator_20260131_040446
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -231,7 +231,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260128_034434
+# processed_4_next-steps_20260131_040446
 
 ## ”indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
@@ -289,7 +289,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260128_034434
+# processed_5_execution-model_20260131_040446
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1118,7 +1118,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260128_034434
+# processed_6_type-system_20260131_040446
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -1382,7 +1382,7 @@ plot(ema)
 ## Types
 Types define the _categories_ of values in a script and determine the kinds of functions and operations with which those values are compatible. Each type represents a different kind of data. The primary types available in Pine Script consist of the following:
   * Fundamental types: int, float, bool, color, and string
-    * Special types: plot, hline, line, linefill, box, polyline, label, table, chart.point, array, matrix, and map
+    * Special types: plot, hline, line, linefill, box, polyline, label, table, chart.point, footprint, volume_row, array, matrix, and map
     
 
 Fundamental types and enum types are also known as value types. Variables of these types directly hold values. Additionally, value types can inherit any type qualifier, depending on their use in the code. By contrast, special types and UDTs are reference types. Variables of these types do not store direct values; they hold _references_ (sometimes referred to as _IDs_) that provide access to data stored _elsewhere_ in memory. Instances of these types always inherit the “series” qualifier, regardless of how the script uses them.
@@ -1725,6 +1725,40 @@ label.new(
  )  
 `
 Refer to the Lines and boxes page for additional examples of using chart points.
+#### footprint and volume_row
+The footprint and volume_row types are special data types that scripts use when requesting volume footprint information with the request.footprint() function. An object of the footprint type stores the available volume footprint data for a specific bar. A volume_row object stores the data for an _individual row_ within a bar’s volume footprint.
+The only way to create objects of the footprint type is by calling the request.footprint() function. A call to the function returns either the _reference (ID)_ of a footprint object that contains the retrieved volume footprint data for the current bar, or na if no footprint data is available.
+Scripts can use footprint IDs in calls to the functions from the `footprint` _namespace_ to retrieve the calculated volume footprint data. Each function has an `id` parameter that requires a non-na ID of the footprint type.
+Some of the available `footprint.*()` functions return values representing overall metrics from a specific bar’s volume footprint:
+  * The footprint.buy_volume() function calculates the total “buy” volume for the volume footprint.
+  * The footprint.sell_volume() function calculates the total “sell” volume for the volume footprint.
+  * The footprint.total_volume() function calculates the sum of the footprint’s total “buy” volume and total “sell” volume.
+  * The footprint.delta() function calculates the volume footprint’s overall volume delta. The value represents the difference between the footprint’s total “buy” volume and total “sell” volume. A positive value indicates that the total “buy” volume is greater than the total “sell” volume, and a negative value indicates the opposite.
+
+
+The other `footprint.*()` functions retrieve the _IDs_ of volume_row objects that contain data for individual rows in the volume footprint represented by a footprint object:
+  * The footprint.poc() function finds the _Point of Control (POC)_ row of the volume footprint and returns the ID of a volume_row object containing data for that row. The POC is the footprint row that has the largest total volume.
+  * The footprint.vah() function finds the _Value Area High (VAH)_ row of the volume footprint and returns a volume_row ID for that row. The VAH row is the highest one in the footprint’s _Value Area_.
+  * The footprint.val() function finds the _Value Area Low (VAL)_ row of the volume footprint and returns a volume_row ID for that row. The VAL row is the lowest one in the footprint’s Value Area.
+  * The footprint.get_row_by_price() function searches the volume footprint to find the row whose price range includes a specified price level. If the price belongs to one of the footprint’s rows, the function returns the ID of the volume_row object that contains the data for that row. If the price level does _not_ belong to any row in the footprint, the function returns na.
+  * The footprint.rows() function creates an array that contains the volume_row IDs for _every row_ within the volume footprint, sorted in _ascending order_ by the rows’ price levels. The first element refers to the volume_row object for the _lowest_ row, and the last refers to the one for the _highest_ row. The array’s _type identifier_ is `array<volume_row>`. See the Collections section below to learn more about collection type identifiers.
+
+
+NoteThe `va_percent` argument of a request.footprint() call specifies the percentage of the total volume that the resulting footprint object uses for the volume footprint’s Value Area. Therefore, changes to the argument directly affect the results of footprint.vah() and footprint.val() calls that use the returned ID.
+The only way to access objects of the volume_row type is by calling any of the above functions using a valid footprint ID. Scripts can retrieve data from objects of this type for detailed footprint analysis by using their IDs in calls to the functions in the `volume_row` _namespace_. Each function has an `id` parameter that requires a non-na ID of the volume_row type:
+  * The volume_row.up_price() function returns the upper price level of the footprint row.
+  * The volume_row.down_price() function returns the lower price level of the footprint row.
+  * The volume_row.buy_volume() function calculates the total “buy” volume for the footprint row.
+  * The volume_row.sell_volume() function calculates the total “sell” volume for the footprint row.
+  * The volume_row.total_volume() function calculates the sum of the footprint row’s total “buy” volume and total “sell” volume.
+  * The volume_row.delta() function calculates the volume delta for the footprint row. The value represents the difference between the row’s “buy” volume and “sell” volume. A positive value indicates that the row’s “buy” volume exceeds its “sell” volume, and a negative value indicates the opposite.
+  * The volume_row.has_buy_imbalance() function checks whether the footprint row has a _buy imbalance_ , based on the `imbalance_percent` argument of the original request.footprint() call. It returns `true` if the row’s “buy” volume exceeds the “sell” volume of the row _below_ it by the specified percentage, and `false` otherwise.
+  * The volume_row.has_sell_imbalance() function checks whether the footprint row has a _sell imbalance_ , based on the `imbalance_percent` argument of the original request.footprint() call. It returns `true` if the row’s “sell” volume exceeds the “buy” volume of the row _above_ it by the specified percentage, and `false` otherwise.
+
+
+NoteThe `imbalance_percent` argument of a request.footprint() call determines the percentage difference that the resulting footprint uses for detecting volume imbalances. Changing the argument directly affects the results of the volume_row.has_buy_imbalance() and volume_row.has_sell_imbalance() calls that use volume_row IDs from the footprint object created by the request.
+See the `request.footprint()` section of the Other timeframes and data page for more information about footprint requests, and for examples that demonstrate how to use the `footprint.*()` and `volume_row.*()` functions to retrieve footprint data.
+To learn more about volume footprints and how they work, refer to the Volume footprint charts article in our Help Center.
 ####  Collections
 Pine Script _collections_ (arrays, matrices, and maps) are objects that store values or the _IDs (references)_ of other objects as _elements_. Collection types enable scripts to group multiple values or IDs in a single location and perform advanced calculations. Arrays and matrices contain elements of _one_ specific type. Maps can contain data of _two_ types: one type for the _keys_ , and another for the corresponding _value elements_. The `array`, `matrix`, and `map` _namespaces_ include all the built-in functions for creating and managing collections.
 A collection’s _type identifier_ consists of two parts: a _keyword_ defining the collection’s _category_ (array, matrix, or map), and a _type template_ specifying the _types of elements_ that the collection stores. The type template for array or matrix types consists of a single type keyword enclosed in angle brackets (e.g., `<int>` for a collection of “int” values). The type template for a map type consists of _two_ comma-separated keywords surrounded by angle brackets (e.g., `<string, int>` for a map of “string” keys and “int” values).
@@ -1761,7 +1795,7 @@ An alternative way to specify an array variable’s type is to prefix its declar
 Note that there are no alternative `*.new*()` functions or type declaration formats for matrices or maps.
 Scripts can construct collections and type templates for most available types, including:
   * All value types: int, float, bool, color, string, and enum types.
-  * The following _special types_ : line, linefill, box, polyline, label, table, and chart.point.
+  * The following _special types_ : line, linefill, box, polyline, label, table, chart.point, footprint, and volume_row.
   
 
 Note that maps can use any of these types as value elements, but they can store only _value types_ as _keys_. See the Maps page to learn more.
@@ -2398,6 +2432,7 @@ plot(randArray.sum())
   * plot and hline
   * Drawing types
   * Chart points
+  * footprint and volume_row
   * Collections
   * User-defined types
   * void
@@ -2462,7 +2497,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260128_034434
+# processed_7_script-structure_20260131_040446
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2723,9 +2758,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260128_034434
+# processed_8_identifiers_20260131_040446
 
-## 8_identifiers_20260128_034434
+## 8_identifiers_20260131_040446
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2789,7 +2824,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_variable-declarations_20260128_034434
+# processed_9_variable-declarations_20260131_040446
 
 ## Introduction
 Variables are identifiers that hold values. They must be _declared_ in your code before you use them. The syntax of variable declarations is:
@@ -3097,7 +3132,7 @@ Because varip only affects the behavior of your code in the realtime bar, it fol
 
 
 
-# processed_10_operators_20260128_034434
+# processed_10_operators_20260131_040446
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -3353,7 +3388,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_11_conditional-structures_20260128_034434
+# processed_11_conditional-structures_20260131_040446
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -3734,7 +3769,7 @@ if <expression>
 
 
 
-# processed_12_loops_20260128_034434
+# processed_12_loops_20260131_040446
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -4699,7 +4734,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_13_built-ins_20260128_034434
+# processed_13_built-ins_20260131_040446
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -4812,7 +4847,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_14_user-defined-functions_20260128_034434
+# processed_14_user-defined-functions_20260131_040446
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -6641,7 +6676,7 @@ Copied
 
 
 
-# processed_15_objects_20260128_034434
+# processed_15_objects_20260131_040446
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -6875,7 +6910,7 @@ pivot2.x := 2000
 plot(pivot1.x)  
 plot(pivot2.x)  
 `
-It’s important to note that the built-in `copy()` method produces a _shallow copy_ of an object. If an object has fields with _special types_ (array, matrix, map, line, linefill, box, polyline, label, table, or chart.point), those fields in a shallow copy of the object will point to the same instances as the original.
+It’s important to note that the built-in `copy()` method produces a _shallow copy_ of an object. If an object contains fields that reference objects of user-defined types or built-in _special types_ (array, matrix, map, line, linefill, box, polyline, label, table, chart.point, footprint, or volume_row), those fields in a shallow copy of the object will point to the same instances as the original.
 In the following example, we have defined an `InfoLabel` type with a label as one of its fields. The script instantiates a `shallow` copy of the `parent` object, then calls a user-defined `set()` method to update the `info` and `lbl` fields of each object. Since the `lbl` field of both objects points to the same label instance, changes to this field in either object affect the other:
 Pine Script®
 Copied
@@ -6948,7 +6983,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_16_enums_20260128_034434
+# processed_16_enums_20260131_040446
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -7265,13 +7300,13 @@ enum ta
 
 
 
-# processed_17_methods_20260128_034434
+# processed_17_methods_20260131_040446
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
 
 ## Built-in methods
-Pine Script includes built-in methods for all _special types_ , including array, matrix, map, line, linefill, box, polyline, label, and table. These methods provide users with a more concise way to call specialized routines for these types within their scripts.
+Pine Script features built-in methods for most special types, including array, matrix, map, line, linefill, box, polyline, label, table, chart.point, footprint, and volume_row. These methods provide users with a more concise way to call specialized routines for these types within their scripts.
 When using these special types, the expressions:
 ```
 
@@ -7910,7 +7945,7 @@ Copied
 
 
 
-# processed_18_arrays_20260128_034434
+# processed_18_arrays_20260131_040446
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -8686,7 +8721,7 @@ plot(c)
 
 
 
-# processed_19_matrices_20260128_034434
+# processed_19_matrices_20260131_040446
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -11137,7 +11172,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_20_maps_20260128_034434
+# processed_20_maps_20260131_040446
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -12182,7 +12217,7 @@ string txtSize = input.string(
 
 
 
-# processed_21_overview_20260128_034434
+# processed_21_overview_20260131_040446
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -12623,9 +12658,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_22_backgrounds_20260128_034434
+# processed_22_backgrounds_20260131_040446
 
-## 22_backgrounds_20260128_034434
+## 22_backgrounds_20260131_040446
 # 22_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -12765,9 +12800,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_23_bar-coloring_20260128_034434
+# processed_23_bar-coloring_20260131_040446
 
-## 23_bar-coloring_20260128_034434
+## 23_bar-coloring_20260131_040446
 # 23_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -12839,7 +12874,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_24_bar-plotting_20260128_034434
+# processed_24_bar-plotting_20260131_040446
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -12950,7 +12985,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_25_colors_20260128_034434
+# processed_25_colors_20260131_040446
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -13335,7 +13370,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_26_fills_20260128_034434
+# processed_26_fills_20260131_040446
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -13547,7 +13582,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_27_levels_20260128_034434
+# processed_27_levels_20260131_040446
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -13636,7 +13671,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_28_lines-and-boxes_20260128_034434
+# processed_28_lines-and-boxes_20260131_040446
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -14839,7 +14874,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_29_plots_20260128_034434
+# processed_29_plots_20260131_040446
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -15196,7 +15231,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_30_tables_20260128_034434
+# processed_30_tables_20260131_040446
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -15415,7 +15450,7 @@ Note that:
 
 
 
-# processed_31_text-and-shapes_20260128_034434
+# processed_31_text-and-shapes_20260131_040446
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -15956,7 +15991,7 @@ label.delete(id) → void
 
 
 
-# processed_32_alerts_20260128_034434
+# processed_32_alerts_20260131_040446
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -16309,7 +16344,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_33_bar-states_20260128_034434
+# processed_33_bar-states_20260131_040446
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -16445,7 +16480,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_34_chart-information_20260128_034434
+# processed_34_chart-information_20260131_040446
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -16536,7 +16571,7 @@ Session information is available in different forms:
 
 
 
-# processed_35_inputs_20260128_034434
+# processed_35_inputs_20260131_040446
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -17164,7 +17199,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_36_libraries_20260128_034434
+# processed_36_libraries_20260131_040446
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -17544,7 +17579,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_37_non-standard-charts-data_20260128_034434
+# processed_37_non-standard-charts-data_20260131_040446
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -17654,11 +17689,11 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_38_other-timeframes-and-data_20260128_034434
+# processed_38_other-timeframes-and-data_20260131_040446
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
-              
+                
 
 NoteThroughout this page, and in other parts of our documentation that discuss `request.*()` functions, we often use the term _“context”_ to describe the symbol, timeframe, and any modifications — such as price adjustments, session settings, and non-standard chart types — that apply to a chart or the data retrieved by a script.
 These are the signatures of the functions in the `request.*` namespace:
@@ -17714,6 +17749,13 @@ request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, cur
 
 
 request.economic(country_code, field, gaps, ignore_invalid_symbol) → series float
+
+
+
+
+
+
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
 
 
 
@@ -17902,7 +17944,7 @@ Note that:
 
 NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]] operator.
 ### Dynamic requests
-By default, unlike all previous Pine Script versions, all v6 script’s `request.*()` functions are _dynamic_.
+By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
 In contrast to non-dynamic requests, dynamic requests can:
   * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
   * Execute within the local scopes of conditional structures, loops, and exported functions.
@@ -20079,6 +20121,153 @@ WS | Wholesale Sales
 YUR | Youth Unemployment Rate  
 ZCC | ZEW Current Conditions
 
+## ​`request.footprint()`​
+The request.footprint() function enables scripts to retrieve volume footprint data for the bars in the datasets on which they run. For a given bar, a volume footprint categorizes volume values from lower timeframes as “buy” (upward) or “sell” (downward) based on intrabar price action, then collects the categorized volume data into equally sized rows that cover the bar’s price range. Programmers can use retrieved footprint data to inspect the distribution of “buy”, “sell”, and total volume across the rows for a bar’s range, identify a bar’s Point of Control (POC) and other significant price levels, calculate volume delta information, detect volume imbalances, and more.
+NoteVolume footprints are available exclusively to users who have a Premium or Ultimate plan. Accounts with lower-tier plans **cannot** use scripts that request volume footprint data with the request.footprint() function.
+The function’s signature is as follows:
+```
+
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
+
+```
+
+The `ticks_per_row` parameter specifies the size of each row in the calculated volume footprint, in ticks. It requires a positive “simple int” value representing a multiplier for the instrument’s minimum tick size. For example, if the argument is 100, the price range of each row equals the value of `100 * syminfo.mintick`. The specified row size affects the total number of rows in each bar’s footprint. Increase the value for fewer rows with a larger size, or decrease the value for the opposite.
+The `va_percent` parameter accepts a “simple float” value specifying the percentage of the footprint’s total volume to use for calculating the bar’s _Value Area (VA)_ , where a value of 100 represents 100% of the total volume. Specifying an argument is optional. The default value is 70, meaning that the footprint’s VA includes 70% of the total volume.
+The `imbalance_percent` parameter accepts a “simple float” value specifying the required percentage difference between “buy” and “sell” volume in adjacent footprint rows for detecting _volume imbalances_ :
+  * The footprint considers a row to have a _buy imbalance_ if the row’s “buy” volume exceeds the “sell” volume of the row _below_ it by the specified percentage.
+  * The footprint considers a row to have a _sell imbalance_ if the row’s “sell” volume exceeds the “buy” volume of the row _above_ it by the given percentage.
+
+
+Including an `imbalance_percent` argument is optional. The default value is 300, meaning that the “buy” or “sell” volume of a footprint row must be three times (300%) larger than the opposing volume of an adjacent row to signify an imbalance.
+A call to the request.footprint() function returns either the _reference (ID)_ of a footprint object that contains the volume footprint data for the current bar, or na if no footprint is available for that bar.
+NoticeScripts cannot perform more than **one** footprint request with the request.footprint() function. If a script contains multiple calls to this function, it raises a _runtime error_.
+Scripts can use any returned footprint ID that is not na in calls to the built-in `footprint.*()` functions to retrieve data from a bar’s volume footprint.
+For example, the following script calls request.footprint() on each bar to request the ID of a footprint object that contains the bar’s volume footprint data. If the requested data is available, the script then uses the returned ID in calls to four `footprint.*()` functions — footprint.total_volume(), footprint.buy_volume(), footprint.sell_volume(), and footprint.delta() — to retrieve the footprint’s total volume, total “buy” and “sell” volume, and overall volume delta.
+The script plots the “buy” volume, the negative “sell” volume, and the volume delta as columns for visual comparison. It also displays a color-coded label at each bar’s high price to indicate whether the bar’s “buy” volume exceeds its “sell” volume or vice versa. Hovering over a label reveals a tooltip that shows the corresponding bar’s total volume and volume delta:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Requesting volume footprint data demo", max_labels_count = 500)  
+  
+//@variable The number of ticks to use as the price interval for each footprint row.  
+int numTicksInput = input.int(100, "Ticks per footprint row", minval = 1)  
+  
+//@variable References a `footprint` object for the current bar, or holds `na` if no footprint data is available.  
+footprint reqFootprint = request.footprint(numTicksInput)  
+//@variable Is `true` if the requested `footprint` ID is not `na`, and `false` otherwise.  
+bool hasFootprint = not na(reqFootprint)  
+  
+// Retrieve the bar's total, "buy", and "sell" volume sums and overall volume delta from the `footprint` object.  
+float totalVolume = hasFootprint ? footprint.total_volume(reqFootprint) : na  
+float buyVolume   = hasFootprint ? footprint.buy_volume(reqFootprint)   : na  
+float sellVolume  = hasFootprint ? footprint.sell_volume(reqFootprint)  : na  
+float deltaVolume = hasFootprint ? footprint.delta(reqFootprint)        : na  
+  
+// Plot the total "buy" and "sell" volume as bidirectional columns, where "buy" volume increases in the  
+// positive direction (upward plot), and "sell" volume increases in the negative direction (downward plot).  
+plot(buyVolume,       "Total buy volume",  #6eb21c, style = plot.style_columns)  
+plot(sellVolume * -1, "Total sell volume", #b21c2b, style = plot.style_columns)  
+// Plot bar's volume delta on top of the bidirectional columns to show the difference between "buy" and "sell" volume.  
+plot(deltaVolume, "Volume delta", #e8a93c, style = plot.style_columns)  
+hline(0, "Zero line", #d6d6d8, hline.style_solid)  
+  
+// Draw a label at the bar's high. The label is green if the volume delta is positive or zero, and red otherwise.  
+// The label includes a tooltip that shows the bar's total volume and volume delta.  
+label.new(  
+    bar_index, high, color = deltaVolume >= 0 ? #6eb21c : #b21c2b, size = 14,  
+    tooltip = str.format("Total volume: \t{0}\nVolume delta: \t{1}", totalVolume, deltaVolume), force_overlay = true  
+)  
+`
+Note that:
+  * The `id` parameter of each `footprint.*()` function does not allow na arguments. Therefore, this script uses ternary operations that execute `footprint.*()` calls only if the retrieved footprint ID is not na. If no data is available, the operations return na directly without executing the calls.
+  * On timeframes higher than or equal to “1D”, a footprint’s total volume might differ significantly from the value of the volume variable. Such differences occur for some instruments because _EOD_ data feeds can include data from block trades, OTC trades, and other sources, whereas requested _intraday_ data feeds do not. See the Data feeds section to learn more about the types of data feeds and their differences.
+
+
+While some of the `footprint.*()` functions retrieve values representing overall metrics for a requested volume footprint, as shown above, others retrieve the IDs of volume_row objects that contain data for _individual rows_ from the footprint for more detailed analysis. For instance, the footprint.poc() function retrieves the ID of the volume_row object that contains data for a footprint’s _Point of Control_ row (i.e., the row with the highest total volume), and the footprint.rows() function constructs an array containing the volume_row IDs for _every_ row within a footprint.
+Scripts can use non-na IDs of the volume_row type in calls to the built-in `volume_row.*()` functions to retrieve data for a specific footprint row, including the row’s price levels, volume sums, volume delta, and buy or sell imbalances.
+The advanced example below retrieves and displays detailed volume footprint information for visible chart bars. On each visible bar, the script requests a footprint ID using request.footprint(). If the ID is not na, the script calls footprint.rows() to create an array containing the volume_row IDs for all rows in the footprint, and uses other `footprint.*()` calls to retrieve the individual IDs for the footprint’s POC and Value Area rows.
+Afterward, the script loops through the array using a `for...in` loop. It calls multiple `volume_row.*()` functions within the loop to retrieve price levels, categorized volume values, volume delta, and imbalance states for each row. On each iteration, the script formats the retrieved “buy” and “sell” volume, volume delta, and imbalance information for the current row into a string, and then displays the text in a box drawn at the row’s price range in a separate pane. Each box uses a gradient background color based on the row’s volume delta and its total volume relative to the POC row’s total volume. The text color of each box is the chart’s foreground color if the row is the POC, purple if the row is a VA boundary, and gray otherwise.
+The script also plots the retrieved POC levels and the VA boundaries as circles on the main chart pane for visual reference:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Retrieving footprint row data demo", max_boxes_count = 500)  
+  
+//@variable The size of each footprint row, expressed in ticks.  
+int numTicksInput = input.int(100, "Ticks per footprint row", 1)  
+//@variable The percentage difference in opposing volume between rows for detecting volume imbalances.  
+int imbalanceInput = input.int(300, "Imbalance percentage", 1)  
+  
+//@variable References a `footprint` object for the current bar, or holds `na` if no footprint data is available.  
+footprint reqFootprint = request.footprint(numTicksInput, imbalance_percent = imbalanceInput)  
+  
+// Declare a tuple of variables to hold the values returned by the `if` structure for plotting.  
+// The values are not `na` only if the bar is visible and the `reqFootprint` variable does not hold `na`.  
+[pocHigh, pocLow, vaHigh, vaLow] = if (  
+    time >= chart.left_visible_bar_time and time <= chart.right_visible_bar_time and not na(reqFootprint)  
+)  
+    //@variable References an array containing a `volume_row` ID for each row in the volume footprint.  
+    array<volume_row> volumeRowsArray = reqFootprint.rows()  
+  
+    // Retrieve `volume_row` IDs for the footprint's Point of Control, Value Area High, and Value Area Low rows.  
+    volume_row poc = reqFootprint.poc()  
+    volume_row vah = reqFootprint.vah()  
+    volume_row val = reqFootprint.val()  
+  
+    // Loop through the array. The `row` variable holds a `volume_row` ID, starting with the one for the *lowest* row.  
+    for row in volumeRowsArray  
+        // Get the upper and lower price levels of the current row.  
+        float upPrice = row.up_price(), float dnPrice = row.down_price()  
+        // Get the row's "buy" and "sell" volume values and the volume delta.  
+        float buyVol = row.buy_volume(), float sellVol = row.sell_volume(), float delta = row.delta()  
+        // Get the row's buy and sell imbalance states.  
+        bool buyImbalance = row.has_buy_imbalance(), bool sellImbalance = row.has_sell_imbalance()  
+  
+        //@variable A string representing the row's buy volume, sell volume, volume delta, and imbalances, respectively.  
+        string boxText = str.format(  
+            "B: {0} | S: {1} | D: {2} | I: {3}", str.tostring(buyVol, format.volume),  
+            str.tostring(sellVol, format.volume), str.tostring(delta, format.volume),  
+            buyImbalance and sellImbalance ? "Both" : buyImbalance ? "Buy" : sellImbalance ? "Sell" : "None"  
+        )  
+  
+        // Calculate a green (for positive delta) or red (for negative delta) gradient color based on the row's volume   
+        // relative to the POC volume.  
+        color deltaColor = delta >= 0 ? color.green : color.red  
+        color boxColor = color.from_gradient(  
+            row.total_volume() / poc.total_volume(),  0, 1, color.new(deltaColor, 100), color.new(deltaColor, 70)  
+        )  
+        // Draw a box at the price range of the row, in a separate pane, to display the `boxText` value.  
+        box rowBox = box.new(  
+            bar_index, upPrice, bar_index + 1, dnPrice, #787b8650, 1, text = boxText,  
+            text_color = #787b86, text_halign = text.align_left, bgcolor = boxColor  
+        )  
+        // Update the text color and formatting of the box if the current row is a Value Area boundary or the POC.  
+        if upPrice == vah.up_price() or upPrice == val.up_price()  
+            rowBox.set_text_color(color.purple)  
+            rowBox.set_text_formatting(text.format_bold)  
+        if upPrice == poc.up_price()  
+            rowBox.set_text_color(chart.fg_color)  
+            rowBox.set_text_formatting(text.format_bold)  
+    // Return the POC and VA levels for use in the global scope.  
+    [poc.up_price(), poc.down_price(), vah.up_price(), val.down_price()]  
+  
+// Plot the retrieved POC and VA levels on the main chart pane.  
+plot(pocHigh, "POC top",    chart.fg_color,  5, plot.style_circles, force_overlay = true)  
+plot(pocLow,  "POC bottom", chart.fg_color,  5, plot.style_circles, force_overlay = true)  
+plot(vaHigh,  "VAH top",    color.purple,  3, plot.style_circles, force_overlay = true)  
+plot(vaLow,   "VAH bottom", color.purple,  3, plot.style_circles, force_overlay = true)  
+`
+Note that:
+  * As with the built-in functions for most other reference types, scripts can call `footprint.*()` and `volume_row.*()` built-ins as functions or methods. This script calls the built-ins using _method syntax_.
+  * The array created by footprint.rows() sorts its elements in _ascending order_ by price level, where the first element refers to the volume_row object for the row with the lowest prices, and the last refers to the one for the row with the highest prices.
+  * The results of volume_row.has_buy_imbalance() and volume_row.has_sell_imbalance() calls depend on the `imbalance_percent` argument of the request.footprint() call that creates the parent footprint object. In this example, the “Imbalance percentage” input controls the argument, and therefore controls the behavior of the script’s `volume_row.has_*_imbalance()` calls.
+
+
+To learn more about the footprint and volume_row types, and the available functions in their namespaces, refer to the footprint and volume_row section of the Type system page.
+For more information about volume footprints and how they work, refer to the Volume footprint charts article in our Help Center.
+
 ## ​`request.seed()`​
 TradingView aggregates a vast amount of data from its many providers, including price and volume information on tradable instruments, financials, economic data, and more, which users can retrieve in Pine Script using the functions discussed in the sections above, as well as multiple built-in variables.
 To further expand the horizons of possible data one can analyze on TradingView, we have Pine Seeds, which allows users to supply custom _user-maintained_ EOD data feeds via GitHub for use on TradingView charts and within Pine Script code.
@@ -20164,6 +20353,7 @@ Note that:
   * `request.economic()`
   * Country/region codes
   * Field codes
+  * `request.footprint()`
   * `request.seed()`
 
 
@@ -20227,6 +20417,13 @@ request.economic(country_code, field, gaps, ignore_invalid_symbol) → series fl
 
 
 
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
+
+
+
+
+
+
 request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count) → series <type>
 ```
 
@@ -20266,6 +20463,10 @@ request.financial(symbol, financial_id, period, gaps, ignore_invalid_symbol, cur
 
 ```pine
 request.economic(country_code, field, gaps, ignore_invalid_symbol) → series float
+```
+
+```pine
+request.footprint(ticks_per_row, va_percent, imbalance_percent) → series footprint
 ```
 
 ```pine
@@ -20367,7 +20568,7 @@ Note that:
 
 NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) operator.
 ### Dynamic requests
-By default, unlike all previous Pine Script versions, all v6 script’s `request.*()` functions are _dynamic_.
+By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
 In contrast to non-dynamic requests, dynamic requests can:
   * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
   * Execute within the local scopes of conditional structures, loops, and exported functions.
@@ -20530,7 +20731,7 @@ library("DynamicRequests")
 
 
 
-# processed_39_repainting_20260128_034434
+# processed_39_repainting_20260131_040446
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -20798,7 +20999,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_40_sessions_20260128_034434
+# processed_40_sessions_20260131_040446
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -21149,7 +21350,7 @@ session.extended | Represents the extended trading session.
 
 
 
-# processed_41_strategies_20260128_034434
+# processed_41_strategies_20260131_040446
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -23082,7 +23283,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_42_strings_20260128_034434
+# processed_42_strings_20260131_040446
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -24651,7 +24852,7 @@ str.match(source, regex) → string
 
 
 
-# processed_43_time_20260128_034434
+# processed_43_time_20260131_040446
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -26177,7 +26378,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_44_timeframes_20260128_034434
+# processed_44_timeframes_20260131_040446
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -26225,7 +26426,7 @@ Note that:
 
 
 
-# processed_45_style-guide_20260128_034434
+# processed_45_style-guide_20260131_040446
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -26569,7 +26770,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_46_debugging_20260128_034434
+# processed_46_debugging_20260131_040446
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -28299,7 +28500,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_47_profiling-and-optimization_20260128_034434
+# processed_47_profiling-and-optimization_20260131_040446
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -29926,7 +30127,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_48_publishing_20260128_034434
+# processed_48_publishing_20260131_040446
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -30158,7 +30359,7 @@ Editors’ picks. To see examples of our recommended description format, refer t
 
 
 
-# processed_49_limitations_20260128_034434
+# processed_49_limitations_20260131_040446
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -30525,7 +30726,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_50_general_20260128_034434
+# processed_50_general_20260131_040446
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -30727,7 +30928,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_51_alerts_20260128_034434
+# processed_51_alerts_20260131_040446
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -31287,7 +31488,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_52_data-structures_20260128_034434
+# processed_52_data-structures_20260131_040446
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -32169,7 +32370,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_53_functions_20260128_034434
+# processed_53_functions_20260131_040446
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -32429,7 +32630,7 @@ Copied
 
 
 
-# processed_54_indicators_20260128_034434
+# processed_54_indicators_20260131_040446
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -32537,7 +32738,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_55_other-data-and-timeframes_20260128_034434
+# processed_55_other-data-and-timeframes_20260131_040446
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -32786,7 +32987,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_56_programming_20260128_034434
+# processed_56_programming_20260131_040446
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -32923,7 +33124,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_57_strategies_20260128_034434
+# processed_57_strategies_20260131_040446
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -34042,7 +34243,7 @@ Copied
 
 
 
-# processed_58_strings-and-formatting_20260128_034434
+# processed_58_strings-and-formatting_20260131_040446
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -34262,7 +34463,7 @@ if barstate.islast
 
 
 
-# processed_59_techniques_20260128_034434
+# processed_59_techniques_20260131_040446
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -35108,7 +35309,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_60_times-dates-and-sessions_20260128_034434
+# processed_60_times-dates-and-sessions_20260131_040446
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -35913,7 +36114,7 @@ indicator("Days in month")
 
 
 
-# processed_61_variables-and-operators_20260128_034434
+# processed_61_variables-and-operators_20260131_040446
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -36134,7 +36335,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_62_visuals_20260128_034434
+# processed_62_visuals_20260131_040446
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -36948,7 +37149,7 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_63_error-messages_20260128_034434
+# processed_63_error-messages_20260131_040446
 
 ## The if statement is too long
 This error occurs when the indented code (local block) inside an `if` structure is too large for the compiler. Because of how the compiler works, you won’t receive a message telling you exactly how many lines of code you are over the limit. The only solution now is to split the structure into smaller parts (functions or smaller if statements). The example below shows a reasonably lengthy if statement; theoretically, this would throw `line 4: if statement is too long`:
@@ -37448,7 +37649,69 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_64_release-notes_20260128_034434
+# processed_64_release-notes_20260131_040446
+
+## 2026
+### January 2026
+#### Footprint requests
+We’ve added a new request.footprint() function and two new _data types_ , footprint and volume_row. These features enable scripts to retrieve and work with volume footprint data for a chart’s dataset:
+  * The request.footprint() function requests volume footprint information for the current bar. It returns either the _reference (ID)_ of a footprint _object_ , or na if no footprint data is available for the bar.
+  * A footprint object contains the available volume footprint data retrieved for a specific bar. Scripts can use IDs of this type with the new `footprint.*()` functions to retrieve a bar’s overall footprint information, such as its total “buy” or “sell” volume and overall volume delta, or to retrieve volume_row IDs for _individual rows_ within the footprint, including those for the bar’s Point of Control (POC) and Value Area (VA) boundaries.
+  * A volume_row object contains data for a specific footprint row. Scripts can use IDs of this type with the new `volume_row.*()` functions to retrieve a footprint row’s information, including its price levels, volume values, volume delta, and imbalances.
+
+
+Programmers who have a Premium or Ultimate plan can use these features to create scripts that analyze volume footprint information across bars or perform custom footprint-based calculations. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Footprint requests demo", overlay = true, behind_chart = false, max_labels_count = 50)  
+  
+//@variable The number of ticks to use as the price interval for each footprint row.  
+int numTicksInput = input.int(100, "Ticks per footprint row", minval = 1)   
+//@variable The percentage of each footprint's total volume to use for calculating the Value Area (VA).  
+int vaInput = input.int(70, "Value Area percentage", minval = 1)  
+  
+//@variable References a `footprint` object for the current bar, or holds `na` if no footprint data is available.  
+footprint reqFootprint = request.footprint(numTicksInput, vaInput)  
+  
+// If footprint data is available for the bar, retrieve overall and row-wise information for the footprint.  
+[vaUpper, vaLower, pocUpper, pocLower] = if not na(reqFootprint)  
+    // Retrieve bar's total buy volume, sell volume, and volume delta from `footprint` object referenced by `reqFootprint`.  
+    // These `footprint.*()` functions return "float" volume values.  
+    float buyVolume   = reqFootprint.buy_volume()  
+    float sellVolume  = reqFootprint.sell_volume()  
+    float deltaVolume = reqFootprint.delta()  
+  
+    // Get Value Area High (VAH), Value Area Low (VAL), and Point of Control (POC) row IDs from the `footprint` object.  
+    // These `footprint.*()` functions return IDs of `volume_row` objects containing data for the specific rows.  
+    volume_row vahRow = reqFootprint.vah()  
+    volume_row valRow = reqFootprint.val()  
+    volume_row pocRow = reqFootprint.poc()  
+  
+    // Retrieve upper and lower price boundaries of VAH, VAL, and POC rows from `volume_row` objects.  
+    // These `volume_row.*()` functions return "float" price values.  
+    float vahUpperPrice = vahRow.up_price()  
+    float valLowerPrice = valRow.down_price()  
+    float pocUpperPrice = pocRow.up_price()  
+    float pocLowerPrice = pocRow.down_price()  
+  
+    // Draw a label on each bar to show the footprint's volume and price levels as formatted text.  
+    string footprintInfo = str.format(  
+        "Total buy volume: {0}\nTotal sell volume: {1}\nVolume delta: {2}\n---\nPOC range: {3}–{4}\nVA range: {5}–{6}",   
+        buyVolume, sellVolume, deltaVolume, pocLowerPrice, pocUpperPrice, valLowerPrice, vahUpperPrice  
+    )  
+    label.new(bar_index, high, text = footprintInfo, yloc = yloc.abovebar, size = 10)  
+  
+    // Return VA and POC price boundaries to the variables in the tuple declaration.  
+    [vahUpperPrice, valLowerPrice, pocUpperPrice, pocLowerPrice]   
+  
+// Plot footprint row price boundaries to visualize VA and POC range of each bar. Hidden if requested footprint is `na`.   
+plot(vaUpper,  "VAH upper", color.navy,    3, plot.style_stepline, linestyle = plot.linestyle_dotted)  
+plot(vaLower,  "VAL lower", color.blue,    3, plot.style_stepline, linestyle = plot.linestyle_dotted)  
+plot(pocUpper, "POC upper", color.purple,  4, plot.style_stepline)  
+plot(pocLower, "POC lower", color.fuchsia, 4, plot.style_stepline)  
+`
+See the `request.footprint()` section of the Other timeframes and data page to learn more about footprint requests. For more information about the footprint and volume_row types and the functions in their namespaces, refer to the footprint and volume_row section of the Type system page.
 
 ## 2025
 ### December 2025
@@ -38611,7 +38874,10 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
  Previous   Next To Pine Script® version 5
 
 ## * Overview
-* 2025
+* 2026
+  * January 2026
+  * Footprint requests
+  * 2025
   * December 2025
   * Updated line wrapping
   * November 2025
@@ -38750,7 +39016,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_65_overview_20260128_034434
+# processed_65_overview_20260131_040446
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -38762,7 +39028,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_66_to-pine-version-6_20260128_034434
+# processed_66_to-pine-version-6_20260131_040446
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -39752,7 +40018,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_67_to-pine-version-5_20260128_034434
+# processed_67_to-pine-version-5_20260131_040446
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -40184,7 +40450,7 @@ v4 | v5
 
 
 
-# processed_68_to-pine-version-4_20260128_034434
+# processed_68_to-pine-version-4_20260131_040446
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -40229,7 +40495,7 @@ plot(src)
 
 
 
-# processed_69_to-pine-version-3_20260128_034434
+# processed_69_to-pine-version-3_20260131_040446
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -40350,9 +40616,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_70_to-pine-version-2_20260128_034434
+# processed_70_to-pine-version-2_20260131_040446
 
-## 70_to-pine-version-2_20260128_034434
+## 70_to-pine-version-2_20260131_040446
 # 70_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -40407,7 +40673,7 @@ plot(sma(src, length))
 
 
 
-# processed_71_where-can-i-get-more-information_20260128_034434
+# processed_71_where-can-i-get-more-information_20260131_040446
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.

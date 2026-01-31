@@ -260,7 +260,7 @@ plot(ema)
 ## Types
 Types define the _categories_ of values in a script and determine the kinds of functions and operations with which those values are compatible. Each type represents a different kind of data. The primary types available in Pine Script consist of the following:
   * Fundamental types: int, float, bool, color, and string
-    * Special types: plot, hline, line, linefill, box, polyline, label, table, chart.point, array, matrix, and map
+    * Special types: plot, hline, line, linefill, box, polyline, label, table, chart.point, footprint, volume_row, array, matrix, and map
     
 
 Fundamental types and enum types are also known as value types. Variables of these types directly hold values. Additionally, value types can inherit any type qualifier, depending on their use in the code. By contrast, special types and UDTs are reference types. Variables of these types do not store direct values; they hold _references_ (sometimes referred to as _IDs_) that provide access to data stored _elsewhere_ in memory. Instances of these types always inherit the “series” qualifier, regardless of how the script uses them.
@@ -603,6 +603,40 @@ label.new(
  )  
 `
 Refer to the Lines and boxes page for additional examples of using chart points.
+#### footprint and volume_row
+The footprint and volume_row types are special data types that scripts use when requesting volume footprint information with the request.footprint() function. An object of the footprint type stores the available volume footprint data for a specific bar. A volume_row object stores the data for an _individual row_ within a bar’s volume footprint.
+The only way to create objects of the footprint type is by calling the request.footprint() function. A call to the function returns either the _reference (ID)_ of a footprint object that contains the retrieved volume footprint data for the current bar, or na if no footprint data is available.
+Scripts can use footprint IDs in calls to the functions from the `footprint` _namespace_ to retrieve the calculated volume footprint data. Each function has an `id` parameter that requires a non-na ID of the footprint type.
+Some of the available `footprint.*()` functions return values representing overall metrics from a specific bar’s volume footprint:
+  * The footprint.buy_volume() function calculates the total “buy” volume for the volume footprint.
+  * The footprint.sell_volume() function calculates the total “sell” volume for the volume footprint.
+  * The footprint.total_volume() function calculates the sum of the footprint’s total “buy” volume and total “sell” volume.
+  * The footprint.delta() function calculates the volume footprint’s overall volume delta. The value represents the difference between the footprint’s total “buy” volume and total “sell” volume. A positive value indicates that the total “buy” volume is greater than the total “sell” volume, and a negative value indicates the opposite.
+
+
+The other `footprint.*()` functions retrieve the _IDs_ of volume_row objects that contain data for individual rows in the volume footprint represented by a footprint object:
+  * The footprint.poc() function finds the _Point of Control (POC)_ row of the volume footprint and returns the ID of a volume_row object containing data for that row. The POC is the footprint row that has the largest total volume.
+  * The footprint.vah() function finds the _Value Area High (VAH)_ row of the volume footprint and returns a volume_row ID for that row. The VAH row is the highest one in the footprint’s _Value Area_.
+  * The footprint.val() function finds the _Value Area Low (VAL)_ row of the volume footprint and returns a volume_row ID for that row. The VAL row is the lowest one in the footprint’s Value Area.
+  * The footprint.get_row_by_price() function searches the volume footprint to find the row whose price range includes a specified price level. If the price belongs to one of the footprint’s rows, the function returns the ID of the volume_row object that contains the data for that row. If the price level does _not_ belong to any row in the footprint, the function returns na.
+  * The footprint.rows() function creates an array that contains the volume_row IDs for _every row_ within the volume footprint, sorted in _ascending order_ by the rows’ price levels. The first element refers to the volume_row object for the _lowest_ row, and the last refers to the one for the _highest_ row. The array’s _type identifier_ is `array<volume_row>`. See the Collections section below to learn more about collection type identifiers.
+
+
+NoteThe `va_percent` argument of a request.footprint() call specifies the percentage of the total volume that the resulting footprint object uses for the volume footprint’s Value Area. Therefore, changes to the argument directly affect the results of footprint.vah() and footprint.val() calls that use the returned ID.
+The only way to access objects of the volume_row type is by calling any of the above functions using a valid footprint ID. Scripts can retrieve data from objects of this type for detailed footprint analysis by using their IDs in calls to the functions in the `volume_row` _namespace_. Each function has an `id` parameter that requires a non-na ID of the volume_row type:
+  * The volume_row.up_price() function returns the upper price level of the footprint row.
+  * The volume_row.down_price() function returns the lower price level of the footprint row.
+  * The volume_row.buy_volume() function calculates the total “buy” volume for the footprint row.
+  * The volume_row.sell_volume() function calculates the total “sell” volume for the footprint row.
+  * The volume_row.total_volume() function calculates the sum of the footprint row’s total “buy” volume and total “sell” volume.
+  * The volume_row.delta() function calculates the volume delta for the footprint row. The value represents the difference between the row’s “buy” volume and “sell” volume. A positive value indicates that the row’s “buy” volume exceeds its “sell” volume, and a negative value indicates the opposite.
+  * The volume_row.has_buy_imbalance() function checks whether the footprint row has a _buy imbalance_ , based on the `imbalance_percent` argument of the original request.footprint() call. It returns `true` if the row’s “buy” volume exceeds the “sell” volume of the row _below_ it by the specified percentage, and `false` otherwise.
+  * The volume_row.has_sell_imbalance() function checks whether the footprint row has a _sell imbalance_ , based on the `imbalance_percent` argument of the original request.footprint() call. It returns `true` if the row’s “sell” volume exceeds the “buy” volume of the row _above_ it by the specified percentage, and `false` otherwise.
+
+
+NoteThe `imbalance_percent` argument of a request.footprint() call determines the percentage difference that the resulting footprint uses for detecting volume imbalances. Changing the argument directly affects the results of the volume_row.has_buy_imbalance() and volume_row.has_sell_imbalance() calls that use volume_row IDs from the footprint object created by the request.
+See the `request.footprint()` section of the Other timeframes and data page for more information about footprint requests, and for examples that demonstrate how to use the `footprint.*()` and `volume_row.*()` functions to retrieve footprint data.
+To learn more about volume footprints and how they work, refer to the Volume footprint charts article in our Help Center.
 ####  Collections
 Pine Script _collections_ (arrays, matrices, and maps) are objects that store values or the _IDs (references)_ of other objects as _elements_. Collection types enable scripts to group multiple values or IDs in a single location and perform advanced calculations. Arrays and matrices contain elements of _one_ specific type. Maps can contain data of _two_ types: one type for the _keys_ , and another for the corresponding _value elements_. The `array`, `matrix`, and `map` _namespaces_ include all the built-in functions for creating and managing collections.
 A collection’s _type identifier_ consists of two parts: a _keyword_ defining the collection’s _category_ (array, matrix, or map), and a _type template_ specifying the _types of elements_ that the collection stores. The type template for array or matrix types consists of a single type keyword enclosed in angle brackets (e.g., `<int>` for a collection of “int” values). The type template for a map type consists of _two_ comma-separated keywords surrounded by angle brackets (e.g., `<string, int>` for a map of “string” keys and “int” values).
@@ -639,7 +673,7 @@ An alternative way to specify an array variable’s type is to prefix its declar
 Note that there are no alternative `*.new*()` functions or type declaration formats for matrices or maps.
 Scripts can construct collections and type templates for most available types, including:
   * All value types: int, float, bool, color, string, and enum types.
-  * The following _special types_ : line, linefill, box, polyline, label, table, and chart.point.
+  * The following _special types_ : line, linefill, box, polyline, label, table, chart.point, footprint, and volume_row.
   
 
 Note that maps can use any of these types as value elements, but they can store only _value types_ as _keys_. See the Maps page to learn more.
@@ -1276,6 +1310,7 @@ plot(randArray.sum())
   * plot and hline
   * Drawing types
   * Chart points
+  * footprint and volume_row
   * Collections
   * User-defined types
   * void
