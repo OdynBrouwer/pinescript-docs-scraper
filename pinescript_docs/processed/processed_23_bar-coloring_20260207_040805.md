@@ -1,4 +1,4 @@
-## 23_bar-coloring_20260204_041114
+## 23_bar-coloring_20260207_040805
 # 23_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
