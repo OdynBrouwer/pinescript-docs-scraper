@@ -48,7 +48,7 @@ plot(m.get(0, 0), linewidth = 3) // Plot the value from the first ro
 Notice
 Matrix variables declared using varip behave similarly to those declared using var, with two key differences. Firstly, the matrices that they reference can finalize updates to their elements on _any_ available tick — not only on a bar’s closing tick. Secondly, matrices referenced by varip variables can contain only the following data:
   * Values of any fundamental type.
-  * The IDs of chart points.
+  * IDs of the chart.point, footprint, or volume_row type.
   * References to objects of a user-defined type that have fields for storing only data of either of the above types or the IDs of other collections containing only these types.
 
 ## Reading and writing matrix elements

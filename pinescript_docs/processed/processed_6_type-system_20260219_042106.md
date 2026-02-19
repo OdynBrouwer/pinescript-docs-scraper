@@ -693,7 +693,7 @@ The syntax to declare a user-defined type is as follows:
 
 
 
-    [field_type] <field_name>[ = <value>]
+    [varip ][field_type ]<field_name>[ = <value>]
 
 
 
@@ -705,7 +705,7 @@ The syntax to declare a user-defined type is as follows:
 
 Where:
     * `UDT_identifier` is the _name_ of the user-defined type.
-  * `field_type` is a type keyword or identifier, which defines the field’s type.
+    * `field_type` is a type keyword or identifier, which specifies the field’s type.
   * `field_name` is the name of the field.
   * `value` is an optional _default value_ for the field. Each time that the script creates a new instance of the UDT, it initializes the field with the specified value. If not specified, the field’s default value is na, or `false` if the field’s type is “bool”. Note that the default value _cannot_ be the result of a function call or any other expression; only a _literal value_ or a compatible _built-in variable_ is allowed.
 
@@ -885,7 +885,7 @@ myLabel = label(na)
 `
 
 ## Tuples
-A _tuple_ is a _comma-separated list_ of expressions enclosed in square brackets (e.g., `[expr1, expr2, expr3]`). If a structure that creates a local scope, such as a function, method, conditional structure, or loop, returns more than one value, the code lists those values in the form of a tuple.
+A _tuple_ is a _comma-separated list_ of expressions or identifiers enclosed in square brackets (e.g., `[expr1, expr2, expr3]`). If a structure that creates a local scope, such as a function, method, conditional structure, or loop, returns more than one result, the code lists the expressions for all the results in the form of a tuple at the end of the structure’s local block.
 For example, the following user-defined function returns a tuple containing two values. The first item in the tuple is the sum of the function’s `a` and `b` arguments, and the second is the product of those two values:
 Pine Script®
 Copied
@@ -898,7 +898,7 @@ calcSumAndProduct(float a, float b) =>
     // Return a tuple containing the `sum` and `product` values.  
     [sum, product]  
 `
-When calling this function later in the code, the script must use a tuple declaration containing one new variable for each value returned by the function to use its data. For example, the `hlSum` and `hlProduct` variables in the following tuple declaration hold the `sum` and `product` values returned by a `calcSumAndProduct()` call:
+When calling this function later in the code, the script must use a tuple declaration to declare one new variable for each value returned by the function to use its data. For example, the `hlSum` and `hlProduct` variables in the following tuple declaration hold the `sum` and `product` values returned by a `calcSumAndProduct()` call:
 Pine Script®
 Copied
 `// Declare a tuple containing a variable for each value returned by the `calcSumAndProduct()` call.  
@@ -1359,7 +1359,7 @@ const < input < simple < series
 
 
 
-    [field_type] <field_name>[ = <value>]
+    [varip ][field_type ]<field_name>[ = <value>]
 
 
 

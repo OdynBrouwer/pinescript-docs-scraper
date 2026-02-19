@@ -320,14 +320,14 @@ Below, we explain how recalculation and rollback affect a script’s data and ou
 varip keyword. When the script executes again after rollback, it _reinitializes_ the variables with new values or references based on the latest available data.
 _temporary_ states of built-in variables that hold values for the current bar. Before the new script execution, it sets the variables to use the bar’s most recent data. For instance, the system updates close, high, and low with the latest, highest, and lowest prices reported since the bar’s opening time.
 **Reset changes to`var` variables**
-var keyword in their declaration are initialized only _once_ — during the _first_ execution of their scopes on a _closed bar_. Variables that use the var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
+var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
 **do not** preserve data across executions on the _ticks_ of an open bar. Rollback reverts all variables declared with var before the current bar to the last committed states in the time series as of the previous bar.
 var has a value of 20 on the open bar and 19 on the previous bar, the variable’s value reverts to 19 before the script executes on the next tick of the same bar. The temporary value of 20 does not persist.
 **Replace plotted outputs**
 `plot*()`, bgcolor(), barcolor(), and fill() functions create visual outputs on _every bar_. These outputs are _temporary_ on the open realtime bar. When the script executes again after rollback, the new outputs for the bar from calls to these functions _replace_ the ones from the previous tick.
 `plot(close)` executes on the open bar, it displays the bar’s latest close value as of the current execution. However, the plotted result is **temporary** until the bar closes. After rollback, the close variable updates, then the script calls plot() again on the next execution to replace the output from the previous tick and display the new value.
 **Remove and revert objects**
-User-defined types (UDTs) and special types such as collections and drawing types are _reference types_. They define structures from which scripts create _objects_ — independent entities that store data elsewhere in memory. Variables of these types hold _references_ that provide access to specific objects and their data; the variables do **not** store objects directly.
+User-defined types (UDTs) and special types, such as collections and drawing types, are reference types. They define structures from which scripts create _objects_ — independent entities that store data elsewhere in memory. Variables of these types hold _references (IDs)_ that provide access to specific objects and their data; the variables do **not** store objects directly.
 varip keyword, the rollback process _removes_ those objects. During the next execution on the open bar, the script creates _new objects_ if the updated logic allows it.
 label.new() to create a label object on the open bar, the system _deletes_ that object during rollback. On the next execution, the script evaluates label.new() again, creating a _new_ label that replaces the output. The label created on the previous tick no longer exists.
 var variables, the rollback process reverts any changes to those objects that occur on the open bar. The only exception is for UDTs with _fields_ that include the varip keyword. See the Objects page for more information.
@@ -456,7 +456,7 @@ if barstate.isrealtime
 // Plot candles to display the `o`, `h`, `l`, and `priceReturn` values for each realtime bar.  
 // The candles do not appear on historical bars, because `o`, `h`, and `l` are `na` on those bars.  
 plotcandle(o, h, l, priceReturn, "Return candles", color.blue, chart.fg_color, bordercolor = chart.fg_color)  
-// Dispaly the `priceReturn` series as a purple line plot.  
+// Display the `priceReturn` series as a purple line plot.  
 plot(priceReturn, "Return plot", color.purple, 3)  
 // Highlight the background of all realtime bars in orange.  
 bgcolor(barstate.isrealtime ? color.new(color.orange, 70) : na, title = "Realtime highlight")  
