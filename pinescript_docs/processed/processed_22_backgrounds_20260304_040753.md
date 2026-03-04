@@ -1,4 +1,4 @@
-## 22_backgrounds_20260301_042240
+## 22_backgrounds_20260304_040753
 # 22_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -9,8 +9,9 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * FAQ
-                                                          * Migration guides
+                      * Errors and warnings
+                  * FAQ
+                                                        * Migration guides
                           
 
  
@@ -23,8 +24,9 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * FAQ
-                                                          * Migration guides
+                      * Errors and warnings
+                  * FAQ
+                                                        * Migration guides
                           
 
  User Manual  / Visuals / Backgrounds

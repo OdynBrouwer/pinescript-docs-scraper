@@ -1,4 +1,4 @@
-## 23_bar-coloring_20260301_042240
+## 23_bar-coloring_20260304_040753
 # 23_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -9,8 +9,9 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * FAQ
-                                                          * Migration guides
+                      * Errors and warnings
+                  * FAQ
+                                                        * Migration guides
                           
 
  
@@ -23,8 +24,9 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * FAQ
-                                                          * Migration guides
+                      * Errors and warnings
+                  * FAQ
+                                                        * Migration guides
                           
 
  User Manual  / Visuals / Bar coloring
