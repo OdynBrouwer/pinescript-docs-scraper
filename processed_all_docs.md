@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260307_040008
+# processed_1_welcome_20260310_040822
 
-## 1_welcome_20260307_040008
+## 1_welcome_20260310_040822
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -13,9 +13,8 @@ Source: https://www.tradingview.com/pine-script-docs/welcome
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -28,9 +27,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Welcome to Pine Script® v6
@@ -45,7 +43,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260307_040008
+# processed_2_first-steps_20260310_040822
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +129,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260307_040008
+# processed_3_first-indicator_20260310_040822
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -233,7 +231,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260307_040008
+# processed_4_next-steps_20260310_040822
 
 ## ”indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
@@ -291,7 +289,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260307_040008
+# processed_5_execution-model_20260310_040822
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1120,7 +1118,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260307_040008
+# processed_6_type-system_20260310_040822
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -2499,7 +2497,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260307_040008
+# processed_7_script-structure_20260310_040822
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2760,9 +2758,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260307_040008
+# processed_8_identifiers_20260310_040822
 
-## 8_identifiers_20260307_040008
+## 8_identifiers_20260310_040822
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2773,9 +2771,8 @@ Source: https://www.tradingview.com/pine-script-docs/language/identifiers
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -2788,9 +2785,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Language / Identifiers
@@ -2828,7 +2824,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_variable-declarations_20260307_040008
+# processed_9_variable-declarations_20260310_040822
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4030,7 +4026,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_10_operators_20260307_040008
+# processed_10_operators_20260310_040822
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -4286,7 +4282,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_11_conditional-structures_20260307_040008
+# processed_11_conditional-structures_20260310_040822
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -4667,7 +4663,7 @@ if <expression>
 
 
 
-# processed_12_loops_20260307_040008
+# processed_12_loops_20260310_040822
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -5632,7 +5628,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_13_built-ins_20260307_040008
+# processed_13_built-ins_20260310_040822
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -5745,7 +5741,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_14_user-defined-functions_20260307_040008
+# processed_14_user-defined-functions_20260310_040822
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -7574,7 +7570,7 @@ Copied
 
 
 
-# processed_15_objects_20260307_040008
+# processed_15_objects_20260310_040822
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -7881,7 +7877,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_16_enums_20260307_040008
+# processed_16_enums_20260310_040822
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8198,7 +8194,7 @@ enum ta
 
 
 
-# processed_17_methods_20260307_040008
+# processed_17_methods_20260310_040822
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -8843,7 +8839,7 @@ Copied
 
 
 
-# processed_18_arrays_20260307_040008
+# processed_18_arrays_20260310_040822
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -9619,7 +9615,7 @@ plot(c)
 
 
 
-# processed_19_matrices_20260307_040008
+# processed_19_matrices_20260310_040822
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -12070,7 +12066,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_20_maps_20260307_040008
+# processed_20_maps_20260310_040822
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -13115,7 +13111,7 @@ string txtSize = input.string(
 
 
 
-# processed_21_overview_20260307_040008
+# processed_21_overview_20260310_040822
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -13556,9 +13552,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_22_backgrounds_20260307_040008
+# processed_22_backgrounds_20260310_040822
 
-## 22_backgrounds_20260307_040008
+## 22_backgrounds_20260310_040822
 # 22_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -13569,9 +13565,8 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -13584,9 +13579,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Visuals / Backgrounds
@@ -13700,9 +13694,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_23_bar-coloring_20260307_040008
+# processed_23_bar-coloring_20260310_040822
 
-## 23_bar-coloring_20260307_040008
+## 23_bar-coloring_20260310_040822
 # 23_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -13713,9 +13707,8 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -13728,9 +13721,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Visuals / Bar coloring
@@ -13776,7 +13768,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_24_bar-plotting_20260307_040008
+# processed_24_bar-plotting_20260310_040822
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -13887,7 +13879,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_25_colors_20260307_040008
+# processed_25_colors_20260310_040822
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -14272,7 +14264,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_26_fills_20260307_040008
+# processed_26_fills_20260310_040822
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -14484,7 +14476,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_27_levels_20260307_040008
+# processed_27_levels_20260310_040822
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -14573,7 +14565,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_28_lines-and-boxes_20260307_040008
+# processed_28_lines-and-boxes_20260310_040822
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -15776,7 +15768,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_29_plots_20260307_040008
+# processed_29_plots_20260310_040822
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -16133,7 +16125,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_30_tables_20260307_040008
+# processed_30_tables_20260310_040822
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -16352,7 +16344,7 @@ Note that:
 
 
 
-# processed_31_text-and-shapes_20260307_040008
+# processed_31_text-and-shapes_20260310_040822
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -16893,7 +16885,7 @@ label.delete(id) → void
 
 
 
-# processed_32_alerts_20260307_040008
+# processed_32_alerts_20260310_040822
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -17246,7 +17238,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_33_bar-states_20260307_040008
+# processed_33_bar-states_20260310_040822
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -17382,7 +17374,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_34_chart-information_20260307_040008
+# processed_34_chart-information_20260310_040822
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -17473,7 +17465,7 @@ Session information is available in different forms:
 
 
 
-# processed_35_inputs_20260307_040008
+# processed_35_inputs_20260310_040822
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -18101,7 +18093,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_36_libraries_20260307_040008
+# processed_36_libraries_20260310_040822
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -18481,7 +18473,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_37_non-standard-charts-data_20260307_040008
+# processed_37_non-standard-charts-data_20260310_040822
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -18591,7 +18583,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_38_other-timeframes-and-data_20260307_040008
+# processed_38_other-timeframes-and-data_20260310_040822
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -21633,7 +21625,7 @@ library("DynamicRequests")
 
 
 
-# processed_39_repainting_20260307_040008
+# processed_39_repainting_20260310_040822
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -21901,7 +21893,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_40_sessions_20260307_040008
+# processed_40_sessions_20260310_040822
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -22252,7 +22244,7 @@ session.extended | Represents the extended trading session.
 
 
 
-# processed_41_strategies_20260307_040008
+# processed_41_strategies_20260310_040822
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -24185,7 +24177,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_42_strings_20260307_040008
+# processed_42_strings_20260310_040822
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -25754,7 +25746,7 @@ str.match(source, regex) → string
 
 
 
-# processed_43_time_20260307_040008
+# processed_43_time_20260310_040822
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -27280,7 +27272,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_44_timeframes_20260307_040008
+# processed_44_timeframes_20260310_040822
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -27328,7 +27320,7 @@ Note that:
 
 
 
-# processed_45_style-guide_20260307_040008
+# processed_45_style-guide_20260310_040822
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -27672,7 +27664,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_46_debugging_20260307_040008
+# processed_46_debugging_20260310_040822
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -29402,7 +29394,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_47_profiling-and-optimization_20260307_040008
+# processed_47_profiling-and-optimization_20260310_040822
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -30344,7 +30336,32 @@ The results from profiling the script show that it took the script 340.8 millise
 Since all the request.security() calls request data from the **same context** , we can optimize the code’s resource usage by merging all of them into a single request.security() call that uses a tuple as its `expression` argument:
 Pine Script®
 Copied
-`source * length - math.sum(source, length)[1]  
+`//@version=6  
+indicator("Minimizing `request.*()` calls demo")  
+  
+//@variable The symbol to request data from.  
+string symbolInput = input.symbol("BINANCE:BTCUSDT", "Symbol")  
+  
+// Request 9 `ta.percentrank()` values from the `symbolInput` context using a single `request.security()` call.  
+[reqRank1, reqRank2, reqRank3, reqRank4, reqRank5, reqRank6, reqRank7, reqRank8, reqRank9] =   
+ request.security(  
+     symbolInput, timeframe.period, [  
+             ta.percentrank(close, 10), ta.percentrank(close, 20), ta.percentrank(close, 30),   
+             ta.percentrank(close, 40), ta.percentrank(close, 50), ta.percentrank(close, 60),   
+             ta.percentrank(close, 70), ta.percentrank(close, 80), ta.percentrank(close, 90)  
+         ]  
+ )  
+  
+// Plot the `reqRank*` values.  
+plot(reqRank1)  
+plot(reqRank2)  
+plot(reqRank3)  
+plot(reqRank4)  
+plot(reqRank5)  
+plot(reqRank6)  
+plot(reqRank7)  
+plot(reqRank8)  
+plot(reqRank9)  
 `
 As we see below, the profiled results from running this version of the script show that it took 228.3 milliseconds this time, a decent improvement over the previous run:
 !image
@@ -31004,7 +31021,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_48_publishing_20260307_040008
+# processed_48_publishing_20260310_040822
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -31236,7 +31253,7 @@ Editors’ picks. To see examples of our recommended description format, refer t
 
 
 
-# processed_49_limitations_20260307_040008
+# processed_49_limitations_20260310_040822
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -31603,504 +31620,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_50_CE10101_20260307_040008
-
-## The condition of the “X” statement must evaluate to a “bool” value.
-This error is raised when a non-”bool” value is used as the condition in a statement. There are several common cases where it is encountered.
-### Using a numerical value instead of a “bool”
-In some languages, including Pine v5 and earlier, values of numerical types like “int” and “float” are implicitly cast to “bool” when an expression or function requires a boolean value. In such cases, `na`, `0`, or `0.0` are usually considered `false`, and _any other value_ is considered `true`. This is not the case in Pine v6, and this should be taken into account when both writing new scripts and converting scripts from Pine v5.
-To work around this, wrap the function/variable that returns the numerical expression with a `bool()` function, which will automatically convert the number into either `true` or `false` based on its value.
-Pine Script®
-Copied
-`//@version=6  
-indicator("My script")  
-  
-// This variable returns the difference between the index of the current and the previous bar's month.  
-// It will be `0` when both bars are of the same month, and either `1` or `-11` when the month changes.  
-newMonth = ta.change(month)  
-  
-// This condition will cause an error because `newMonth` is an "int" value passed to an `if` condition.  
-if newMonth  
-    label.new(bar_index, high, "New month started")  
-  
-// Wrapping this condition with `bool()` converts the numerical value to either `true` or `false`.  
-if bool(newMonth)  
-    label.new(bar_index, high, "New month started")  
-`
-### Trying to implicitly check whether the variable is ​`na`​
-All Pine variables that are not of “bool” type can have `na` as their value, representing a lack of a value instead. This lack of value is often a signals something by itself, and some expect the condition to work based on whether the value is `na` or not.
-Consider the example below. The `ta.pivothigh()` function calculates the value of a high pivot for a given length, and returns either a “float” that represents the price of this pivot, or `na` when no pivot was found.
-Some expect to pass `pivot` as the condition and have the condition only execute when `pivot` is not `na`. In Pine, this does not work. You can use the `na()` function to check if the `pivot` variable is `na` and then negate this check with `not` to get the condition that works when a chosen value is not `na`.
-Pine Script®
-Copied
-`//@version=6  
-indicator("My script", overlay = true)  
-  
-pivotLength = input.int(10, "Pivot length")  
-  
-// The `ta.pivothigh()` function returns the value of the pivot, or `na` on bars where no high pivot is found.  
-pivot = ta.pivothigh(pivotLength, pivotLength)  
-  
-// Some expect to pass `pivot` as the condition and have the condition only execute when `pivot` is not `na`. In Pine, this does not work.  
-if pivot  
-    label.new(bar_index[pivotLength], pivot, "Pivot High")  
-  
-// Using the `na()` function to check if `pivot` is `na` and then negating this check with `not` is the intended approach.  
-if not na(pivot)  
-    label.new(bar_index[pivotLength], pivot, "Pivot High")  
-`
- Next CW10003
-
-## * The condition of the “X” statement must evaluate to a “bool” value.
-* Using a numerical value instead of a “bool”
-  * Trying to implicitly check whether the variable is `na`
-
----
-
-
-
-# processed_51_CW10003_20260307_040008
-
-## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
-Every function call in Pine leaves a trail of historical values that a script can access on subsequent bars using the [[]] operator. The historical series of functions depend on successive calls to record the output on every bar. When a script does not call functions on each bar, it can produce an inconsistent history that may impact calculations and results, namely when it depends on the continuity of their historical series to operate as expected. The compiler warns users in these cases to make them aware that the values from a function, whether built-in or user-defined, might be misleading.
-To demonstrate, let’s write a script that calculates the index of the current bar and outputs that value on every second bar. In the following script, we’ve defined a `calcBarIndex()` function that adds 1 to the previous value of its internal `index` variable on every bar. The script calls the function on each bar that the `condition` returns `true` on (every other bar) to update the `customIndex` value. It plots this value alongside the built-in `bar_index` to validate the output:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("My script")  
-  
-//@function Calculates the index of the current bar by adding 1 to its own value from the previous bar.  
-// The first bar will have an index of 0.  
-calcBarIndex() =>  
-    int index = na  
-    index := nz(index[1], replacement = -1) + 1  
-  
-//@variable Returns `true` on every other bar.  
-condition = bar_index % 2 == 0  
-  
-int customIndex = na  
-  
-// Call `calcBarIndex()` when the `condition` is `true`. This prompts the compiler to raise a warning.  
-if condition  
-    customIndex := calcBarIndex()  
-  
-plot(bar_index,   "Bar index",    color = color.green)  
-plot(customIndex, "Custom index", color = color.red, style = plot.style_cross)  
-`
-**Note that:**
-  * The nz() function replaces na values with a specified `replacement` value (0 by default). On the first bar of the script, when the `index` series has no history, the na value is replaced with -1 before adding 1 to return an initial value of 0.
-
-
-Upon inspecting the chart, we see that the two plots differ wildly. The reason for this behavior is that the script called `calcBarIndex()` within the scope of an if structure on every other bar, resulting in a historical output inconsistent with the `bar_index` series. When calling the function once every two bars, internally referencing the previous value of `index` gets the value from two bars ago, i.e., the last bar the function executed on. This behavior results in a `customIndex` value of half that of the built-in `bar_index`.
-To align the `calcBarIndex()` output with the `bar_index`, we can move the function call to the script’s global scope. That way, the function will execute on every bar, allowing its entire history to be recorded and referenced rather than only the results from every other bar. In the code below, we’ve defined a `globalScopeBarIndex` variable in the global scope and assigned it to the return from `calcBarIndex()` rather than calling the function locally. The script sets the `customIndex` to the value of `globalScopeBarIndex` on the occurrence of the `condition`:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("My script")  
-  
-//@function Calculates the index of the current bar by adding 1 to its own value from the previous bar.  
-// The first bar will have an index of 0.  
-calcBarIndex() =>  
-    int index = na  
-    index := nz(index[1], replacement = -1) + 1  
-  
-//@variable Returns `true` on every second bar.  
-condition = bar_index % 2 == 0  
-  
-globalScopeBarIndex = calcBarIndex()  
-int customIndex = na  
-  
-// Assign `customIndex` to `globalScopeBarIndex` when the `condition` is `true`. This won't produce a warning.  
-if condition  
-    customIndex := globalScopeBarIndex  
-  
-plot(bar_index,   "Bar index",    color = color.green)  
-plot(customIndex, "Custom index", color = color.red, style = plot.style_cross)  
-`
-This behavior can also radically impact built-in functions that reference history internally. For example, the ta.sma() function references its past values “under the hood”. If a script calls this function conditionally rather than on every bar, the values within the calculation can change significantly. We can ensure calculation consistency by assigning ta.sma() to a variable in the global scope and referencing that variable’s history as needed.
-The following example calculates three SMA series: `controlSMA`, `localSMA`, and `globalSMA`. The script calculates `controlSMA` in the global scope and `localSMA` within the local scope of an if structure. Within the if structure, it also updates the value of `globalSMA` using the `controlSMA` value. As we can see, the values from the `globalSMA` and `controlSMA` series align, whereas the `localSMA` series diverges from the other two because it uses an incomplete history, which affects its calculations:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("My script")  
-  
-//@variable Returns `true` on every second bar.  
-condition = bar_index % 2 == 0  
-  
-controlSMA = ta.sma(close, 20)  
-float globalSMA = na  
-float localSMA  = na  
-  
-// Update `globalSMA` and `localSMA` when `condition` is `true`.  
-if condition  
-    globalSMA := controlSMA        // No warning.  
-    localSMA  := ta.sma(close, 20) // Raises warning. This function depends on its history to work as intended.  
-  
-plot(controlSMA, "Control SMA", color = color.green)  
-plot(globalSMA,  "Global SMA",  color = color.blue, style = plot.style_cross)  
-plot(localSMA,   "Local SMA",   color = color.red,  style = plot.style_cross)  
-`
-A more detailed explanation of the full logic that governs this behavior can be found in the Time series in scopes section of the Execution model page.
-### Why this behavior?
-This behavior is required because forcing the execution of functions on each bar would lead to unexpected results in those functions that produce side effects, i.e., the ones that do something aside from returning the value. For example, the label.new() function creates a label on the chart, so forcing it to be called on every bar even when it is inside of an if structure would create labels where they should not logically appear.
-###  Exceptions
-Not all built-in functions use their previous values in their calculations, meaning not all require execution on every bar. For example, math.max() compares all arguments passed into it to return the highest value. Such functions that do not interact with their history in any way do not require special treatment.
-If the usage of a function within a conditional block does not cause a compiler warning, it’s safe to use without impacting calculations. Otherwise, move the function call to the global scope to force consistent execution. When keeping a function call within a conditional block despite the warning, ensure the output is correct at the very least to avoid unexpected results.
- Previous   Next RE10139
-
----
-
-
-
-# processed_52_RE10139_20260307_040008
-
-## Memory limits exceeded
-The most common cause of this error is the retrieval of objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
-### Returning collections from ​`request.*()`​ functions
-The “Memory limits exceeded” error most often occurs when a script uses `request.*()` functions to retrieve objects or collections from another symbol or timeframe.
-When requesting data from other contexts, the data for _each bar_ is copied and stored in memory to allow the script to reference it later in the main context. This can use a lot of memory, depending on the data. Requesting large collections can easily lead to excessive memory consumption.
-The example script below uses request.security() to retrieve the result of a user-defined function evaluated on the “1D” timeframe. The custom function (`dataFunction()`) creates an array and assigns its reference to a persistent variable declared using the `var` keyword, then pushes a new balance of power (BOP) value into the array and returns the collection’s reference on each bar. Each time that request.security() evaluates the `dataFunction()` call on the “1D” timeframe, the result references a _new copy_ of that array. Retrieving a new array from a requested context on each bar consumes a lot of memory. Therefore, this script can _exceed_ the memory limits when running on symbols with a sufficiently lengthy history:
-Pine Script®
-Copied
-`//@version=6  
-indicator("BOP array in higher timeframe context", "Memory limit demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLength = input.int(5, "Average BOP Length", minval = 1)  
-  
-//Returns a copy of the `dataArray` on every bar, which uses a lot of memory.  
-dataFunction() =>   
-    //@variable Persistent array containing the "balance of power" (BOP) values for all bars from the higher timeframe.  
-    var array<float> dataArray = array.new<float>(0)  
-  
-    //@variable The "balance of power" percentage calculated for the current bar.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-  
-    //Return the full collection.  
-    dataArray  
-  
-// Request the full BOP array from the 1D timeframe.  
-array<float> reqData = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Plot zero line.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-  
-// Latest BOP value and average BOP are calculated in the main context if `reqData` is not `na`.  
-//@variable The latest BOP value from the `reqData` array.  
-float latestValue = na  
-//@variable The average of the last `avgLength` BOP values.  
-float avgBOP = na  
-  
-if not na(reqData)  
-    // Retrieve BOP value for the current main context bar.  
-    latestValue := reqData.last()  
-  
-    // Calculate the average BOP for the most-recent values from the higher timeframe array.  
-    //@variable Size of the `reqData` array returned from the higher timeframe.  
-    int dataSize = reqData.size()  
-    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
-    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
-    avgBOP := lastValues.avg()  
-  
-// Plot the BOP value and average line.  
-color plotColor = latestValue >= 0 ? color.aqua : color.orange  
-plot(latestValue, "BOP", plotColor, style = plot.style_columns)  
-plot(avgBOP, "Avg", color.purple, linewidth = 3)  
-`
-### How do I fix this?
-Optimize requests and limit the data returned to the main context to ensure that only the _minimum necessary_ data is stored in memory.
-If possible, try to return _calculated results_ directly rather than returning the collections themselves, or only return collections _conditionally_ , when they are necessary in the main context.
-Let’s consider a few common scenarios where scripts need specific data in the main context.
-#### Return last state only
-If a script requires only the _latest_ state of a requested collection, use a conditional structure or expression with barstate.islast as the condition to limit retrieving a copy of that collection to the last available bar.
-Here, we modified our script to display only the _latest_ average BOP (a single value), rather than plotting an average line. The updated request function now returns the calculated BOP values directly for each bar, and returns the higher timeframe’s array only on the last bar:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("BOP array on last bar", "Memory limit demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLength = input.int(5, "Average BOP Length", minval = 1)  
-  
-// Returns the calculated `bop` each bar, and a copy of the `dataArray` on the last bar or `na` otherwise.  
-dataFunction() =>   
-    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
-    var array<float> dataArray = array.new<float>(0)  
-  
-    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-  
-    // Return the collection on the last bar only.  
-    if barstate.islast  
-        [bop, dataArray]  
-    else   
-        [bop, na]  
-  
-// Request calculated BOP value, and BOPs array if on last bar, from the higher timeframe.  
-[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Plot zero line.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-  
-// Plot the BOP value for each main context bar.  
-color plotColor = reqValue >= 0 ? color.aqua : color.orange  
-plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
-  
-// Calculate the average BOP for most-recent values from the higher timeframe array, and display result in a table cell.  
-if not na(reqData)  
-    //@variable Size of the `reqData` array returned from the higher timeframe.  
-    int dataSize = reqData.size()  
-    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
-    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
-    //@variable The average of the last `avgLength` BOP values.  
-    float avgBOP = lastValues.avg()  
-  
-    // Display latest average value in a single-cell table.  
-    var table displayTable = table.new(position.bottom_right, 1, 1, color.purple)  
-    displayTable.cell(0, 0, "Avg of last " + str.tostring(avgLength) + " BOPs: " + str.tostring(avgBOP, "##.##") + "%",   
-         text_color = color.white)  
-`
-#### Return calculated results
-If a script needs the _result_ of a calculation on a collection, but does not need the collection itself in the main context, use a user-defined function as the request expression. The function can calculate on the collection in the _requested_ context and return only the result to the main context.
-For example, we can calculate the average BOP directly within our request function. Therefore, only the calculated values are stored in memory, and the request expression returns a tuple (current BOP and average BOP) to plot the results in the main context:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Return BOP results only", "Memory limit demo")  
-  
-//@variable User-input length for calculating average of BOP values.   
-int avgLength = input.int(5, "Average BOP Length", minval = 1)  
-  
-// Returns the calculated `bop` and `avgBOP` values directly.  
-dataFunction() =>   
-    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
-    var array<float> dataArray = array.new<float>(0)  
-  
-    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-  
-    // Calculate the average BOP for the `avgLength` most-recent values.  
-    //@variable Size of the `dataArray`.  
-    int dataSize = dataArray.size()  
-    //@variable A subset of the latest values from the `dataArray`. Its size is determined by the `avgLength` set.  
-    array<float> lastValues = dataSize >= avgLength ? dataArray.slice(dataSize - avgLength, dataSize): dataArray  
-    //@variable The average of the last `avgLength` BOP values.  
-    float avgBOP = lastValues.avg()  
-  
-    //Return the calculated results.  
-    [bop, avgBOP]  
-  
-// Request BOP and average BOP values from the higher timeframe.  
-[reqValue, reqAverage] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Plot zero line.  
-hline(0, "Zero line", color.gray, hline.style_dotted)  
-  
-// Plot the BOP value and average line.  
-color plotColor = reqValue >= 0 ? color.aqua : color.orange  
-plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
-plot(reqAverage, "Avg", color.purple, linewidth = 3)  
-`
-#### Return the collection on some bars
-If a script needs to retrieve a collection in the main context, but _not_ on _every bar_ , use conditional structures or expressions that return collection references only the necessary bars, and na on other bars. The logic in the main context can then handle the na gaps in the series and perform necessary actions on the reduced collections.
-For example, if we want to calculate the average BOP for each _month_ instead of using a user-input length, we can return the array reference from the requested context only when there is a change to a new month; na otherwise. We can then maintain the previous month’s values in the main context to keep a valid array for all intra-month bars:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Monthly BOP array", "Memory limit demo")  
-  
-// Returns the calculated `bop`, and a copy of the `dataArray` on a month's first trading day only, or `na` otherwise.  
-dataFunction() =>   
-    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
-    var array<float> dataArray = array.new<float>(0)  
-  
-    // When a new month starts, return monthly data array to calculate average BOP for completed month.  
-    //@variable Array is `na` except on first trading day of each month, when it contains completed month's BOP values.   
-    array<float> returnArray = na  
-    //@variable Is `true` on the first bar of each month, `false` otherwise.  
-    bool isNewMonth = timeframe.change("1M")  
-    if isNewMonth  
-        returnArray := dataArray  
-    //Clear persistent array to start storing new month's data.  
-    if isNewMonth[1]  
-        dataArray.clear()  
-  
-    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
-    float bop = (close - open) / (high - low) * 100  
-    dataArray.push(bop)  
-  
-    //Return the calculated result and the `returnArray`.  
-    [bop, returnArray]  
-  
-// Request BOP data from the higher timeframe. (Returns calculated BOP and array of BOP values if new month starts)  
-[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
-  
-// Calculate the average BOP for the most-recent completed month.  
-//@variable Persistent array that holds the BOP values for the most-recent completed month.  
-var array<float> completedMonthBOPs = array.new<float>(0)  
-// If new month starts (i.e., `reqData` is not returned as `na`), then `completedMonthBOPs` is updated with new values.  
-// Otherwise, it persists the last valid values for the rest of the month to adjust for `na` gaps.  
-completedMonthBOPs := na(reqData) ? completedMonthBOPs : reqData  
-//@variable The average BOP for the most-recent completed month.  
-float avgBOP = completedMonthBOPs.avg()  
-  
-// Plot the BOP value and average line.  
-color plotColor = reqValue >= 0 ? color.aqua : color.orange  
-plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
-plot(avgBOP, "Avg", color.purple, linewidth = 3)  
-`
-### Other possible error sources and their fixes
-There are a few other ways to optimize scripts to consume less memory.
-#### Minimize ​`request.*()`​ calls
-The `request.*()` functions can be computationally expensive to call, because they retrieve data from additional datasets. Data requests often require significant usage of runtime and memory resources. Excessive or inefficient requests can easily cause scripts to reach the memory limit.
-This memory consumption is especially substantial for scripts requesting data from lower timeframes, because the request.security_lower_tf() function returns arrays of intrabar data for _each_ bar in the script’s main dataset. For example, requesting data from the “1” (one-minute) timeframe on a “1D” chart returns hundreds of minute bars for each “1D” bar where the request executes. In the process, the script must allocate memory to store each requested array so that it can access them later in the main context. Maintaining that much data in memory requires a significant amount of resources.
-Programmers can reduce the memory requirements of a script’s requests by:
-  * Removing _unnecessary_ `request.*()` function calls.
-  * Changing the timeframe of a request to a higher timeframe, effectively reducing the number of retrieved data points.
-  * Condensing multiple requests to the _same_ context into a single `request.*()` call.
-  * Using the `request.*()` function’s `calc_bars_count` parameter to restrict the historical bars in the requested dataset.
-
-
-See the Minimizing `request.*()` calls section of the Profiling and optimization page to learn more about optimizing data requests.
-#### Use ​`max_bars_back`​ only when necessary
-The `max_bars_back` parameter of an indicator or strategy sets the size of the _historical buffers_ for all series in a script. Each buffer defines the number of historical data points _maintained in memory_ for the script’s variables and expressions.
-By default, the Pine Script runtime system automatically allocates an appropriate buffer for each variable and expression. Therefore, using the `max_bars_back` parameter or max_bars_back() function is necessary only when Pine cannot determine the referencing length of a series.
-If you encounter the referencing length error and must manually set the size of a historical buffer using the `max_bars_back` parameter or the max_bars_back() function, ensure that you select the _minimum size_ that accommodates your script’s historical references. Historical buffers that contain more data points than a script requires use excessive memory resources. Read up on how to optimize using `max_bars_back` in this Help Center article.
-#### Minimize historical buffer calculations
-The Pine Script runtime system automatically creates historical buffers for all variables and expressions in a script. It determines the size of each buffer based on the _historical references_ that the script performs via the [[] history-referencing operator] or the functions that reference history internally.
-As a script loads on a dataset, historical references to distant points in the dataset can cause the system to reload the script and increase the size of necessary historical buffers. Each increase to historical buffer sizes leads to increased memory consumption. In some cases, buffer resizing can cause the script to exceed the memory limits. Therefore, ensure a script references only _necessary_ historical data in its calculations. When possible, modify the script’s logic to avoid referencing very distant points in history.
-Specifying a `calc_bars_count` argument in the indicator() or strategy() declaration statement can help reduce memory issues, because it restricts the number of historical bars that the script can use for its calculations. Similarly, using max_bars_back() to manually define the appropriate size for a buffer can help reduce buffer calculations. When using this function to specify the size of historical buffers, choose the **smallest** possible size that accommodates the script’s historical references to avoid unnecessary memory use.
-To learn more about historical buffer calculations and how to optimize them, see the Minimizing historical buffer calculations section of the Profiling and optimization page.
-#### Reduce drawing updates for tables
-Tables only display their _last state_ on a chart. Any updates to a table on historical bars are redundant, because they are not visible. To use the least memory, draw the table _once_ , and fill it on the last bar.
-To create a table object only once, assign the result of the table.new() call to a variable declared with the var keyword. When using table.cell() or the available setter functions to modify the table’s contents, execute those function calls only on the _last_ available bar — where the table’s latest state is visible — by placing the calls in a conditional structure that uses barstate.islast as the condition. See the Tables page to learn more.
-#### Do not update drawings on historical bars
-Similar to tables, any updates to other drawing objects such as lines and labels on historical bars are never visible to the user. The user sees only the drawing updates executed on _realtime_ bars.
-Eliminate updates to historical drawings during executions on historical bars wherever possible. Refer to the Reducing drawing updates section of the Profiling and optimization page for more information.
-#### Minimize total drawings stored for a chart
-Drawing objects such as lines and labels can consume a lot of memory, especially if a script _recreates_ drawings unnecessarily.
-For example, if a script draws a line from point `x1` to `x2`, then needs to update the line’s endpoint (`x2`), it’s more computationally expensive to delete the existing line and redraw a new line from `x1` to `x3`. Instead, using the _setter_ function line.set_x2() to update the existing line’s endpoint is more efficient.
-Look for ways to optimize drawing objects in a script:
-  * Reduce unnecessary redrawing by assigning a single drawing object’s reference to a variable declared with the var keyword, then modifying that object’s properties with the available setter functions.
-  * Remove unnecessary chart drawings with the `*.delete()` functions (e.g., line.delete() and label.delete()).
-  * Reduce a script’s drawing limits by specifying values for the `max_lines_count`, `max_labels_count`, `max_boxes_count`, or `max_polylines_count` parameters of the indicator() or strategy() declaration statement.
-
-
-#### Filter dates in strategies
-The total number of trades or orders simulated by strategies can impact memory consumption. When running strategy scripts that generate frequent orders on large datasets, reduce the number of unnecessary historical orders stored in memory by limiting the _starting point_ of your strategy.
-To limit the starting point of a strategy, a simple and effective approach is to use a conditional structure that activates the strategy’s order placement commands only when the bar’s opening or closing time comes after a specified date.
-See the How do I filter trades by a date or time range? portion of our Strategies FAQ page for an example of this technique.
- Previous   Next RE10143
-
-## * Memory limits exceeded
-* Returning collections from `request.*()` functions
-  * How do I fix this?
-  * Return last state only
-  * Return calculated results
-  * Return the collection on some bars
-  * Other possible error sources and their fixes
-  * Minimize `request.*()` calls
-  * Use `max_bars_back` only when necessary
-  * Minimize historical buffer calculations
-  * Reduce drawing updates for tables
-  * Do not update drawings on historical bars
-  * Minimize total drawings stored for a chart
-  * Filter dates in strategies
-
----
-
-
-
-# processed_53_RE10143_20260307_040008
-
-## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
-Pine scripts calculate on every bar on the chart, sequentially, left to right, maintaining a historical buffer of values. When a script needs to use a value from a previous bar, it takes that value from the buffer. If a script tries to access a value from a bar further back than the historical buffer extends, it throws this error.
-As a simple example, if your code includes a line like `plot(myVar[500])`, the script keeps a buffer of the last 500 historical values of the `myVar` variable. This buffer ensures that on every execution, the `myVar` variable has access to its value 500 bars before the current one.
-Pine creates the historical buffer in a way that minimizes issues:
-  * Initially, the script calculates the historical buffers based on the data from the first several hundred bars. If historical offsets are constant, or if future offsets are not greater than the offsets found during this calculation, the script works without issues. The example above does not cause any issues because the variable is called in the global scope with a constant offset of 500. On the first iteration of the script, it is clear that the buffer size needs to be 500.
-  * If the script requests a value outside the buffer during calculation on historical data, the script tries to adjust the buffer to a proper length automatically. The script increases the buffer and restarts. This can happen several times until either the re-run limit is reached or the script calculates without the error.
-
-
-The error can still appear on historical data, but is more likely to occur on realtime data, which is not covered by automatic buffer detection. For example, the following script works when the user first adds it to the chart, but fails with an error when the first realtime tick arrives. This behaviour can be replicated consistently by turning on the Bar Replay feature and pressing Step Forward once. This happens because on historical data, we request `close[500]`, which establishes the size of the historical buffer as 500. When we request `close[1000]` on the first realtime bar, the script returns an error because the requested value is outside the buffer:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Error on realtime bars")  
-myVar = close[barstate.ishistory ? 500 : 1000]  
-plot(myVar)  
-`
-To fix this, we need to ensure the historical buffer of our variable (in this case, close) is always large enough.
-NoticeThe maximum possible buffer size for most variables is 5000, and referring further into the past causes a different runtime error. To avoid that error, programmers can limit the requested offsets by using expressions such as `math.min(myVar, 5000)`.
-The following sections describe different methods to ensure that the historical buffer is of a sufficient size.
-### Potential fixes
-#### Use the ​`max_bars_back()`​ function
-The max_bars_back() function sets the size of the historical buffer for a particular variable. To fix the issue in the example script above, we need to ensure the buffer for close is at least 1000:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Error on realtime bars")  
-myVar = close[barstate.ishistory ? 500 : 1000]  
-max_bars_back(close, 1000)  
-plot(myVar)  
-`
-#### Use the ​`max_bars_back`​ parameter of the ​`indicator()`​ or ​`strategy()`​ function
-The `max_bars_back` parameter of the indicator() and strategy() functions provides a handy way to increase the historical buffer for _all_ the variables inside of the script. However, increasing the historical buffer for all variables without a specific need for it negatively impacts performance. Using the max_bars_back() function is preferable because it is more precise and more performant.
-NoticeWhen using `max_bars_back`, choose the **minimum** default buffer size that accommodates all the script’s historical references. Buffer sizes that are larger than what a script requires can significantly impact its performance. For example, using `max_bars_back = 5000` in a script that references up to only 700 bars back causes an excessive use of resources.
-#### Use the maximum value manually on history to force a proper buffer size
-Another way to set a specific historical buffer is to call the variable on historical data with the maximum buffer required, regardless of whether it’s needed or not at the moment. For example, the script below assigns the `myVar` variable a `close[1000]` value on the very first bar of the dataset. It makes no practical difference — on the first bar, all past values are na — but because of this change, the script sets the variable’s buffer to 1000 and can then work on realtime bars without issues:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Error on realtime bars")  
-myVar = close[barstate.isfirst ? 1000 : barstate.ishistory ? 500 : 1000]  
-plot(myVar)  
-`
-### Max bars back with Pine drawings
-A common reason for the historical offset error is creating drawings that are drawn on realtime data, but extend into the past. For example, the code below runs into the runtime error as soon as the first realtime tick arrives:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Realtime error with drawings")  
-  
-if barstate.isrealtime  
-    line.new(bar_index[500], close, bar_index, close)  
-`
-NoteAll Pine drawings that anchor to the chart convert their horizontal coordinates into time values internally, even if the programmer defines those coordinates using bar_index values.
-When the example indicator above is calculating on historical data, it does not draw any lines, and so does not call the time series at all. In this case, the time series takes the default buffer size of 300. On realtime bars, we then request the `bar_index[500]` value, which is converted into `time[500]` by the function. But the script doesn’t have a large enough historical buffer, which causes the error to appear.
-In these cases, the historical buffer for the time series must be enlarged, even if the drawing functions use bar_index exclusively. The easiest fix is to call the max_bars_back() function on the time series, to ensure that its buffer is large enough:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Realtime error with drawings")  
-  
-max_bars_back(time, 500)  
-  
-if barstate.isrealtime  
-    line.new(bar_index[500], close, bar_index, close)  
-`
- Previous
-
-## * The requested historical offset (X) is beyond the historical buffer’s limit (Y)
-* Potential fixes
-  * Use the `max_bars_back()` function
-  * Use the `max_bars_back` parameter of the `indicator()` or `strategy()` function
-  * Use the maximum value manually on history to force a proper buffer size
-  * Max bars back with Pine drawings
-
----
-
-
-
-# processed_54_general_20260307_040008
+# processed_50_general_20260310_040822
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -32302,7 +31822,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_55_alerts_20260307_040008
+# processed_51_alerts_20260310_040822
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -32862,7 +32382,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_56_data-structures_20260307_040008
+# processed_52_data-structures_20260310_040822
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -33744,7 +33264,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_57_functions_20260307_040008
+# processed_53_functions_20260310_040822
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -34004,7 +33524,7 @@ Copied
 
 
 
-# processed_58_indicators_20260307_040008
+# processed_54_indicators_20260310_040822
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -34112,7 +33632,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_59_other-data-and-timeframes_20260307_040008
+# processed_55_other-data-and-timeframes_20260310_040822
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -34361,7 +33881,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_60_programming_20260307_040008
+# processed_56_programming_20260310_040822
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -34498,7 +34018,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_61_strategies_20260307_040008
+# processed_57_strategies_20260310_040822
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -35617,7 +35137,7 @@ Copied
 
 
 
-# processed_62_strings-and-formatting_20260307_040008
+# processed_58_strings-and-formatting_20260310_040822
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -35837,7 +35357,7 @@ if barstate.islast
 
 
 
-# processed_63_techniques_20260307_040008
+# processed_59_techniques_20260310_040822
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -36683,7 +36203,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_64_times-dates-and-sessions_20260307_040008
+# processed_60_times-dates-and-sessions_20260310_040822
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -37488,7 +37008,7 @@ indicator("Days in month")
 
 
 
-# processed_65_variables-and-operators_20260307_040008
+# processed_61_variables-and-operators_20260310_040822
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -37709,7 +37229,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_66_visuals_20260307_040008
+# processed_62_visuals_20260310_040822
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -38523,7 +38043,507 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_67_release-notes_20260307_040008
+# processed_63_error-messages_20260310_040822
+
+## The if statement is too long
+This error occurs when the indented code (local block) inside an `if` structure is too large for the compiler. Because of how the compiler works, you won’t receive a message telling you exactly how many lines of code you are over the limit. The only solution now is to split the structure into smaller parts (functions or smaller if statements). The example below shows a reasonably lengthy if statement; theoretically, this would throw `line 4: if statement is too long`:
+Pine Script®
+Copied
+`//@version=6  
+indicator("My script")  
+  
+var e = 0  
+if barstate.islast  
+    a = 1  
+    b = 2  
+    c = 3  
+    d = 4  
+    e := a + b + c + d  
+  
+plot(e)  
+`
+To fix this code, you could move these lines into their own function:
+Pine Script®
+Copied
+`//@version=6  
+indicator("My script")  
+  
+var e = 0  
+doSomeWork() =>  
+    a = 1  
+    b = 2  
+    c = 3  
+    d = 4  
+  
+    result = a + b + c + d  
+  
+if barstate.islast  
+    e := doSomeWork()  
+  
+plot(e)  
+`
+
+## Script requesting too many securities
+The maximum number of securities in script is limited to 40. If you declare a variable as a `request.security` function call and then use that variable as input for other variables and calculations, it will not result in multiple `request.security` calls. But if you will declare a function that calls `request.security` --- every call to this function will count as a `request.security` call.
+It is not easy to say how many securities will be called looking at the source code. Following example have exactly 3 calls to `request.security` after compilation:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Securities count")  
+a = request.security(syminfo.tickerid, '42', close)  // (1) first unique security call  
+b = request.security(syminfo.tickerid, '42', close)  // same call as above, will not produce new security call after optimizations  
+  
+plot(a)  
+plot(a + 2)  
+plot(b)  
+  
+sym(p) =>  // no security call on this line  
+    request.security(syminfo.tickerid, p, close)  
+plot(sym('D'))  // (2) one indirect call to security  
+plot(sym('W'))  // (3) another indirect call to security  
+  
+c = request.security(syminfo.tickerid, timeframe.period, open)  // result of this line is never used, and will be optimized out  
+`
+
+## Script could not be translated from: null
+Pine Script®
+Copied
+`study($)  
+`
+Usually this error occurs in version 1 Pine scripts, and means that code is incorrect. Pine Script® of version 2 (and higher) is better at explaining errors of this kind. So you can try to switch to version 2 by adding a special attribute in the first line. You’ll get `line 2: no viable alternative at character '$'`:
+Pine Script®
+Copied
+`// @version=2  
+study($)  
+`
+
+## line 2: no viable alternative at character ’$’
+This error message gives a hint on what is wrong. `$` stands in place of string with script title. For example:
+Pine Script®
+Copied
+`// @version=2  
+study("title")  
+`
+
+## Mismatched input <…> expecting <???>
+Same as `no viable alternative`, but it is known what should be at that place. Example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("My Script")  
+    plot(1)  
+`
+`line 3: mismatched input 'plot' expecting 'end of line without line continuation'`
+To fix this you should start line with `plot` on a new line without an indent:
+Pine Script®
+Copied
+`//@version=6  
+indicator("My Script")  
+plot(1)  
+`
+
+## Loop is too long (> 500 ms)
+We limit the computation time of loop on every historical bar and realtime tick to protect our servers from infinite or very long loops. This limit also fail-fast indicators that will take too long to compute. For example, if you’ll have 5000 bars, and indicator takes 500 milliseconds to compute on each of bars, it would have result in more than 16 minutes of loading:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Loop is too long", max_bars_back = 101)  
+s = 0  
+for i = 1 to 1e3  // to make it longer  
+    for j = 0 to 100  
+        if timestamp(2017, 02, 23, 00, 00) <= time[j] and time[j] < timestamp(2017, 02, 23, 23, 59)  
+            s := s + 1  
+plot(s)  
+`
+It might be possible to optimize algorithm to overcome this error. In this case, algorithm may be optimized like this:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Loop is too long", max_bars_back = 101)  
+bar_back_at(t) =>  
+    i = 0  
+    step = 51  
+    for j = 1 to 100  
+        if i < 0  
+            i := 0  
+            break  
+        if step == 0  
+            break  
+        if time[i] >= t  
+            i := i + step  
+            i  
+        else  
+            i := i - step  
+            i  
+        step := step / 2  
+        step  
+    i  
+  
+s = 0  
+for i = 1 to 1e3  // to make it longer  
+    s := s - bar_back_at(timestamp(2017, 02, 23, 23, 59)) +  
+         bar_back_at(timestamp(2017, 02, 23, 00, 00))  
+    s  
+plot(s)  
+`
+
+## Script has too many local variables
+This error appears if the script is too large to be compiled. A statement `var=expression` creates a local variable for `var`. Apart from this, it is important to note, that auxiliary variables can be implicitly created during the process of a script compilation. The limit applies to variables created both explicitly and implicitly. The limitation of 1000 variables is applied to each function individually. In fact, the code placed in a _global_ scope of a script also implicitly wrapped up into the main function and the limit of 1000 variables becomes applicable to it. There are few refactorings you can try to avoid this issue:
+Pine Script®
+Copied
+`var1 = expr1  
+var2 = expr2  
+var3 = var1 + var2  
+`
+can be converted into:
+Pine Script®
+Copied
+`var3 = expr1 + expr2  
+`
+
+## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
+Pine scripts calculate on every bar on the chart, sequentially, left to right, maintaining a historical buffer of values. When a script needs to use a value from a previous bar, it takes that value from the buffer. If a script tries to access a value from a bar further back than the historical buffer extends, it throws this error.
+As a simple example, if your code includes a line like `plot(myVar[500])`, the script keeps a buffer of the last 500 historical values of the `myVar` variable. This buffer ensures that on every execution, the `myVar` variable has access to its value 500 bars before the current one.
+Pine creates the historical buffer in a way that minimizes issues:
+  * Initially, the script calculates the historical buffers based on the data from the first several hundred bars. If historical offsets are constant, or if future offsets are not greater than the offsets found during this calculation, the script works without issues. The example above does not cause any issues because the variable is called in the global scope with a constant offset of 500. On the first iteration of the script, it is clear that the buffer size needs to be 500.
+  * If the script requests a value outside the buffer during calculation on historical data, the script tries to adjust the buffer to a proper length automatically. The script increases the buffer and restarts. This can happen several times until either the re-run limit is reached or the script calculates without the error.
+
+
+The error can still appear on historical data, but is more likely to occur on realtime data, which is not covered by automatic buffer detection. For example, the following script works when the user first adds it to the chart, but fails with an error when the first realtime tick arrives. This behaviour can be replicated consistently by turning on the Bar Replay feature and pressing Step Forward once. This happens because on historical data, we request `close[500]`, which establishes the size of the historical buffer as 500. When we request `close[1000]` on the first realtime bar, the script returns an error because the requested value is outside the buffer:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Error on realtime bars")  
+myVar = close[barstate.ishistory ? 500 : 1000]  
+plot(myVar)  
+`
+To fix this, we need to ensure the historical buffer of our variable (in this case, close) is always large enough.
+NoticeThe maximum possible buffer size for most variables is 5000, and referring further into the past causes a different runtime error. To avoid that error, programmers can limit the requested offsets by using expressions such as `math.min(myVar, 5000)`.
+The following sections describe different methods to ensure that the historical buffer is of a sufficient size.
+### Potential fixes
+#### Use the ​`max_bars_back()`​ function
+The max_bars_back() function sets the size of the historical buffer for a particular variable. To fix the issue in the example script above, we need to ensure the buffer for close is at least 1000:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Error on realtime bars")  
+myVar = close[barstate.ishistory ? 500 : 1000]  
+max_bars_back(close, 1000)  
+plot(myVar)  
+`
+#### Use the ​`max_bars_back`​ parameter of the ​`indicator()`​ or ​`strategy()`​ function
+The `max_bars_back` parameter of the indicator() and strategy() functions provides a handy way to increase the historical buffer for _all_ the variables inside of the script. However, increasing the historical buffer for all variables without a specific need for it negatively impacts performance. Using the max_bars_back() function is preferable because it is more precise and more performant.
+NoticeWhen using `max_bars_back`, choose the **minimum** default buffer size that accommodates all the script’s historical references. Buffer sizes that are larger than what a script requires can significantly impact its performance. For example, using `max_bars_back = 5000` in a script that references up to only 700 bars back causes an excessive use of resources.
+#### Use the maximum value manually on history to force a proper buffer size
+Another way to set a specific historical buffer is to call the variable on historical data with the maximum buffer required, regardless of whether it’s needed or not at the moment. For example, the script below assigns the `myVar` variable a `close[1000]` value on the very first bar of the dataset. It makes no practical difference — on the first bar, all past values are na — but because of this change, the script sets the variable’s buffer to 1000 and can then work on realtime bars without issues:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Error on realtime bars")  
+myVar = close[barstate.isfirst ? 1000 : barstate.ishistory ? 500 : 1000]  
+plot(myVar)  
+`
+### Max bars back with Pine drawings
+A common reason for the historical offset error is creating drawings that are drawn on realtime data, but extend into the past. For example, the code below runs into the runtime error as soon as the first realtime tick arrives:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Realtime error with drawings")  
+  
+if barstate.isrealtime  
+    line.new(bar_index[500], close, bar_index, close)  
+`
+NoteAll Pine drawings that anchor to the chart convert their horizontal coordinates into time values internally, even if the programmer defines those coordinates using bar_index values.
+When the example indicator above is calculating on historical data, it does not draw any lines, and so does not call the time series at all. In this case, the time series takes the default buffer size of 300. On realtime bars, we then request the `bar_index[500]` value, which is converted into `time[500]` by the function. But the script doesn’t have a large enough historical buffer, which causes the error to appear.
+In these cases, the historical buffer for the time series must be enlarged, even if the drawing functions use bar_index exclusively. The easiest fix is to call the max_bars_back() function on the time series, to ensure that its buffer is large enough:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Realtime error with drawings")  
+  
+max_bars_back(time, 500)  
+  
+if barstate.isrealtime  
+    line.new(bar_index[500], close, bar_index, close)  
+`
+
+## Memory limits exceeded
+The most common cause of this error is the retrieval of objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
+### Returning collections from ​`request.*()`​ functions
+The “Memory limits exceeded” error most often occurs when a script uses `request.*()` functions to retrieve objects or collections from another symbol or timeframe.
+When requesting data from other contexts, the data for _each bar_ is copied and stored in memory to allow the script to reference it later in the main context. This can use a lot of memory, depending on the data. Requesting large collections can easily lead to excessive memory consumption.
+The example script below uses request.security() to retrieve the result of a user-defined function evaluated on the “1D” timeframe. The custom function (`dataFunction()`) creates an array and assigns its reference to a persistent variable declared using the `var` keyword, then pushes a new balance of power (BOP) value into the array and returns the collection’s reference on each bar. Each time that request.security() evaluates the `dataFunction()` call on the “1D” timeframe, the result references a _new copy_ of that array. Retrieving a new array from a requested context on each bar consumes a lot of memory. Therefore, this script can _exceed_ the memory limits when running on symbols with a sufficiently lengthy history:
+Pine Script®
+Copied
+`//@version=6  
+indicator("BOP array in higher timeframe context", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+//Returns a copy of the `dataArray` on every bar, which uses a lot of memory.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all bars from the higher timeframe.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    //Return the full collection.  
+    dataArray  
+  
+// Request the full BOP array from the 1D timeframe.  
+array<float> reqData = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Latest BOP value and average BOP are calculated in the main context if `reqData` is not `na`.  
+//@variable The latest BOP value from the `reqData` array.  
+float latestValue = na  
+//@variable The average of the last `avgLength` BOP values.  
+float avgBOP = na  
+  
+if not na(reqData)  
+    // Retrieve BOP value for the current main context bar.  
+    latestValue := reqData.last()  
+  
+    // Calculate the average BOP for the most-recent values from the higher timeframe array.  
+    //@variable Size of the `reqData` array returned from the higher timeframe.  
+    int dataSize = reqData.size()  
+    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
+    avgBOP := lastValues.avg()  
+  
+// Plot the BOP value and average line.  
+color plotColor = latestValue >= 0 ? color.aqua : color.orange  
+plot(latestValue, "BOP", plotColor, style = plot.style_columns)  
+plot(avgBOP, "Avg", color.purple, linewidth = 3)  
+`
+### How do I fix this?
+Optimize requests and limit the data returned to the main context to ensure that only the _minimum necessary_ data is stored in memory.
+If possible, try to return _calculated results_ directly rather than returning the collections themselves, or only return collections _conditionally_ , when they are necessary in the main context.
+Let’s consider a few common scenarios where scripts need specific data in the main context.
+#### Return last state only
+If a script requires only the _latest_ state of a requested collection, use a conditional structure or expression with barstate.islast as the condition to limit retrieving a copy of that collection to the last available bar.
+Here, we modified our script to display only the _latest_ average BOP (a single value), rather than plotting an average line. The updated request function now returns the calculated BOP values directly for each bar, and returns the higher timeframe’s array only on the last bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("BOP array on last bar", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+// Returns the calculated `bop` each bar, and a copy of the `dataArray` on the last bar or `na` otherwise.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    // Return the collection on the last bar only.  
+    if barstate.islast  
+        [bop, dataArray]  
+    else   
+        [bop, na]  
+  
+// Request calculated BOP value, and BOPs array if on last bar, from the higher timeframe.  
+[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Plot the BOP value for each main context bar.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+  
+// Calculate the average BOP for most-recent values from the higher timeframe array, and display result in a table cell.  
+if not na(reqData)  
+    //@variable Size of the `reqData` array returned from the higher timeframe.  
+    int dataSize = reqData.size()  
+    //@variable A subset of the latest values from the `reqData` array. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? reqData.slice(dataSize - avgLength, dataSize): reqData  
+    //@variable The average of the last `avgLength` BOP values.  
+    float avgBOP = lastValues.avg()  
+  
+    // Display latest average value in a single-cell table.  
+    var table displayTable = table.new(position.bottom_right, 1, 1, color.purple)  
+    displayTable.cell(0, 0, "Avg of last " + str.tostring(avgLength) + " BOPs: " + str.tostring(avgBOP, "##.##") + "%",   
+         text_color = color.white)  
+`
+#### Return calculated results
+If a script needs the _result_ of a calculation on a collection, but does not need the collection itself in the main context, use a user-defined function as the request expression. The function can calculate on the collection in the _requested_ context and return only the result to the main context.
+For example, we can calculate the average BOP directly within our request function. Therefore, only the calculated values are stored in memory, and the request expression returns a tuple (current BOP and average BOP) to plot the results in the main context:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Return BOP results only", "Memory limit demo")  
+  
+//@variable User-input length for calculating average of BOP values.   
+int avgLength = input.int(5, "Average BOP Length", minval = 1)  
+  
+// Returns the calculated `bop` and `avgBOP` values directly.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    // Calculate the average BOP for the `avgLength` most-recent values.  
+    //@variable Size of the `dataArray`.  
+    int dataSize = dataArray.size()  
+    //@variable A subset of the latest values from the `dataArray`. Its size is determined by the `avgLength` set.  
+    array<float> lastValues = dataSize >= avgLength ? dataArray.slice(dataSize - avgLength, dataSize): dataArray  
+    //@variable The average of the last `avgLength` BOP values.  
+    float avgBOP = lastValues.avg()  
+  
+    //Return the calculated results.  
+    [bop, avgBOP]  
+  
+// Request BOP and average BOP values from the higher timeframe.  
+[reqValue, reqAverage] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Plot zero line.  
+hline(0, "Zero line", color.gray, hline.style_dotted)  
+  
+// Plot the BOP value and average line.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+plot(reqAverage, "Avg", color.purple, linewidth = 3)  
+`
+#### Return the collection on some bars
+If a script needs to retrieve a collection in the main context, but _not_ on _every bar_ , use conditional structures or expressions that return collection references only the necessary bars, and na on other bars. The logic in the main context can then handle the na gaps in the series and perform necessary actions on the reduced collections.
+For example, if we want to calculate the average BOP for each _month_ instead of using a user-input length, we can return the array reference from the requested context only when there is a change to a new month; na otherwise. We can then maintain the previous month’s values in the main context to keep a valid array for all intra-month bars:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Monthly BOP array", "Memory limit demo")  
+  
+// Returns the calculated `bop`, and a copy of the `dataArray` on a month's first trading day only, or `na` otherwise.  
+dataFunction() =>   
+    //@variable Persistent array containing the "balance of power" (BOP) values for all higher timeframe bars.  
+    var array<float> dataArray = array.new<float>(0)  
+  
+    // When a new month starts, return monthly data array to calculate average BOP for completed month.  
+    //@variable Array is `na` except on first trading day of each month, when it contains completed month's BOP values.   
+    array<float> returnArray = na  
+    //@variable Is `true` on the first bar of each month, `false` otherwise.  
+    bool isNewMonth = timeframe.change("1M")  
+    if isNewMonth  
+        returnArray := dataArray  
+    //Clear persistent array to start storing new month's data.  
+    if isNewMonth[1]  
+        dataArray.clear()  
+  
+    //@variable The "balance of power" percentage calculated for the current higher timeframe bar.  
+    float bop = (close - open) / (high - low) * 100  
+    dataArray.push(bop)  
+  
+    //Return the calculated result and the `returnArray`.  
+    [bop, returnArray]  
+  
+// Request BOP data from the higher timeframe. (Returns calculated BOP and array of BOP values if new month starts)  
+[reqValue, reqData] = request.security(syminfo.tickerid, "1D", dataFunction())  
+  
+// Calculate the average BOP for the most-recent completed month.  
+//@variable Persistent array that holds the BOP values for the most-recent completed month.  
+var array<float> completedMonthBOPs = array.new<float>(0)  
+// If new month starts (i.e., `reqData` is not returned as `na`), then `completedMonthBOPs` is updated with new values.  
+// Otherwise, it persists the last valid values for the rest of the month to adjust for `na` gaps.  
+completedMonthBOPs := na(reqData) ? completedMonthBOPs : reqData  
+//@variable The average BOP for the most-recent completed month.  
+float avgBOP = completedMonthBOPs.avg()  
+  
+// Plot the BOP value and average line.  
+color plotColor = reqValue >= 0 ? color.aqua : color.orange  
+plot(reqValue, "BOP", plotColor, style = plot.style_columns)  
+plot(avgBOP, "Avg", color.purple, linewidth = 3)  
+`
+### Other possible error sources and their fixes
+There are a few other ways to optimize scripts to consume less memory.
+#### Minimize ​`request.*()`​ calls
+The `request.*()` functions can be computationally expensive to call, because they retrieve data from additional datasets. Data requests often require significant usage of runtime and memory resources. Excessive or inefficient requests can easily cause scripts to reach the memory limit.
+This memory consumption is especially substantial for scripts requesting data from lower timeframes, because the request.security_lower_tf() function returns arrays of intrabar data for _each_ bar in the script’s main dataset. For example, requesting data from the “1” (one-minute) timeframe on a “1D” chart returns hundreds of minute bars for each “1D” bar where the request executes. In the process, the script must allocate memory to store each requested array so that it can access them later in the main context. Maintaining that much data in memory requires a significant amount of resources.
+Programmers can reduce the memory requirements of a script’s requests by:
+  * Removing _unnecessary_ `request.*()` function calls.
+  * Changing the timeframe of a request to a higher timeframe, effectively reducing the number of retrieved data points.
+  * Condensing multiple requests to the _same_ context into a single `request.*()` call.
+  * Using the `request.*()` function’s `calc_bars_count` parameter to restrict the historical bars in the requested dataset.
+
+
+See the Minimizing `request.*()` calls section of the Profiling and optimization page to learn more about optimizing data requests.
+#### Use ​`max_bars_back`​ only when necessary
+The `max_bars_back` parameter of an indicator or strategy sets the size of the _historical buffers_ for all series in a script. Each buffer defines the number of historical data points _maintained in memory_ for the script’s variables and expressions.
+By default, the Pine Script runtime system automatically allocates an appropriate buffer for each variable and expression. Therefore, using the `max_bars_back` parameter or max_bars_back() function is necessary only when Pine cannot determine the referencing length of a series.
+If you encounter the referencing length error and must manually set the size of a historical buffer using the `max_bars_back` parameter or the max_bars_back() function, ensure that you select the _minimum size_ that accommodates your script’s historical references. Historical buffers that contain more data points than a script requires use excessive memory resources. Read up on how to optimize using `max_bars_back` in this Help Center article.
+#### Minimize historical buffer calculations
+The Pine Script runtime system automatically creates historical buffers for all variables and expressions in a script. It determines the size of each buffer based on the _historical references_ that the script performs via the [[] history-referencing operator] or the functions that reference history internally.
+As a script loads on a dataset, historical references to distant points in the dataset can cause the system to reload the script and increase the size of necessary historical buffers. Each increase to historical buffer sizes leads to increased memory consumption. In some cases, buffer resizing can cause the script to exceed the memory limits. Therefore, ensure a script references only _necessary_ historical data in its calculations. When possible, modify the script’s logic to avoid referencing very distant points in history.
+Specifying a `calc_bars_count` argument in the indicator() or strategy() declaration statement can help reduce memory issues, because it restricts the number of historical bars that the script can use for its calculations. Similarly, using max_bars_back() to manually define the appropriate size for a buffer can help reduce buffer calculations. When using this function to specify the size of historical buffers, choose the **smallest** possible size that accommodates the script’s historical references to avoid unnecessary memory use.
+To learn more about historical buffer calculations and how to optimize them, see the Minimizing historical buffer calculations section of the Profiling and optimization page.
+#### Reduce drawing updates for tables
+Tables only display their _last state_ on a chart. Any updates to a table on historical bars are redundant, because they are not visible. To use the least memory, draw the table _once_ , and fill it on the last bar.
+To create a table object only once, assign the result of the table.new() call to a variable declared with the var keyword. When using table.cell() or the available setter functions to modify the table’s contents, execute those function calls only on the _last_ available bar — where the table’s latest state is visible — by placing the calls in a conditional structure that uses barstate.islast as the condition. See the Tables page to learn more.
+#### Do not update drawings on historical bars
+Similar to tables, any updates to other drawing objects such as lines and labels on historical bars are never visible to the user. The user sees only the drawing updates executed on _realtime_ bars.
+Eliminate updates to historical drawings during executions on historical bars wherever possible. Refer to the Reducing drawing updates section of the Profiling and optimization page for more information.
+#### Minimize total drawings stored for a chart
+Drawing objects such as lines and labels can consume a lot of memory, especially if a script _recreates_ drawings unnecessarily.
+For example, if a script draws a line from point `x1` to `x2`, then needs to update the line’s endpoint (`x2`), it’s more computationally expensive to delete the existing line and redraw a new line from `x1` to `x3`. Instead, using the _setter_ function line.set_x2() to update the existing line’s endpoint is more efficient.
+Look for ways to optimize drawing objects in a script:
+  * Reduce unnecessary redrawing by assigning a single drawing object’s reference to a variable declared with the var keyword, then modifying that object’s properties with the available setter functions.
+  * Remove unnecessary chart drawings with the `*.delete()` functions (e.g., line.delete() and label.delete()).
+  * Reduce a script’s drawing limits by specifying values for the `max_lines_count`, `max_labels_count`, `max_boxes_count`, or `max_polylines_count` parameters of the indicator() or strategy() declaration statement.
+
+
+#### Filter dates in strategies
+The total number of trades or orders simulated by strategies can impact memory consumption. When running strategy scripts that generate frequent orders on large datasets, reduce the number of unnecessary historical orders stored in memory by limiting the _starting point_ of your strategy.
+To limit the starting point of a strategy, a simple and effective approach is to use a conditional structure that activates the strategy’s order placement commands only when the bar’s opening or closing time comes after a specified date.
+See the How do I filter trades by a date or time range? portion of our Strategies FAQ page for an example of this technique.
+ Previous   Next Release notes
+
+## * The if statement is too long
+* Script requesting too many securities
+  * Script could not be translated from: null
+  * line 2: no viable alternative at character ’$’
+  * Mismatched input <…> expecting <???>
+  * Loop is too long (> 500 ms)
+  * Script has too many local variables
+  * The requested historical offset (X) is beyond the historical buffer’s limit (Y)
+  * Potential fixes
+  * Use the `max_bars_back()` function
+  * Use the `max_bars_back` parameter of the `indicator()` or `strategy()` function
+  * Use the maximum value manually on history to force a proper buffer size
+  * Max bars back with Pine drawings
+  * Memory limits exceeded
+  * Returning collections from `request.*()` functions
+  * How do I fix this?
+  * Return last state only
+  * Return calculated results
+  * Return the collection on some bars
+  * Other possible error sources and their fixes
+  * Minimize `request.*()` calls
+  * Use `max_bars_back` only when necessary
+  * Minimize historical buffer calculations
+  * Reduce drawing updates for tables
+  * Do not update drawings on historical bars
+  * Minimize total drawings stored for a chart
+  * Filter dates in strategies
+
+---
+
+
+
+# processed_64_release-notes_20260310_040822
 
 ## 2026
 ### January 2026
@@ -39890,7 +39910,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_68_overview_20260307_040008
+# processed_65_overview_20260310_040822
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -39902,7 +39922,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_69_to-pine-version-6_20260307_040008
+# processed_66_to-pine-version-6_20260310_040822
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -40892,7 +40912,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_70_to-pine-version-5_20260307_040008
+# processed_67_to-pine-version-5_20260310_040822
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -41324,7 +41344,7 @@ v4 | v5
 
 
 
-# processed_71_to-pine-version-4_20260307_040008
+# processed_68_to-pine-version-4_20260310_040822
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -41369,7 +41389,7 @@ plot(src)
 
 
 
-# processed_72_to-pine-version-3_20260307_040008
+# processed_69_to-pine-version-3_20260310_040822
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -41490,10 +41510,10 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_73_to-pine-version-2_20260307_040008
+# processed_70_to-pine-version-2_20260310_040822
 
-## 73_to-pine-version-2_20260307_040008
-# 73_to-pine-version-2
+## 70_to-pine-version-2_20260310_040822
+# 70_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
 
@@ -41503,9 +41523,8 @@ Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-ve
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -41518,9 +41537,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Migration guides / To Pine Script® version 2
@@ -41549,7 +41567,7 @@ plot(sma(src, length))
 
 
 
-# processed_74_where-can-i-get-more-information_20260307_040008
+# processed_71_where-can-i-get-more-information_20260310_040822
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.

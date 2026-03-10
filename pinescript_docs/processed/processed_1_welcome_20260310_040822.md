@@ -1,4 +1,4 @@
-## 1_welcome_20260307_040008
+## 1_welcome_20260310_040822
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -9,9 +9,8 @@ Source: https://www.tradingview.com/pine-script-docs/welcome
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -24,9 +23,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Welcome to Pine Script® v6

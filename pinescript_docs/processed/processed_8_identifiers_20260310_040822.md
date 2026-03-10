@@ -1,4 +1,4 @@
-## 8_identifiers_20260307_040008
+## 8_identifiers_20260310_040822
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -9,9 +9,8 @@ Source: https://www.tradingview.com/pine-script-docs/language/identifiers
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  
@@ -24,9 +23,8 @@ Search results
                                                                   * Visuals
                                               * Concepts
                                                       * Writing scripts
-                      * Errors and warnings
-                  * FAQ
-                                                        * Migration guides
+                      * FAQ
+                                                          * Migration guides
                           
 
  User Manual  / Language / Identifiers
