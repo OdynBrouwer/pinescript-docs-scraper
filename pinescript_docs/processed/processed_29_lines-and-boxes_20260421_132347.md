@@ -290,41 +290,66 @@ The script stores all line IDs in a `lines` array that it uses as a queue to dis
 Pine Script®
 Copied
 `//@version=6  
+indicator("Modifying boxes demo", "High volume boxes", true, max_boxes_count = 100)  
   
-//@variable The maximum number of lines allowed on the chart.  
-const int MAX_LINES_COUNT = 500  
+//@variable The timeframe of the calculation.  
+string timeframe = input.timeframe("D", "Timeframe")  
   
-indicator("Deleting lines demo", "RSI cross levels", max_lines_count = MAX_LINES_COUNT)  
+//@variable A box projecting the range of the upward bar with the highest `volume` over the `timeframe`.  
+var box upBox = na  
+//@variable A box projecting the range of the downward bar with the lowest `volume` over the `timeframe`.  
+var box downBox = na  
+//@variable The highest volume of upward bars over the `timeframe`.  
+var float upVolume = na  
+//@variable The highest volume of downward bars over the `timeframe`.  
+var float downVolume = na  
   
-//@variable The length of the RSI.  
-int rsiLength = input.int(14, "RSI length", 2)  
-//@variable The length of the RSI's EMA.  
-int emaLength = input.int(28, "RSI average length", 2)  
-//@variable The maximum number of lines to keep on the chart.  
-int numberOfLines = input.int(20, "Lines on the chart", 0, MAX_LINES_COUNT)  
+// Color variables.  
+var color upBorder   = color.teal  
+var color upFill     = color.new(color.teal, 90)  
+var color downBorder = color.maroon  
+var color downFill   = color.new(color.maroon, 90)  
   
-//@variable An array containing the IDs of lines on the chart.  
-var array<line> lines = array.new<line>()  
+//@variable The closing time of the `timeframe`.  
+int closeTime = time_close(timeframe)  
+//@variable Is `true` when a new bar starts on the `timeframe`.  
+bool changeTF = timeframe.change(timeframe)  
   
-//@variable An `rsiLength` RSI of `close`.  
-float rsi = ta.rsi(close, rsiLength)  
-//@variable A `maLength` EMA of the `rsi`.  
-float rsiMA = ta.ema(rsi, emaLength)  
+//@variable The `chart.point` for the top-left corner of the boxes. Contains `index` and `time` information.  
+topLeft = chart.point.now(high)  
+//@variable The `chart.point` for the bottom-right corner of the boxes. Does not contain `index` information.  
+bottomRight = chart.point.from_time(closeTime, low)  
   
-if ta.cross(rsi, rsiMA)  
-    //@variable The color of the horizontal line.  
-    color lineColor = rsi > rsiMA ? color.green : color.red  
-    // Draw a new horizontal line. Uses the default `xloc.bar_index`.  
-    newLine = line.new(bar_index, rsiMA, bar_index + 1, rsiMA, extend = extend.right, color = lineColor, width = 2)  
-    // Push the `newLine` into the `lines` array.  
-    lines.push(newLine)  
-    // Delete the oldest line when the size of the array exceeds the specified `numberOfLines`.  
-    if array.size(lines) > numberOfLines  
-        line.delete(lines.shift())  
+if changeTF and not na(volume)  
+    if close > open  
+        // Update `upVolume` and `downVolume` values.  
+        upVolume   := volume  
+        downVolume := 0.0  
+        // Draw a new `upBox` using `time` and `price` info from the `topLeft` and `bottomRight` points.  
+        upBox := box.new(topLeft, bottomRight, upBorder, 3, xloc = xloc.bar_time, bgcolor = upFill)  
+        // Draw a new `downBox` with `na` coordinates.  
+        downBox := box.new(na, na, na, na, downBorder, 3, xloc = xloc.bar_time, bgcolor = downFill)  
+    else  
+        // Update `upVolume` and `downVolume` values.  
+        upVolume   := 0.0  
+        downVolume := volume  
+        // Draw a new `upBox` with `na` coordinates.  
+        upBox := box.new(na, na, na, na, upBorder, 3, xloc = xloc.bar_time, bgcolor = upFill)  
+        // Draw a new `downBox` using `time` and `price` info from the `topLeft` and `bottomRight` points.  
+        downBox := box.new(topLeft, bottomRight, downBorder, 3, xloc = xloc.bar_time, bgcolor = downFill)  
+// Update the ``upVolume`` and change the ``upBox`` coordinates when volume increases on an upward bar.  
+else if close > open and volume > upVolume  
+    upVolume := volume  
+    box.set_top_left_point(upBox, topLeft)  
+    box.set_bottom_right_point(upBox, bottomRight)  
+// Update the ``downVolume`` and change the ``downBox`` coordinates when volume increases on a downward bar.  
+else if close <= open and volume > downVolume  
+    downVolume := volume  
+    box.set_top_left_point(downBox, topLeft)  
+    box.set_bottom_right_point(downBox, bottomRight)  
   
-// Plot the `rsi` and `rsiMA`.  
-plot(rsi, "RSI", color.new(color.blue, 40))  
-plot(rsiMA, "EMA of RSI", color.new(color.gray, 30))  
+// Highlight the background when a new `timeframe` bar starts.  
+bgcolor(changeTF ? color.new(color.orange, 70) : na, title = "Timeframe change highlight")  
 `
 Note that:
   * We declared a `MAX_LINES_COUNT` variable with the “const int” _qualified type_ , which the script uses as the `max_lines_count` in the indicator() function and the `maxval` of the input.int() assigned to the `numberOfLines` variable.

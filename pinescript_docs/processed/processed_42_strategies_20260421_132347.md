@@ -1187,54 +1187,20 @@ To demonstrate how this OCA type impacts a strategy’s orders, consider the fol
 Pine Script®
 Copied
 `//@version=6  
-strategy(  
-     "Slippage Demo", overlay = true, slippage = 20,  
-     default_qty_value = 2, default_qty_type = strategy.percent_of_equity  
- )  
+strategy("OCA Cancel Demo", overlay=true)  
   
-int length = input.int(5, "Length")  
+float ma1 = ta.sma(close, 5)  
+float ma2 = ta.sma(close, 9)  
   
-//@variable Exponential Moving Average with an input `length`.  
-float ma = ta.ema(close, length)  
+if ta.cross(ma1, ma2)  
+    if strategy.position_size == 0  
+        strategy.order("Long",  strategy.long, stop = high)  
+        strategy.order("Short", strategy.short, stop = low)  
+    else  
+        strategy.close_all()  
   
-//@variable Is `true` when `ma` has increased and `close` is above it, `false` otherwise.  
-bool longCondition = close > ma and ma > ma[1]  
-//@variable Is `true` when `ma` has decreased and `close` is below it, `false` otherwise.  
-bool shortCondition = close < ma and ma < ma[1]  
-  
-// Enter a long market position on `longCondition` and close the position on `shortCondition`.   
-if longCondition      
-    strategy.entry("Buy", strategy.long)  
-if shortCondition  
-    strategy.close("Buy")  
-  
-//@variable The `bar_index` of the position's entry order fill.  
-int entryIndex = strategy.opentrades.entry_bar_index(0)  
-//@variable The `bar_index` of the position's close order fill.  
-int exitIndex  = strategy.closedtrades.exit_bar_index(strategy.closedtrades - 1)  
-  
-//@variable The fill price simulated by the strategy.  
-float fillPrice = switch bar_index  
-    entryIndex => strategy.opentrades.entry_price(0)  
-    exitIndex  => strategy.closedtrades.exit_price(strategy.closedtrades - 1)  
-  
-//@variable The expected fill price of the open market position.  
-float expectedPrice = not na(fillPrice) ? open : na  
-  
-color expectedColor = na  
-color filledColor   = na  
-  
-if bar_index == entryIndex  
-    expectedColor := color.green  
-    filledColor   := color.blue  
-else if bar_index == exitIndex  
-    expectedColor := color.red  
-    filledColor   := color.fuchsia  
-  
-plot(ma, color = color.new(color.orange, 50))  
-  
-plotchar(not na(fillPrice) ? open : na, "Expected fill price", "—", location.absolute, expectedColor)  
-plotchar(fillPrice, "Fill price after slippage", "—", location.absolute, filledColor)  
+plot(ma1, "Fast MA", color.aqua)  
+plot(ma2, "Slow MA", color.orange)  
 `
 Depending on the price action, the strategy might fill _both_ stop orders before creating the closing market order. In that case, the strategy exits the position without evaluating strategy.close_all() because both orders have the same size. We see this behavior in the chart below, where the strategy alternated between executing “Long” and “Short” orders a few times without executing an order from strategy.close_all():
 !image
