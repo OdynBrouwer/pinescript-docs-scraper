@@ -39,10 +39,23 @@ A Python-based tool for crawling and processing TradingView's Pine Script V6 doc
    cd pinescript-docs-scraper
    ```
 
-2. Install required dependencies:
+2. Create and activate a virtual environment:
+
+   On macOS/Linux:
    ```bash
-    # it's recommended to use a virtual environment
-    python -m pip install -r requirements.txt
+   python -m venv .venv
+   source .venv/bin/activate
+   ```
+
+   On Windows PowerShell:
+   ```powershell
+   python -m venv .venv
+   .\.venv\Scripts\Activate.ps1
+   ```
+
+3. Install required dependencies:
+   ```bash
+   python -m pip install -r requirements.txt
    ```
 
 ## Usage
@@ -85,6 +98,38 @@ A Python-based tool for crawling and processing TradingView's Pine Script V6 doc
     # Reduce console output
     python 3_scrap_and_process.py --no-verbose
     ```
+
+4.  **Preview Cleanup (dry-run)**:
+
+    Before deleting files, run the cleanup script in dry-run mode to see which files would be removed:
+
+    ```bash
+    # Preview files that would be removed from 'unprocessed'
+    python scripts/cleanup_processed.py --target unprocessed --dry-run
+
+    # Preview files that would be removed from 'processed'
+    python scripts/cleanup_processed.py --target processed --dry-run
+
+    # Preview both directories
+    python scripts/cleanup_processed.py --target both --dry-run
+    ```
+
+5.  **Apply Cleanup (delete old files)**:
+
+    When you're ready to remove the old timestamped files (the script keeps the most recent file per page), run:
+
+    ```bash
+    # Remove old files from 'unprocessed'
+    python scripts/cleanup_processed.py --target unprocessed
+
+    # Remove old files from 'processed' (keeps newest per page)
+    python scripts/cleanup_processed.py --target processed
+
+    # Remove from both
+    python scripts/cleanup_processed.py --target both
+    ```
+
+    Note: Use `--dry-run` first to confirm the exact files that will be deleted.
 
     This script reads raw markdown files from `pinescript_docs/unprocessed/`, extracts code examples and function documentation, and writes processed versions to `pinescript_docs/processed/`.
     It also writes a combined `processed_all_docs.md` next to the scripts (repository root) for easy access.
