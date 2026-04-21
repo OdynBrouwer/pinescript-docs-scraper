@@ -23,22 +23,13 @@ jobs:
         uses: actions/setup-python@v4
         with:
           python-version: '3.11'
+          cache: 'pip'
 
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
-
-      - name: Install Playwright browsers (for headless browser use)
-        run: |
-          python -m pip install playwright
-          python -m playwright install --with-deps
-
-      - name: Debug info
-        run: |
-          python -V
-          pip show crawl4ai || true
-          ls -la
+          playwright install --with-deps
 
       - name: Run scrape & process
         run: python 3_scrap_and_process.py
