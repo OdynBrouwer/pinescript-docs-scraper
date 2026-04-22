@@ -56,22 +56,19 @@ Below, we modify the previous script by adding var to the `x` declaration. Now, 
 Pine Script®
 Copied
 `//@version=6  
-indicator("History referencing demo", overlay = true, behind_chart = false)  
+indicator("Persistent declarations demo")  
   
-//@variable The number of bars back from which to retrieve the `open` price for `pastOpen`.  
-int offsetInput = input.int(10, "Bar offset", 0)  
+//@variable A *persistent* variable. The script initializes this variable only on the *first execution*.   
+//          The variable preserves all changes to its value on each closed bar.   
+var int x = 0  
   
-//@variable The current bar's opening price. `open[0]` is equivalent to using `open` without the `[]` operator.  
-float currOpen = open[0]  
-//@variable The last committed `open` value. Represents the previous bar's value, or `na` if no previous bar exists.  
-float prevOpen = open[1]  
-//@variable The `open` value committed `offsetInput` bars back, or `na` if no bar exists at that offset.  
-float pastOpen = open[offsetInput]  
+// Increase the value of `x` by 10 on every bar.  
+x += 10  
   
-// Plot `currOpen`, `prevOpen`, and `pastOpen` for comparison.  
-plot(currOpen, "Current `open`",                 color.blue,    2)  
-plot(prevOpen, "Previous bar `open`",            color.purple,  3)  
-plot(pastOpen, "Past `open` from custom offset", color.orange,  4)  
+// Plot the `x` series on the chart.   
+// Because the script declares `x` using `var` and then increments its value, the value never resets to 0.  
+// The plotted value is 10 on the first bar, 20 on the next, and so on.   
+plot(x, "`x` series", color.blue, 3)  
 `
 ### Storing and using data from previous bars
 As a script runs on a dataset, the states of its variables, function calls, and other expressions are automatically _committed (saved)_ to an internal _time series_ on each bar, creating historical trails of previous bar values that the script can access during its calculations on the current bar. The script can use these previous values by doing either of the following:

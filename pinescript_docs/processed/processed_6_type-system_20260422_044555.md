@@ -726,14 +726,9 @@ type pivotPoint
 User-defined types can contain fields for referencing other UDT objects. Additionally, UDTs support _type recursion_ , meaning a UDT can include fields for referencing objects of the _same_ UDT. Below, we added a `nextPivot` field to our `pivotPoint` type. Objects of this version of the UDT can store a _reference (ID)_ to a separate object of the same `pivotPoint` type in this field:
 Pine Script®
 Copied
-`//@type             A custom type for creating objects that store pivot information.  
-//@field pivotTime  Stores the pivot's timestamp.  
-//@field priceLevel Stores the pivot's price.  
-//@field nextPivot  Stores the reference to *another* instance of the `pivotPoint` type.  
-type pivotPoint  
-    int        pivotTime  
-    float      priceLevel  
-    pivotPoint nextPivot  
+`// This variable holds a "float" value, because any arithmetic operation with "int" and "float" operands  
+// returns a "float" result.  
+myVar = bar_index + close  
 `
 Every user-defined type includes built-in `*.new()` and `*.copy()` functions for creating objects or copying existing ones. Both functions construct a new object on every call and return that object’s ID. For example, `pivotPoint.new()` creates a new instance of our `pivotPoint` type and returns its ID for use in other parts of the script.
 To learn more about objects of UDTs and how to use them, see the Objects page.
