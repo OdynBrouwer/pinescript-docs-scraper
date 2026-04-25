@@ -872,100 +872,238 @@ if bar_index == last_bar_index - 1
     mt.debugLabel(bar_index + 10, note = "Transpose")  
 `
 ###  Sorting
-Scripts can sort the contents of a matrix via matrix.sort(). Unlike array.sort(), which sorts _elements_ , this function organizes all _rows_ in a matrix in a specified `order` (order.ascending by default) based on the values in a specified `column`.
-This script declares a 3x3 `m` matrix, sorts the rows of the `m1` copy in ascending order based on the first column, then sorts the rows of the `m2` copy in descending order based on the second column. It displays the original matrix and sorted copies in labels using our `debugLabel()` method:
+Scripts can sort a matrix containing “int”, “float”, or “string” values by using the matrix.sort() function. This function rearranges the _rows_ of a matrix in a specified order by comparing the elements in a specified _column_.
+The `column` parameter specifies the index of the column to use for sorting. The default value is 0, meaning that a call to the function compares elements in the _first_ column by default.
+The `order` parameter accepts one of the two `order.*` constants. If the argument is order.ascending (the default), a matrix.sort() call sorts the matrix rows in ascending order based on the values from the given column. If the argument is order.descending, it sorts the rows in descending order instead.
+If a matrix contains “int” or “float” elements, a call to the matrix.sort() function sorts the rows in the matrix by comparing a column’s numeric values. If the order is ascending, the row of the column element with the lowest value becomes the first row (at row index 0), and the row of the element with the highest value becomes the last row. The opposite applies when sorting in descending order.
+For example, the following script sorts a 3x3 “int” matrix in ascending and descending order using values from a specified column. After each step, it creates a string representation of the matrix and displays the result in a separate label:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting rows example")  
+indicator("Sorting numeric matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
   
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Copy `m` and sort rows in ascending order based on the first column (default).  
-    matrix<int> m1 = m.copy()  
-    m1.sort()  
-    m1.debugLabel(bar_index + 10, color.green, note = "Sorted using col 0\n(Ascending)")  
-  
-    // Copy `m` and sort rows in descending order based on the second column.  
-    matrix<int> m2 = m.copy()  
-    m2.sort(1, order.descending)  
-    m2.debugLabel(bar_index + 20, color.red, note = "Sorted using col 1\n(Descending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    numbers.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix rows in *descending* order using the column at the `colInput` index.  
+    numbers.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
 `
-It’s important to note that matrix.sort() does not sort the columns of a matrix. However, one _can_ use this function to sort matrix columns with the help of matrix.transpose().
-As an example, this script contains a `sortColumns()` method that uses the matrix.sort() method to sort the transpose of a matrix using the column corresponding to the `row` of the original matrix. The script uses this method to sort the `m` matrix based on the contents of its first row:
+If a matrix contains “string” elements, a matrix.sort() call sorts the rows in the matrix by comparing the Unicode values of _individual characters_ in the strings from the specified column. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The rows whose column elements contain leading characters with the lowest Unicode values move to the beginning of the matrix if the order is ascending, or to the end of the matrix if the order is descending.
+For example, the script version below sorts a 3x3 matrix of strings in ascending and descending order using the elements from a specified column. As with the previous example, the script draws three labels to show the structure of the matrix after each step:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting columns example")  
+indicator("Sorting string matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@function Sorts the columns of `this` matrix based on the values in the specified `row`.  
-method sortColumns(matrix<int> this, int row = 0, bool ascending = true) =>  
-    //@variable The transpose of `this` matrix.  
-    matrix<int> thisT = this.transpose()  
-    //@variable Is `order.ascending` when `ascending` is `true`, `order.descending` otherwise.  
-    order = ascending ? order.ascending : order.descending  
-    // Sort the rows of `thisT` using the `row` column.  
-    thisT.sort(row, order)  
-    //@variable A copy of `this` matrix with sorted columns.  
-    result = thisT.transpose()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "string" values.  
+    matrix<string> strings = matrix.new<string>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    strings.add_row(0, array.from("A", "E", "H", "C", "D", "I", "B", "F", "G"))  
+    strings.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(strings), style = label.style_label_center,   
+        size = 36, textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
-  
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Sort the columns of `m` based on the first row and display the result.  
-    m.sortColumns(0).debugLabel(bar_index + 10, note = "Sorted using row 0\n(Ascending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    strings.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.green, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace    
+    )  
+      
+    // Sort the matrix rows in descending order using the column at the `colInput` index.  
+    strings.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.red, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
 `
+Note that:
+  * This example uses strings containing all _uppercase_ ASCII letters. Therefore, the effect of the matrix.sort() calls is the same as sorting column strings in _alphabetical_ order. However, if we add _lowercase_ characters to the start of some strings, the sorting order would _not_ be alphabetical, because all uppercase ASCII letters _precede_ lowercase letters in the Unicode Standard. See the Sorting section of the Arrays page for an example of this behavior.
+
+
+NoteIf an “int”, “float”, or “string” matrix contains elements with `na` values or empty strings in a column used for sorting, a matrix.sort() call moves the corresponding rows to the _end_ of the matrix if the `order` argument is order.ascending, or to the _beginning_ if the argument is order.descending.
+In some cases, a programmer might need to sort the _columns_ of a matrix rather than sorting its rows. Although the matrix.sort() function does not support column-wise sorting directly, programmers can achieve this effect by sorting the transpose of the specified matrix. The steps are as follows:
+  1. Create a transposed copy of the matrix by calling the matrix.transpose() function. The rows of the original matrix become _columns_ in the copy, and the original columns become rows.
+  2. Sort the rows in the transposed matrix using a matrix.sort() function call.
+  3. Create a transposed copy of the sorted matrix by using a second matrix.transpose() call. This step changes the sorted rows from step 2 back to columns.
+
+
+The modified example below adds a user-defined function named `sortColumns()` to the first example script in this section, then replaces the script’s matrix.sort() calls with calls to that function. The `sortColumns()` function performs the above steps to create a copy of the matrix with sorted columns. The script displays strings representing the structure of the original matrix and the sorted results in labels on the last historical bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting matrix columns demo")  
+  
+//@function         Creates a copy of a specified matrix with sorted columns.  
+//@param id         The ID of the matrix to sort.  
+//@param row        The index of the row to use for sorting.  
+//@param ascending  Optional. If `true`, the function sorts the copy in ascending order.   
+//                  If `false`, it sorts in descending order. The default is `true`.  
+//@returns          The ID of the sorted copy.  
+sortColumns(matrix<int> id, int row, bool ascending = true) =>  
+    // Create a transposed copy of the matrix. The rows in the copy correspond to the original columns.  
+    matrix<int> t = id.transpose()  
+    // Sort the rows of the transposed copy.  
+    t.sort(row, ascending ? order.ascending : order.descending)  
+    // Create a transposed copy of the sorted matrix and return its ID.  
+    t.transpose()  
+  
+//@variable The index of the row to use for sorting.  
+int rowInput = input.int(0, "Row", 0, 2)  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
+  
+    // Sort the matrix columns in ascending order using the row at the `rowInput` index.  
+    numbers := sortColumns(numbers, rowInput, true)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix columns in descending order using the row at the `rowInput` index.  
+    numbers := sortColumns(numbers, rowInput, false)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
+`
+TipTo release the original matrix from memory after creating a copy with sorted columns, reassign the copy’s ID to the variable or field that stores the ID of the original matrix.
+#### Sorting matrices of user-defined types
+The matrix.sort() function can also sort matrices whose elements reference objects of user-defined types (UDTs). For such matrices, the function compares values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the elements in a specified column, using the sorting rules described in the Sorting section above.
+The function’s `sort_field` parameter specifies which object field a call to the function uses to sort the rows in the matrix. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative number up to one less than the total number of fields.
+  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
+
+
+The default `sort_field` argument is 0. Therefore, if a matrix.sort() call does not specify a `sort_field` argument, it attempts to sort rows in the matrix by comparing the first field of each object referenced by a given column.
+The following script is a modified form of the _first_ example in the Sorting arrays of user-defined types section of the Arrays page. It sorts a 3x2 matrix of object IDs instead of an array of IDs. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. Then, it creates six `myType` objects and stores their IDs in a matrix on the last historical bar. The script executes a matrix.sort() call to sort the rows of the matrix by the first, second, or third field of the objects referenced on a given column, depending on the selected inputs. The script loops through the matrix with a for…in loop to create a concatenated string representing its sorted structure, then displays the resulting string’s text in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT matrices demo")  
+  
+//@type  A custom type for creating objects that store "float", "string", and "int" values.  
+type myType  
+    float  field0 // This field's index is 0.  
+    string field1 // This field's index is 1.  
+    int    field2 // This field's index is 2.  
+  
+//@variable A string to indicate whether the script specifies sorting fields by index or name.  
+string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
+//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
+int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
+//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
+string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column to check", 0, 1)  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array that stores the IDs of `myType` objects.  
+    array<myType> udtArray = array.from(  
+        myType.new(field0 = 2.0, field1 = "C", field2 = 2), myType.new(field0 = 6.0, field1 = "D", field2 = 4),  
+        myType.new(field0 = 1.0, field1 = "B", field2 = 3), myType.new(field0 = 5.0, field1 = "E", field2 = 6),  
+        myType.new(field0 = 3.0, field1 = "A", field2 = 1), myType.new(field0 = 4.0, field1 = "F", field2 = 5)  
+    )  
+    //@variable References a 3x2 matrix of `myType` IDs retrieved from the array.  
+    matrix<myType> udtMatrix = matrix.new<myType>()  
+    // Populate the matrix using the `udtArray` array, then reshape it using `matrix.reshape()`.  
+    udtMatrix.add_row(0, udtArray)  
+    udtMatrix.reshape(3, 2)  
+  
+    // Sort the rows in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
+    if specifyInput == "Index"  
+        switch indexInput  
+            0 => udtMatrix.sort(colInput, sort_field = 0)  
+            1 => udtMatrix.sort(colInput, sort_field = 1)  
+            2 => udtMatrix.sort(colInput, sort_field = 2)  
+    // Otherwise, sort using the field with the specified name.  
+    else  
+        switch nameInput  
+            "field0"  => udtMatrix.sort(colInput, sort_field = "field0")  
+            "field1"  => udtMatrix.sort(colInput, sort_field = "field1")  
+            "field2"  => udtMatrix.sort(colInput, sort_field = "field2")  
+      
+    //@variable A string representing the structure of the sorted matrix.  
+    string displayStr = switch specifyInput  
+        "Index" => str.format("Sorted by column {0} using field at index {1}\n\n",  colInput, indexInput)  
+        =>         str.format("Sorted by column {0} using field named ''{1}''\n\n", colInput, nameInput)  
+      
+    // Concatenate formatted strings to represent the sorted structure.  
+    for [i, row] in udtMatrix  
+        string tempStr = "["  
+        for [j, id] in row  
+            tempStr += str.format(  
+                "(field0: {0,number,0.0}, field1: {1}, field2: {2}), ",  
+                id.field0, id.field1, id.field2  
+            )  
+        displayStr += str.substring(tempStr, 0, str.length(tempStr) - 2) + "]\n"  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 1)  
+    // Display the final string's text in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 24,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+Note that:
+  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the matrix using an input-specified field, this script uses a _separate_ matrix.sort() call for each input combination.
+
+
+When sorting matrices that store IDs of a user-defined type, it’s important to understand the following limitations:
+  * The `sort_field` argument of a matrix.sort() call must refer to an “int”, “float”, or “string” field. Attempting to sort UDT matrices using fields of other types causes a _compilation error_.
+  * While the matrix.sort() function can sort the rows of a matrix using a column containing objects that have _fields_ with na values, it **cannot** sort a matrix using columns that contain na _elements_. Elements that are na represent _nonexistent IDs_ , meaning that there are _no associated objects_ from which to retrieve a field value for sorting. Attempting to sort a UDT matrix using a column with na elements causes a _runtime error_.
+
+
+Refer to the Sorting arrays of user-defined types section of the Arrays page for examples of errors relating to these limitations and ways to resolve them. The principles explained in those examples also apply to sorting matrices with the matrix.sort() function.
 ###  Concatenating
 Scripts can _concatenate_ two matrices using matrix.concat(). This function appends the rows of an `id2` matrix to the end of an `id1` matrix with the same number of columns.
 To create a matrix with elements representing the _columns_ of a matrix appended to another, transpose both matrices, use matrix.concat() on the transposed matrices, then transpose() the result.
@@ -2108,111 +2246,115 @@ if bar_index == last_bar_index - 1
     mt.debugLabel(bar_index + 10, note = "Transpose")  
 `
 ###  Sorting
-Scripts can sort the contents of a matrix via matrix.sort(). Unlike array.sort(), which sorts _elements_ , this function organizes all _rows_ in a matrix in a specified `order` (order.ascending by default) based on the values in a specified `column`.
-This script declares a 3x3 `m` matrix, sorts the rows of the `m1` copy in ascending order based on the first column, then sorts the rows of the `m2` copy in descending order based on the second column. It displays the original matrix and sorted copies in labels using our `debugLabel()` method:
+Scripts can sort a matrix containing “int”, “float”, or “string” values by using the matrix.sort() function. This function rearranges the _rows_ of a matrix in a specified order by comparing the elements in a specified _column_.
+The `column` parameter specifies the index of the column to use for sorting. The default value is 0, meaning that a call to the function compares elements in the _first_ column by default.
+The `order` parameter accepts one of the two `order.*` constants. If the argument is order.ascending (the default), a matrix.sort() call sorts the matrix rows in ascending order based on the values from the given column. If the argument is order.descending, it sorts the rows in descending order instead.
+If a matrix contains “int” or “float” elements, a call to the matrix.sort() function sorts the rows in the matrix by comparing a column’s numeric values. If the order is ascending, the row of the column element with the lowest value becomes the first row (at row index 0), and the row of the element with the highest value becomes the last row. The opposite applies when sorting in descending order.
+For example, the following script sorts a 3x3 “int” matrix in ascending and descending order using values from a specified column. After each step, it creates a string representation of the matrix and displays the result in a separate label:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting rows example")  
+indicator("Sorting numeric matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
   
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Copy `m` and sort rows in ascending order based on the first column (default).  
-    matrix<int> m1 = m.copy()  
-    m1.sort()  
-    m1.debugLabel(bar_index + 10, color.green, note = "Sorted using col 0\n(Ascending)")  
-  
-    // Copy `m` and sort rows in descending order based on the second column.  
-    matrix<int> m2 = m.copy()  
-    m2.sort(1, order.descending)  
-    m2.debugLabel(bar_index + 20, color.red, note = "Sorted using col 1\n(Descending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    numbers.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix rows in *descending* order using the column at the `colInput` index.  
+    numbers.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
 `
-It’s important to note that matrix.sort() does not sort the columns of a matrix. However, one _can_ use this function to sort matrix columns with the help of matrix.transpose().
-As an example, this script contains a `sortColumns()` method that uses the matrix.sort() method to sort the transpose of a matrix using the column corresponding to the `row` of the original matrix. The script uses this method to sort the `m` matrix based on the contents of its first row:
+If a matrix contains “string” elements, a matrix.sort() call sorts the rows in the matrix by comparing the Unicode values of _individual characters_ in the strings from the specified column. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The rows whose column elements contain leading characters with the lowest Unicode values move to the beginning of the matrix if the order is ascending, or to the end of the matrix if the order is descending.
+For example, the script version below sorts a 3x3 matrix of strings in ascending and descending order using the elements from a specified column. As with the previous example, the script draws three labels to show the structure of the matrix after each step:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting columns example")  
+indicator("Sorting string matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@function Sorts the columns of `this` matrix based on the values in the specified `row`.  
-method sortColumns(matrix<int> this, int row = 0, bool ascending = true) =>  
-    //@variable The transpose of `this` matrix.  
-    matrix<int> thisT = this.transpose()  
-    //@variable Is `order.ascending` when `ascending` is `true`, `order.descending` otherwise.  
-    order = ascending ? order.ascending : order.descending  
-    // Sort the rows of `thisT` using the `row` column.  
-    thisT.sort(row, order)  
-    //@variable A copy of `this` matrix with sorted columns.  
-    result = thisT.transpose()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "string" values.  
+    matrix<string> strings = matrix.new<string>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    strings.add_row(0, array.from("A", "E", "H", "C", "D", "I", "B", "F", "G"))  
+    strings.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(strings), style = label.style_label_center,   
+        size = 36, textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
-  
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Sort the columns of `m` based on the first row and display the result.  
-    m.sortColumns(0).debugLabel(bar_index + 10, note = "Sorted using row 0\n(Ascending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    strings.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.green, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace    
+    )  
+      
+    // Sort the matrix rows in descending order using the column at the `colInput` index.  
+    strings.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.red, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
 `
-###  Concatenating
-Scripts can _concatenate_ two matrices using matrix.concat(). This function appends the rows of an `id2` matrix to the end of an `id1` matrix with the same number of columns.
-To create a matrix with elements representing the _columns_ of a matrix appended to another, transpose both matrices, use matrix.concat() on the transposed matrices, then transpose() the result.
-For example, this script appends the rows of the `m2` matrix to the `m1` matrix and appends their columns using _transposed copies_ of the matrices. It displays the `m1` and `m2` matrices and the results after concatenating their rows and columns in labels using the custom `debugLabel()` method:
+Note that:
+  * This example uses strings containing all _uppercase_ ASCII letters. Therefore, the effect of the matrix.sort() calls is the same as sorting column strings in _alphabetical_ order. However, if we add _lowercase_ characters to the start of some strings, the sorting order would _not_ be alphabetical, because all uppercase ASCII letters _precede_ lowercase letters in the Unicode Standard. See the Sorting section of the Arrays page for an example of this behavior.
+
+
+NoteIf an “int”, “float”, or “string” matrix contains elements with `na` values or empty strings in a column used for sorting, a matrix.sort() call moves the corresponding rows to the _end_ of the matrix if the `order` argument is order.ascending, or to the _beginning_ if the argument is order.descending.
+In some cases, a programmer might need to sort the _columns_ of a matrix rather than sorting its rows. Although the matrix.sort() function does not support column-wise sorting directly, programmers can achieve this effect by sorting the transpose of the specified matrix. The steps are as follows:
+  1. Create a transposed copy of the matrix by calling the matrix.transpose() function. The rows of the original matrix become _columns_ in the copy, and the original columns become rows.
+  2. Sort the rows in the transposed matrix using a matrix.sort() function call.
+  3. Create a transposed copy of the sorted matrix by using a second matrix.transpose() call. This step changes the sorted rows from step 2 back to columns.
+
+
+The modified example below adds a user-defined function named `sortColumns()` to the first example script in this section, then replaces the script’s matrix.sort() calls with calls to that function. The `sortColumns()` function performs the above steps to create a copy of the matrix with sorted columns. The script displays strings representing the structure of the original matrix and the sorted results in labels on the last historical bar:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Concatenation demo")  
+indicator("Sorting matrix columns demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
+//@function         Creates a copy of a specified matrix with sorted columns.  
+//@param id         The ID of the matrix to sort.  
+//@param row        The index of the row to use for sorting.  
+//@param ascending  Optional. If `true`, the function sorts the copy in ascending order.   
+//                  If `false`, it sorts in descending order. The default is `true`.  
+//@returns          The ID of the sorted copy.  
+
+
+@function Displays the rows of a matrix in a label with a note.  
 //@param    this The matrix to display.  
 //@param    barIndex The `bar_index` to display the label at.  
 //@param    bgColor The background color of the label.  

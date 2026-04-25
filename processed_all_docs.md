@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260422_044555
+# processed_1_welcome_20260425_043524
 
-## 1_welcome_20260422_044555
+## 1_welcome_20260425_043524
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260422_044555
+# processed_2_first-steps_20260425_043524
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260422_044555
+# processed_3_first-indicator_20260425_043524
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -233,7 +233,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260422_044555
+# processed_4_next-steps_20260425_043524
 
 ## ”indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
@@ -291,7 +291,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260422_044555
+# processed_5_execution-model_20260425_043524
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1121,7 +1121,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260422_044555
+# processed_6_type-system_20260425_043524
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -1851,9 +1851,14 @@ type pivotPoint
 User-defined types can contain fields for referencing other UDT objects. Additionally, UDTs support _type recursion_ , meaning a UDT can include fields for referencing objects of the _same_ UDT. Below, we added a `nextPivot` field to our `pivotPoint` type. Objects of this version of the UDT can store a _reference (ID)_ to a separate object of the same `pivotPoint` type in this field:
 Pine Script®
 Copied
-`// This variable holds a "float" value, because any arithmetic operation with "int" and "float" operands  
-// returns a "float" result.  
-myVar = bar_index + close  
+`//@type             A custom type for creating objects that store pivot information.  
+//@field pivotTime  Stores the pivot's timestamp.  
+//@field priceLevel Stores the pivot's price.  
+//@field nextPivot  Stores the reference to *another* instance of the `pivotPoint` type.  
+type pivotPoint  
+    int        pivotTime  
+    float      priceLevel  
+    pivotPoint nextPivot  
 `
 Every user-defined type includes built-in `*.new()` and `*.copy()` functions for creating objects or copying existing ones. Both functions construct a new object on every call and return that object’s ID. For example, `pivotPoint.new()` creates a new instance of our `pivotPoint` type and returns its ID for use in other parts of the script.
 To learn more about objects of UDTs and how to use them, see the Objects page.
@@ -2499,7 +2504,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260422_044555
+# processed_7_script-structure_20260425_043524
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2782,9 +2787,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260422_044555
+# processed_8_identifiers_20260425_043524
 
-## 8_identifiers_20260422_044555
+## 8_identifiers_20260425_043524
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2850,7 +2855,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_declaration-statements_20260422_044555
+# processed_9_declaration-statements_20260425_043524
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -3536,7 +3541,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260422_044555
+# processed_10_variable-declarations_20260425_043524
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4740,7 +4745,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260422_044555
+# processed_11_operators_20260425_043524
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -4996,7 +5001,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260422_044555
+# processed_12_conditional-structures_20260425_043524
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5381,7 +5386,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260422_044555
+# processed_13_loops_20260425_043524
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6351,7 +6356,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260422_044555
+# processed_14_built-ins_20260425_043524
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6465,7 +6470,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260422_044555
+# processed_15_user-defined-functions_20260425_043524
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8300,7 +8305,7 @@ Copied
 
 
 
-# processed_16_objects_20260422_044555
+# processed_16_objects_20260425_043524
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8607,7 +8612,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260422_044555
+# processed_17_enums_20260425_043524
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8925,7 +8930,7 @@ enum ta
 
 
 
-# processed_18_methods_20260422_044555
+# processed_18_methods_20260425_043524
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9573,7 +9578,7 @@ Copied
 
 
 
-# processed_19_arrays_20260422_044555
+# processed_19_arrays_20260425_043524
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -10120,73 +10125,335 @@ Note that:
 
 
 ###  Sorting
-Scripts can sort arrays containing “int”, “float”, or “string” elements in ascending or descending order using the array.sort() function. The direction in which the function sorts the array’s elements depends on its `order` parameter, which accepts the order.ascending or order.descending constants. The default argument is order.ascending, meaning the function sorts the elements in ascending order of value.
-The function sorts arrays of “int” and “float” elements based on their _numeric_ values.
-The example below declares two arrays with references assigned to the `a` and `b` variables, and it concatenates those arrays to form a combined `c` array. The script creates Pine Logs showing formatted text representing the unsorted arrays, and the results of using array.sort() to sort all three arrays in ascending and descending order:
+Scripts can _sort_ arrays containing values of the “int”, “float”, or “string” type by using the array.sort() function. The function’s `order` parameter accepts one of the two `order.*` constants to specify the sorting order. If the argument is order.ascending (the default), a call to the function rearranges the specified array’s elements in ascending order by value. If the argument is order.descending, the call rearranges the elements in descending order instead.
+If an array contains “int” or “float” elements, the array.sort() function sorts the array using each element’s numeric value. If it uses ascending order, the element with the _lowest_ value becomes the array’s _first_ element (at index 0), and the one with the _highest_ value becomes the _last_ element. If it sorts in descending order, the element with the _highest_ value becomes the first element, and the one with the _lowest_ value becomes the last.
+The following example script uses the array.from() function to create an array of arbitrary “float” values on the last historical bar. It then sorts the array in ascending order, and then in descending order, using two array.sort() calls. The script creates a string representation of the array after each step, then formats those representations into a single string and displays the result in a label:
 !image
 Pine Script®
 Copied
 `//@version=6  
 indicator("Sorting numeric arrays demo")  
   
-if barstate.isfirst  
-    //@variable A formatting string.  
-    string formatString = "\n{0}:\n{1}\n{2}\n{3}"  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of arbitrary "float" values.  
+    array<float> numbers = array.from(2.1, 0.5, 1.2, 0.1, 1.4, 0.6)  
+    //@variable A string representing the array's unsorted, ascending, and descending order.  
+    string displayStr = "Unsorted:   " + str.tostring(numbers) + "\n"  
   
-    // Create two three-element arrays.  
-    array<float> a = array.from(2.1, 0.5, 1.2)  
-    array<float> b = array.from(0.1, 1.4, 0.6)  
-    //@variable A combined array containing the elements from `a` and `b`.   
-    array<float> c = array.copy(a).concat(b)  
+    // Sort the array in ascending order.  
+    // The `order` argument is optional; `order.ascending` is the default.  
+    array.sort(numbers, order = order.ascending)  
+    // Concatenate a string representation of the sorted array with the `displayStr` value.  
+    displayStr += "Ascending:  " + str.tostring(numbers) + "\n"  
   
-    // Log formatted text showing the unsorted `a`, `b`, and `c` arrays.   
-    log.info(formatString, "Unsorted", a, b, c)  
+    // Sort the `numbers` array again, this time in descending order.   
+    numbers.sort(order = order.descending)  
+    // Concatenate another string representation of the sorted result.  
+    displayStr += "Descending: " + str.tostring(numbers)  
   
-    // Sort the `a`, `b`, and `c` arrays in ascending order (default).  
-    array.sort(a)  
-    array.sort(b)  
-    c.sort()  
-  
-    // Log formatted text showing the `a`, `b`, and `c` arrays sorted in ascending order.   
-    log.info(formatString, "Ascending", a, b, c)  
-  
-    // Sort the `a`, `b`, and `c` arrays in descending order.  
-    a.sort(order.descending)  
-    b.sort(order.descending)  
-    c.sort(order.descending)  
-  
-    // Log formatted text showing the `a`, `b`, and `c` arrays sorted in descending order.   
-    log.info(formatString, "Descending", a, b, c)  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
 `
-Note that:
-  * Each array.sort() call directly _modifies_ the order of the elements in the original array. To get sorted elements _without_ reorganizing the original array, use the array.sort_indices() function. This function returns a new array of “int” values representing the _indices_ of the elements sorted in ascending or descending order.
-
-
-The array.sort() function sorts arrays of “string” values based on the _Unicode values_ of their characters. The sorting algorithm starts with each element’s _first_ character position, then successively uses additional characters if multiple elements have matching characters at the same position.
-This example creates an array of arbitrary strings on the first bar, then sorts the array’s contents in ascending order with an array.sort() call. The script logs formatted representations of the array in the Pine Logs pane before and after calling the array.sort() function:
+If an array contains “string” elements, the array.sort() function sorts the elements based on the Unicode values of the strings’ _individual characters_. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The strings that have leading characters with the lowest Unicode values move to the beginning of the array if the order is ascending, or to the end of the array if the order is descending.
+The example script below defines an arbitrary literal string, then uses the str.split() function to split the string and construct an array of substrings. Afterward, the script calls the array.sort() function to sort the array’s elements in ascending order. The script displays formatted text representing the original string, and the array’s structure before and after sorting, in a label on the last historical bar:
 !image
 Pine Script®
 Copied
 `//@version=6  
 indicator("Sorting string arrays demo")  
   
-if barstate.isfirst  
+if barstate.islastconfirmedhistory  
+    //@variable A literal string to split at each `,` character.  
+    string originalStr = "abc,abC,Abc,ABC,{ABC},!,123,12.3, "  
   
-    //@variable An array of arbitrary "string" values.   
-    array<string> stringArray = array.from("abC", "Abc", "ABc", "ABC", "!", "123", "12.3", " ")  
+    //@variable References an array of substrings formed by splitting the original string at each comma.  
+    array<string> splitStrArray = str.split(originalStr, ",")  
   
-    // Log the original `stringArray`.  
-    log.info("Unsorted: {0}", stringArray)  
+    //@variable A string to represent the original string and the array of substrings.  
+    string displayStr = str.format("Original string: ''{0}''\n\nSubstring array: {1}\n", originalStr, splitStrArray)  
   
-    // Sort the array in ascending order (default) and log the result.  
-    stringArray.sort()  
-    log.info("Ascending: {0}", stringArray)  
+    // Sort the array in ascending order, based on the Unicode values of characters in each string.  
+    splitStrArray.sort()  
+    // Concatenate a string representing the sorted result.  
+    displayStr += str.format("Sorted array:    {0}\n", splitStrArray)  
+  
+    // Display the final `displayStr` value's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
 `
 Note that:
-  * Whitespace and control characters have lower Unicode values than other characters, which is why the `" "` element appears first in the sorted array.
-  * Some ASCII punctuation marks and symbols have lower Unicode values than digit or letter characters. The `"!"` element comes before the elements with word characters because its Unicode value is U+0021. However, some other ASCII punctuation and symbol characters, such as the Left Curly Bracket `{` (U+007B), have higher Unicode values than ASCII digits and letters.
-  * ASCII digits have lower Unicode values than letter characters. For example, the `1` character’s value is U+0031, and the `A` character’s value is U+0041.
-  * Uppercase ASCII letters come _before_ lowercase characters in the Unicode Standard. For instance, the `a` character has the Unicode value U+0061, which is larger than the value for `A`.
+  * The `" "` string appears first in the sorted array because standard whitespace and control characters have the _lowest_ Unicode values (U+0000 - U+0020). The space character’s Unicode value is U+0020.
+  * ASCII _digits_ (U+0030 - U+0039) have _lower_ Unicode values than all _letter_ characters. Therefore, the sorted array lists all strings that start with digits before those that start with letters.
+  * _Uppercase_ ASCII letters (U+0041 - U+005A) have lower Unicode values than _lowercase_ ASCII letters (U+0061 - U+007A). Therefore, strings that start with `A` appear _before_ those that start with `a` in the sorted array.
+  * Some ASCII punctuation marks and symbols have lower Unicode values than ASCII letters or digits, and some others have Unicode values that are between or higher than those of such characters. For instance, the sorted array lists the `"!"` string before other strings except for `" "` because the Unicode value of `!` is U+0021. By contrast, it lists the `"{ABC}"` string at the end because the `{` character’s Unicode value is U+007B.
+
+
+Every array.sort() call directly _changes_ the positions of elements in the original array, as demonstrated above. However, in some cases, a programmer might need to access an array’s elements in a sorted order _without_ rearranging the array itself.
+To access an array’s sorted elements without modifying the array, programmers can use the array.sort_indices() function. This function creates a _separate_ “int” array containing the _indices_ of the original array’s elements, organized in the _sorted order_ for those elements. Scripts can use the indices in the resulting array to read the original array’s elements in the specified order (order.ascending by default) while also preserving the original array’s unsorted order for other calculations.
+The following example script queues close values into a persistent array across the chart. It calls the array.sort_indices() function on the last historical bar to get the ID of an array containing sorted indices, and constructs a string representation of both arrays. Then, it loops through the array of indices using a for…in loop. On each iteration, the script concatenates the string with another string representing a value from the `prices` array, that value’s index in the array, and the value’s sorted position. It then displays the final string in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Getting sorted indices demo")  
+  
+//@variable References a persistent array that stores the last 10 `close` values.  
+var array<float> prices = array.new<float>(10)  
+// Push a new value to the end of the array, and remove the oldest (first) element.  
+prices.push(close)  
+prices.shift()  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an "int" array containing the `prices` array indices in ascending order by element value.   
+    //          The `array.sort_indices()` call maps sorted positions in the array without modifying it.  
+    array<int> indices = prices.sort_indices()  
+    //@variable A formatted string to display in a label.  
+    string displayStr = str.format("Prices: {0}\n\nSorted indices: {1}\n\nSort results:", prices, indices)  
+  
+    // Loop through the `indices` array.  
+    // The `i` variable stores the current index of the `indices` array's element.  
+    // The `index` variable stores that element's value (the index for one of the `prices` array's elements).  
+    // Using `index` to retrieve `prices` array's elements accesses those elements in ascending order.  
+    for [i, index] in indices  
+        // Concatenate the `displayStr` value with a string representing the sorted `prices` array element,   
+        // the original position (index) of the element, and the sorted position of that element.   
+        displayStr += str.format(  
+            "\nPrice: {0,number,0.000}, Original position: {1} -> Sorted position: {2}",   
+            prices.get(index), index, i  
+        )  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 20,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+NoteIf an “int”, “float”, or “string” array contains elements with `na` values or empty strings (e.g., `""`), an array.sort() call moves those elements to the _end_ of the array if the `order` argument is order.ascending, or to the _beginning_ of the array if the argument is order.descending. Likewise, the array constructed by an array.sort_indices() call stores the indices for na values or empty strings as its _first_ or _last_ elements, depending on the `order` argument.
+#### Sorting arrays of user-defined types
+The array.sort() and array.sort_indices() functions can also sort arrays whose elements refer to objects of user-defined types (UDTs). For such arrays, the functions compare values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the array’s elements, using the sorting rules described in the Sorting section above.
+The `sort_field` parameter of these functions specifies _which_ object field they analyze to sort a UDT array’s elements. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative, non-na number up to one less than the total number of fields.
+  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
+
+
+The default `sort_field` value is 0, meaning that an array.sort() or array.sort_indices() call attempts to compare values from the first field of each object referenced by the specified array if no argument is specified.
+The following example script demonstrates the sorting behavior for arrays of UDT elements. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. On the last historical bar, it creates five `myType` objects, stores their IDs in an array, then executes an array.sort() call to sort the array in ascending order using each object’s first, second, or third field, depending on the selected inputs. The script loops through the sorted array using a for…in loop to create a custom string representation of its structure, then displays the resulting string’s text in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT arrays demo")  
+  
+//@type  A custom type for creating objects that store "float", "string", and "int" values.  
+type myType  
+    float  field0 // This field's index is 0.  
+    string field1 // This field's index is 1.  
+    int    field2 // This field's index is 2.  
+  
+//@variable A string to indicate whether the script specifies sorting fields by index or name.  
+string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
+//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
+int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
+//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
+string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array that stores the IDs of `myType` objects.  
+    array<myType> udtArray = array.from(  
+        myType.new(field0 = 2.0, field1 = "D", field2 = 1), myType.new(field0 = 1.0, field1 = "E", field2 = 2),  
+        myType.new(field0 = 3.0, field1 = "C", field2 = 3), myType.new(field0 = 5.0, field1 = "A", field2 = 4),  
+        myType.new(field0 = 4.0, field1 = "B", field2 = 5)  
+    )  
+    // Sort the array in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
+    if specifyInput == "Index"  
+        switch indexInput  
+            0 => udtArray.sort(sort_field = 0)  
+            1 => udtArray.sort(sort_field = 1)  
+            2 => udtArray.sort(sort_field = 2)  
+    // Otherwise, sort using the field with the specified name.  
+    else  
+        switch nameInput  
+            "field0"  => udtArray.sort(sort_field = "field0")  
+            "field1"  => udtArray.sort(sort_field = "field1")  
+            "field2"  => udtArray.sort(sort_field = "field2")  
+      
+    //@variable A string representing the structure of the sorted array.  
+    string displayStr = switch specifyInput  
+        "Index" => str.format("Sorted using field at index {0}\n\n[", indexInput)  
+        =>         str.format("Sorted using field named ''{0}''\n\n[",    nameInput)  
+      
+    // Concatenate formatted strings to represent the array's structure.  
+    for [i, id] in udtArray  
+        displayStr += str.format(  
+            " (field0: {0,number,0.0}, field1: {1}, field2: {2}),\n",  
+            id.field0, id.field1, id.field2  
+        )  
+    // Adjust the final result to align enclosing brackets.  
+    displayStr := str.replace(str.substring(displayStr, 0, str.length(displayStr) - 2), "[ ", "[") + "]"   
+    // Display the final string's text in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+Note that:
+  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the array using an input-specified field, this script uses a _separate_ array.sort() call for each input combination.
+
+
+It’s important to emphasize that the array.sort() and array.sort_indices() functions can sort UDT arrays only by referencing object fields of the type “int”, “float”, or “string”. They cannot sort elements using fields of any other type.
+For example, the following script declares a custom `myColor` type whose first field is of the type “color”. It creates an array of `myColor` IDs, then attempts to sort the array using an array.sort() call. The call does not include a `sort_field` argument, so it references each object’s _first_ field, which is _incompatible_ with the sorting algorithm. Consequently, a _compilation error_ occurs:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Incompatible sorting field demo", overlay = true)  
+  
+//@type  A custom type for creating objects that contain color information.  
+type myColor  
+    color c // Index 0.  
+    float r // Index 1.  
+    float g // Index 2.  
+    float b // Index 3.  
+  
+//@function Creates a new `myColor` instance with pseudorandom field values.  
+randColor() =>  
+    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
+    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
+  
+//@variable References an array of `myColor` IDs.  
+var array<myColor> arr = array.new<myColor>()  
+  
+if barstate.isfirst  
+    // Populate the array with 10 `myColor` IDs.  
+    for i = 1 to 10  
+        arr.push(randColor())  
+  
+    // Call `array.sort()` using the default `sort_field` argument (0).  
+    // This call causes a *compilation error*, because the `array.sort()` function cannot sort "color" values.  
+    arr.sort()  
+  
+//@variable The index of the array element to retrieve.  
+int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
+  
+//@variable The `myColor` ID stored at index `ind`.   
+myColor id = arr.get(ind)  
+  
+// Color the bar using the `id.c` value.  
+barcolor(id.c)  
+`
+To resolve the error, we can either rearrange the type declaration to list one of the type’s “float” fields as the _first_ one, or include a `sort_field` argument in the array.sort() call to specify one of those fields. For example:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Changing first field demo", overlay = true)  
+  
+//@type  A custom type for creating objects that contain color information.  
+type myColor  
+    float g // Moved to index 0.  
+    color c // Moved to index 1.  
+    float r // Moved to index 2.  
+    float b // Moved to index 3.  
+  
+//@function Creates a new `myColor` instance with pseudorandom field values.  
+randColor() =>  
+    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
+    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
+  
+//@variable References an array of `myColor` IDs.  
+var array<myColor> arr = array.new<myColor>()  
+  
+if barstate.isfirst  
+    // Populate the array with 10 `myColor` IDs.  
+    for i = 1 to 10  
+        arr.push(randColor())  
+  
+    // This call does *not* cause an error, because the default `sort_field` argument now refers   
+    // to the type's `g` field ("float").  
+    arr.sort()  
+  
+//@variable The index of the array element to retrieve.  
+int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
+  
+//@variable The `myColor` ID stored at index `ind`.   
+myColor id = arr.get(ind)  
+  
+// Color the bar using the `id.c` value.  
+barcolor(id.c)  
+`
+The array.sort and array.sort_indices functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
+For example, the script below declares a type named `Number` with a single “float” field named `value`. On the last historical bar, it creates an array containing multiple `Number` IDs, two of which are na. Calling array.sort() to rearrange that array causes an error, because the na elements in the array do not refer to valid `Number` objects:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Cannot sort `na` IDs demo")  
+  
+//@variable A custom type for creating objects that store a single "float" value.  
+type Number  
+    float value  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Number` IDs, two of which are `na`.  
+    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
+  
+    // This call causes a runtime error. The `na` elements do not refer to valid `Number` objects, so the function  
+    // cannot access `value` fields for sorting.   
+    numbers.sort()  
+      
+    //@variable A string representing the array's structure.  
+    string displayStr = "["  
+    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
+    for number in numbers  
+        displayStr += str.tostring(number.value) + ", "  
+    // Remove the final `", "` sequence and add a closing bracket.  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
+    // Display the resulting string's text in a label.  
+    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
+`
+To prevent such errors, _remove_ all na IDs from a UDT array before using the array.sort() or array.sort_indices() function on it, or _replace_ them with the IDs of _new_ objects that contain na _fields_ instead.
+For example, the script version below includes a user-defined function named `replaceNa()`, which replaces na `Number` IDs in an array with the IDs of new objects that contain na `value` fields. Using this function before sorting the array with the array.sort() call prevents the runtime error:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing `na` IDs for sorting demo")  
+  
+//@variable A custom type for creating objects that store a single "float" value.  
+type Number  
+    float value  
+  
+//@function Replaces `na` instances in a specified `Number` array with the IDs of new `Number` objects with `na` fields.  
+replaceNa(array<Number> arrID) =>  
+    if array.includes(arrID, na)  
+        // Loop through the array referenced by `arrID`.   
+        for [i, objID] in arrID  
+            // If the `objID` variable stores `na`, replace the element at index `i` with a new `Number` ID.  
+            if na(objID)  
+                arrID.set(i, Number.new())  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Number` IDs, two of which are `na`.  
+    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
+    // If we call `replaceNa()` before sorting the array, no error occurs, because all elements now refer   
+    // to a valid `Number` object.  
+    replaceNa(numbers)  
+    numbers.sort()  
+      
+    //@variable A string representing the array's structure.  
+    string displayStr = "["  
+    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
+    for number in numbers  
+        displayStr += str.tostring(number.value) + ", "  
+    // Remove the final `", "` sequence and add a closing bracket.  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
+    // Display the resulting string's text in a label.  
+    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
+`
+Note that:
+  * This example moves the IDs of all objects with an na `value` field to the _end_ of the array because the script’s array.sort() call sorts the array’s elements in ascending order. If we use order.descending as the `order` argument, those elements move to the _beginning_ of the array instead.
 
 
 ###  Reversing
@@ -10229,7 +10496,7 @@ if barstate.islast
 `
 
 ## Searching arrays
-We can test if a value is part of an array with the array.includes() function, which returns true if the element is found. We can find the first occurrence of a value in an array by using the array.indexof() function. The first occurence is the one with the lowest index. We can also find the last occurrence of a value with array.lastindexof():
+We can test if a value is part of an array with the array.includes() function, which returns true if the element is found. We can find the first occurrence of a value in an array by using the array.indexof() function. The first occurrence is the one with the lowest index. We can also find the last occurrence of a value with array.lastindexof():
 Pine Script®
 Copied
 `//@version=6  
@@ -10253,7 +10520,7 @@ NoticeSearch functions like array.indexof() and array.binary_search() return an 
 
 ## Error handling
 Malformed `array.*()` call syntax in Pine scripts will cause the usual **compiler** error messages to appear in Pine Editor’s console, at the bottom of the window, when you save a script. Refer to the Pine Script v6 Reference Manual when in doubt regarding the exact syntax of function calls.
-Scripts using arrays can also throw **runtime** errors, which appear as an exclamation mark next to the indicator’s name on the chart. We discuss those runtime errors in this section.
+Scripts using arrays can also throw **runtime** errors, which appear as an exclamation mark next to the indicator’s name on the chart. We discuss some of the most common runtime errors in this section.
 ### Index xx is out of bounds. Array size is yy
 This error is the most frequent one programmers encounter when using arrays. The error occurs when the script references a _nonexistent_ array index. The “xx” value represents the out-of-bounds index the function tried to use, and “yy” represents the array’s size. Recall that array indices start at zero — not one — and end at the array’s size, minus one. For instance, the last valid index in a three-element array is `2`.
 To avoid this error, you must make provisions in your code logic to prevent using an index value outside the array’s boundaries. This code example generates the error because the last `i` value in the loop’s iterations is beyond the valid index range for the `a` array:
@@ -10350,7 +10617,7 @@ plot(c)
 
 
 
-# processed_20_matrices_20260422_044555
+# processed_20_matrices_20260425_043524
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -11226,100 +11493,238 @@ if bar_index == last_bar_index - 1
     mt.debugLabel(bar_index + 10, note = "Transpose")  
 `
 ###  Sorting
-Scripts can sort the contents of a matrix via matrix.sort(). Unlike array.sort(), which sorts _elements_ , this function organizes all _rows_ in a matrix in a specified `order` (order.ascending by default) based on the values in a specified `column`.
-This script declares a 3x3 `m` matrix, sorts the rows of the `m1` copy in ascending order based on the first column, then sorts the rows of the `m2` copy in descending order based on the second column. It displays the original matrix and sorted copies in labels using our `debugLabel()` method:
+Scripts can sort a matrix containing “int”, “float”, or “string” values by using the matrix.sort() function. This function rearranges the _rows_ of a matrix in a specified order by comparing the elements in a specified _column_.
+The `column` parameter specifies the index of the column to use for sorting. The default value is 0, meaning that a call to the function compares elements in the _first_ column by default.
+The `order` parameter accepts one of the two `order.*` constants. If the argument is order.ascending (the default), a matrix.sort() call sorts the matrix rows in ascending order based on the values from the given column. If the argument is order.descending, it sorts the rows in descending order instead.
+If a matrix contains “int” or “float” elements, a call to the matrix.sort() function sorts the rows in the matrix by comparing a column’s numeric values. If the order is ascending, the row of the column element with the lowest value becomes the first row (at row index 0), and the row of the element with the highest value becomes the last row. The opposite applies when sorting in descending order.
+For example, the following script sorts a 3x3 “int” matrix in ascending and descending order using values from a specified column. After each step, it creates a string representation of the matrix and displays the result in a separate label:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting rows example")  
+indicator("Sorting numeric matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
   
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Copy `m` and sort rows in ascending order based on the first column (default).  
-    matrix<int> m1 = m.copy()  
-    m1.sort()  
-    m1.debugLabel(bar_index + 10, color.green, note = "Sorted using col 0\n(Ascending)")  
-  
-    // Copy `m` and sort rows in descending order based on the second column.  
-    matrix<int> m2 = m.copy()  
-    m2.sort(1, order.descending)  
-    m2.debugLabel(bar_index + 20, color.red, note = "Sorted using col 1\n(Descending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    numbers.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix rows in *descending* order using the column at the `colInput` index.  
+    numbers.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
 `
-It’s important to note that matrix.sort() does not sort the columns of a matrix. However, one _can_ use this function to sort matrix columns with the help of matrix.transpose().
-As an example, this script contains a `sortColumns()` method that uses the matrix.sort() method to sort the transpose of a matrix using the column corresponding to the `row` of the original matrix. The script uses this method to sort the `m` matrix based on the contents of its first row:
+If a matrix contains “string” elements, a matrix.sort() call sorts the rows in the matrix by comparing the Unicode values of _individual characters_ in the strings from the specified column. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The rows whose column elements contain leading characters with the lowest Unicode values move to the beginning of the matrix if the order is ascending, or to the end of the matrix if the order is descending.
+For example, the script version below sorts a 3x3 matrix of strings in ascending and descending order using the elements from a specified column. As with the previous example, the script draws three labels to show the structure of the matrix after each step:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting columns example")  
+indicator("Sorting string matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@function Sorts the columns of `this` matrix based on the values in the specified `row`.  
-method sortColumns(matrix<int> this, int row = 0, bool ascending = true) =>  
-    //@variable The transpose of `this` matrix.  
-    matrix<int> thisT = this.transpose()  
-    //@variable Is `order.ascending` when `ascending` is `true`, `order.descending` otherwise.  
-    order = ascending ? order.ascending : order.descending  
-    // Sort the rows of `thisT` using the `row` column.  
-    thisT.sort(row, order)  
-    //@variable A copy of `this` matrix with sorted columns.  
-    result = thisT.transpose()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "string" values.  
+    matrix<string> strings = matrix.new<string>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    strings.add_row(0, array.from("A", "E", "H", "C", "D", "I", "B", "F", "G"))  
+    strings.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(strings), style = label.style_label_center,   
+        size = 36, textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
-  
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Sort the columns of `m` based on the first row and display the result.  
-    m.sortColumns(0).debugLabel(bar_index + 10, note = "Sorted using row 0\n(Ascending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    strings.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.green, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace    
+    )  
+      
+    // Sort the matrix rows in descending order using the column at the `colInput` index.  
+    strings.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.red, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
 `
+Note that:
+  * This example uses strings containing all _uppercase_ ASCII letters. Therefore, the effect of the matrix.sort() calls is the same as sorting column strings in _alphabetical_ order. However, if we add _lowercase_ characters to the start of some strings, the sorting order would _not_ be alphabetical, because all uppercase ASCII letters _precede_ lowercase letters in the Unicode Standard. See the Sorting section of the Arrays page for an example of this behavior.
+
+
+NoteIf an “int”, “float”, or “string” matrix contains elements with `na` values or empty strings in a column used for sorting, a matrix.sort() call moves the corresponding rows to the _end_ of the matrix if the `order` argument is order.ascending, or to the _beginning_ if the argument is order.descending.
+In some cases, a programmer might need to sort the _columns_ of a matrix rather than sorting its rows. Although the matrix.sort() function does not support column-wise sorting directly, programmers can achieve this effect by sorting the transpose of the specified matrix. The steps are as follows:
+  1. Create a transposed copy of the matrix by calling the matrix.transpose() function. The rows of the original matrix become _columns_ in the copy, and the original columns become rows.
+  2. Sort the rows in the transposed matrix using a matrix.sort() function call.
+  3. Create a transposed copy of the sorted matrix by using a second matrix.transpose() call. This step changes the sorted rows from step 2 back to columns.
+
+
+The modified example below adds a user-defined function named `sortColumns()` to the first example script in this section, then replaces the script’s matrix.sort() calls with calls to that function. The `sortColumns()` function performs the above steps to create a copy of the matrix with sorted columns. The script displays strings representing the structure of the original matrix and the sorted results in labels on the last historical bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting matrix columns demo")  
+  
+//@function         Creates a copy of a specified matrix with sorted columns.  
+//@param id         The ID of the matrix to sort.  
+//@param row        The index of the row to use for sorting.  
+//@param ascending  Optional. If `true`, the function sorts the copy in ascending order.   
+//                  If `false`, it sorts in descending order. The default is `true`.  
+//@returns          The ID of the sorted copy.  
+sortColumns(matrix<int> id, int row, bool ascending = true) =>  
+    // Create a transposed copy of the matrix. The rows in the copy correspond to the original columns.  
+    matrix<int> t = id.transpose()  
+    // Sort the rows of the transposed copy.  
+    t.sort(row, ascending ? order.ascending : order.descending)  
+    // Create a transposed copy of the sorted matrix and return its ID.  
+    t.transpose()  
+  
+//@variable The index of the row to use for sorting.  
+int rowInput = input.int(0, "Row", 0, 2)  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
+  
+    // Sort the matrix columns in ascending order using the row at the `rowInput` index.  
+    numbers := sortColumns(numbers, rowInput, true)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix columns in descending order using the row at the `rowInput` index.  
+    numbers := sortColumns(numbers, rowInput, false)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(row {0})\n{1}", rowInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
+`
+TipTo release the original matrix from memory after creating a copy with sorted columns, reassign the copy’s ID to the variable or field that stores the ID of the original matrix.
+#### Sorting matrices of user-defined types
+The matrix.sort() function can also sort matrices whose elements reference objects of user-defined types (UDTs). For such matrices, the function compares values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the elements in a specified column, using the sorting rules described in the Sorting section above.
+The function’s `sort_field` parameter specifies which object field a call to the function uses to sort the rows in the matrix. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative number up to one less than the total number of fields.
+  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
+
+
+The default `sort_field` argument is 0. Therefore, if a matrix.sort() call does not specify a `sort_field` argument, it attempts to sort rows in the matrix by comparing the first field of each object referenced by a given column.
+The following script is a modified form of the _first_ example in the Sorting arrays of user-defined types section of the Arrays page. It sorts a 3x2 matrix of object IDs instead of an array of IDs. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. Then, it creates six `myType` objects and stores their IDs in a matrix on the last historical bar. The script executes a matrix.sort() call to sort the rows of the matrix by the first, second, or third field of the objects referenced on a given column, depending on the selected inputs. The script loops through the matrix with a for…in loop to create a concatenated string representing its sorted structure, then displays the resulting string’s text in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT matrices demo")  
+  
+//@type  A custom type for creating objects that store "float", "string", and "int" values.  
+type myType  
+    float  field0 // This field's index is 0.  
+    string field1 // This field's index is 1.  
+    int    field2 // This field's index is 2.  
+  
+//@variable A string to indicate whether the script specifies sorting fields by index or name.  
+string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
+//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
+int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
+//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
+string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column to check", 0, 1)  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array that stores the IDs of `myType` objects.  
+    array<myType> udtArray = array.from(  
+        myType.new(field0 = 2.0, field1 = "C", field2 = 2), myType.new(field0 = 6.0, field1 = "D", field2 = 4),  
+        myType.new(field0 = 1.0, field1 = "B", field2 = 3), myType.new(field0 = 5.0, field1 = "E", field2 = 6),  
+        myType.new(field0 = 3.0, field1 = "A", field2 = 1), myType.new(field0 = 4.0, field1 = "F", field2 = 5)  
+    )  
+    //@variable References a 3x2 matrix of `myType` IDs retrieved from the array.  
+    matrix<myType> udtMatrix = matrix.new<myType>()  
+    // Populate the matrix using the `udtArray` array, then reshape it using `matrix.reshape()`.  
+    udtMatrix.add_row(0, udtArray)  
+    udtMatrix.reshape(3, 2)  
+  
+    // Sort the rows in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
+    if specifyInput == "Index"  
+        switch indexInput  
+            0 => udtMatrix.sort(colInput, sort_field = 0)  
+            1 => udtMatrix.sort(colInput, sort_field = 1)  
+            2 => udtMatrix.sort(colInput, sort_field = 2)  
+    // Otherwise, sort using the field with the specified name.  
+    else  
+        switch nameInput  
+            "field0"  => udtMatrix.sort(colInput, sort_field = "field0")  
+            "field1"  => udtMatrix.sort(colInput, sort_field = "field1")  
+            "field2"  => udtMatrix.sort(colInput, sort_field = "field2")  
+      
+    //@variable A string representing the structure of the sorted matrix.  
+    string displayStr = switch specifyInput  
+        "Index" => str.format("Sorted by column {0} using field at index {1}\n\n",  colInput, indexInput)  
+        =>         str.format("Sorted by column {0} using field named ''{1}''\n\n", colInput, nameInput)  
+      
+    // Concatenate formatted strings to represent the sorted structure.  
+    for [i, row] in udtMatrix  
+        string tempStr = "["  
+        for [j, id] in row  
+            tempStr += str.format(  
+                "(field0: {0,number,0.0}, field1: {1}, field2: {2}), ",  
+                id.field0, id.field1, id.field2  
+            )  
+        displayStr += str.substring(tempStr, 0, str.length(tempStr) - 2) + "]\n"  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 1)  
+    // Display the final string's text in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 24,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+Note that:
+  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the matrix using an input-specified field, this script uses a _separate_ matrix.sort() call for each input combination.
+
+
+When sorting matrices that store IDs of a user-defined type, it’s important to understand the following limitations:
+  * The `sort_field` argument of a matrix.sort() call must refer to an “int”, “float”, or “string” field. Attempting to sort UDT matrices using fields of other types causes a _compilation error_.
+  * While the matrix.sort() function can sort the rows of a matrix using a column containing objects that have _fields_ with na values, it **cannot** sort a matrix using columns that contain na _elements_. Elements that are na represent _nonexistent IDs_ , meaning that there are _no associated objects_ from which to retrieve a field value for sorting. Attempting to sort a UDT matrix using a column with na elements causes a _runtime error_.
+
+
+Refer to the Sorting arrays of user-defined types section of the Arrays page for examples of errors relating to these limitations and ways to resolve them. The principles explained in those examples also apply to sorting matrices with the matrix.sort() function.
 ###  Concatenating
 Scripts can _concatenate_ two matrices using matrix.concat(). This function appends the rows of an `id2` matrix to the end of an `id1` matrix with the same number of columns.
 To create a matrix with elements representing the _columns_ of a matrix appended to another, transpose both matrices, use matrix.concat() on the transposed matrices, then transpose() the result.
@@ -12462,111 +12867,115 @@ if bar_index == last_bar_index - 1
     mt.debugLabel(bar_index + 10, note = "Transpose")  
 `
 ###  Sorting
-Scripts can sort the contents of a matrix via matrix.sort(). Unlike array.sort(), which sorts _elements_ , this function organizes all _rows_ in a matrix in a specified `order` (order.ascending by default) based on the values in a specified `column`.
-This script declares a 3x3 `m` matrix, sorts the rows of the `m1` copy in ascending order based on the first column, then sorts the rows of the `m2` copy in descending order based on the second column. It displays the original matrix and sorted copies in labels using our `debugLabel()` method:
+Scripts can sort a matrix containing “int”, “float”, or “string” values by using the matrix.sort() function. This function rearranges the _rows_ of a matrix in a specified order by comparing the elements in a specified _column_.
+The `column` parameter specifies the index of the column to use for sorting. The default value is 0, meaning that a call to the function compares elements in the _first_ column by default.
+The `order` parameter accepts one of the two `order.*` constants. If the argument is order.ascending (the default), a matrix.sort() call sorts the matrix rows in ascending order based on the values from the given column. If the argument is order.descending, it sorts the rows in descending order instead.
+If a matrix contains “int” or “float” elements, a call to the matrix.sort() function sorts the rows in the matrix by comparing a column’s numeric values. If the order is ascending, the row of the column element with the lowest value becomes the first row (at row index 0), and the row of the element with the highest value becomes the last row. The opposite applies when sorting in descending order.
+For example, the following script sorts a 3x3 “int” matrix in ascending and descending order using values from a specified column. After each step, it creates a string representation of the matrix and displays the result in a separate label:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting rows example")  
+indicator("Sorting numeric matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "int" values.  
+    matrix<int> numbers = matrix.new<int>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    numbers.add_row(0, array.from(3, 2, 4, 1, 9, 6, 7, 8, 9))  
+    numbers.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(numbers), style = label.style_label_center, size = 36   
+    )  
   
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Copy `m` and sort rows in ascending order based on the first column (default).  
-    matrix<int> m1 = m.copy()  
-    m1.sort()  
-    m1.debugLabel(bar_index + 10, color.green, note = "Sorted using col 0\n(Ascending)")  
-  
-    // Copy `m` and sort rows in descending order based on the second column.  
-    matrix<int> m2 = m.copy()  
-    m2.sort(1, order.descending)  
-    m2.debugLabel(bar_index + 20, color.red, note = "Sorted using col 1\n(Descending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    numbers.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.green, style = label.style_label_center, size = 36   
+    )  
+      
+    // Sort the matrix rows in *descending* order using the column at the `colInput` index.  
+    numbers.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(numbers)),   
+        color = color.red, style = label.style_label_center, size = 36   
+    )  
 `
-It’s important to note that matrix.sort() does not sort the columns of a matrix. However, one _can_ use this function to sort matrix columns with the help of matrix.transpose().
-As an example, this script contains a `sortColumns()` method that uses the matrix.sort() method to sort the transpose of a matrix using the column corresponding to the `row` of the original matrix. The script uses this method to sort the `m` matrix based on the contents of its first row:
+If a matrix contains “string” elements, a matrix.sort() call sorts the rows in the matrix by comparing the Unicode values of _individual characters_ in the strings from the specified column. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The rows whose column elements contain leading characters with the lowest Unicode values move to the beginning of the matrix if the order is ascending, or to the end of the matrix if the order is descending.
+For example, the script version below sorts a 3x3 matrix of strings in ascending and descending order using the elements from a specified column. As with the previous example, the script draws three labels to show the structure of the matrix after each step:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Sorting columns example")  
+indicator("Sorting string matrix rows demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable The index of the column to use for sorting.  
+int colInput = input.int(0, "Column", 0, 2)  
   
-//@function Sorts the columns of `this` matrix based on the values in the specified `row`.  
-method sortColumns(matrix<int> this, int row = 0, bool ascending = true) =>  
-    //@variable The transpose of `this` matrix.  
-    matrix<int> thisT = this.transpose()  
-    //@variable Is `order.ascending` when `ascending` is `true`, `order.descending` otherwise.  
-    order = ascending ? order.ascending : order.descending  
-    // Sort the rows of `thisT` using the `row` column.  
-    thisT.sort(row, order)  
-    //@variable A copy of `this` matrix with sorted columns.  
-    result = thisT.transpose()  
+if barstate.islastconfirmedhistory  
+    //@variable References a 3x3 matrix of "string" values.  
+    matrix<string> strings = matrix.new<string>()  
+    // Insert a row of elements into the matrix, then reshape it to 3x3.  
+    strings.add_row(0, array.from("A", "E", "H", "C", "D", "I", "B", "F", "G"))  
+    strings.reshape(3, 3)  
+    // Draw a label at the current `bar_index` value to display the original structure of the matrix.  
+    label.new(  
+        bar_index, 0, "Unsorted\norder\n" + str.tostring(strings), style = label.style_label_center,   
+        size = 36, textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
   
-//@variable A 3x3 matrix.  
-matrix<int> m = matrix.new<int>()  
-  
-if bar_index == last_bar_index - 1  
-    // Add rows to `m`.  
-    m.add_row(0, array.from(3, 2, 4))  
-    m.add_row(1, array.from(1, 9, 6))  
-    m.add_row(2, array.from(7, 8, 9))  
-    m.debugLabel(note = "Original")  
-  
-    // Sort the columns of `m` based on the first row and display the result.  
-    m.sortColumns(0).debugLabel(bar_index + 10, note = "Sorted using row 0\n(Ascending)")  
+    // Sort the matrix rows in ascending order (the default) using the column at the `colInput` index.  
+    strings.sort(colInput)  
+    // Draw a label at `bar_index + 10` to display the updated structure.  
+    label.new(  
+        bar_index + 10, 0, str.format("Ascending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.green, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace    
+    )  
+      
+    // Sort the matrix rows in descending order using the column at the `colInput` index.  
+    strings.sort(colInput, order.descending)  
+    // Draw a label at `bar_index + 20` to display the updated structure.  
+    label.new(  
+        bar_index + 20, 0, str.format("Descending\n(column {0})\n{1}", colInput, str.tostring(strings)),   
+        color = color.red, style = label.style_label_center, size = 36,  
+        textalign = text.align_left, text_font_family = font.family_monospace   
+    )  
 `
-###  Concatenating
-Scripts can _concatenate_ two matrices using matrix.concat(). This function appends the rows of an `id2` matrix to the end of an `id1` matrix with the same number of columns.
-To create a matrix with elements representing the _columns_ of a matrix appended to another, transpose both matrices, use matrix.concat() on the transposed matrices, then transpose() the result.
-For example, this script appends the rows of the `m2` matrix to the `m1` matrix and appends their columns using _transposed copies_ of the matrices. It displays the `m1` and `m2` matrices and the results after concatenating their rows and columns in labels using the custom `debugLabel()` method:
+Note that:
+  * This example uses strings containing all _uppercase_ ASCII letters. Therefore, the effect of the matrix.sort() calls is the same as sorting column strings in _alphabetical_ order. However, if we add _lowercase_ characters to the start of some strings, the sorting order would _not_ be alphabetical, because all uppercase ASCII letters _precede_ lowercase letters in the Unicode Standard. See the Sorting section of the Arrays page for an example of this behavior.
+
+
+NoteIf an “int”, “float”, or “string” matrix contains elements with `na` values or empty strings in a column used for sorting, a matrix.sort() call moves the corresponding rows to the _end_ of the matrix if the `order` argument is order.ascending, or to the _beginning_ if the argument is order.descending.
+In some cases, a programmer might need to sort the _columns_ of a matrix rather than sorting its rows. Although the matrix.sort() function does not support column-wise sorting directly, programmers can achieve this effect by sorting the transpose of the specified matrix. The steps are as follows:
+  1. Create a transposed copy of the matrix by calling the matrix.transpose() function. The rows of the original matrix become _columns_ in the copy, and the original columns become rows.
+  2. Sort the rows in the transposed matrix using a matrix.sort() function call.
+  3. Create a transposed copy of the sorted matrix by using a second matrix.transpose() call. This step changes the sorted rows from step 2 back to columns.
+
+
+The modified example below adds a user-defined function named `sortColumns()` to the first example script in this section, then replaces the script’s matrix.sort() calls with calls to that function. The `sortColumns()` function performs the above steps to create a copy of the matrix with sorted columns. The script displays strings representing the structure of the original matrix and the sorted results in labels on the last historical bar:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Concatenation demo")  
+indicator("Sorting matrix columns demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
+//@function         Creates a copy of a specified matrix with sorted columns.  
+//@param id         The ID of the matrix to sort.  
+//@param row        The index of the row to use for sorting.  
+//@param ascending  Optional. If `true`, the function sorts the copy in ascending order.   
+//                  If `false`, it sorts in descending order. The default is `true`.  
+//@returns          The ID of the sorted copy.  
+
+
+@function Displays the rows of a matrix in a label with a note.  
 //@param    this The matrix to display.  
 //@param    barIndex The `bar_index` to display the label at.  
 //@param    bgColor The background color of the label.  
@@ -12804,7 +13213,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260422_044555
+# processed_21_maps_20260425_043524
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -13850,7 +14259,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260422_044555
+# processed_22_overview_20260425_043524
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -14291,9 +14700,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260422_044555
+# processed_23_backgrounds_20260425_043524
 
-## 23_backgrounds_20260422_044555
+## 23_backgrounds_20260425_043524
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -14436,9 +14845,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260422_044555
+# processed_24_bar-coloring_20260425_043524
 
-## 24_bar-coloring_20260422_044555
+## 24_bar-coloring_20260425_043524
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -14513,7 +14922,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260422_044555
+# processed_25_bar-plotting_20260425_043524
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -14626,7 +15035,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260422_044555
+# processed_26_colors_20260425_043524
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -15011,7 +15420,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_27_fills_20260422_044555
+# processed_27_fills_20260425_043524
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -15225,7 +15634,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260422_044555
+# processed_28_levels_20260425_043524
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -15315,7 +15724,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260422_044555
+# processed_29_lines-and-boxes_20260425_043524
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -16521,7 +16930,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260422_044555
+# processed_30_plots_20260425_043524
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -16879,7 +17288,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260422_044555
+# processed_31_tables_20260425_043524
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -17098,7 +17507,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260422_044555
+# processed_32_text-and-shapes_20260425_043524
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -17647,7 +18056,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260422_044555
+# processed_33_alerts_20260425_043524
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -18002,7 +18411,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260422_044555
+# processed_34_bar-states_20260425_043524
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -18138,7 +18547,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_35_chart-information_20260422_044555
+# processed_35_chart-information_20260425_043524
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -18229,7 +18638,7 @@ Session information is available in different forms:
 
 
 
-# processed_36_inputs_20260422_044555
+# processed_36_inputs_20260425_043524
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -18860,7 +19269,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260422_044555
+# processed_37_libraries_20260425_043524
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -19242,7 +19651,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260422_044555
+# processed_38_non-standard-charts-data_20260425_043524
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -19352,7 +19761,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_39_other-timeframes-and-data_20260422_044555
+# processed_39_other-timeframes-and-data_20260425_043524
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -22532,7 +22941,7 @@ library("DynamicRequests")
 
 
 
-# processed_40_repainting_20260422_044555
+# processed_40_repainting_20260425_043524
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -22800,7 +23209,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260422_044555
+# processed_41_sessions_20260425_043524
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -23152,7 +23561,7 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260422_044555
+# processed_42_strategies_20260425_043524
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -25087,7 +25496,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260422_044555
+# processed_43_strings_20260425_043524
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -26800,7 +27209,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260422_044555
+# processed_44_time_20260425_043524
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -28330,7 +28739,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260422_044555
+# processed_45_timeframes_20260425_043524
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -28378,7 +28787,7 @@ Note that:
 
 
 
-# processed_46_style-guide_20260422_044555
+# processed_46_style-guide_20260425_043524
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -28756,7 +29165,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260422_044555
+# processed_47_debugging_20260425_043524
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -30490,7 +30899,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260422_044555
+# processed_48_profiling-and-optimization_20260425_043524
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -32118,7 +32527,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260422_044555
+# processed_49_publishing_20260425_043524
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -32350,7 +32759,7 @@ Editors’ picks. To see examples of our recommended description format, refer t
 
 
 
-# processed_50_limitations_20260422_044555
+# processed_50_limitations_20260425_043524
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -32718,7 +33127,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260422_044555
+# processed_51_overview_20260425_043524
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -32745,7 +33154,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260422_044555
+# processed_52_CE10101_20260425_043524
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -32838,7 +33247,7 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260422_044555
+# processed_53_CW10003_20260425_043524
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -32977,7 +33386,7 @@ If the use of a function call in a local block does not cause a compiler warning
 
 
 
-# processed_54_RE10139_20260422_044555
+# processed_54_RE10139_20260425_043524
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -33228,7 +33637,7 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_55_RE10143_20260422_044555
+# processed_55_RE10143_20260425_043524
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -33334,7 +33743,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260422_044555
+# processed_56_general_20260425_043524
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -33536,7 +33945,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260422_044555
+# processed_57_alerts_20260425_043524
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -34096,7 +34505,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260422_044555
+# processed_58_data-structures_20260425_043524
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -34978,7 +35387,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260422_044555
+# processed_59_functions_20260425_043524
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -35238,7 +35647,7 @@ Copied
 
 
 
-# processed_60_indicators_20260422_044555
+# processed_60_indicators_20260425_043524
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -35346,7 +35755,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260422_044555
+# processed_61_other-data-and-timeframes_20260425_043524
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -35595,7 +36004,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260422_044555
+# processed_62_programming_20260425_043524
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -35732,7 +36141,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260422_044555
+# processed_63_strategies_20260425_043524
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -36852,7 +37261,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260422_044555
+# processed_64_strings-and-formatting_20260425_043524
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -37072,7 +37481,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260422_044555
+# processed_65_techniques_20260425_043524
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -37918,7 +38327,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260422_044555
+# processed_66_times-dates-and-sessions_20260425_043524
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -38723,7 +39132,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260422_044555
+# processed_67_variables-and-operators_20260425_043524
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -38944,7 +39353,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260422_044555
+# processed_68_visuals_20260425_043524
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -39758,9 +40167,75 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260422_044555
+# processed_69_release-notes_20260425_043524
 
 ## 2026
+### April 2026
+The Pine Editor’s settings include a new “Use word wrap by default” checkbox. If selected, the Pine Editor automatically applies word wrapping when the user creates a new script, opens an existing script, or reopens the editor. The user can deactivate or reactivate word wrap for the current editor session at any time by using the `Alt + Z`/`Option + Z` hotkey or the “Toggle Word Wrap” option in the command palette.
+#### Sorting UDT collections
+The array.sort(), array.sort_indices(), and matrix.sort() functions can now sort arrays and matrices that store IDs of user-defined types (UDTs). These functions sort UDT collections by comparing values from one of the “int”, “float”, or “string” _fields_ in the objects referenced by their elements.
+The new `sort_field` _parameter_ specifies _which_ object field a call to these functions compares to sort a UDT collection. It accepts either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 (the default) refers to the _first_ field in the type declaration.
+  * A “const string” argument specifies a field by its assigned _name_.
+
+
+For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT collections demo")  
+  
+//@type  A custom type for creating objects that store "float", "int", and "string" data.  
+type Data  
+    float  price     // Field index 0.  
+    int    timestamp // Field index 1.  
+    string note      // Field index 2.  
+  
+//@function Create a formatted string representation of an array of `Data` IDs.  
+repr(array<Data> this) =>  
+    string result = "\n[\n"  
+    for data in this  
+        result += str.format(  
+            "(price: {0,number,0.000}, timestamp: {1,number,0}, note: {2}),\n",   
+            data.price, data.timestamp, data.note  
+        )  
+    result := str.replace(str.substring(result, 0, str.length(result) - 2), "[ ", "[") + "\n]"  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Data` objects representing data from a specific timeframe.  
+    array<Data> reqData = array.new<Data>(1, Data.new(hl2, time, timeframe.period))  
+    //@variable The typical number of seconds in the chart's timeframe.  
+    int tfSeconds = timeframe.in_seconds()  
+    //@variable References an array of timeframe strings.  
+    array<string> timeframes = array.from(  
+        timeframe.from_seconds(tfSeconds * 2), timeframe.from_seconds(tfSeconds * 8),   
+        timeframe.from_seconds(tfSeconds * 4)  
+    )  
+  
+    // Request a `Data` object for each timeframe and push the object's ID into the `reqData` array.  
+    for tf in timeframes  
+        reqData.push(request.security("", tf, Data.new(hl2, time, timeframe.period)))  
+  
+    // Log a message showing the unsorted array's structure.  
+    log.info("Unsorted" + repr(reqData))  
+  
+    //#region Display the structure of the array after sorting it using each field.   
+  
+    // First, let's sort the `reqData` array using the default `sort_field` argument (0) and log the result.  
+    // The default value refers to the *first field* listed in the `Data` type declaration (`price`).   
+    array.sort(reqData)  
+    log.info("Sorted using field 0 ('price')" + repr(reqData))  
+  
+    // Next, let's sort the array using the field named `timestamp` (at index 1) and log the result.  
+    reqData.sort(sort_field = "timestamp")  
+    log.info("Sorted using field named 'timestamp' (index 1)" + repr(reqData))  
+  
+    // Lastly, let's sort the array using the field at index 2 (`note`) and log the result.  
+    reqData.sort(sort_field = 2)  
+    log.info("Sorted using field 2 ('note')" + repr(reqData))  
+    //#endregion  
+`
+Refer to the Sorting arrays of user-defined types section of the Arrays page and the Sorting matrices of user-defined types section of the Matrices page to learn more about sorting UDT collections and the `sort_field` parameter.
 ### January 2026
 #### Footprint requests
 We’ve added a new request.footprint() function and two new _data types_ , footprint and volume_row. These features enable scripts to retrieve and work with volume footprint data for a chart’s dataset:
@@ -40984,6 +41459,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ## * Overview
 * 2026
+  * April 2026
+  * Sorting UDT collections
   * January 2026
   * Footprint requests
   * 2025
@@ -41125,7 +41602,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260422_044555
+# processed_70_overview_20260425_043524
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -41137,7 +41614,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260422_044555
+# processed_71_to-pine-version-6_20260425_043524
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -42127,7 +42604,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260422_044555
+# processed_72_to-pine-version-5_20260425_043524
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -42559,7 +43036,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 
 
 
-# processed_73_to-pine-version-4_20260422_044555
+# processed_73_to-pine-version-4_20260425_043524
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -42604,7 +43081,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260422_044555
+# processed_74_to-pine-version-3_20260425_043524
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -42725,9 +43202,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260422_044555
+# processed_75_to-pine-version-2_20260425_043524
 
-## 75_to-pine-version-2_20260422_044555
+## 75_to-pine-version-2_20260425_043524
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -42784,7 +43261,7 @@ plot(sma(src, length))
 
 
 
-# processed_76_where-can-i-get-more-information_20260422_044555
+# processed_76_where-can-i-get-more-information_20260425_043524
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.

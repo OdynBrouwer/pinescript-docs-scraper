@@ -1,4 +1,70 @@
 ## 2026
+### April 2026
+The Pine Editor’s settings include a new “Use word wrap by default” checkbox. If selected, the Pine Editor automatically applies word wrapping when the user creates a new script, opens an existing script, or reopens the editor. The user can deactivate or reactivate word wrap for the current editor session at any time by using the `Alt + Z`/`Option + Z` hotkey or the “Toggle Word Wrap” option in the command palette.
+#### Sorting UDT collections
+The array.sort(), array.sort_indices(), and matrix.sort() functions can now sort arrays and matrices that store IDs of user-defined types (UDTs). These functions sort UDT collections by comparing values from one of the “int”, “float”, or “string” _fields_ in the objects referenced by their elements.
+The new `sort_field` _parameter_ specifies _which_ object field a call to these functions compares to sort a UDT collection. It accepts either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 (the default) refers to the _first_ field in the type declaration.
+  * A “const string” argument specifies a field by its assigned _name_.
+
+
+For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT collections demo")  
+  
+//@type  A custom type for creating objects that store "float", "int", and "string" data.  
+type Data  
+    float  price     // Field index 0.  
+    int    timestamp // Field index 1.  
+    string note      // Field index 2.  
+  
+//@function Create a formatted string representation of an array of `Data` IDs.  
+repr(array<Data> this) =>  
+    string result = "\n[\n"  
+    for data in this  
+        result += str.format(  
+            "(price: {0,number,0.000}, timestamp: {1,number,0}, note: {2}),\n",   
+            data.price, data.timestamp, data.note  
+        )  
+    result := str.replace(str.substring(result, 0, str.length(result) - 2), "[ ", "[") + "\n]"  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Data` objects representing data from a specific timeframe.  
+    array<Data> reqData = array.new<Data>(1, Data.new(hl2, time, timeframe.period))  
+    //@variable The typical number of seconds in the chart's timeframe.  
+    int tfSeconds = timeframe.in_seconds()  
+    //@variable References an array of timeframe strings.  
+    array<string> timeframes = array.from(  
+        timeframe.from_seconds(tfSeconds * 2), timeframe.from_seconds(tfSeconds * 8),   
+        timeframe.from_seconds(tfSeconds * 4)  
+    )  
+  
+    // Request a `Data` object for each timeframe and push the object's ID into the `reqData` array.  
+    for tf in timeframes  
+        reqData.push(request.security("", tf, Data.new(hl2, time, timeframe.period)))  
+  
+    // Log a message showing the unsorted array's structure.  
+    log.info("Unsorted" + repr(reqData))  
+  
+    //#region Display the structure of the array after sorting it using each field.   
+  
+    // First, let's sort the `reqData` array using the default `sort_field` argument (0) and log the result.  
+    // The default value refers to the *first field* listed in the `Data` type declaration (`price`).   
+    array.sort(reqData)  
+    log.info("Sorted using field 0 ('price')" + repr(reqData))  
+  
+    // Next, let's sort the array using the field named `timestamp` (at index 1) and log the result.  
+    reqData.sort(sort_field = "timestamp")  
+    log.info("Sorted using field named 'timestamp' (index 1)" + repr(reqData))  
+  
+    // Lastly, let's sort the array using the field at index 2 (`note`) and log the result.  
+    reqData.sort(sort_field = 2)  
+    log.info("Sorted using field 2 ('note')" + repr(reqData))  
+    //#endregion  
+`
+Refer to the Sorting arrays of user-defined types section of the Arrays page and the Sorting matrices of user-defined types section of the Matrices page to learn more about sorting UDT collections and the `sort_field` parameter.
 ### January 2026
 #### Footprint requests
 We’ve added a new request.footprint() function and two new _data types_ , footprint and volume_row. These features enable scripts to retrieve and work with volume footprint data for a chart’s dataset:
@@ -1222,6 +1288,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ## * Overview
 * 2026
+  * April 2026
+  * Sorting UDT collections
   * January 2026
   * Footprint requests
   * 2025
