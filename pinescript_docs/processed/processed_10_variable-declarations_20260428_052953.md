@@ -934,28 +934,18 @@ This code is not the most efficient way to achieve the intended result, because 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Inefficient line management demo", overlay = true)  
+indicator("Persistent built-in object demo")  
   
-//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
-bool newPeriod = timeframe.change("1D")  
+//@variable Stores a persistent reference to a `chart.point` object. The object's fields persist across ticks.  
+varip chart.point testPoint = chart.point.now(0)  
   
-// Retrieve the `time` and `open` values from the last bar where the `newPeriod` value was `true`,  
-// and assign the results to variables.  
-int   openTime  = ta.valuewhen(newPeriod, time, 0)  
-float openPrice = ta.valuewhen(newPeriod, open, 0)  
+// Increment the `price` field of the persistent chart point.  
+testPoint.price += 1  
   
-// Declare a variable to reference the latest line.  
-line currLine = na  
-  
-if barstate.islast  
-    // Create a new `line` object and assign its ID to the `currLine` variable.  
-    currLine := line.new(openTime, openPrice, time, close, xloc.bar_time)  
-    // Delete the line drawn on the previous bar if the `newPeriod` value is `false`.  
-    if not newPeriod  
-        line.delete(currLine[1])  
-// On historical bars where a new period starts, draw a line connecting the period's final values.  
-else if newPeriod  
-    currLine := line.new(openTime[1], openPrice[1], time[1], close[1], xloc.bar_time)  
+// Plot the field's value on the chart.  
+plot(testPoint.price, "Persistent `price` field value", linewidth = 3)  
+// Highlight the background of realtime bars for visual reference.  
+bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = "Realtime bar highlight")  
 `
 The following script version demonstrates a simpler and more efficient way to achieve the same result. It uses the var keyword in the `currLine` variable declaration to initialize the variable on only the first bar. On historical bars where a new period starts, the script calls line.set_xy2() to update the end coordinates of the current line referenced by the `currLine` variable, and then creates a new line for the current bar and reassigns the variable to store that line’s ID. On the latest bar where the current period is open, the script passes the variable to a line.set_xy2() call to update the current line instead of deleting that line and creating a new one:
 !image
