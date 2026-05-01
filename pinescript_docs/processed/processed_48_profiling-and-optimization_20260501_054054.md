@@ -246,21 +246,22 @@ This example contains a user-defined `similarity()` function that estimates the 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Profiling across configurations demo")  
+indicator("User-defined function calls demo")  
   
-//@variable The number of previous bars in the calculation. Directly affects the number of loop iterations.  
-int lengthInput = input.int(25, "Length", 1)  
+//@function Estimates the similarity between two standardized series over `length` bars.  
+//          Each individual call to this function activates its local scope.  
+similarity(float sourceA, float sourceB, int length) =>  
+    // Standardize `sourceA` and `sourceB` for comparison.  
+    float normA = (sourceA - ta.sma(sourceA, length)) / ta.stdev(sourceA, length)  
+    float normB = (sourceB - ta.sma(sourceB, length)) / ta.stdev(sourceB, length)  
+    // Calculate and return the estimated similarity of `normA` and `normB`.  
+    float abSum = math.sum(normA * normB, length)  
+    float a2Sum = math.sum(normA * normA, length)  
+    float b2Sum = math.sum(normB * normB, length)  
+    abSum / math.sqrt(a2Sum * b2Sum)  
   
-//@variable The sum of squared distances from the current `close` to `lengthInput` past `close` values.  
-float total = 0.0  
-  
-// Look back across `lengthInput` bars and accumulate squared distances.  
-for i = 1 to lengthInput  
-    float distance = close - close[i]  
-    total += distance * distance  
-  
-// Plot the square root of the `total`.  
-plot(math.sqrt(total))  
+// Plot the similarity between the `close` and an offset `close` series.  
+plot(similarity(close, close[1], 100), "Similarity 1", color.red)  
 `
 Let’s increase the number of times the script calls the function each time it executes. Here, we changed the script to call our user-defined function _five times_ :
 Pine Script®
