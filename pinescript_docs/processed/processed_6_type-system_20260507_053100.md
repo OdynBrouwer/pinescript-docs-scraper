@@ -113,13 +113,20 @@ The following script attempts to use the value of the close variable as the init
 Pine Script®
 Copied
 `//@version=6  
-indicator("Cannot assign values with stronger qualifiers demo")  
+indicator("plot fill demo", overlay = true)  
   
-// This declaration causes an error. The value of `close` is of the type "series float",   
-// but `myVar` accepts only a "const float" value.   
-const float myVar = close  
+//@variable A "series float" value representing a 10-bar EMA of `close`.  
+float emaFast = ta.ema(close, 10)  
+//@variable A "series float" value representing a 20-bar EMA of `close`.  
+float emaSlow = ta.ema(close, 20)  
   
-plot(myVar)  
+//@variable Holds the ID of the plot that displays the `emaFast` series.  
+emaFastPlot = plot(emaFast, "Fast EMA", color.orange, 3)  
+//@variable Holds the ID of the plot that displays the `emaSlow` series.  
+emaSlowPlot = plot(emaSlow, "Slow EMA", color.gray, 3)  
+  
+// Color the space between the outputs from the "plot" objects referenced by `emaFastPlot` and `emaSlowPlot`.  
+fill(emaFastPlot, emaSlowPlot, color.new(color.purple, 50), "EMA Fill")  
 `
 Note that:
   * If we remove the const keyword from the variable declaration, the `myVar` variable automatically inherits the “series” qualifier, and no error occurs.
@@ -754,8 +761,8 @@ myVar = na
 To resolve this error, we must explicitly define the variable’s type in the code. For instance, if the `myVar` variable will store “float” values, we can prefix the variable with the float keyword to specify its type as “float”:
 Pine Script®
 Copied
-`// It is clear to the compiler that this variable accepts "float" values, so this declaration does not cause an error.  
-float myVar = na  
+`// This declaration does not cause an error, because `na` is cast to "float", and `myVar` inherits the type.  
+myVar = float(na)  
 `
 Alternatively, we can use the float() function to explicitly cast the na value’s type to “float”, causing the variable to automatically inherit the “float” type:
 Pine Script®

@@ -123,21 +123,19 @@ The script below demonstrates the difference in behavior by plotting the results
 Pine Script®
 Copied
 `//@version=6  
-indicator("Lower timeframe security demo", overlay = true)  
+indicator("`gaps` demo", overlay = true)  
   
-//@variable The valid timeframe closest to 1/4 the size of the chart timeframe.  
-string lowerTimeframe = timeframe.from_seconds(int(timeframe.in_seconds() / 4))  
+//@variable The `close` requested from the hourly timeframe without gaps.  
+float dataWithoutGaps = request.security(syminfo.tickerid, "60", close, gaps = barmerge.gaps_off)  
+//@variable The `close` requested from the hourly timeframe with gaps.  
+float dataWithGaps = request.security(syminfo.tickerid, "60", close, gaps = barmerge.gaps_on)  
   
-//@variable The `close` value on the `lowerTimeframe`. Represents the first intrabar value on each chart bar.  
-float firstLTFClose = request.security(syminfo.tickerid, lowerTimeframe, close, lookahead = barmerge.lookahead_on)  
-//@variable The `close` value on the `lowerTimeframe`. Represents the last intrabar value on each chart bar.  
-float lastLTFClose = request.security(syminfo.tickerid, lowerTimeframe, close)  
+// Plot the requested data.  
+plot(dataWithoutGaps, "Data without gaps", color.blue, 3, plot.style_linebr)  
+plot(dataWithGaps, "Data with gaps", color.purple, 15, plot.style_linebr)  
   
-// Plot the values.  
-plot(firstLTFClose, "First intrabar close", color.teal, 3)  
-plot(lastLTFClose, "Last intrabar close", color.purple, 3)  
-// Highlight the background on realtime bars.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 70) : na, title = "Realtime background highlight")  
+// Highlight the background for realtime bars.  
+bgcolor(barstate.isrealtime ? color.new(color.aqua, 70) : na, title = "Realtime bar highlight")  
 `
 Note that:
     * The script plots the requested series as lines with breaks (plot.style_linebr), which do not bridge over na values as the default style (plot.style_line) does.
