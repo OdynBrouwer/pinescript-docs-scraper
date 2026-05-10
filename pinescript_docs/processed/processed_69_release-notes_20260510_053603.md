@@ -1,5 +1,67 @@
 ## 2026
 ### April 2026
+#### Multiline strings
+We’ve added support for multiline strings. A multiline string is a literal “string” value enclosed by _three_ pairs of quotation marks (e.g., `"""..."""`) or apostrophes (e.g., `'''...'''`). Unlike single-line string syntax (e.g., `"..."`), which typically defines a literal string on a single line of code, the multiline syntax can define a literal string across _multiple_ visible code lines.
+All code between the `"""` or `'''` delimiters in a multiline string definition represents _literal text_. Each code line between the delimiters defines a separate _text line_ for the string. The resulting string automatically includes the _newline_ control character between each separate line; it does _not_ require the `\n` escape sequence to insert the character at those points. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Multiline string demo")  
+  
+//@variable A multiline string enclosed by `"""` delimiters.  
+string multilineStr = """This is a multiline string.  
+Each of these code lines literally represents a separate line of text.   
+The newline character is automatically included before each new line.   
+We do not have to manually add the `\\n` escape sequence to separate the lines."""  
+  
+// Log the string's text in the Pine Logs pane on the first bar.  
+if barstate.isfirst  
+    log.info(multilineStr)  
+`
+Likewise, multiline strings automatically include _all spaces_ used for indentation in the code, regardless of the code blocks that include their definitions. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Indentation in multiline strings demo")  
+  
+//@variable A multiline string with indentation defined in the global scope.  
+string globalIndentedStr = """No indentation.  
+Also no indentation.  
+ Indented by one space.  
+    Indented by four spaces.  
+            Indented by 12 spaces.  
+"""  
+  
+if barstate.islastconfirmedhistory  
+    //@variable A multiline string with indentation defined in a local block.  
+    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
+    //          Any indentation in the definition is still included literally in the string.  
+    string localIndentedStr = """---  
+No indentation.  
+    Indented by four spaces.   
+    """  
+  
+    // Concatenate both strings and display the result in a label.  
+    label.new(bar_index, 0, globalIndentedStr + localIndentedStr, textalign = text.align_left)  
+`
+Expressions can use multiline strings as operands and arguments, just like single-line strings. Therefore, programmers can use the multiline string syntax to create unique line wrapping formats in their code. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Line wrapping expressions with multiline strings demo")  
+  
+//@variable A string formed by concatenating three multiline strings.  
+string concatenated = """String 1  
+""" + """String 2  
+""" + '''String 3  
+'''  
+  
+// Log the resulting string's text in the Pine Logs pane on the first bar.  
+if barstate.isfirst  
+    log.info(concatenated)  
+`
+See the Multiline strings section of the Strings page to learn more about multiline strings and how they differ from single-line strings.
+#### Updated editor settings
 The Pine Editor’s settings include a new “Use word wrap by default” checkbox. If selected, the Pine Editor automatically applies word wrapping when the user creates a new script, opens an existing script, or reopens the editor. The user can deactivate or reactivate word wrap for the current editor session at any time by using the `Alt + Z`/`Option + Z` hotkey or the “Toggle Word Wrap” option in the command palette.
 #### Sorting UDT collections
 The array.sort(), array.sort_indices(), and matrix.sort() functions can now sort arrays and matrices that store IDs of user-defined types (UDTs). These functions sort UDT collections by comparing values from one of the “int”, “float”, or “string” _fields_ in the objects referenced by their elements.
@@ -1289,6 +1351,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 ## * Overview
 * 2026
   * April 2026
+  * Multiline strings
+  * Updated editor settings
   * Sorting UDT collections
   * January 2026
   * Footprint requests
