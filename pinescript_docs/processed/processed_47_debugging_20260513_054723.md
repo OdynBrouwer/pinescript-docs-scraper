@@ -348,42 +348,29 @@ In this example, we’ve modified the “Average bar ratio” script from the Pi
 Pine Script®
 Copied
 `//@version=6  
-indicator("Drawing on successive bars demo", "Average bar ratio")  
+indicator("Plotting without affecting the scale demo", "Weighted average", true, precision = 5)  
   
-//@variable The current bar's change from the `open` to `close`.  
-float numerator = close - open  
-//@variable The current bar's `low` to `high` range.  
-float denominator = high - low  
-//@variable The ratio of the bar's open-to-close change to its full range.  
-float ratio = numerator / denominator  
-//@variable The average `ratio` over 10 *non-na* values.  
-float average = ta.sma(ratio, 10)  
+//@variable The number of bars in the average.  
+int lengthInput = input.int(20, "Length", 1)  
+  
+//@variable The weight applied to the price on each bar.  
+float weight = math.pow(close - open, 2)  
+  
+//@variable The numerator of the average.  
+float numerator = math.sum(weight * close, lengthInput)  
+//@variable The denominator of the average.  
+float denominator = math.sum(weight, lengthInput)  
+  
+//@variable The weighted average over `lengthInput` bars.  
+float average = numerator / denominator  
   
 // Plot the `average`.  
-plot(average, "average", color.purple, 3)  
+plot(average, "Weighted average", linewidth = 3)  
   
-if barstate.isconfirmed  
-    if denominator == 0  
-        string debugText = "Division by 0 on confirmed bar!\nBar excluded from the average."  
-        label.new(bar_index, high, debugText, color = color.red, textcolor = #000000, force_overlay = true)  
-    else  
-        string debugText = str.format(  
-            "Values (Confirmed):\nnumerator: {0,number,#.########}\ndenominator: {1,number,#.########}"  
-            + "\nratio: {2,number,#.########}\naverage: {3,number,#.########}",  
-            numerator, denominator, ratio, average  
-        )  
-        label.new(bar_index, high, debugText, textcolor = #ffffff, force_overlay = true)  
-else  
-    if denominator == 0  
-        string debugText = "Division by 0 on unconfirmed bar!"  
-        label.new(bar_index, high, debugText, color = color.red, textcolor = #000000, force_overlay = true)  
-    else  
-        string debugText = str.format(  
-            "Values (unconfirmed):\nnumerator: {0,number,#.########}\ndenominator: {1,number,#.########}"  
-            + "\nratio: {2,number,#.########}\naverage: {3,number,#.########}",  
-            numerator, denominator, ratio, average  
-        )  
-        label.new(bar_index, high, debugText, color = color.orange, textcolor = #000000, force_overlay = true)  
+// Create debug plots for the `weight`, `numerator`, and `denominator`.  
+plot(weight,      "weight",      color.purple)  
+plot(numerator,   "numerator",   color.teal)  
+plot(denominator, "denominator", color.maroon)  
 `
 Note that:
   * The label.new() calls include `force_overlay = true`, meaning the labels always appear on the main chart pane.
