@@ -1,4 +1,4 @@
-## 8_identifiers_20260513_054723
+## 8_identifiers_20260516_052543
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
