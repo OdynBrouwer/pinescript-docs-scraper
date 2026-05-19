@@ -318,16 +318,21 @@ In this case, the number of executions the Profiler shows on line 8 still corres
 Pine Script®
 Copied
 `//@version=6  
-indicator("When requesting other contexts demo")  
+indicator("Script takes too long while profiling demo", calc_bars_count = 10000)  
   
-//@variable An array containing the `close` value from every available price update.  
-varip array<float> pricesArray = array.new<float>()  
+//@function Calculates the greatest common divisor of `a` and `b` using a naive algorithm.  
+gcd(int a, int b) =>  
+    //@variable The greatest common divisor.  
+    int result = math.max(math.min(math.abs(a), math.abs(b)), 1)  
+    // Reduce the `result` by 1 until it divides `a` and `b` without remainders.  
+    while result > 0  
+        if a % result == 0 and b % result == 0  
+            break  
+        result -= 1  
+    // Return the `result`.  
+    result  
   
-// Push a new `close` value into the `pricesArray` on each update.  
-array.push(pricesArray, close)  
-  
-// Plot the size of the `pricesArray` requested from the daily timeframe.  
-plot(request.security(syminfo.tickerid, "1D", array.size(pricesArray)), "Total number of daily price updates")  
+plot(gcd(10000, 10000 + bar_index), "GCD")  
 `
 Note that:
   * The requested EOD data in this example had fewer data points than our intraday chart, so the array.push() call required fewer executions in this case. However, EOD feeds _do not_ have history limitations, meaning it’s also possible for requested HTF data to span **more** bars than a user’s chart, depending on the timeframe, the data provider, and the user’s plan.
