@@ -221,40 +221,34 @@ The following example script shows two code structures that work in v5 but raise
 !image
 Pine Script®
 Copied
-`//@version=6  
-strategy("Strategy order limit demo", overlay=true, pyramiding=5)  
+`//@version=5  
+indicator("`na` and unique types demo v5")  
   
-//@variable Count of total orders placed.  
-var int totalOrders = 0  
+//@variable User-selected "string" to determine type of plot used for `plot()` function's `style` argument.  
+string inputStyle = input.string("Area", "Plot style", options = ["Area", "Columns", "Histogram", "Stepline-diamond"])  
   
-// Place several long orders on every even bar.  
-if bar_index % 2 == 0  
-    for i = 1 to 5  
-        strategy.entry("Entry " + str.tostring(i), strategy.long, qty = 5)  
-        totalOrders += 1  
-// Place short orders on every odd bar.  
-else  
-    strategy.entry("Short", strategy.short, qty = 25)  
-    totalOrders += 1  
+// Initialize an `input plot_style` type variable based on user's selected `inputStyle`.  
+selectedPlotStyle = switch inputStyle  
+    "Area"             => plot.style_area  
+    "Columns"          => plot.style_columns  
+    "Histogram"        => plot.style_histogram  
+    "Stepline-diamond" => plot.style_stepline_diamond  
+// `switch` statement covers all `inputStyle` options, but does not include `default` block.  
+// Valid in v5. Invalid in v6 - `switch` statement must include a `default` block, otherwise raises error.  
   
-// Display total orders and index of first non-trimmed trade in a table cell on last bar.  
-if barstate.islastconfirmedhistory  
-    var table t = table.new(position.bottom_right, 1, 3, color.yellow, color.black, 1)  
-    // Display total orders and closed trades counts.  
-    string ordersText = "Total orders: " + str.tostring(totalOrders, "#,###")  
-         + "\n Closed trades: " + str.tostring(strategy.closedtrades, "#,###")  
-    t.cell(0, 0, ordersText, text_halign = text.align_right, text_size = size.large)  
+plot(close, "Source plot", color.blue, 2, style = selectedPlotStyle)  
   
-    // Display the first non-trimmed trade index and its entry price.  
-    string firstTradeIndex = str.tostring(strategy.closedtrades.first_index, "#,###")  
-    string firstTradePrice = str.tostring(strategy.closedtrades.entry_price(strategy.closedtrades.first_index), "$##.##")  
-    string firstTradeText = str.format("Index of first non-trimmed trade: {0}\nEntry price of trade #{0}: {1}", firstTradeIndex, firstTradePrice)  
-    t.cell(0, 1, firstTradeText, text_halign = text.align_right, text_size = size.large, bgcolor = #61dd5165)  
+//@variable Toggle for the style of the line plotted at price "100".  
+inputHundredStyle = input.bool(true, " Use crosses style for '100-line'")  
   
-    // Trying to reference the trimmed trades (e.g., first closed trade) returns `na`.  
-    if totalOrders > 9000  
-        string trimmedTradePrice = "Entry price of trade #0: " + str.tostring(strategy.closedtrades.entry_price(0))  
-        t.cell(0, 2, trimmedTradePrice, text_size = size.large, bgcolor = #dd51c665)  
+hundredLineStyle = if inputHundredStyle  
+    plot.style_cross  
+// Since there is no `else` block, setting `inputHundredStyle` to `false` makes this variable `na`.  
+// In v5, passing `na` to the `style` parameter makes the `plot()` function use its default style `plot.style_line`.  
+// In v6, this raises a compilation error because `style` cannot be `na`.  
+  
+// Plot the "100-line" using the `hundredLineStyle` style constant.  
+plot(100, "100-line", color.orange, 4, style = hundredLineStyle)  
 `
 **Fix:** Ensure that no na value is passed to parameters that expect unique types, and that all conditional statements return a suitable non-na value.
 Pine Script®

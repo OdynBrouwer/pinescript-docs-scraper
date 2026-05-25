@@ -112,8 +112,14 @@ NoteUsing the const keyword in a script is usually optional. However, the keywor
 The following script attempts to use the value of the close variable as the initial value of a `myVar` variable declared using the const keyword. However, close is _not compatible_ with the variable, so a compilation error occurs. The value of close is of the type _“series float”_ , because it updates from bar to bar, but the `myVar` variable requires a “const float” value:
 Pine Script®
 Copied
-`true    // true value  
-false   // false value  
+`//@version=6  
+indicator("Cannot assign values with stronger qualifiers demo")  
+  
+// This declaration causes an error. The value of `close` is of the type "series float",   
+// but `myVar` accepts only a "const float" value.   
+const float myVar = close  
+  
+plot(myVar)  
 `
 Note that:
   * If we remove the const keyword from the variable declaration, the `myVar` variable automatically inherits the “series” qualifier, and no error occurs.

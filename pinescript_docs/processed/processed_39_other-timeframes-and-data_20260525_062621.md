@@ -713,28 +713,25 @@ For example, the following script calculates the percent rank of the close serie
 Pine Script®
 Copied
 `//@version=6  
-indicator("Requesting tuples demo", "Percent rank cross")  
+indicator("Avoiding HTF repainting demo", overlay = true)  
   
-//@variable The timeframe of the request.  
-string timeframe = input.timeframe("240", "Timeframe")  
-//@variable The number of bars in the calculation.  
-int length = input.int(20, "Length")  
+//@variable The multiplier applied to the chart's timeframe.  
+int tfMultiplier = input.int(10, "Timeframe multiplier", 1)  
+//@variable The number of bars in the moving average.  
+int length = input.int(5, "WMA smoothing length")  
   
-//@variable The previous bar's percent rank of the `close` price over `length` bars.  
-float rank = ta.percentrank(close, length)[1]  
+//@variable The valid timeframe string closest to `tfMultiplier` times larger than the chart timeframe.  
+string timeframe = timeframe.from_seconds(timeframe.in_seconds() * tfMultiplier)  
   
-// Request the `rank` value from another `timeframe`, and two "bool" values indicating the `rank` from the `timeframe`  
-// crossed over or under 50.  
-[requestedRank, crossOver, crossUnder] = request.security(  
-     syminfo.tickerid, timeframe, [rank, ta.crossover(rank, 50), ta.crossunder(rank, 50)],  
-     lookahead = barmerge.lookahead_on  
- )  
+//@variable The weighted MA of `close` prices over `length` bars on the `timeframe`.  
+//          This request repaints because it includes unconfirmed HTF data on realtime bars and it may offset the  
+//          times of its historical results.  
+float requestedWMA = request.security(syminfo.tickerid, timeframe, ta.wma(close, length))  
   
-// Plot the `requestedRank` and create a horizontal line at 50.  
-plot(requestedRank, "Percent Rank", linewidth = 3)  
-hline(50, "Cross line", linewidth = 2)  
-// Highlight the background of all bars where the `timeframe`'s `crossOver` or `crossUnder` value is `true`.  
-bgcolor(crossOver ? color.new(color.green, 50) : crossUnder ? color.new(color.red, 50) : na)  
+// Plot the requested series.  
+plot(requestedWMA, "HTF WMA", color.purple, 3)  
+// Highlight the background on realtime bars.  
+bgcolor(barstate.isrealtime ? color.new(color.orange, 70) : na, title = "Realtime bar highlight")  
 `
 Note that:
   * We’ve offset the `rank` variable’s expression by one bar using the history-referencing operator [[]] and included barmerge.lookahead_on in the request.security() call to ensure the values on realtime bars do not repaint after becoming historical bars. See the Avoiding repainting section for more information.
