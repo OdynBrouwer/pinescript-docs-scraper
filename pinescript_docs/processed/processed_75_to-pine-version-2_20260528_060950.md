@@ -1,4 +1,4 @@
-## 75_to-pine-version-2_20260525_062621
+## 75_to-pine-version-2_20260528_060950
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2

@@ -156,39 +156,24 @@ The script displays a formatted string representing the symbol’s estimated mar
 Pine Script®
 Copied
 `//@version=6  
-indicator("`ignore_invalid_symbol` demo", "Market cap estimate", format = format.volume)  
+indicator("'series' arguments demo")  
+   
+//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
+string symbolSeries = switch int(bar_index / 5) % 4  
+    1 => "NASDAQ:MSFT"  
+    2 => "NASDAQ:AMD"  
+    3 => "NASDAQ:INTC"  
+    =>   "AMEX:SPY"  
   
-//@variable The symbol to request data from.  
-string symbol = input.symbol("TSX:SHOP", "Symbol")  
+//@variable The requested `close` value from one of the four `symbolSeries` values on the chart's timeframe.  
+float requestedClose = request.security(symbolSeries, timeframe.period, close)  
   
-//@function Estimates the market capitalization of the specified `tickerID` if the data exists.  
-calcMarketCap(simple string tickerID) =>  
-    //@variable The quarterly total shares outstanding for the `tickerID`. Returns `na` when the data isn't available.  
-    float tso = request.financial(tickerID, "TOTAL_SHARES_OUTSTANDING", "FQ", ignore_invalid_symbol = true)  
-    //@variable The `close` price and currency for the `tickerID`. Returns `[na, na]` when the `tickerID` is invalid.  
-    [price, currency] = request.security(  
-         tickerID, timeframe.period, [close, syminfo.currency], ignore_invalid_symbol = true  
-     )  
-    // Return a tuple containing the market cap estimate and the quote currency.  
-    [tso * price, currency]  
+// Plot the `requestedClose`.  
+plot(requestedClose, "Requested close", color.purple, 3)  
   
-//@variable A `table` object with a single cell that displays the `marketCap` and `quoteCurrency`.  
-var table infoTable = table.new(position.top_right, 1, 1)  
-// Initialize the table's cell on the first bar.  
-if barstate.isfirst  
-    table.cell(infoTable, 0, 0, "", text_color = color.white, text_size = size.huge, bgcolor = color.teal)  
-  
-// Get the market cap estimate and quote currency for the `symbol`.  
-[marketCap, quoteCurrency] = calcMarketCap(symbol)  
-  
-if barstate.islast  
-    //@variable The formatted text displayed inside the `infoTable`.  
-    string tableText = str.format("Market cap:\n{0} {1}", str.tostring(marketCap, format.volume), quoteCurrency)  
-    // Update the `infoTable`.  
-    table.cell_set_text(infoTable, 0, 0, tableText)  
-  
-// Plot the `marketCap` value.  
-plot(marketCap, "Market cap", color.new(color.purple, 60), style = plot.style_area)  
+// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
+if symbolSeries != symbolSeries[1]  
+    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
 `
 Note that:
   * The `calcMarketCap()` function only returns non-na values on valid instruments with total shares outstanding data, such as the one we selected for this example. It returns na on others that do not have financial data, including forex, crypto, and derivatives.
@@ -713,25 +698,28 @@ For example, the following script calculates the percent rank of the close serie
 Pine Script®
 Copied
 `//@version=6  
-indicator("Avoiding HTF repainting demo", overlay = true)  
+indicator("Requesting tuples demo", "Percent rank cross")  
   
-//@variable The multiplier applied to the chart's timeframe.  
-int tfMultiplier = input.int(10, "Timeframe multiplier", 1)  
-//@variable The number of bars in the moving average.  
-int length = input.int(5, "WMA smoothing length")  
+//@variable The timeframe of the request.  
+string timeframe = input.timeframe("240", "Timeframe")  
+//@variable The number of bars in the calculation.  
+int length = input.int(20, "Length")  
   
-//@variable The valid timeframe string closest to `tfMultiplier` times larger than the chart timeframe.  
-string timeframe = timeframe.from_seconds(timeframe.in_seconds() * tfMultiplier)  
+//@variable The previous bar's percent rank of the `close` price over `length` bars.  
+float rank = ta.percentrank(close, length)[1]  
   
-//@variable The weighted MA of `close` prices over `length` bars on the `timeframe`.  
-//          This request repaints because it includes unconfirmed HTF data on realtime bars and it may offset the  
-//          times of its historical results.  
-float requestedWMA = request.security(syminfo.tickerid, timeframe, ta.wma(close, length))  
+// Request the `rank` value from another `timeframe`, and two "bool" values indicating the `rank` from the `timeframe`  
+// crossed over or under 50.  
+[requestedRank, crossOver, crossUnder] = request.security(  
+     syminfo.tickerid, timeframe, [rank, ta.crossover(rank, 50), ta.crossunder(rank, 50)],  
+     lookahead = barmerge.lookahead_on  
+ )  
   
-// Plot the requested series.  
-plot(requestedWMA, "HTF WMA", color.purple, 3)  
-// Highlight the background on realtime bars.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 70) : na, title = "Realtime bar highlight")  
+// Plot the `requestedRank` and create a horizontal line at 50.  
+plot(requestedRank, "Percent Rank", linewidth = 3)  
+hline(50, "Cross line", linewidth = 2)  
+// Highlight the background of all bars where the `timeframe`'s `crossOver` or `crossUnder` value is `true`.  
+bgcolor(crossOver ? color.new(color.green, 50) : crossUnder ? color.new(color.red, 50) : na)  
 `
 Note that:
   * We’ve offset the `rank` variable’s expression by one bar using the history-referencing operator [[]] and included barmerge.lookahead_on in the request.security() call to ensure the values on realtime bars do not repaint after becoming historical bars. See the Avoiding repainting section for more information.
@@ -2919,243 +2907,7 @@ request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count)
 ## Function Documentation
 
 
-@function Estimates the market capitalization of the specified `tickerID` if the data exists.  
-calcMarketCap(simple string tickerID) =>  
-    //@variable The quarterly total shares outstanding for the `tickerID`. Returns `na` when the data isn't available.  
-    float tso = request.financial(tickerID, "TOTAL_SHARES_OUTSTANDING", "FQ", ignore_invalid_symbol = true)  
-    //@variable The `close` price and currency for the `tickerID`. Returns `[na, na]` when the `tickerID` is invalid.  
-    [price, currency] = request.security(  
-         tickerID, timeframe.period, [close, syminfo.currency], ignore_invalid_symbol = true  
-     )  
-    // Return a tuple containing the market cap estimate and the quote currency.  
-    [tso * price, currency]  
-  
-//@variable A `table` object with a single cell that displays the `marketCap` and `quoteCurrency`.  
-var table infoTable = table.new(position.top_right, 1, 1)  
-// Initialize the table's cell on the first bar.  
-if barstate.isfirst  
-    table.cell(infoTable, 0, 0, "", text_color = color.white, text_size = size.huge, bgcolor = color.teal)  
-  
-// Get the market cap estimate and quote currency for the `symbol`.  
-[marketCap, quoteCurrency] = calcMarketCap(symbol)  
-  
-if barstate.islast  
-    //@variable The formatted text displayed inside the `infoTable`.  
-    string tableText = str.format("Market cap:\n{0} {1}", str.tostring(marketCap, format.volume), quoteCurrency)  
-    // Update the `infoTable`.  
-    table.cell_set_text(infoTable, 0, 0, tableText)  
-  
-// Plot the `marketCap` value.  
-plot(marketCap, "Market cap", color.new(color.purple, 60), style = plot.style_area)  
-`
-Note that:
-  * The `calcMarketCap()` function only returns non-na values on valid instruments with total shares outstanding data, such as the one we selected for this example. It returns na on others that do not have financial data, including forex, crypto, and derivatives.
-  * Not all issuing companies publish quarterly financial reports. If the issuing company of the `symbol` does not report on a quarterly basis, change the “FQ” value in this script to the company’s minimum reporting period. See the request.financial() section for more information.
-  * We included format.volume in the indicator() and str.tostring() calls to specify that the y-axis of the chart pane represents volume-formatted values and the “string” representation of the `marketCap` value shows as volume-formatted text.
-  * For efficiency, this script creates a table and initializes its cell on the _first_ chart bar, then updates the cell’s text on the _last_ bar. To learn more about working with tables, see the Tables page.
-
-
-### ​`currency`​
-The `currency` parameter of a `request.*()` function enables programmers to specify the currency of the requested data. If this parameter’s value differs from the symbol’s syminfo.currency value, the function converts the requested values to express them in the specified currency. The `currency` parameter accepts a built-in constant from the `currency.*` namespace, such as currency.JPY, or a string representing a valid currency code (e.g., “JPY”). By default, this parameter accepts a “series” argument that can change across executions. However, if dynamic requests are not enabled, it accepts only a value with the “simple” qualifier or a weaker one.
-The conversion rate between the syminfo.currency of the requested data and the specified `currency` depends on the _previous daily value_ of the corresponding currency pair from the most popular exchange. If no exchange provides the rate directly, the function derives the rate using a spread symbol.
-NoteNot all `request.*()` function calls return values expressed as a currency amount. Therefore, currency conversion is _not_ always necessary. For example, some of the series that the request.financial() function can retrieve — such as the “PIOTROSKI_F_SCORE” and “NUMBER_OF_EMPLOYEES” metrics — use units other than currency. It is up to programmers to determine when currency conversion is appropriate for their data requests.
-### ​`lookahead`​
-The `lookahead` parameter in request.security(), request.dividends(), request.splits(), and request.earnings() specifies the lookahead behavior of the function call. Its default value is barmerge.lookahead_off.
-When requesting data from a higher-timeframe (HTF) context, the `lookahead` value determines whether the `request.*()` function can return values from times _beyond_ those of the historical bars it executes on. In other words, the `lookahead` paremeter determines whether the requested data may contain _lookahead bias_ on historical bars.
-When requesting data from a lower-timeframe (LTF) context, the `lookahead` parameter determines whether the function requests values from the first or last _intrabar_ (LTF bar) of each chart-timeframe bar.
-**Programmers should exercise extreme caution when using lookahead in their requests, especially when requesting data from higher timeframes.** When using barmerge.lookahead_on as the `lookahead` value, ensure that it does not compromise the integrity of the script’s logic by leaking _future data_ into historical chart bars.
-The following scenarios are cases where enabling lookahead is acceptable in a `request.*()` call:
-  * The `expression` argument in a request.security() call includes a _historical offset_ (e.g., `close[1]`), which prevents the function from requesting future values that it would **not** have access to on a realtime basis.
-  * The `timeframe` argument of the call represents the same timeframe as that of the chart on which the script executes, i.e., timeframe.period.
-  * The function call requests data from an intrabar timeframe, i.e., a timeframe smaller than the timeframe.period. See the Lower-timeframes section for more information.
-
-
-NoticeScripts that use request.security() calls with lookahead to leak future data into the past are extremely **misleading**. As such, they are **not allowed** as script publications. Although the results of such a script might look great across history due to its apparent aquisition of prescience, those results are _unrealistic_ because the retrieved data was not knowable at the time of each bar. Furthermore, the same behavior is _impossible_ to reproduce on realtime bars. Therefore, before publishing a script to share it with others, ensure that its requests **do not** mislead traders by using future data on historical bars.
-This example demonstrates how the `lookahead` parameter affects the behavior of higher-timeframe data requests and why enabling lookahead in request.security() without offsetting the `expression` is misleading. The script calls request.security() to get the HTF high price for the current chart’s symbol in three different ways and plots the resulting series on the chart for comparison.
-The first call uses barmerge.lookahead_off (default), and the others use barmerge.lookahead_on. However, the third request.security() call also _offsets_ its `expression` using the history-referencing operator [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) to avoid leaking future data into the past.
-As we see on the chart, the plot of the series requested using barmerge.lookahead_on without an offset (fuchsia line) shows final HTF high prices _before_ they are actually available on historical bars, whereas the other two calls do not:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("`lookahead` demo", overlay = true)  
-  
-//@variable The timeframe to request the data from.  
-string timeframe = input.timeframe("30", "Timeframe")  
-  
-//@variable The requested `high` price from the current symbol on the `timeframe` without lookahead bias.  
-//          On realtime bars, it returns the current `high` of the `timeframe`.  
-float lookaheadOff = request.security(syminfo.tickerid, timeframe, high, lookahead = barmerge.lookahead_off)  
-  
-//@variable The requested `high` price from the current symbol on the `timeframe` with lookahead bias.  
-//          Returns values that should NOT be accessible yet on historical bars.  
-float lookaheadOn = request.security(syminfo.tickerid, timeframe, high, lookahead = barmerge.lookahead_on)  
-  
-//@variable The requested `high` price from the current symbol on the `timeframe` without lookahead bias or repainting.  
-//          Behaves the same on historical and realtime bars.  
-float lookaheadOnOffset = request.security(syminfo.tickerid, timeframe, high[1], lookahead = barmerge.lookahead_on)  
-  
-// Plot the values.  
-plot(lookaheadOff, "High, no lookahead bias", color.new(color.blue, 40), 5)  
-plot(lookaheadOn, "High with lookahead bias", color.fuchsia, 3)  
-plot(lookaheadOnOffset, "High, no lookahead bias or repaint", color.aqua, 3)  
-// Highlight the background on realtime bars.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 60) : na, title = "Realtime bar highlight")  
-`
-Note that:
-  * The series requested using barmerge.lookahead_off has a new historical value at the _end_ of each HTF period, and both series requested using barmerge.lookahead_on have new historical data at the _start_ of each period.
-  * On realtime bars, the plot of the series without lookahead (blue) and the series with lookahead and no historical offset (fuchsia) show the _same value_ (i.e., the HTF period’s unconfirmed high price), as no data exists beyond those points to leak into the past. Both of these plots _repaint_ their results after the user reloads the script, because the _elapsed_ realtime bars from the previous run become _historical_ bars in the new run.
-  * The series that uses lookahead and a historical offset (aqua) _does not_ repaint its results, because it always uses the last _confirmed_ value from the higher timeframe. See the Avoiding repainting section of this page for more information.
-
-
-NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) operator.
-### Dynamic requests
-By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
-In contrast to non-dynamic requests, dynamic requests can:
-  * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
-  * Execute within the local scopes of conditional structures, loops, and exported functions.
-  * Execute nested requests.
-
-
-Aside from the features listed above, there are insignificant differences in the behavior of dynamic and non-dynamic requests. However, for backward compatibility, programmers can deactivate dynamic requests by specifying `dynamic_requests = false` in the indicator(), strategy(), or library() declaration statement.
-Note
-In Pine Script v5, it is possible for scripts to call user-defined functions or methods containing `request.*()` calls inside loops or conditional structures _without_ enabling dynamic requests. However, those wrapped requests are **not** truly dynamic, and they still require **“simple”** or weaker qualifiers for all arguments that define the requested context.
-  
-
-In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
-#### ”series” arguments
-Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
-In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
-The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("'series' arguments demo")  
-   
-//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
-string symbolSeries = switch int(bar_index / 5) % 4  
-    1 => "NASDAQ:MSFT"  
-    2 => "NASDAQ:AMD"  
-    3 => "NASDAQ:INTC"  
-    =>   "AMEX:SPY"  
-  
-//@variable The requested `close` value from one of the four `symbolSeries` values on the chart's timeframe.  
-float requestedClose = request.security(symbolSeries, timeframe.period, close)  
-  
-// Plot the `requestedClose`.  
-plot(requestedClose, "Requested close", color.purple, 3)  
-  
-// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
-if symbolSeries != symbolSeries[1]  
-    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
-`
-Note that:
-  * The script draws a label every time the `symbolSeries` changes, to signify which symbol’s data the `requestedClose` currently represents.
-  * Pine v6 scripts enable dynamic requests by default, allowing this script to use a “series string” `symbol` argument in its request.security() call without error. If the dynamic behavior is disabled by including `dynamic_requests = false` in the indicator() declaration, then the “series” argument causes a compilation error.
-
-
-An important limitation is that when using dynamic `request.*()` calls with “series” arguments or within local scopes, scripts must request all required datasets while executing on **historical bars**. All `request.*()` calls on _realtime_ bars can retrieve data from the datasets that the script previously accessed on historical bars, but they **cannot** request a new context or evaluate a new expression.
-To illustrate this limitation, let’s revisit the above script. Notice that it requests close data for all four symbols on the chart’s timeframe during its historical executions. The external datasets for those four contexts are the **only** ones that any `request.*()` call on realtime bars can access.
-Below, we changed the `timeframe` argument in the script’s request.security() call to specify that it requests `symbolSeries` data from the chart’s timeframe on historical bars and the “240” (240 minutes = 4H) timeframe on realtime bars. This version raises a runtime error on the first realtime tick, if it is run on any timeframe other than the 4H timeframe, because it **cannot** access the 4H data feeds without requesting them on historical bars first:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Invalid realtime request demo")  
-   
-//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
-string symbolSeries = switch int(bar_index / 5) % 4  
-    1 => "NASDAQ:MSFT"  
-    2 => "NASDAQ:AMD"  
-    3 => "NASDAQ:INTC"  
-    =>   "AMEX:SPY"  
-  
-// Request the `close` of the `symbolSeries` from the chart's timeframe on historical bars and the "240" (4H) timeframe   
-// on realtime bars. Causes a runtime error on the first realtime tick because the script did not previously access   
-// data from the "240" timeframe on any historical bars.   
-float requestedClose = request.security(symbolSeries, barstate.isrealtime ? "240" : timeframe.period, close)  
-  
-// Plot the `requestedClose`.  
-plot(requestedClose, "Requested close", color.purple, 3)  
-  
-// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
-if symbolSeries != symbolSeries[1]  
-    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
-`
-#### In local scopes
-When scripts do not allow dynamic requests, all `request.*()` calls execute once on _every_ bar or realtime tick, which prevents their use within most local scopes. The only exception is for `request.*()` calls in the scopes of _non-exported_ functions and methods, because the Pine Script compiler extracts such calls into the _global scope_ during translation.
-Scripts that allow dynamic requests _do not_ restrict the execution of `request.*()` calls to the global scope. They can call `request.*()` functions directly within the scopes of conditional structures and loops, meaning that each `request.*()` instance in the code can activate zero, one, or several times on each script execution.
-The following example uses a single request.security() instance within a loop to request data from multiple forex data feeds. The script declares an array of `symbols` on the first chart bar, which it iterates through on all bars using a for…in loop. Each loop iteration calls request.security() to retrieve the volume value for one of the symbols and pushes the result into the `requestedData` array. After the loop terminates, the script calculates the average, maximum, and minimum values from the `requestedData` array using built-in methods, then plots the results on the chart:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("In local scopes demo", format = format.volume)  
-  
-//@variable An array of "string" values representing different symbols to request.   
-var array<string> symbols = array.from(  
-     "EURUSD", "USDJPY", "GBPUSD", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD", "EURJPY", "GBPJPY", "EURGBP"  
- )  
-  
-//@variable An array containing the data retrieved for each requested symbol.    
-array<float> requestedData = array.new<float>()  
-  
-// Retrieve `volume` data for each symbol in the `symbols` array and push the results into the `requestedData` array.   
-for symbol in symbols  
-    float data = request.security("OANDA:" + symbol, timeframe.period, volume)  
-    requestedData.push(data)  
-  
-// Calculate the average, maximum, and minimum tick volume in the `requestedData`.  
-float avgVolume = requestedData.avg()  
-float maxVolume = requestedData.max()  
-float minVolume = requestedData.min()  
-  
-// Plot the `avgVolume`, `maxVolume`, and `minVolume`.   
-plot(avgVolume, "Average volume", color.gray,   3)  
-plot(maxVolume, "Highest volume", color.teal,   3)  
-plot(minVolume, "Lowest volume",  color.maroon, 3)  
-`
-Notice that the `expression` argument in the above example (volume) is _loop-invariant_ , i.e., it does not change on any loop iteration. When using `request.*()` calls within a loop, all parameters defining parts of the requested _context_ can accept arguments that depend on variables from the loop’s header or mutable variables that change within the loop’s local scope. However, a `request.*()` call’s evaluated expression **cannot** depend on the values of those variables.
-Here, we modified the above script to use the _second form_ of the for…in loop statement, which creates a tuple containing the index and value of each element in the `symbols` array. The request.security() instance in this version uses the index (`i`) in its `expression` argument, resulting in a _compilation error_ :
-Pine Script®
-Copied
-`//@version=6  
-indicator("Loop-dependent expression demo", format = format.volume)  
-  
-//@variable An array of "string" values representing different symbols to request.   
-var array<string> symbols = array.from(  
-     "EURUSD", "USDJPY", "GBPUSD", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD", "EURJPY", "GBPJPY", "EURGBP"  
- )  
-  
-//@variable An array containing the data retrieved for each requested symbol.    
-array<float> requestedData = array.new<float>()  
-  
-// Retrieve `volume` data for each symbol in the `symbols` array, weighted using the element index.  
-// Causes a compilation error because the `expression` in `request.security()` cannot depend on loop variables   
-// or mutable variables that change within the loop's scope.   
-for [i, symbol] in symbols  
-    float data = request.security("OANDA:" + symbol, timeframe.period, volume * (10 - i))  
-    requestedData.push(data)  
-  
-// Calculate the average, maximum, and minimum tick volume in the `requestedData`.  
-float avgVolume = requestedData.avg()  
-float maxVolume = requestedData.max()  
-float minVolume = requestedData.min()  
-  
-// Plot the `avgVolume`, `maxVolume`, and `minVolume`.   
-plot(avgVolume, "Average volume", color.gray,   3)  
-plot(maxVolume, "Highest volume", color.teal,   3)  
-plot(minVolume, "Lowest volume",  color.maroon, 3)  
-`
-#### In libraries
-Libraries with dynamic requests enabled can _export_ functions and methods that utilize `request.*()` calls within their local scopes, provided that the evaluated expressions **do not** depend on any exported function parameters.
-For example, this simple library exports an `htfPrices()` function that requests a tuple of confirmed open, high, low, and close prices using a specified `tickerID` and `timeframe`. If we publish this library, another script can _import_ the function to request higher-timeframe prices without explicitly calling request.security().
-Pine Script®
-Copied
-`//@version=6  
-library("DynamicRequests")  
-  
-//@function        Requests a tuple containing confirmed HTF OHLC data for a specified `tickerID` and `timeframe`.  
+@function        Requests a tuple containing confirmed HTF OHLC data for a specified `tickerID` and `timeframe`.  
 //@param tickerID  The ticker identifier to request data for.   
 //@param timeframe The timeframe of the requested data.  
 //@returns         A tuple containing the last confirmed `open`, `high`, `low`, and `close` from the requested context.  
