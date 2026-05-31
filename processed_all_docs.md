@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260528_060950
+# processed_1_welcome_20260531_061649
 
-## 1_welcome_20260528_060950
+## 1_welcome_20260531_061649
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260528_060950
+# processed_2_first-steps_20260531_061649
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260528_060950
+# processed_3_first-indicator_20260531_061649
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -233,7 +233,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260528_060950
+# processed_4_next-steps_20260531_061649
 
 ## ”indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
@@ -291,7 +291,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260528_060950
+# processed_5_execution-model_20260531_061649
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1121,7 +1121,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260528_060950
+# processed_6_type-system_20260531_061649
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -2504,7 +2504,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260528_060950
+# processed_7_script-structure_20260531_061649
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2787,9 +2787,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260528_060950
+# processed_8_identifiers_20260531_061649
 
-## 8_identifiers_20260528_060950
+## 8_identifiers_20260531_061649
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2855,7 +2855,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_declaration-statements_20260528_060950
+# processed_9_declaration-statements_20260531_061649
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -3541,7 +3541,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260528_060950
+# processed_10_variable-declarations_20260531_061649
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4745,7 +4745,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260528_060950
+# processed_11_operators_20260531_061649
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -5001,7 +5001,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260528_060950
+# processed_12_conditional-structures_20260531_061649
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5386,7 +5386,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260528_060950
+# processed_13_loops_20260531_061649
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6356,7 +6356,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260528_060950
+# processed_14_built-ins_20260531_061649
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6470,7 +6470,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260528_060950
+# processed_15_user-defined-functions_20260531_061649
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8305,7 +8305,7 @@ Copied
 
 
 
-# processed_16_objects_20260528_060950
+# processed_16_objects_20260531_061649
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8612,7 +8612,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260528_060950
+# processed_17_enums_20260531_061649
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8930,7 +8930,7 @@ enum ta
 
 
 
-# processed_18_methods_20260528_060950
+# processed_18_methods_20260531_061649
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9578,7 +9578,7 @@ Copied
 
 
 
-# processed_19_arrays_20260528_060950
+# processed_19_arrays_20260531_061649
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -10617,7 +10617,7 @@ plot(c)
 
 
 
-# processed_20_matrices_20260528_060950
+# processed_20_matrices_20260531_061649
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -13213,7 +13213,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260528_060950
+# processed_21_maps_20260531_061649
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -14259,7 +14259,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260528_060950
+# processed_22_overview_20260531_061649
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -14700,9 +14700,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260528_060950
+# processed_23_backgrounds_20260531_061649
 
-## 23_backgrounds_20260528_060950
+## 23_backgrounds_20260531_061649
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -14845,9 +14845,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260528_060950
+# processed_24_bar-coloring_20260531_061649
 
-## 24_bar-coloring_20260528_060950
+## 24_bar-coloring_20260531_061649
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -14922,7 +14922,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260528_060950
+# processed_25_bar-plotting_20260531_061649
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -15035,7 +15035,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260528_060950
+# processed_26_colors_20260531_061649
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -15420,7 +15420,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_27_fills_20260528_060950
+# processed_27_fills_20260531_061649
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -15634,7 +15634,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260528_060950
+# processed_28_levels_20260531_061649
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -15724,7 +15724,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260528_060950
+# processed_29_lines-and-boxes_20260531_061649
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -16930,7 +16930,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260528_060950
+# processed_30_plots_20260531_061649
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -17288,7 +17288,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260528_060950
+# processed_31_tables_20260531_061649
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -17507,7 +17507,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260528_060950
+# processed_32_text-and-shapes_20260531_061649
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -18056,7 +18056,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260528_060950
+# processed_33_alerts_20260531_061649
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -18411,7 +18411,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260528_060950
+# processed_34_bar-states_20260531_061649
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -18547,7 +18547,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_35_chart-information_20260528_060950
+# processed_35_chart-information_20260531_061649
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -18638,7 +18638,7 @@ Session information is available in different forms:
 
 
 
-# processed_36_inputs_20260528_060950
+# processed_36_inputs_20260531_061649
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -19269,7 +19269,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260528_060950
+# processed_37_libraries_20260531_061649
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -19651,7 +19651,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260528_060950
+# processed_38_non-standard-charts-data_20260531_061649
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -19761,7 +19761,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_39_other-timeframes-and-data_20260528_060950
+# processed_39_other-timeframes-and-data_20260531_061649
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -19921,24 +19921,39 @@ The script displays a formatted string representing the symbol’s estimated mar
 Pine Script®
 Copied
 `//@version=6  
-indicator("'series' arguments demo")  
-   
-//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
-string symbolSeries = switch int(bar_index / 5) % 4  
-    1 => "NASDAQ:MSFT"  
-    2 => "NASDAQ:AMD"  
-    3 => "NASDAQ:INTC"  
-    =>   "AMEX:SPY"  
+indicator("`ignore_invalid_symbol` demo", "Market cap estimate", format = format.volume)  
   
-//@variable The requested `close` value from one of the four `symbolSeries` values on the chart's timeframe.  
-float requestedClose = request.security(symbolSeries, timeframe.period, close)  
+//@variable The symbol to request data from.  
+string symbol = input.symbol("TSX:SHOP", "Symbol")  
   
-// Plot the `requestedClose`.  
-plot(requestedClose, "Requested close", color.purple, 3)  
+//@function Estimates the market capitalization of the specified `tickerID` if the data exists.  
+calcMarketCap(simple string tickerID) =>  
+    //@variable The quarterly total shares outstanding for the `tickerID`. Returns `na` when the data isn't available.  
+    float tso = request.financial(tickerID, "TOTAL_SHARES_OUTSTANDING", "FQ", ignore_invalid_symbol = true)  
+    //@variable The `close` price and currency for the `tickerID`. Returns `[na, na]` when the `tickerID` is invalid.  
+    [price, currency] = request.security(  
+         tickerID, timeframe.period, [close, syminfo.currency], ignore_invalid_symbol = true  
+     )  
+    // Return a tuple containing the market cap estimate and the quote currency.  
+    [tso * price, currency]  
   
-// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
-if symbolSeries != symbolSeries[1]  
-    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
+//@variable A `table` object with a single cell that displays the `marketCap` and `quoteCurrency`.  
+var table infoTable = table.new(position.top_right, 1, 1)  
+// Initialize the table's cell on the first bar.  
+if barstate.isfirst  
+    table.cell(infoTable, 0, 0, "", text_color = color.white, text_size = size.huge, bgcolor = color.teal)  
+  
+// Get the market cap estimate and quote currency for the `symbol`.  
+[marketCap, quoteCurrency] = calcMarketCap(symbol)  
+  
+if barstate.islast  
+    //@variable The formatted text displayed inside the `infoTable`.  
+    string tableText = str.format("Market cap:\n{0} {1}", str.tostring(marketCap, format.volume), quoteCurrency)  
+    // Update the `infoTable`.  
+    table.cell_set_text(infoTable, 0, 0, tableText)  
+  
+// Plot the `marketCap` value.  
+plot(marketCap, "Market cap", color.new(color.purple, 60), style = plot.style_area)  
 `
 Note that:
   * The `calcMarketCap()` function only returns non-na values on valid instruments with total shares outstanding data, such as the one we selected for this example. It returns na on others that do not have financial data, including forex, crypto, and derivatives.
@@ -22672,7 +22687,243 @@ request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count)
 ## Function Documentation
 
 
-@function        Requests a tuple containing confirmed HTF OHLC data for a specified `tickerID` and `timeframe`.  
+@function Estimates the market capitalization of the specified `tickerID` if the data exists.  
+calcMarketCap(simple string tickerID) =>  
+    //@variable The quarterly total shares outstanding for the `tickerID`. Returns `na` when the data isn't available.  
+    float tso = request.financial(tickerID, "TOTAL_SHARES_OUTSTANDING", "FQ", ignore_invalid_symbol = true)  
+    //@variable The `close` price and currency for the `tickerID`. Returns `[na, na]` when the `tickerID` is invalid.  
+    [price, currency] = request.security(  
+         tickerID, timeframe.period, [close, syminfo.currency], ignore_invalid_symbol = true  
+     )  
+    // Return a tuple containing the market cap estimate and the quote currency.  
+    [tso * price, currency]  
+  
+//@variable A `table` object with a single cell that displays the `marketCap` and `quoteCurrency`.  
+var table infoTable = table.new(position.top_right, 1, 1)  
+// Initialize the table's cell on the first bar.  
+if barstate.isfirst  
+    table.cell(infoTable, 0, 0, "", text_color = color.white, text_size = size.huge, bgcolor = color.teal)  
+  
+// Get the market cap estimate and quote currency for the `symbol`.  
+[marketCap, quoteCurrency] = calcMarketCap(symbol)  
+  
+if barstate.islast  
+    //@variable The formatted text displayed inside the `infoTable`.  
+    string tableText = str.format("Market cap:\n{0} {1}", str.tostring(marketCap, format.volume), quoteCurrency)  
+    // Update the `infoTable`.  
+    table.cell_set_text(infoTable, 0, 0, tableText)  
+  
+// Plot the `marketCap` value.  
+plot(marketCap, "Market cap", color.new(color.purple, 60), style = plot.style_area)  
+`
+Note that:
+  * The `calcMarketCap()` function only returns non-na values on valid instruments with total shares outstanding data, such as the one we selected for this example. It returns na on others that do not have financial data, including forex, crypto, and derivatives.
+  * Not all issuing companies publish quarterly financial reports. If the issuing company of the `symbol` does not report on a quarterly basis, change the “FQ” value in this script to the company’s minimum reporting period. See the request.financial() section for more information.
+  * We included format.volume in the indicator() and str.tostring() calls to specify that the y-axis of the chart pane represents volume-formatted values and the “string” representation of the `marketCap` value shows as volume-formatted text.
+  * For efficiency, this script creates a table and initializes its cell on the _first_ chart bar, then updates the cell’s text on the _last_ bar. To learn more about working with tables, see the Tables page.
+
+
+### ​`currency`​
+The `currency` parameter of a `request.*()` function enables programmers to specify the currency of the requested data. If this parameter’s value differs from the symbol’s syminfo.currency value, the function converts the requested values to express them in the specified currency. The `currency` parameter accepts a built-in constant from the `currency.*` namespace, such as currency.JPY, or a string representing a valid currency code (e.g., “JPY”). By default, this parameter accepts a “series” argument that can change across executions. However, if dynamic requests are not enabled, it accepts only a value with the “simple” qualifier or a weaker one.
+The conversion rate between the syminfo.currency of the requested data and the specified `currency` depends on the _previous daily value_ of the corresponding currency pair from the most popular exchange. If no exchange provides the rate directly, the function derives the rate using a spread symbol.
+NoteNot all `request.*()` function calls return values expressed as a currency amount. Therefore, currency conversion is _not_ always necessary. For example, some of the series that the request.financial() function can retrieve — such as the “PIOTROSKI_F_SCORE” and “NUMBER_OF_EMPLOYEES” metrics — use units other than currency. It is up to programmers to determine when currency conversion is appropriate for their data requests.
+### ​`lookahead`​
+The `lookahead` parameter in request.security(), request.dividends(), request.splits(), and request.earnings() specifies the lookahead behavior of the function call. Its default value is barmerge.lookahead_off.
+When requesting data from a higher-timeframe (HTF) context, the `lookahead` value determines whether the `request.*()` function can return values from times _beyond_ those of the historical bars it executes on. In other words, the `lookahead` paremeter determines whether the requested data may contain _lookahead bias_ on historical bars.
+When requesting data from a lower-timeframe (LTF) context, the `lookahead` parameter determines whether the function requests values from the first or last _intrabar_ (LTF bar) of each chart-timeframe bar.
+**Programmers should exercise extreme caution when using lookahead in their requests, especially when requesting data from higher timeframes.** When using barmerge.lookahead_on as the `lookahead` value, ensure that it does not compromise the integrity of the script’s logic by leaking _future data_ into historical chart bars.
+The following scenarios are cases where enabling lookahead is acceptable in a `request.*()` call:
+  * The `expression` argument in a request.security() call includes a _historical offset_ (e.g., `close[1]`), which prevents the function from requesting future values that it would **not** have access to on a realtime basis.
+  * The `timeframe` argument of the call represents the same timeframe as that of the chart on which the script executes, i.e., timeframe.period.
+  * The function call requests data from an intrabar timeframe, i.e., a timeframe smaller than the timeframe.period. See the Lower-timeframes section for more information.
+
+
+NoticeScripts that use request.security() calls with lookahead to leak future data into the past are extremely **misleading**. As such, they are **not allowed** as script publications. Although the results of such a script might look great across history due to its apparent aquisition of prescience, those results are _unrealistic_ because the retrieved data was not knowable at the time of each bar. Furthermore, the same behavior is _impossible_ to reproduce on realtime bars. Therefore, before publishing a script to share it with others, ensure that its requests **do not** mislead traders by using future data on historical bars.
+This example demonstrates how the `lookahead` parameter affects the behavior of higher-timeframe data requests and why enabling lookahead in request.security() without offsetting the `expression` is misleading. The script calls request.security() to get the HTF high price for the current chart’s symbol in three different ways and plots the resulting series on the chart for comparison.
+The first call uses barmerge.lookahead_off (default), and the others use barmerge.lookahead_on. However, the third request.security() call also _offsets_ its `expression` using the history-referencing operator [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) to avoid leaking future data into the past.
+As we see on the chart, the plot of the series requested using barmerge.lookahead_on without an offset (fuchsia line) shows final HTF high prices _before_ they are actually available on historical bars, whereas the other two calls do not:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`lookahead` demo", overlay = true)  
+  
+//@variable The timeframe to request the data from.  
+string timeframe = input.timeframe("30", "Timeframe")  
+  
+//@variable The requested `high` price from the current symbol on the `timeframe` without lookahead bias.  
+//          On realtime bars, it returns the current `high` of the `timeframe`.  
+float lookaheadOff = request.security(syminfo.tickerid, timeframe, high, lookahead = barmerge.lookahead_off)  
+  
+//@variable The requested `high` price from the current symbol on the `timeframe` with lookahead bias.  
+//          Returns values that should NOT be accessible yet on historical bars.  
+float lookaheadOn = request.security(syminfo.tickerid, timeframe, high, lookahead = barmerge.lookahead_on)  
+  
+//@variable The requested `high` price from the current symbol on the `timeframe` without lookahead bias or repainting.  
+//          Behaves the same on historical and realtime bars.  
+float lookaheadOnOffset = request.security(syminfo.tickerid, timeframe, high[1], lookahead = barmerge.lookahead_on)  
+  
+// Plot the values.  
+plot(lookaheadOff, "High, no lookahead bias", color.new(color.blue, 40), 5)  
+plot(lookaheadOn, "High with lookahead bias", color.fuchsia, 3)  
+plot(lookaheadOnOffset, "High, no lookahead bias or repaint", color.aqua, 3)  
+// Highlight the background on realtime bars.  
+bgcolor(barstate.isrealtime ? color.new(color.orange, 60) : na, title = "Realtime bar highlight")  
+`
+Note that:
+  * The series requested using barmerge.lookahead_off has a new historical value at the _end_ of each HTF period, and both series requested using barmerge.lookahead_on have new historical data at the _start_ of each period.
+  * On realtime bars, the plot of the series without lookahead (blue) and the series with lookahead and no historical offset (fuchsia) show the _same value_ (i.e., the HTF period’s unconfirmed high price), as no data exists beyond those points to leak into the past. Both of these plots _repaint_ their results after the user reloads the script, because the _elapsed_ realtime bars from the previous run become _historical_ bars in the new run.
+  * The series that uses lookahead and a historical offset (aqua) _does not_ repaint its results, because it always uses the last _confirmed_ value from the higher timeframe. See the Avoiding repainting section of this page for more information.
+
+
+NoticeIn Pine Script versions 1 and 2, the `security()` function did not include a `lookahead` parameter. However, the request behaved the same as those with `lookahead = barmerge.lookahead_on` in later versions of Pine, meaning that it systematically accessed future data from a higher timeframe on historical bars. Therefore, _exercise caution_ with Pine v1 or v2 scripts that use HTF `security()` calls, unless those calls offset the requested series with the [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) operator.
+### Dynamic requests
+By default, unlike all previous Pine Script versions, `request.*()` function calls in Pine Script v6 are _dynamic_.
+In contrast to non-dynamic requests, dynamic requests can:
+  * Access data from different data feeds using a single `request.*()` instance with “series” arguments.
+  * Execute within the local scopes of conditional structures, loops, and exported functions.
+  * Execute nested requests.
+
+
+Aside from the features listed above, there are insignificant differences in the behavior of dynamic and non-dynamic requests. However, for backward compatibility, programmers can deactivate dynamic requests by specifying `dynamic_requests = false` in the indicator(), strategy(), or library() declaration statement.
+Note
+In Pine Script v5, it is possible for scripts to call user-defined functions or methods containing `request.*()` calls inside loops or conditional structures _without_ enabling dynamic requests. However, those wrapped requests are **not** truly dynamic, and they still require **“simple”** or weaker qualifiers for all arguments that define the requested context.
+  
+
+In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
+#### ”series” arguments
+Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
+In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
+The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("'series' arguments demo")  
+   
+//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
+string symbolSeries = switch int(bar_index / 5) % 4  
+    1 => "NASDAQ:MSFT"  
+    2 => "NASDAQ:AMD"  
+    3 => "NASDAQ:INTC"  
+    =>   "AMEX:SPY"  
+  
+//@variable The requested `close` value from one of the four `symbolSeries` values on the chart's timeframe.  
+float requestedClose = request.security(symbolSeries, timeframe.period, close)  
+  
+// Plot the `requestedClose`.  
+plot(requestedClose, "Requested close", color.purple, 3)  
+  
+// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
+if symbolSeries != symbolSeries[1]  
+    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
+`
+Note that:
+  * The script draws a label every time the `symbolSeries` changes, to signify which symbol’s data the `requestedClose` currently represents.
+  * Pine v6 scripts enable dynamic requests by default, allowing this script to use a “series string” `symbol` argument in its request.security() call without error. If the dynamic behavior is disabled by including `dynamic_requests = false` in the indicator() declaration, then the “series” argument causes a compilation error.
+
+
+An important limitation is that when using dynamic `request.*()` calls with “series” arguments or within local scopes, scripts must request all required datasets while executing on **historical bars**. All `request.*()` calls on _realtime_ bars can retrieve data from the datasets that the script previously accessed on historical bars, but they **cannot** request a new context or evaluate a new expression.
+To illustrate this limitation, let’s revisit the above script. Notice that it requests close data for all four symbols on the chart’s timeframe during its historical executions. The external datasets for those four contexts are the **only** ones that any `request.*()` call on realtime bars can access.
+Below, we changed the `timeframe` argument in the script’s request.security() call to specify that it requests `symbolSeries` data from the chart’s timeframe on historical bars and the “240” (240 minutes = 4H) timeframe on realtime bars. This version raises a runtime error on the first realtime tick, if it is run on any timeframe other than the 4H timeframe, because it **cannot** access the 4H data feeds without requesting them on historical bars first:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Invalid realtime request demo")  
+   
+//@variable A "series" that cycles through four different symbol strings. Its value changes every five bars.    
+string symbolSeries = switch int(bar_index / 5) % 4  
+    1 => "NASDAQ:MSFT"  
+    2 => "NASDAQ:AMD"  
+    3 => "NASDAQ:INTC"  
+    =>   "AMEX:SPY"  
+  
+// Request the `close` of the `symbolSeries` from the chart's timeframe on historical bars and the "240" (4H) timeframe   
+// on realtime bars. Causes a runtime error on the first realtime tick because the script did not previously access   
+// data from the "240" timeframe on any historical bars.   
+float requestedClose = request.security(symbolSeries, barstate.isrealtime ? "240" : timeframe.period, close)  
+  
+// Plot the `requestedClose`.  
+plot(requestedClose, "Requested close", color.purple, 3)  
+  
+// Draw a label displaying the requested symbol each time the `symbolSeries` changes.  
+if symbolSeries != symbolSeries[1]  
+    label.new(bar_index, requestedClose, symbolSeries, textcolor = color.white)  
+`
+#### In local scopes
+When scripts do not allow dynamic requests, all `request.*()` calls execute once on _every_ bar or realtime tick, which prevents their use within most local scopes. The only exception is for `request.*()` calls in the scopes of _non-exported_ functions and methods, because the Pine Script compiler extracts such calls into the _global scope_ during translation.
+Scripts that allow dynamic requests _do not_ restrict the execution of `request.*()` calls to the global scope. They can call `request.*()` functions directly within the scopes of conditional structures and loops, meaning that each `request.*()` instance in the code can activate zero, one, or several times on each script execution.
+The following example uses a single request.security() instance within a loop to request data from multiple forex data feeds. The script declares an array of `symbols` on the first chart bar, which it iterates through on all bars using a for…in loop. Each loop iteration calls request.security() to retrieve the volume value for one of the symbols and pushes the result into the `requestedData` array. After the loop terminates, the script calculates the average, maximum, and minimum values from the `requestedData` array using built-in methods, then plots the results on the chart:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("In local scopes demo", format = format.volume)  
+  
+//@variable An array of "string" values representing different symbols to request.   
+var array<string> symbols = array.from(  
+     "EURUSD", "USDJPY", "GBPUSD", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD", "EURJPY", "GBPJPY", "EURGBP"  
+ )  
+  
+//@variable An array containing the data retrieved for each requested symbol.    
+array<float> requestedData = array.new<float>()  
+  
+// Retrieve `volume` data for each symbol in the `symbols` array and push the results into the `requestedData` array.   
+for symbol in symbols  
+    float data = request.security("OANDA:" + symbol, timeframe.period, volume)  
+    requestedData.push(data)  
+  
+// Calculate the average, maximum, and minimum tick volume in the `requestedData`.  
+float avgVolume = requestedData.avg()  
+float maxVolume = requestedData.max()  
+float minVolume = requestedData.min()  
+  
+// Plot the `avgVolume`, `maxVolume`, and `minVolume`.   
+plot(avgVolume, "Average volume", color.gray,   3)  
+plot(maxVolume, "Highest volume", color.teal,   3)  
+plot(minVolume, "Lowest volume",  color.maroon, 3)  
+`
+Notice that the `expression` argument in the above example (volume) is _loop-invariant_ , i.e., it does not change on any loop iteration. When using `request.*()` calls within a loop, all parameters defining parts of the requested _context_ can accept arguments that depend on variables from the loop’s header or mutable variables that change within the loop’s local scope. However, a `request.*()` call’s evaluated expression **cannot** depend on the values of those variables.
+Here, we modified the above script to use the _second form_ of the for…in loop statement, which creates a tuple containing the index and value of each element in the `symbols` array. The request.security() instance in this version uses the index (`i`) in its `expression` argument, resulting in a _compilation error_ :
+Pine Script®
+Copied
+`//@version=6  
+indicator("Loop-dependent expression demo", format = format.volume)  
+  
+//@variable An array of "string" values representing different symbols to request.   
+var array<string> symbols = array.from(  
+     "EURUSD", "USDJPY", "GBPUSD", "AUDUSD", "USDCAD", "USDCHF", "NZDUSD", "EURJPY", "GBPJPY", "EURGBP"  
+ )  
+  
+//@variable An array containing the data retrieved for each requested symbol.    
+array<float> requestedData = array.new<float>()  
+  
+// Retrieve `volume` data for each symbol in the `symbols` array, weighted using the element index.  
+// Causes a compilation error because the `expression` in `request.security()` cannot depend on loop variables   
+// or mutable variables that change within the loop's scope.   
+for [i, symbol] in symbols  
+    float data = request.security("OANDA:" + symbol, timeframe.period, volume * (10 - i))  
+    requestedData.push(data)  
+  
+// Calculate the average, maximum, and minimum tick volume in the `requestedData`.  
+float avgVolume = requestedData.avg()  
+float maxVolume = requestedData.max()  
+float minVolume = requestedData.min()  
+  
+// Plot the `avgVolume`, `maxVolume`, and `minVolume`.   
+plot(avgVolume, "Average volume", color.gray,   3)  
+plot(maxVolume, "Highest volume", color.teal,   3)  
+plot(minVolume, "Lowest volume",  color.maroon, 3)  
+`
+#### In libraries
+Libraries with dynamic requests enabled can _export_ functions and methods that utilize `request.*()` calls within their local scopes, provided that the evaluated expressions **do not** depend on any exported function parameters.
+For example, this simple library exports an `htfPrices()` function that requests a tuple of confirmed open, high, low, and close prices using a specified `tickerID` and `timeframe`. If we publish this library, another script can _import_ the function to request higher-timeframe prices without explicitly calling request.security().
+Pine Script®
+Copied
+`//@version=6  
+library("DynamicRequests")  
+  
+//@function        Requests a tuple containing confirmed HTF OHLC data for a specified `tickerID` and `timeframe`.  
 //@param tickerID  The ticker identifier to request data for.   
 //@param timeframe The timeframe of the requested data.  
 //@returns         A tuple containing the last confirmed `open`, `high`, `low`, and `close` from the requested context.  
@@ -22690,7 +22941,7 @@ request.seed(source, symbol, expression, ignore_invalid_symbol, calc_bars_count)
 
 
 
-# processed_40_repainting_20260528_060950
+# processed_40_repainting_20260531_061649
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -22958,7 +23209,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260528_060950
+# processed_41_sessions_20260531_061649
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -23310,7 +23561,7 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260528_060950
+# processed_42_strategies_20260531_061649
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -25245,7 +25496,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260528_060950
+# processed_43_strings_20260531_061649
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -26958,7 +27209,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260528_060950
+# processed_44_time_20260531_061649
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -28488,7 +28739,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260528_060950
+# processed_45_timeframes_20260531_061649
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -28536,7 +28787,7 @@ Note that:
 
 
 
-# processed_46_style-guide_20260528_060950
+# processed_46_style-guide_20260531_061649
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -28914,7 +29165,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260528_060950
+# processed_47_debugging_20260531_061649
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -30648,7 +30899,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260528_060950
+# processed_48_profiling-and-optimization_20260531_061649
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -32276,7 +32527,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260528_060950
+# processed_49_publishing_20260531_061649
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -32508,7 +32759,7 @@ Editors’ picks. To see examples of our recommended description format, refer t
 
 
 
-# processed_50_limitations_20260528_060950
+# processed_50_limitations_20260531_061649
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -32876,7 +33127,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260528_060950
+# processed_51_overview_20260531_061649
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -32903,7 +33154,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260528_060950
+# processed_52_CE10101_20260531_061649
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -32996,7 +33247,7 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260528_060950
+# processed_53_CW10003_20260531_061649
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -33135,7 +33386,7 @@ If the use of a function call in a local block does not cause a compiler warning
 
 
 
-# processed_54_RE10139_20260528_060950
+# processed_54_RE10139_20260531_061649
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -33386,7 +33637,7 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_55_RE10143_20260528_060950
+# processed_55_RE10143_20260531_061649
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -33492,7 +33743,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260528_060950
+# processed_56_general_20260531_061649
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -33694,7 +33945,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260528_060950
+# processed_57_alerts_20260531_061649
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -34254,7 +34505,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260528_060950
+# processed_58_data-structures_20260531_061649
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -35136,7 +35387,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260528_060950
+# processed_59_functions_20260531_061649
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -35396,7 +35647,7 @@ Copied
 
 
 
-# processed_60_indicators_20260528_060950
+# processed_60_indicators_20260531_061649
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -35504,7 +35755,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260528_060950
+# processed_61_other-data-and-timeframes_20260531_061649
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -35753,7 +36004,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260528_060950
+# processed_62_programming_20260531_061649
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -35890,7 +36141,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260528_060950
+# processed_63_strategies_20260531_061649
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -37010,7 +37261,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260528_060950
+# processed_64_strings-and-formatting_20260531_061649
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -37230,7 +37481,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260528_060950
+# processed_65_techniques_20260531_061649
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -38076,7 +38327,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260528_060950
+# processed_66_times-dates-and-sessions_20260531_061649
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -38881,7 +39132,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260528_060950
+# processed_67_variables-and-operators_20260531_061649
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -39102,7 +39353,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260528_060950
+# processed_68_visuals_20260531_061649
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -39916,7 +40167,7 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260528_060950
+# processed_69_release-notes_20260531_061649
 
 ## 2026
 ### April 2026
@@ -41415,7 +41666,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260528_060950
+# processed_70_overview_20260531_061649
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -41427,7 +41678,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260528_060950
+# processed_71_to-pine-version-6_20260531_061649
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -42417,7 +42668,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260528_060950
+# processed_72_to-pine-version-5_20260531_061649
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -42849,7 +43100,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 
 
 
-# processed_73_to-pine-version-4_20260528_060950
+# processed_73_to-pine-version-4_20260531_061649
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -42894,7 +43145,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260528_060950
+# processed_74_to-pine-version-3_20260531_061649
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -43015,9 +43266,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260528_060950
+# processed_75_to-pine-version-2_20260531_061649
 
-## 75_to-pine-version-2_20260528_060950
+## 75_to-pine-version-2_20260531_061649
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -43074,7 +43325,7 @@ plot(sma(src, length))
 
 
 
-# processed_76_where-can-i-get-more-information_20260528_060950
+# processed_76_where-can-i-get-more-information_20260531_061649
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.
