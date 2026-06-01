@@ -681,27 +681,12 @@ As shown below, the plots and logs of the two variables display _different_ valu
 !image
 Pine Script®
 Copied
-`//@version=6  
-indicator("Modifying variables after requests demo")  
+`//@function Creates a new `Wrapper` instance to wrap the specified `collection`.  
+newWrapper(array<float> collection) =>  
+    Wrapper.new(collection)  
   
-//@variable A counter that starts at 0 and increments by 1 on each bar.   
-var int counter = 0  
-  
-//@variable Holds a consistent value of 0.   
-//          `request.security()` cannot evaluate `counter += 1` in its requested context   
-//          because that modification occurs *after* the call.   
-int requestedCounter = request.security(syminfo.tickerid, timeframe.period, counter)  
-  
-// Increment the `counter` by 1. This operation is *not* included in the `requestedCounter` calculation.  
-counter += 1  
-  
-// Plot both variables for comparison.   
-plot(counter, "Original counter", color.purple, 3)  
-plot(requestedCounter, "Requested counter", color.red, 3)  
-  
-// Log the values of both variables in the Pine Logs pane.  
-if barstate.isconfirmed  
-    log.info("counter: {0}, requestedCounter: {1}", counter, requestedCounter)  
+//@variable An array of `Wrapper` IDs requested from the 1-minute timeframe.  
+array<Wrapper> wrappers = request.security_lower_tf(syminfo.tickerid, "1", newWrapper(array.from(close)))  
 `
 ####  Tuples
 Tuples in Pine Script are comma-separated lists of expressions enclosed in square brackets. Programmers often use tuples when creating functions, conditional structures, or loops that return multiple values or references from their local scopes.
@@ -3164,7 +3149,65 @@ library("DynamicRequests")
 //@returns         A tuple containing the last confirmed `open`, `high`, `low`, and `close` from the requested context.  
 
 
-@function     Calculates Bollinger Bands with a custom weighted basis.  
+@function Creates a new `Wrapper` instance to wrap the specified `collection`.  
+newWrapper(array<float> collection) =>  
+    Wrapper.new(collection)  
+  
+//@variable An array of `Wrapper` IDs requested from the 1-minute timeframe.  
+array<Wrapper> wrappers = request.security_lower_tf(syminfo.tickerid, "1", newWrapper(array.from(close)))  
+`
+####  Tuples
+Tuples in Pine Script are comma-separated lists of expressions enclosed in square brackets. Programmers often use tuples when creating functions, conditional structures, or loops that return multiple values or references from their local scopes.
+The request.security() function can accept a tuple as its `expression` argument, allowing scripts to request multiple series of different types using a single function call. The expressions within requested tuples can be of any type outlined throughout the Requestable data section of this page, excluding other tuples.
+NoteThe combined size of all tuples returned by `request.*()` calls in a script cannot exceed 127 elements. See the Tuple element limit section of the Limitations page for more information.
+Tuples are particularly helpful when a script needs to retrieve more than one value from a specific context.
+For example, the following script calculates the percent rank of the close series over `length` bars and assigns the result to the `rank` variable. It then calls request.security() to request a tuple containing the values of `rank`, `ta.crossover(rank, 50)`, and `ta.crossunder(rank, 50)` from a specified timeframe. The script plots the `requestedRank` series in a separate pane, then uses the result of a ternary expression based on the `crossOver` and `crossUnder` values within a bgcolor() call to conditionally highlight the pane’s background:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Requesting tuples demo", "Percent rank cross")  
+  
+//@variable The timeframe of the request.  
+string timeframe = input.timeframe("240", "Timeframe")  
+//@variable The number of bars in the calculation.  
+int length = input.int(20, "Length")  
+  
+//@variable The previous bar's percent rank of the `close` price over `length` bars.  
+float rank = ta.percentrank(close, length)[1]  
+  
+// Request the `rank` value from another `timeframe`, and two "bool" values indicating the `rank` from the `timeframe`  
+// crossed over or under 50.  
+[requestedRank, crossOver, crossUnder] = request.security(  
+     syminfo.tickerid, timeframe, [rank, ta.crossover(rank, 50), ta.crossunder(rank, 50)],  
+     lookahead = barmerge.lookahead_on  
+ )  
+  
+// Plot the `requestedRank` and create a horizontal line at 50.  
+plot(requestedRank, "Percent Rank", linewidth = 3)  
+hline(50, "Cross line", linewidth = 2)  
+// Highlight the background of all bars where the `timeframe`'s `crossOver` or `crossUnder` value is `true`.  
+bgcolor(crossOver ? color.new(color.green, 50) : crossUnder ? color.new(color.red, 50) : na)  
+`
+Note that:
+  * We’ve offset the `rank` variable’s expression by one bar using the history-referencing operator [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) and included barmerge.lookahead_on in the request.security() call to ensure the values on realtime bars do not repaint after becoming historical bars. See the Avoiding repainting section for more information.
+  * The request.security() call returns a tuple, so we use a _tuple declaration_ to declare the `requestedRank`, `crossOver`, and `crossUnder` variables. To learn more about using tuples, see this section of our User Manual’s Type system page.
+
+
+#### User-defined functions
+User-defined functions and methods are custom functions written by users. They allow users to define sequences of operations associated with an identifier that scripts can conveniently call throughout their executions (e.g., `myUDF()`).
+The request.security() function can request the results of user-defined functions and methods whose scopes consist of any types outlined throughout this page’s Requestable data section.
+For example, this script contains a user-defined `weightedBB()` function that calculates Bollinger Bands with the basis average weighted by a specified `weight` series. The function returns a tuple of custom band values. The script calls the `weightedBB()` as the `expression` argument in request.security() to retrieve a tuple of band values calculated on the specified `timeframe` and plots the results on the chart:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Requesting user-defined functions demo", "Weighted Bollinger Bands", true)  
+  
+//@variable The timeframe of the request.  
+string timeframe = input.timeframe("480", "Timeframe")  
+  
+//@function     Calculates Bollinger Bands with a custom weighted basis.  
 //@param source The series of values to process.  
 //@param length The number of bars in the calculation.  
 //@param mult   The standard deviation multiplier.  

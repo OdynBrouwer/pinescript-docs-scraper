@@ -376,20 +376,20 @@ The example below creates a new “color” value with color.rgb(), modifies the
 Pine Script®
 Copied
 `//@version=6  
-indicator("`color.*()` functions demo")  
+indicator("Qualified types in tuples demo")  
   
-//@variable A color with custom red, green, and blue components. The variable's type is "const color".  
-color BASE_COLOR = color.rgb(0, 99, 165)  
+getParameters(float source, simple int length) =>  
+    // Although the expected type of the `length` parameter is "simple int", the  
+    // `length` value in the returned tuple inherits the "series" qualifier if the  
+    // `source` value has that qualifier, because all items in a tuple inherit the *same* qualifier.  
+    [source, length]  
   
-//@variable A calculated transparency value based on the current day of the week. This variable's type is "series int".  
-int transparency = 50 + int(40 * dayofweek / 7)  
+// Declare a tuple containing the values returned by a `getParameters()` call.  
+// Both variables in this tuple have the "series" qualifier, because `close` is of the type "series float".  
+[src, len] = getParameters(source = close, length = 20)  
   
-//@variable A modified copy of `BASE_COLOR` with dynamic transparency.   
-//          This variable's type is "series color", because its calculation depends on a "series int" value.  
-color modifiedColor = color.new(BASE_COLOR, transparency)  
-  
-// Color the background using the `modifiedColor` value.  
-bgcolor(modifiedColor)  
+// This line causes an error. `ta.ema()` expects a "simple int" `length` argument, but `len` has the type "series int".  
+plot(ta.ema(source = src, length = len))  
 `
 Note that:
   * The value stored by `BASE_COLOR` is of the type “const color” because it depends on only “const” values. However, the modified color returned by color.new() is of the type “series color”, because the dayofweek variable used in the calculation has the “series” qualifier.
