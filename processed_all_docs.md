@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260601_065355
+# processed_1_welcome_20260604_064114
 
-## 1_welcome_20260601_065355
+## 1_welcome_20260604_064114
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260601_065355
+# processed_2_first-steps_20260604_064114
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260601_065355
+# processed_3_first-indicator_20260604_064114
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -170,24 +170,25 @@ Our first Pine script is now running on the chart, which should look like this:
 !image
 Let’s look at our script’s code, line by line:
 Line 1: `//@version=6`
-compiler annotation telling the compiler the script uses version 6 of Pine Script.
+This is a compiler annotation telling the compiler the script uses version 6 of Pine Script.
 Line 2: `indicator("MACD #1")`
+Declares this script as an indicator, and defines the title of the script that appears on the chart as “MACD #1”.
 Line 3: `fast = 12`
-`fast` as the length of the fast moving average.
+Defines an integer variable `fast` as the length of the fast moving average.
 Line 4: `slow = 26`
-`slow` as the length of the slow moving average.
+Defines an integer variable `slow` as the length of the slow moving average.
 Line 5: `fastMA = ta.ema(close, fast)`
-`fastMA`, which holds the result of the _EMA_ (Exponential Moving Average) calculated on the close series, i.e., the closing price of bars, with a length equal to `fast` (12).
+Defines the variable `fastMA`, which holds the result of the _EMA_ (Exponential Moving Average) calculated on the close series, i.e., the closing price of bars, with a length equal to `fast` (12).
 Line 6: `slowMA = ta.ema(close, slow)`
-`slowMA`, which holds the result of the EMA calculated on the close series with a length equal to `slow` (26).
+Defines the variable `slowMA`, which holds the result of the EMA calculated on the close series with a length equal to `slow` (26).
 Line 7: `macd = fastMA - slowMA`
-`macd` as the difference between the two EMAs.
+Defines the variable `macd` as the difference between the two EMAs.
 Line 8: `signal = ta.ema(macd, 9)`
-`signal` as a smoothed value of `macd` using the EMA algorithm with a length of 9.
+Defines the variable `signal` as a smoothed value of `macd` using the EMA algorithm with a length of 9.
 Line 9: `plot(macd, color = color.blue)`
-plot() function to output the variable `macd` using a blue line.
+Calls the plot() function to output the variable `macd` using a blue line.
 Line 10: `plot(signal, color = color.orange)`
-plot() function to output the variable `signal` using an orange line.
+Calls the plot() function to output the variable `signal` using an orange line.
 
 ## Second version
 The first version of our script calculated the MACD using multiple steps, but because Pine Script is specially designed to write indicators and strategies, built-in functions exist for many common indicators, including one for MACD: ta.macd().
@@ -219,21 +220,22 @@ Our second Pine script is now running on the chart. If we double-click on the in
 !image
 Let’s look at the lines that have changed in the second version of our script:
 Line 2: `indicator("MACD #2")`
-`#1` to `#2` so the second version of our indicator displays a different name on the chart.
+We have changed `#1` to `#2` so the second version of our indicator displays a different name on the chart.
 Line 3: `fastInput = input(12, "Fast length")`
-input() function so we can change the length value from the script’s “Settings/Inputs” tab. The default value is `12` and the input field’s label is `"Fast length"`. When we change the value in the “Inputs” tab, the `fastInput` variable updates to contain the new length and the script re-executes on the chart with that new value. Note that, as our Pine Script Style guide recommends, we add `Input` to the end of the variable’s name to remind us, later in the script, that its value comes from a user input.
+Instead of assigning a constant value to the variable, we used the input() function so we can change the length value from the script’s “Settings/Inputs” tab. The default value is `12` and the input field’s label is `"Fast length"`. When we change the value in the “Inputs” tab, the `fastInput` variable updates to contain the new length and the script re-executes on the chart with that new value. Note that, as our Pine Script Style guide recommends, we add `Input` to the end of the variable’s name to remind us, later in the script, that its value comes from a user input.
 Line 4: `slowInput = input(26, "Slow length")`
-`fastInput` in the previous line, we do the same for the slow length, taking care to use a different variable name, default value, and title string for the input field’s label.
+As with `fastInput` in the previous line, we do the same for the slow length, taking care to use a different variable name, default value, and title string for the input field’s label.
 Line 5: `[macdLine, signalLine, histLine] = ta.macd(close, fastInput, slowInput, 9)`
-ta.macd() built-in function to perform all the first version’s calculations in only one line. The function requires four _parameters_ (the values enclosed in parentheses after the function name). It returns _three_ values, unlike the other functions we’ve used so far that only returned one. For this reason, we need to enclose the list of three variables receiving the function’s result in square brackets (to form a tuple) to the left of the `=` sign. Note that two of the values we pass to the function are the “input” variables containing the fast and slow lengths (`fastInput` and `slowInput`).
+This is where we call the ta.macd() built-in function to perform all the first version’s calculations in only one line. The function requires four _parameters_ (the values enclosed in parentheses after the function name). It returns _three_ values, unlike the other functions we’ve used so far that only returned one. For this reason, we need to enclose the list of three variables receiving the function’s result in square brackets (to form a tuple) to the left of the `=` sign. Note that two of the values we pass to the function are the “input” variables containing the fast and slow lengths (`fastInput` and `slowInput`).
 Lines 6 and 7: `plot(macdLine, color = color.blue)` and `plot(signalLine, color = color.orange)`
+The variable names we are plotting here have changed, but the lines still behave the same as in our first version.
 Our second version of the script performs the same calculations as our first, but we’ve made the indicator more efficient as it now leverages Pine’s built-in capabilities and easily supports variable lengths for the MACD calculation. Therefore, we have successfully improved our Pine script.
 
 ---
 
 
 
-# processed_4_next-steps_20260601_065355
+# processed_4_next-steps_20260604_064114
 
 ## ”indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
@@ -277,7 +279,7 @@ This is how the Pine Script v6 User Manual you are reading is organized:
 
 
 We wish you a successful journey with Pine Script… and trading!
- Previous
+ Previous First indicator
 
 ## * Overview
 * ”indicators” vs “strategies”
@@ -291,7 +293,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260601_065355
+# processed_5_execution-model_20260604_064114
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -612,22 +614,22 @@ As an indicator or library script runs on an open realtime bar, its compiled cod
 After each script execution that occurs _before_ a bar’s closing tick, the runtime engine executes a _rollback_ process. Rollback _resets_ applicable script data to the latest committed states in the time series. This process enables the script to recalculate the bar’s results using only the latest available data — without the influence of _temporary_ data from executions on the bar’s previous ticks.
 Below, we explain how recalculation and rollback affect a script’s data and outputs, along with some notable exceptions to this process:
 **Reinitialize variables**
-varip keyword. When the script executes again after rollback, it _reinitializes_ the variables with new values or references based on the latest available data.
-_temporary_ states of built-in variables that hold values for the current bar. Before the new script execution, it sets the variables to use the bar’s most recent data. For instance, the system updates close, high, and low with the latest, highest, and lowest prices reported since the bar’s opening time.
+The runtime system erases the states of any variables that the script initializes during its executions before a bar’s close, excluding those declared using the varip keyword. When the script executes again after rollback, it _reinitializes_ the variables with new values or references based on the latest available data.
+Likewise, the system does not preserve the _temporary_ states of built-in variables that hold values for the current bar. Before the new script execution, it sets the variables to use the bar’s most recent data. For instance, the system updates close, high, and low with the latest, highest, and lowest prices reported since the bar’s opening time.
 **Reset changes to`var` variables**
-var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
-**do not** preserve data across executions on the _ticks_ of an open bar. Rollback reverts all variables declared with var before the current bar to the last committed states in the time series as of the previous bar.
-var has a value of 20 on the open bar and 19 on the previous bar, the variable’s value reverts to 19 before the script executes on the next tick of the same bar. The temporary value of 20 does not persist.
+Variables that use the var keyword in their declaration remain initialized after the _first_ time that their scopes execute on a bar’s _closing tick_. Their assigned values or references _persist_ across subsequent bars, changing only after reassignment or compound assignment operations.
+Although these variables preserve data across successive bars, they **do not** preserve data across executions on the _ticks_ of an open bar. Rollback reverts all variables declared with var before the current bar to the last committed states in the time series as of the previous bar.
+For instance, if a variable declared with var has a value of 20 on the open bar and 19 on the previous bar, the variable’s value reverts to 19 before the script executes on the next tick of the same bar. The temporary value of 20 does not persist.
 **Replace plotted outputs**
-`plot*()`, bgcolor(), barcolor(), and fill() functions create visual outputs on _every bar_. These outputs are _temporary_ on the open realtime bar. When the script executes again after rollback, the new outputs for the bar from calls to these functions _replace_ the ones from the previous tick.
-`plot(close)` executes on the open bar, it displays the bar’s latest close value as of the current execution. However, the plotted result is **temporary** until the bar closes. After rollback, the close variable updates, then the script calls plot() again on the next execution to replace the output from the previous tick and display the new value.
+The `plot*()`, bgcolor(), barcolor(), and fill() functions create visual outputs on _every bar_. These outputs are _temporary_ on the open realtime bar. When the script executes again after rollback, the new outputs for the bar from calls to these functions _replace_ the ones from the previous tick.
+For example, when the expression `plot(close)` executes on the open bar, it displays the bar’s latest close value as of the current execution. However, the plotted result is **temporary** until the bar closes. After rollback, the close variable updates, then the script calls plot() again on the next execution to replace the output from the previous tick and display the new value.
 **Remove and revert objects**
 User-defined types (UDTs) and special types, such as collections and drawing types, are reference types. They define structures from which scripts create _objects_ — independent entities that store data elsewhere in memory. Variables of these types hold _references (IDs)_ that provide access to specific objects and their data; the variables do **not** store objects directly.
-varip keyword, the rollback process _removes_ those objects. During the next execution on the open bar, the script creates _new objects_ if the updated logic allows it.
-label.new() to create a label object on the open bar, the system _deletes_ that object during rollback. On the next execution, the script evaluates label.new() again, creating a _new_ label that replaces the output. The label created on the previous tick no longer exists.
-var variables, the rollback process reverts any changes to those objects that occur on the open bar. The only exception is for UDTs with _fields_ that include the varip keyword. See the Objects page for more information.
+If a script creates objects on an open bar and does not assign their references to variables declared with the varip keyword, the rollback process _removes_ those objects. During the next execution on the open bar, the script creates _new objects_ if the updated logic allows it.
+For example, if a script calls label.new() to create a label object on the open bar, the system _deletes_ that object during rollback. On the next execution, the script evaluates label.new() again, creating a _new_ label that replaces the output. The label created on the previous tick no longer exists.
+Similarly, for objects of built-in or user-defined types with references assigned to var variables, the rollback process reverts any changes to those objects that occur on the open bar. The only exception is for UDTs with _fields_ that include the varip keyword. See the Objects page for more information.
 **Exceptions**
-_all_ the data from script executions on an open bar. The following are notable exceptions to the rollback process:
+The runtime system does not revert _all_ the data from script executions on an open bar. The following are notable exceptions to the rollback process:
   * Variables or fields declared with the varip keyword **do not** revert to a previously committed state. They persist across _all_ script executions after initialization, even those on the ticks of an open realtime bar.
   * Logged messages in the Pine Logs pane do not disappear after rollback. The messages from any `log.*()` calls during executions on the ticks of realtime bars remain in the pane until the script reloads.
   * The data from strategy orders placed or filled on the ticks within a bar is not subject to rollback. If a strategy script creates orders or the broker emulator fills orders on an open bar, the data from those events persists.
@@ -1121,7 +1123,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260601_065355
+# processed_6_type-system_20260604_064114
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -1133,11 +1135,11 @@ The type system closely connects to the execution model and its time series stru
 ## Qualifiers
 Pine’s type qualifiers (const, input, simple, and series) indicate _when_ values in a script are accessible — either at compile time, input time, or runtime — and whether those values can change across script executions:
 `"const"`
-_compile time_ , when the user saves the script in the Pine Editor or applies the script to a dataset. Values qualified as “const” remain _constant_ during every script execution.
+Established at _compile time_ , when the user saves the script in the Pine Editor or applies the script to a dataset. Values qualified as “const” remain _constant_ during every script execution.
 `"input"`
-_input time_ , when the system confirms input data from the script’s “Settings/Inputs” tab or the chart. Similar to “const” values, “input” values _do not change_ as the script runs on the dataset.
+Established at _input time_ , when the system confirms input data from the script’s “Settings/Inputs” tab or the chart. Similar to “const” values, “input” values _do not change_ as the script runs on the dataset.
 `"simple"`
-_first_ available bar. On all subsequent bars, values qualified as “simple” do not change.
+Established by the script at runtime, on the _first_ available bar. On all subsequent bars, values qualified as “simple” do not change.
 `"series"`
 _Dynamic_. Values qualified as “series” are available at runtime, and they are the **only** values that can change across bars.
 NoteThe “const”, “input”, and “simple” qualifiers apply exclusively to value types. Pine’s reference types, such as label and array types, automatically inherit the “series” qualifier.
@@ -1501,20 +1503,20 @@ The example below creates a new “color” value with color.rgb(), modifies the
 Pine Script®
 Copied
 `//@version=6  
-indicator("Qualified types in tuples demo")  
+indicator("`color.*()` functions demo")  
   
-getParameters(float source, simple int length) =>  
-    // Although the expected type of the `length` parameter is "simple int", the  
-    // `length` value in the returned tuple inherits the "series" qualifier if the  
-    // `source` value has that qualifier, because all items in a tuple inherit the *same* qualifier.  
-    [source, length]  
+//@variable A color with custom red, green, and blue components. The variable's type is "const color".  
+color BASE_COLOR = color.rgb(0, 99, 165)  
   
-// Declare a tuple containing the values returned by a `getParameters()` call.  
-// Both variables in this tuple have the "series" qualifier, because `close` is of the type "series float".  
-[src, len] = getParameters(source = close, length = 20)  
+//@variable A calculated transparency value based on the current day of the week. This variable's type is "series int".  
+int transparency = 50 + int(40 * dayofweek / 7)  
   
-// This line causes an error. `ta.ema()` expects a "simple int" `length` argument, but `len` has the type "series int".  
-plot(ta.ema(source = src, length = len))  
+//@variable A modified copy of `BASE_COLOR` with dynamic transparency.   
+//          This variable's type is "series color", because its calculation depends on a "series int" value.  
+color modifiedColor = color.new(BASE_COLOR, transparency)  
+  
+// Color the background using the `modifiedColor` value.  
+bgcolor(modifiedColor)  
 `
 Note that:
   * The value stored by `BASE_COLOR` is of the type “const color” because it depends on only “const” values. However, the modified color returned by color.new() is of the type “series color”, because the dayofweek variable used in the calculation has the “series” qualifier.
@@ -2419,7 +2421,7 @@ array.set(randArray, 0, 0.0)
 // Plot the sum of the `randArray` elements.  
 plot(randArray.sum())  
 `
- Previous   Next Script structure
+ Previous Execution model    Next Script structure
 
 ## * Introduction
 * Qualifiers
@@ -2504,7 +2506,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260601_065355
+# processed_7_script-structure_20260604_064114
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2755,7 +2757,7 @@ if barstate.islastconfirmedhistory
     drawTriangle(triangle)  
 //#endregion  
 `
- Previous   Next Identifiers
+ Previous Type system    Next Identifiers
 
 
 ## Code Examples
@@ -2787,9 +2789,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260601_065355
+# processed_8_identifiers_20260604_064114
 
-## 8_identifiers_20260601_065355
+## 8_identifiers_20260604_064114
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2849,13 +2851,13 @@ int fastLength = 7
 // Returns 1 if the argument is `true`, 0 if it is `false` or `na`.  
 zeroOne(boolValue) => boolValue ? 1 : 0  
 `
- Previous   Next Declaration statements
+ Previous Script structure    Next Declaration statements
 
 ---
 
 
 
-# processed_9_declaration-statements_20260601_065355
+# processed_9_declaration-statements_20260604_064114
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -2961,13 +2963,13 @@ The `precision` parameter determines the default number of _fractional digits_ t
 The `format` parameter determines whether the script displays plotted numbers and the numbers in the price scale using a price, percentage, or volume format, or if it inherits formatting settings from the chart or another script. The possible arguments are format.price, format.percent, format.volume and format.inherit. The default is format.inherit.
 Below, we list how a script formats plotted values when using each of these arguments:
 `format.price`
-E notation (e.g., `1e+21`).
+The script formats plotted values as whole numbers with two fractional digits by default. For example, a script that uses this argument and default precision settings formats a plot value of 122 as 122.0, and a value of 122.355 as 122.36. If a rounded value is greater than or equal to 1000, the script uses a comma as the thousands separator. For instance, it formats a value of 14489245 as 14,489,245.00. If a number is extremely large, the script formats it as a rounded value in E notation (e.g., `1e+21`).
 `format.percent`
-format.price, and it appends a percent sign (`%`) to express plotted values as percentages. By default, the format rounds plotted numbers to two fractional digits. For example, it formats the value 39.787 as 39.79%. This format does _not_ recalculate values to express them as percentages. To represent a _ratio_ as a percentage when using this format, multiply the value by 100 before plotting it.
+The script applies similar formatting rules to those defined by format.price, and it appends a percent sign (`%`) to express plotted values as percentages. By default, the format rounds plotted numbers to two fractional digits. For example, it formats the value 39.787 as 39.79%. This format does _not_ recalculate values to express them as percentages. To represent a _ratio_ as a percentage when using this format, multiply the value by 100 before plotting it.
 `format.volume`
-_abbreviated_ values that follow special precision rules. If a rounded value is greater than or equal to 1000, the script includes a letter representing a multiplied quantity: “K” for thousand, “M” for million, “B” for billion, or “T” for trillion. For example, it formats a plot value of 2474 as 2.74K, and a value of 14489245 as 14.49M. If a value is extremely large, the script displays a number with commas or E notation followed by “T”. For values less than 1000, the script displays those values rounded to the nearest whole number by default. Note that these formatting rules can apply to any plotted numbers; they are not limited to only volume values.
+The script formats plotted numbers as _abbreviated_ values that follow special precision rules. If a rounded value is greater than or equal to 1000, the script includes a letter representing a multiplied quantity: “K” for thousand, “M” for million, “B” for billion, or “T” for trillion. For example, it formats a plot value of 2474 as 2.74K, and a value of 14489245 as 14.49M. If a value is extremely large, the script displays a number with commas or E notation followed by “T”. For values less than 1000, the script displays those values rounded to the nearest whole number by default. Note that these formatting rules can apply to any plotted numbers; they are not limited to only volume values.
 `format.inherit`
-source input. For example, the script uses price formatting when applied to a stock chart series, and percentage formatting when applied to a bond chart series.
+The script inherits the same formatting settings as those defined for the main chart series, or the global formatting settings for another script if it accesses one of the script’s plots using a source input. For example, the script uses price formatting when applied to a stock chart series, and percentage formatting when applied to a bond chart series.
 NoteIf the declaration statement uses format.inherit as the `format` argument, changing the script’s _precision_ settings via the `precision` parameter or the “Precision” field in the script’s “Settings/Style” tab causes it to _ignore_ the inherited format and instead use format.price settings with the specified precision, even if the inherited format uses format.volume rules.
 The example indicator below plots volume values as color-coded columns, and it plots the average value over a specified number of bars as a line. The indicator() declaration statement includes format.volume as the `format` argument to apply the volume formatting rules described above to the script’s plots and scale. On our daily “NASDAQ:NFLX” chart, the current plotted values are in _millions_ , so the script displays the numbers in an abbreviated format with “M” as the suffix:
 !image
@@ -3479,7 +3481,7 @@ Note that:
 
 
 See the Request publication from the TradingView account for an advanced example of a library that exports custom functions using dynamic requests.
- Previous   Next Variable declarations
+ Previous Identifiers    Next Variable declarations
 
 ## * Introduction
 * `indicator()`
@@ -3541,7 +3543,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260601_065355
+# processed_10_variable-declarations_20260604_064114
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -3867,15 +3869,28 @@ For example, the script below declares a variable named `myVar` without using a 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Type inheritance demo")  
+indicator("Efficient line management demo", overlay = true)  
   
-//@variable Counts the number of bars remaining until the script reaches the latest bar.  
-//          The expression returns a "series int" value. Therefore, the variable automatically inherits the "int" type.  
-//          You can hover over the `myVar` identifier to confirm the type.  
-myVar = last_bar_index - bar_index  
+//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
+bool newPeriod = timeframe.change("1D")  
   
-// Plot the value on the chart.  
-plot(myVar, "Bars remaining", color.purple, 3)  
+// Declare a variable that persistently stores a `line` ID or `na` across bars until reassigned.  
+var line currLine = na  
+  
+if barstate.islast  
+    // At the start of a new period, create a new `line` object with coordinates for the current bar, and reassign  
+    // the `currLine` variable. The variable stores the new `line` ID until the `newPeriod` value is `true` again.  
+    if newPeriod  
+        currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
+    // Set the `x2` and `y2` (end) coordinates of the current line to the current bar's `time` and `close` values  
+    // while the period is open.  
+    currLine.set_xy2(time, close)  
+else if newPeriod  
+    // Update the end coordinates of the latest line on historical bars to the final value of the previous period.  
+    currLine.set_xy2(time[1], close[1])  
+    // Create a new `line` object and assign its ID to the `currLine` variable. On the next historical bar where  
+    // a new period starts, the script modifies the new line.  
+    currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
 `
 Note that:
   * The variable’s _qualified type_ is “series int”, because the built-in variables in the expression store “series” values that change from bar to bar. See the Qualifiers section of the Type system page and the Qualifier keywords section below to learn more.
@@ -3923,11 +3938,11 @@ plot(myVar, "Log of bars remaining", color.purple, 3)
 A single-variable declaration that includes a _qualifier keyword_ (const, simple, or series) before the type keyword specifies the variable’s type qualifier. A variable’s type qualifier indicates _when_ the assigned value must be accessible, and whether the value can _change_ during or across script executions. Qualifier keywords are almost always _optional_. The only exception is for a library’s exported variables, which require the const keyword in their declarations.
 Below, we list how each qualifier keyword affects declared variables of value types:
 `const`
-“const” qualifier. It accepts only a “const” value, which is a compile-time constant that never changes at runtime. Additionally, the keyword _prevents_ the script from reassigning the variable. Other code that requires any value of the type specified by the type keyword can use the variable, because the “const” qualifier is the _weakest_ in Pine’s qualifier hierarchy.
+The variable has the “const” qualifier. It accepts only a “const” value, which is a compile-time constant that never changes at runtime. Additionally, the keyword _prevents_ the script from reassigning the variable. Other code that requires any value of the type specified by the type keyword can use the variable, because the “const” qualifier is the _weakest_ in Pine’s qualifier hierarchy.
 `simple`
-“simple” qualifier. It accepts a “simple” value, which becomes available at _runtime_ , during script executions on the _first bar_ of the dataset, and remains _consistent_ across all subsequent bars. It can also accept a value with a _weaker_ qualifier (“input” or “const”). The script can use the variable in any code that allows “simple” values of the given type, but _not_ in any code that requires values with the “input” or “const” qualifiers.
+The variable has the “simple” qualifier. It accepts a “simple” value, which becomes available at _runtime_ , during script executions on the _first bar_ of the dataset, and remains _consistent_ across all subsequent bars. It can also accept a value with a _weaker_ qualifier (“input” or “const”). The script can use the variable in any code that allows “simple” values of the given type, but _not_ in any code that requires values with the “input” or “const” qualifiers.
 `series`
-“series” qualifier. It can accept values with _any_ type qualifier, because “series” is the _strongest_ qualifier in Pine’s qualifier hierarchy. The variable’s value is available at runtime and _can change_ on any bar. The script can use the variable in code that allows “series” values of the given type, but _not_ in any code that requires a value with a weaker qualifier.
+The variable has the “series” qualifier. It can accept values with _any_ type qualifier, because “series” is the _strongest_ qualifier in Pine’s qualifier hierarchy. The variable’s value is available at runtime and _can change_ on any bar. The script can use the variable in code that allows “series” values of the given type, but _not_ in any code that requires a value with a weaker qualifier.
 NoteIt is possible to use a qualifier keyword when declaring variables of most reference types. However, in such declarations, the keyword **does not** directly define the variable’s type qualifier. Instances of these types always have the _“series”_ qualifier. Therefore, the variables that store their IDs automatically inherit the “series” qualifier, regardless of any qualifier keyword. See the Type system page to learn more.
 If the declaration of a value-type variable does _not_ include a qualifier keyword, the compiler automatically assigns the variable the _strongest_ type qualifier used by the expressions and structures that determine its value, including those that the script uses to reassign the variable after declaring it.
 NotePine Script does not include a keyword for the “input” qualifier. A variable inherits the “input” qualifier only if its declaration does not use a qualifier keyword and the script uses “input” expressions to determine its value.
@@ -4727,7 +4742,7 @@ After a script reloads across a dataset, all _elapsed realtime bars_ from the fo
   
 
 For advanced details about this behavior, as well as the events that cause a script to reload, refer to the Events that trigger script executions section of the Execution model page. For general information about the different types of repainting behaviors in Pine and their causes, refer to the Repainting page.
- Previous   Next Operators
+ Previous Declaration statements    Next Operators
 
 
 ## Code Examples
@@ -4745,7 +4760,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260601_065355
+# processed_11_operators_20260604_064114
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -4984,7 +4999,7 @@ if barstate.islastconfirmedhistory
     displayResult(6, "x %= 5", "Calculates remainder of dividing `x` by 5 and reassigns result", x)  
 `
 The `+=` operator also acts as a concatenation operator when both operands are strings. For example, if a `symTicker` variable holds the string `"NASDAQ:"`, then `symTicker += "AAPL"` appends the `"AAPL"` characters to the `"NASDAQ:"` characters to create a new “string” value `"NASDAQ:AAPL"`, which is then assigned back to `symTicker`.
- Previous   Next Conditional structures
+ Previous Variable declarations    Next Conditional structures
 
 ## * Introduction
 * Arithmetic operators
@@ -5001,7 +5016,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260601_065355
+# processed_12_conditional-structures_20260604_064114
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5293,7 +5308,7 @@ x = if close > open
 else  
     "open"  
 `
- Previous   Next Loops
+ Previous Operators    Next Loops
 
 ## * Introduction
 * `if` structure
@@ -5386,7 +5401,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260601_065355
+# processed_13_loops_20260604_064114
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6281,7 +6296,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
   * Use a for or while loop instead of a for…in loop.
 
 
- Previous   Next Built-ins
+ Previous Conditional structures    Next Built-ins
 
 
 ## Code Examples
@@ -6356,7 +6371,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260601_065355
+# processed_14_built-ins_20260604_064114
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6452,7 +6467,7 @@ Copied
 `
 **When calling built-ins, it is critical to ensure that the arguments you use are of the required qualified type, which will vary for each parameter.**
 To learn how to do this, one needs to understand Pine Script’s type system. The Reference Manual entry for each built-in function includes an “ARGUMENTS” section which lists the qualified type required for the argument supplied to each of the function’s parameters.
- Previous   Next User-defined functions
+ Previous Loops    Next User-defined functions
 
 ## * Introduction
 * Built-in variables
@@ -6470,15 +6485,15 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260601_065355
+# processed_15_user-defined-functions_20260604_064114
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
 A function definition consists of two main parts: a _header_ and a _body_.
 **Header**
-_signature_ , i.e., its _name_ and _parameters_. A script _calls_ the function by creating an expression containing the function’s name followed by parentheses (e.g., `f()`). If the function has declared parameters, calls to the function list _arguments_ (values or references) for those parameters within the parentheses (e.g., `f(x = 1)`).
+The header declares the function’s _signature_ , i.e., its _name_ and _parameters_. A script _calls_ the function by creating an expression containing the function’s name followed by parentheses (e.g., `f()`). If the function has declared parameters, calls to the function list _arguments_ (values or references) for those parameters within the parentheses (e.g., `f(x = 1)`).
 **Body**
-_call_ to the function performs the tasks defined by the expressions and statements in the function’s body.
+The function’s body is the code that follows the header. Each _call_ to the function performs the tasks defined by the expressions and statements in the function’s body.
 Function definitions in Pine can use either of the following formats:
     
 
@@ -6817,11 +6832,11 @@ TipEven when not required, we recommend declaring parameter types where possible
 ### Qualifier keywords
 A _qualifier keyword_ (const, simple, or series) preceding a type keyword in a parameter declaration specifies the parameter’s type qualifier. The keyword also indicates when the _argument_ for the parameter must be accessible, and whether that argument can _change_ across bars:
 `const`
-_compile time_ , and that argument cannot change during any execution. Only the parameters of _non-exported_ functions can use the const keyword.
+The parameter has the “const” qualifier. Its argument must be available at _compile time_ , and that argument cannot change during any execution. Only the parameters of _non-exported_ functions can use the const keyword.
 `simple`
-_weaker_ qualifier (“input” or “const”). The value cannot change after the _first bar_.
+The parameter has the “simple” qualifier. Its argument must be a “simple” value or a value with a _weaker_ qualifier (“input” or “const”). The value cannot change after the _first bar_.
 `series`
-_any_ type qualifier, because “series” is the _highest_ one in Pine’s qualifier hierarchy. The argument for the parameter in each function call _can change_ on any execution.
+The parameter has the “series” qualifier. It can accept an argument with _any_ type qualifier, because “series” is the _highest_ one in Pine’s qualifier hierarchy. The argument for the parameter in each function call _can change_ on any execution.
 NoteQualifier keywords affect only the parameters that accept value types. They **do not** affect those that accept reference types. Instances of reference types _always_ have the “series” qualifier, regardless of how the script uses them. Therefore, all parameters of these types automatically inherit the “series” qualifier. See the Type system page to learn more.
 Qualifier keywords are always _optional_ in parameter declarations. If a declaration does not include a qualifier keyword, the compiler uses the following logic to assign a qualifier to the parameter:
   * If the declaration does _not_ include a type keyword, the compiler assigns the parameter the _same_ qualifier _and_ type as its argument in each written function call. For example, if the script passes a “const int” argument in one function call, the parameter of that call inherits the type “const int”. If it uses a “series float” value in another call to the function, the parameter of that call inherits the type “series float”.
@@ -6976,12 +6991,12 @@ plot(avg2, "Inconsistent EMA/SMA", color.purple, 3)
 Pine Script features annotations that programmers can use to document a function, its parameters, and its result directly in the source code. Annotations are _comments_ that issue special _instructions_ to the compiler or the Pine Editor. The editor can display the formatted text from function annotations in a pop-up window as users work with the function in their code. Additionally, the “Publish script” window uses the text from function annotations to generate default descriptions for libraries.
 To annotate a function, add comment lines containing valid annotation syntax directly above the function’s header. Each annotation comment must start with `@`, immediately followed by the keyword that indicates its purpose. Below is the syntax for all annotations that apply exclusively to function and method definitions:
 `//@function <description>`
-//@function annotation defines the _main description_ of the function or method. This annotation is where the programmer documents the function’s purpose and key behaviors. The Pine Editor displays the formatted `description` text in its pop-up window while the user hovers over the function’s name or writes a function call.
+The //@function annotation defines the _main description_ of the function or method. This annotation is where the programmer documents the function’s purpose and key behaviors. The Pine Editor displays the formatted `description` text in its pop-up window while the user hovers over the function’s name or writes a function call.
 `//@param <parameterName> <description>`
-//@param annotation defines the description of a specific function _parameter_. The Pine Editor displays the `description` text beneath the parameter’s type in its pop-up window while the user _writes an argument_ for that parameter in a function call.
-`parameterName` is the name of one of the function’s _parameters_. If the annotation does not include a parameter name, or if the specified name does not match one of the listed parameters, the annotation is _ignored_.
+The //@param annotation defines the description of a specific function _parameter_. The Pine Editor displays the `description` text beneath the parameter’s type in its pop-up window while the user _writes an argument_ for that parameter in a function call.
+In this syntax, `parameterName` is the name of one of the function’s _parameters_. If the annotation does not include a parameter name, or if the specified name does not match one of the listed parameters, the annotation is _ignored_.
 `//@returns <description>`
-//@returns annotation defines the description of the function’s _returned data_. The Pine Editor displays the `description` text at the bottom of the pop-up window that appears while the user hovers over the function’s name.
+The //@returns annotation defines the description of the function’s _returned data_. The Pine Editor displays the `description` text at the bottom of the pop-up window that appears while the user hovers over the function’s name.
 NoteRedundant annotations are automatically _ignored_. If two or more `//@function` or `//@returns` annotations are above a function header, only the **last** one adds a description to the function or its return expression. If two or more `//@param` annotations above the header share the same parameter name, only the **first** one defines the corresponding parameter’s description.
 The following code block defines a `mixEMA()` function, which calculates an EMA of a `source` series and then mixes the EMA with that series by a specified amount (`mix`). Above the function definition, we included `//@function`, `//@param`, and `//@returns` annotations to document its purpose, parameters, and result, respectively. Users can view the formatted text from these annotations by hovering over the `mixEMA` identifier in the Pine Editor or writing a `mixEMA()` function call:
 Pine Script®
@@ -7505,7 +7520,7 @@ gcd(int x, int y) =>
   
 plot(gcd(15, 20))  
 `
- Previous   Next Objects
+ Previous Built-ins    Next Objects
 
 ## * Introduction
 * Structure and syntax
@@ -7802,11 +7817,11 @@ TipEven when not required, we recommend declaring parameter types where possible
 ### Qualifier keywords
 A _qualifier keyword_ (const, simple, or series) preceding a type keyword in a parameter declaration specifies the parameter’s type qualifier. The keyword also indicates when the _argument_ for the parameter must be accessible, and whether that argument can _change_ across bars:
 `const`
-_compile time_ , and that argument cannot change during any execution. Only the parameters of _non-exported_ functions can use the const keyword.
+The parameter has the “const” qualifier. Its argument must be available at _compile time_ , and that argument cannot change during any execution. Only the parameters of _non-exported_ functions can use the const keyword.
 `simple`
-_weaker_ qualifier (“input” or “const”). The value cannot change after the _first bar_.
+The parameter has the “simple” qualifier. Its argument must be a “simple” value or a value with a _weaker_ qualifier (“input” or “const”). The value cannot change after the _first bar_.
 `series`
-_any_ type qualifier, because “series” is the _highest_ one in Pine’s qualifier hierarchy. The argument for the parameter in each function call _can change_ on any execution.
+The parameter has the “series” qualifier. It can accept an argument with _any_ type qualifier, because “series” is the _highest_ one in Pine’s qualifier hierarchy. The argument for the parameter in each function call _can change_ on any execution.
 NoteQualifier keywords affect only the parameters that accept value types. They **do not** affect those that accept reference types. Instances of reference types _always_ have the “series” qualifier, regardless of how the script uses them. Therefore, all parameters of these types automatically inherit the “series” qualifier. See the Type system page to learn more.
 Qualifier keywords are always _optional_ in parameter declarations. If a declaration does not include a qualifier keyword, the compiler uses the following logic to assign a qualifier to the parameter:
   * If the declaration does _not_ include a type keyword, the compiler assigns the parameter the _same_ qualifier _and_ type as its argument in each written function call. For example, if the script passes a “const int” argument in one function call, the parameter of that call inherits the type “const int”. If it uses a “series float” value in another call to the function, the parameter of that call inherits the type “series float”.
@@ -7960,10 +7975,10 @@ plot(avg2, "Inconsistent EMA/SMA", color.purple, 3)
 Pine Script features annotations that programmers can use to document a function, its parameters, and its result directly in the source code. Annotations are _comments_ that issue special _instructions_ to the compiler or the Pine Editor. The editor can display the formatted text from function annotations in a pop-up window as users work with the function in their code. Additionally, the “Publish script” window uses the text from function annotations to generate default descriptions for libraries.
 To annotate a function, add comment lines containing valid annotation syntax directly above the function’s header. Each annotation comment must start with `@`, immediately followed by the keyword that indicates its purpose. Below is the syntax for all annotations that apply exclusively to function and method definitions:
 `//@function <description>`
-//@function annotation defines the _main description_ of the function or method. This annotation is where the programmer documents the function’s purpose and key behaviors. The Pine Editor displays the formatted `description` text in its pop-up window while the user hovers over the function’s name or writes a function call.
+The //@function annotation defines the _main description_ of the function or method. This annotation is where the programmer documents the function’s purpose and key behaviors. The Pine Editor displays the formatted `description` text in its pop-up window while the user hovers over the function’s name or writes a function call.
 `//@param <parameterName> <description>`
-//@param annotation defines the description of a specific function _parameter_. The Pine Editor displays the `description` text beneath the parameter’s type in its pop-up window while the user _writes an argument_ for that parameter in a function call.
-`parameterName` is the name of one of the function’s _parameters_. If the annotation does not include a parameter name, or if the specified name does not match one of the listed parameters, the annotation is _ignored_.
+The //@param annotation defines the description of a specific function _parameter_. The Pine Editor displays the `description` text beneath the parameter’s type in its pop-up window while the user _writes an argument_ for that parameter in a function call.
+In this syntax, `parameterName` is the name of one of the function’s _parameters_. If the annotation does not include a parameter name, or if the specified name does not match one of the listed parameters, the annotation is _ignored_.
 `//@returns <description>`
 
 
@@ -8305,7 +8320,7 @@ Copied
 
 
 
-# processed_16_objects_20260601_065355
+# processed_16_objects_20260604_064114
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8598,7 +8613,7 @@ deep.set(bar_index, 1, "Deep Copy")
 ## Shadowing
 To avoid potential conflicts in the eventuality where namespaces added to Pine Script in the future would collide with UDT names in existing scripts; as a rule, UDT names shadow the language’s namespaces. For example, a UDT can have the same name as some built-in types, such as line or table.
 However, scripts cannot use the following keywords for fundamental types as names for UDTs: int, float, string, bool, and color.
- Previous   Next Enums
+ Previous User-defined functions    Next Enums
 
 ## * Overview
 * Introduction
@@ -8612,7 +8627,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260601_065355
+# processed_17_enums_20260604_064114
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8897,7 +8912,7 @@ enum polyline
 enum ta  
     abcd  
 `
- Previous   Next Methods
+ Previous Objects    Next Methods
 
 
 ## Code Examples
@@ -8930,7 +8945,7 @@ enum ta
 
 
 
-# processed_18_methods_20260601_065355
+# processed_18_methods_20260604_064114
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9427,7 +9442,7 @@ array<float> distArray = sourceArray.maintainQueue(sourceInput).featureScale(
 // Draw label.  
 makeLabel(sourceArray, distArray)  
 `
- Previous   Next Arrays
+ Previous Enums    Next Arrays
 
 
 ## Code Examples
@@ -9578,7 +9593,7 @@ Copied
 
 
 
-# processed_19_arrays_20260601_065355
+# processed_19_arrays_20260604_064114
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -10065,23 +10080,6 @@ if barstate.islast
     array.push(c, 4)  
     label.new(bar_index, 0, "AFTER\na: " + str.tostring(a) + "\nb: " + str.tostring(b) + "\nc: " + str.tostring(c), style = label.style_label_up, size = size.large)  
 `
-###  Copying
-Scripts can create copies of an array by using array.copy(). This function creates a new array with the same elements and returns that array’s unique ID. Changes to a copied array do not directly affect the original.
-For example, the following script creates a new array with `array.new<float>()` and assigns its ID to the `a` variable. Then, it calls `array.copy(a)` to copy that array, and it assigns the copied array’s ID to the `b` variable. Any changes to the array referenced by `b` do not affect the one referenced by `a`, because both variables refer to _separate_ array objects:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("`array.copy()`")  
-a = array.new<float>(0)  
-array.push(a, 0)  
-array.push(a, 1)  
-if barstate.islast  
-    b = array.copy(a)  
-    array.push(b, 2)  
-    label.new(bar_index, 0, "a: " + str.tostring(a) + "\nb: " + str.tostring(b), size = size.large)  
-`
-Note that assigning one variable’s stored array ID to another variable _does not_ create a copy of the referenced array. For example, if we use `b = a` instead of `b = array.copy(a)` in the above script, the `b` variable _does not_ reference a copy of the array referenced by `a`. Instead, both variables hold a reference to the _same_ array. In that case, the call `array.push(b, 2)` directly modifies the array referenced by `a`, and the label’s text shows identical results for the two variables.
 ###  Joining
 The array.join() function converts an “int”, “float”, or “string” array’s elements into strings, then _joins_ each one to form a single “string” value with a specified `separator` inserted between each combined value. It provides a convenient alternative to converting values to strings with str.tostring() and performing repeated string concatenation operations.
 The following script demonstrates the array.join() function’s behaviors. It requests tuples of “string”, “int”, and “float” values from three different contexts with request.security() calls, creates separate arrays for each type with array.from(), then creates joined strings with the array.join() function. Lastly, it creates another array from those strings with array.from() and joins them with another array.join() call, using a newline as the separator, and displays the final string in the table:
@@ -10470,30 +10468,249 @@ if barstate.islast
     array.reverse(a)  
     label.new(bar_index, 0, "a: " + str.tostring(a))  
 `
-###  Slicing
-Slicing an array using array.slice() creates a shallow copy of a subset of the parent array. You determine the size of the subset to slice using the `index_from` and `index_to` parameters. The `index_to` argument must be one greater than the end of the subset you want to slice.
-The shallow copy created by the slice acts like a window on the parent array’s content. The indices used for the slice define the window’s position and size over the parent array. If, as in the example below, a slice is created from the first three elements of an array (indices 0 to 2), then regardless of changes made to the parent array, and as long as it contains at least three elements, the shallow copy will always contain the parent array’s first three elements.
-Additionally, once the shallow copy is created, operations on the copy are mirrored on the parent array. Adding an element to the end of the shallow copy, as is done in the following example, will widen the window by one element and also insert that element in the parent array at index 3. In this example, to slice the subset from index 0 to index 2 of array `a`, we must use `sliceOfA = array.slice(a, 0, 3)`:
+
+## Copying arrays
+A _copy_ of an array is a _separate_ array object initialized to have the same structure as the original. Any changes to the elements stored by the copy do not affect the contents of the original array. Scripts can create shallow copies for arrays of any type by using the array.copy() function. For reference-type arrays, scripts can also use custom logic to create deep copies whose elements reference separate objects.
+NoteAssigning one variable’s stored array ID to another variable _does not_ create a copy of the array. Any changes to the array referenced by one of the variables directly affect the one referenced by the other, because both refer to the same array object. See the Modifying variables vs. objects section of the Type system page to learn more about this behavior.
+### Shallow copies
+The array.copy() function creates a _shallow copy_ of an array of any type. A shallow copy is a new array object that initially has the same size as the original and stores the _same_ values or references (IDs) as elements.
+Although a shallow copy initially shares the same structure as the original array, it is an _independent object_. The script can insert new elements and overwrite, remove, reverse, or sort existing elements in the copied array _without_ affecting the original array’s contents, regardless of the type of elements it contains.
+For example, the following script creates an array of “float” values and assigns its ID to a variable named `original` on the last historical bar. It then uses the array.copy() function to create a shallow copy of the array and assigns its ID to a variable named `copy`. The script uses the array.push(), array.shift(), array.set(), and array.sort() functions to modify the copied array, then displays a string representation of the original array and the copy in a label. As shown by the label’s text, the copied array’s contents change, while the original array remains _unchanged_ :
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("`array.slice()`")  
-a = array.new<float>(0)  
-array.push(a, 0)  
-array.push(a, 1)  
-array.push(a, 2)  
-array.push(a, 3)  
-if barstate.islast  
-    // Create a shadow of elements at index 1 and 2 from array `a`.  
-    sliceOfA = array.slice(a, 0, 3)  
-    label.new(bar_index, 0, "BEFORE\na: " + str.tostring(a) + "\nsliceOfA: " + str.tostring(sliceOfA))  
-    // Remove first element of parent array `a`.  
-    array.remove(a, 0)  
-    // Add a new element at the end of the shallow copy, thus also affecting the original array `a`.  
-    array.push(sliceOfA, 4)  
-    label.new(bar_index, 0, "AFTER\na: " + str.tostring(a) + "\nsliceOfA: " + str.tostring(sliceOfA), style = label.style_label_up)  
+indicator("Modifying shallow copies demo")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of arbitrary "float" values.  
+    array<float> original = array.from(-1.0, 4.0, 3.0, 2.0)  
+    //@variable References a shallow copy of the `original` array.  
+    array<float> copy = array.copy(original)  
+  
+    //#region  
+    // The calls in this region modify only the *copied* array. They do not affect the original array,   
+    // because the `copy` and `original` variables reference separate objects.   
+    // If we change `copy` to `original` in these calls, they affect only the original array, not the copy.   
+  
+    // Add a new element to the end of the copy.  
+    copy.push(1.0)  
+    // Remove the copy's first element.  
+    copy.shift()  
+    // Assign a new value to the copy's second element.  
+    copy.set(1, 3.5)  
+    // Sort the elements of the copy in ascending order.  
+    array.sort(copy)  
+    //#endregion  
+  
+    //@variable A string representation of the original array and the copied array after modification.  
+    string displayStr = str.format("Original:      {0}\nModified copy: {1}", str.tostring(original), str.tostring(copy))  
+  
+    // Display the text from the formatted string in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 36,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
 `
+For an array of value types, all changes to the data associated with a shallow copy are completely _separate_ from the original array, because the only way to change the data accessed by an element in either array is by replacing the element.
+By contrast, it _is_ possible to modify the data associated with arrays of reference types through a shallow copy. When the array.copy() function copies an array of object IDs, it does **not** create new copies of the _objects_ referenced by those elements; it creates a new array whose elements store the **same IDs** as the original. Consequently, if the script modifies the _object_ referenced by one of the elements in the shallow copy, it also modifies the one referenced by the corresponding element in the original array, and vice versa, because _both_ elements refer to the _same object_ that exists elsewhere in memory.
+The following example demonstrates this behavior. The script below creates an array containing the ID of a chart point on the last historical bar, then uses the array.copy() function to create a shallow copy of that array. The script uses the -= and := operators to modify the `index` field of the chart point referenced by the original array and the `price` field of the one referenced by the copy. Then, it displays formatted text containing the chart coordinates retrieved through both arrays inside labels positioned at those coordinates. Both labels anchor to the same location on the chart and display the same values, because the elements in the original array and the shallow copy access the same chart.point object:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Shallow copy of reference-type array demo")  
+  
+//@function Creates a string representing an array of `chart.point` IDs. Each listed item enclosed in parentheses   
+//          represents the `index` and `price` coordinates from the referenced chart point.    
+repr(array<chart.point> source) =>  
+    string result = "["  
+    for item in source  
+        result += str.format("(index: {0,number,#}, price: {1,number,#.#####}), ", item.index, item.price)  
+    result := str.substring(result, 0, str.length(result) - 2) + "]"  
+  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array containing a single `chart.point` ID.  
+    array<chart.point> original = array.from(chart.point.from_index(index = bar_index, price = 0))  
+  
+    // The `array.copy()` call below copies the *original* chart point's *ID* into the new array.  
+    // It **does not** create a copy of that object for the new array to reference.  
+  
+    array<chart.point> shallowCopy = array.copy(original) // Equivalent to: array.from(original.first())  
+  
+    // These variables reference the same chart point as the arrays, not copies of it.   
+    chart.point originalPoint = original.first()  
+    chart.point pointFromCopy = shallowCopy.first()  
+  
+    // These two operations modify the `index` and `price` fields of the **same** chart point, regardless of whether   
+    // they access that object using the `originalPoint` or `pointFromCopy` variable:  
+  
+    originalPoint.index -= 10 // Equivalent to: pointFromCopy.index -= 10  
+    pointFromCopy.price := 1  // Equivalent to: originalPoint.price := 1  
+  
+    // Create string representations of the two arrays.   
+    // Because both arrays reference the *same* object, both strings contain the *same data*.  
+    string originalStr    = "Original array:\n" + repr(original)  
+    string shallowCopyStr = "Shallow copy:\n"   + repr(shallowCopy)  
+  
+    // Draw labels using the chart point referenced by `originalPoint` and `pointFromCopy`.  
+    // The two labels anchor to the same coordinates (x = bar_index - 10, y = 1).  
+    label.new(originalPoint, originalStr,    size = 36)  
+    label.new(pointFromCopy, shallowCopyStr, size = 36, style = label.style_label_up)  
+`
+Note that:
+  * Assigning the IDs retrieved from an array to separate variables _does not_ create copies of the associated objects. For instance, the `originalPoint` and `pointFromCopy` variables in this script reference the _same_ chart point as their respective arrays.
+
+
+### Deep copies
+A _deep copy_ of a reference-type array is a new array that has the same structure as the original, but stores separate elements. Unlike a shallow copy, which stores the _same_ object IDs as the original array, a deep copy contains the IDs of _copies_ of the original objects. In other words, the deep copy references _different objects_ initialized with the same properties as the original objects. Therefore, modifying the objects referenced by the original array or the deep copy does _not_ affect the objects referenced by the other array.
+Creating a deep copy of an array is necessary only if the array stores elements of a _reference type_ , and the script must modify the objects referenced by the copy _without_ modifying those referenced by the original, or vice versa. If the original and copied arrays must reference the same objects, or if the script does not modify the array’s associated objects, creating a _shallow copy_ with the array.copy() function is sufficient.
+NoteFor a value-type array, a shallow copy is semantically the _same_ as a deep copy, because values are not referenced entities that the script can modify _outside_ the array. The only way to change the data associated with the elements of a value-type array, or its copies, is to _overwrite_ those elements.
+To create a deep copy of an array, programmers can do either of the following:
+  * Create a new array of the same type with the array.new<type>() function. For each element in the original array, create a _copy_ of the referenced object, then insert the copied object’s ID into the new array at the same index.
+  * Create a shallow copy of the original array with the array.copy() function, then convert the shallow copy to a deep copy by _replacing_ each element with the ID of a copied object.
+
+
+In the example below, we modified the _second_ script from the Shallow copies section by adding a user-defined function named `deepCopy()`. The function uses an array.copy() call to create an initial shallow copy of the array, then loops through the copy’s elements to convert it to a deep copy. Each iteration creates a shallow copy of the object referenced by the current element, then calls the array.set() function to replace that element with the copied object’s ID.
+This version of the script calls `deepCopy(original)` to create a deep copy of the original array rather than creating a shallow copy. With this change, modifying the object referenced by the copied array no longer affects the one referenced by the original, because both arrays now reference different objects:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Deep copies demo")  
+  
+//@function      Creates a deep copy of a reference-type array. Each element in the copy refers to a shallow copy of   
+//               the object referenced by the corresponding element in the original array.  
+//@param source  The ID of an array with elements of the `chart.point` type, a drawing type, or a user-defined type.  
+//@returns       The ID of the deep copy.   
+deepCopy(source) =>  
+    // Create an initial shallow copy of the `source` array.  
+    result = source.copy()  
+    // Loop through the array elements to convert the new array to a deep copy.  
+    for [i, item] in result  
+        // Copy each object referenced by `item`, and use the copy's ID as the new element at index `i`.   
+        copiedItem = item.copy()  
+        result.set(i, copiedItem)  
+    // Return the new array's ID.  
+    result  
+  
+//@function Creates a string representing an array of `chart.point` IDs. Each listed item enclosed in parentheses   
+//          represents the `index` and `price` coordinates from the referenced chart point.    
+repr(array<chart.point> source) =>  
+    string result = "["  
+    for item in source  
+        result += str.format("(index: {0,number,#}, price: {1,number,#.#####}), ", item.index, item.price)  
+    result := str.substring(result, 0, str.length(result) - 2) + "]"  
+  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array containing a single `chart.point` ID.  
+    array<chart.point> original = array.from(chart.point.from_index(index = bar_index, price = 0))  
+    //@variable References a deep copy of the original array. The deep copy stores a *separate* `chart.point` ID.  
+    array<chart.point> deepCopy = deepCopy(original)  
+  
+    // These variables reference the same chart points as their respective arrays, not separate copies.   
+    chart.point originalPoint = original.first()  
+    chart.point pointFromCopy = deepCopy.first()  
+  
+    // Because the deep copy of the array stores the ID of a separate chart point, these two operations no longer   
+    // modify the same object. The first modifies the original chart point, and the second modifies a copy.  
+    originalPoint.index -= 10  
+    pointFromCopy.price := 1  
+  
+    // Create string representations of the two arrays.   
+    // Because both arrays now reference different objects, the two strings contain different data.  
+    string originalStr = "Original array:\n" + repr(original)  
+    string deepCopyStr = "Deep copy:\n"      + repr(deepCopy)  
+  
+    // Draw labels using the chart point referenced by `originalPoint` and `pointFromCopy`.  
+    // The two labels now anchor to different coordinates: (x = bar_index - 10, y = 0) and (x = bar_index, y = 1).  
+    label.new(originalPoint, originalStr, size = 36)  
+    label.new(pointFromCopy, deepCopyStr, size = 36, style = label.style_label_up)  
+`
+Note that:
+  * This script’s `deepCopy()` function is compatible with arrays of user-defined types, drawing types, and chart points. However, it cannot copy arrays of footprint or volume_row elements, because Pine Script does not include built-in `*.copy()` methods for those types.
+
+## Slicing arrays
+A _slice_ of an array is a separate array that references the original array’s elements across a specific index range. Unlike a copy, which _duplicates_ an original array’s structure and stores the data in a _different_ location, a slice provides _direct access_ to a subset of the original array’s contents. Changing the elements in a slice directly changes the elements in the original array, and vice versa.
+Scripts can create slices of arrays of any type by using the array.slice() function. The function’s `index_from` and `index_to` parameters specify the index range of the elements that the resulting slice references from the original array. The `index_from` parameter accepts an “int” value from 0 to _one less_ than the array’s size. The `index_to` parameter requires an “int” value that is greater than the `index_from` value and less than or equal to the array’s size. The slice references all the original array’s elements from the index specified by the `index_from` argument to the index that is _one less_ than the `index_to` argument.
+As with the element indices in a typical array, the indices in a slice range from 0 to one less than the slice’s size. However, these indices **do not** directly represent the _same_ element indices in the original array. Each element in the slice corresponds to the original array’s element at the index `index_from + i`, where `i` is the index of the slice’s element. For instance, if the `index_from` value is _2_ , the slice’s element at index 1 refers to the original array’s element at index _3_.
+Programmers often use slices to directly overwrite, remove, reverse, or sort elements in an array over a specific index range, or to perform calculations that require only a specific subset of an array’s elements.
+The following example demonstrates the unique behaviors of array slices. On the last historical bar, the script creates an array of “int” values. Then, it creates a slice of that array to reference the elements from index 1 to index 3. The script modifies the original array to change the slice’s contents, then modifies the slice to change the contents of the original array. The script displays string representations of both arrays after each change in a table in the center of the chart pane:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Slicing demo")  
+  
+//@function Creates a table row to display information about a main array and its slice.  
+method makeRow(table this, int row, string note, array<int> main, array<int> slice) =>  
+    this.cell(0, row, note, text_color = chart.fg_color)  
+    this.cell(  
+        1, row, str.format("Main: {0}\n\nSlice: {1}", main, slice),   
+        text_color = chart.fg_color, text_halign = text.align_left  
+    )  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of integers.  
+    array<int> mainArray = array.from(1, 2, 3, 4, 5, 6, 7)  
+    //@variable References a slice of the original array from index 1 to index 3 (index 4 is not included).  
+    array<int> slice = array.slice(mainArray, 1, 4)  
+  
+    // Initialize the display table and populate its first row.  
+    table displayTable = table.new(position.middle_center, 2, 10, border_color = chart.fg_color, border_width = 1)  
+    displayTable.makeRow(0, "Initial arrays", mainArray, slice)  
+  
+    //#region   
+    // Any changes that affect the original array's elements at indices 1 through 3 directly affect the  
+    // contents of the slice.  
+  
+    // Adding or removing elements in the main array changes the elements in the slice's range.  
+    mainArray.unshift(0)  
+    displayTable.makeRow(1, "Insert a new element at the start of the main array", mainArray, slice)  
+    mainArray.remove(2)  
+    displayTable.makeRow(2, "Remove the main array element at index 2", mainArray, slice)  
+    // If the original array no longer contains elements in the slice's range, the size of the slice reduces.  
+    for i = 1 to 6  
+        mainArray.pop()  
+    displayTable.makeRow(3, "Reduce the main array to one element", mainArray, slice)  
+    // The slice's size increases again for each element added to the original array in the required index range.  
+    for i = 1 to 7  
+        mainArray.push(i)  
+    displayTable.makeRow(4, "Push 7 new elements into the main array", mainArray, slice)  
+    //#endregion  
+  
+    //#region   
+    // Modifying the contents of the slice directly modifies the original array's elements in the index range   
+    // covered by the slice.  
+  
+    // Updating the first element in the slice changes the element at index 2 in the original array.  
+    slice.set(0, -1)  
+    displayTable.makeRow(5, "Update the first element in the slice", mainArray, slice)  
+    // Inserting an element into the slice increases its index range and adds a new element to the original array.  
+    slice.push(-3)  
+    displayTable.makeRow(6, "Add a new element to the end of the slice", mainArray, slice)  
+    // Removing an element from the slice removes the same element from the original array.  
+    slice.shift()  
+    displayTable.makeRow(7, "Remove the slice's first element", mainArray, slice)  
+    // Rearranging the slice also rearranges the original array's elements in the covered range.  
+    slice.sort(order.descending)  
+    displayTable.makeRow(8, "Sort the slice in descending order", mainArray, slice)  
+    //#endregion  
+  
+    // Reassigning the `mainArray` variable does not affect the slice. The slice continues referencing the original   
+    // array's elements, while the `mainArray` variable now references a completely separate array.  
+    mainArray := array.new<int>(5, 1)  
+    displayTable.makeRow(9, "Assign a new array ID to `mainArray`", mainArray, slice)  
+`
+Note that:
+  * If the original array no longer contains elements at the indices required by the slice, the slice’s size is automatically _reduced_ , as shown by row 3 in the table. However, the script can re-add elements to restore the slice to its _maximum_ size, as shown by row 4.
+  * The maximum index range covered by a slice changes only if the script explicitly _inserts_ new elements into the slice or _removes_ existing ones, as shown by rows 6 and 7.
+  * As shown by the final table row, _reassigning_ an array variable that a script uses to create a slice does _not_ affect that slice. A slice always references a subset of the elements from a specific array; it is not associated with any variables or fields that store that array’s ID.
+
+
+TipIf a script must access a portion of an array’s data and _modify_ that data without affecting the contents of the original array, create a shallow copy of the slice by using the array.copy() function, or use custom logic to create a deep copy. See the Copying arrays section above to learn more about copies and how they differ from slices.
 
 ## Searching arrays
 We can test if a value is part of an array with the array.includes() function, which returns true if the element is found. We can find the first occurrence of a value in an array by using the array.indexof() function. The first occurrence is the one with the lowest index. We can also find the last occurrence of a value with array.lastindexof():
@@ -10603,7 +10820,7 @@ array.remove(a, 0)
 c = array.indexof(b, 2)  
 plot(c)  
 `
- Previous   Next Matrices
+ Previous Methods    Next Matrices
 
 
 ## Code Examples
@@ -10613,11 +10830,677 @@ plot(c)
 [var/varip ][array<type> ]<identifier> = <expression>
 ```
 
+
+## Function Documentation
+
+
+@function Removes the last element from the `id` stack when `cond` is `true`.  
+array_pop(id, cond) => cond and array.size(id) > 0 ? array.pop(id) : float(na)  
+  
+if ta.rising(high, 1)  
+    // Rising highs; push a new low on the stack.  
+    lows.push(low)  
+    // Force the return type of this `if` block to be the same as that of the next block.  
+    bool(na)  
+else if lows.size() >= 4 or low < array.min(lows)  
+    // We have at least 4 lows or price has breached the lowest low;  
+    // sort lows and set flag indicating we will plot and flush the levels.  
+    array.sort(lows, order.ascending)  
+    flushLows := true  
+  
+// If needed, plot and flush lows.  
+lowLevel = array_pop(lows, flushLows)  
+plot(lowLevel, "Low 1", low > lowLevel ? color.silver : color.purple, 2, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 2", low > lowLevel ? color.silver : color.purple, 3, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 3", low > lowLevel ? color.silver : color.purple, 4, plot.style_linebr)  
+lowLevel := array_pop(lows, flushLows)  
+plot(lowLevel, "Low 4", low > lowLevel ? color.silver : color.purple, 5, plot.style_linebr)  
+  
+if flushLows  
+    // Clear remaining levels after the last 4 have been plotted.  
+    lows.clear()  
+`
+### Using an array as a queue
+Queues are FIFO (first in, first out) constructions. They behave somewhat like cars arriving at a red light. New cars are queued at the end of the line, and the first car to leave will be the first one that arrived to the red light.
+In the following code example, we let users decide through the script’s inputs how many labels they want to have on their chart. We use that quantity to determine the size of the array of labels we then create, initializing the array’s elements to `na`.
+When a new pivot is detected, we create a label for it, saving the label’s ID in the `pLabel` variable. We then queue the ID of that label by using array.push() to append the new label’s ID to the end of the array, making our array size one greater than the maximum number of labels to keep on the chart.
+Lastly, we de-queue the oldest label by removing the array’s first element using array.shift() and deleting the label referenced by that array element’s value. As we have now de-queued an element from our queue, the array contains `pivotCountInput` elements once again. Note that on the dataset’s first bars we will be deleting `na` label IDs until the maximum number of labels has been created, but this does not cause runtime errors. Let’s look at our code:
+!image
+Pine Script®
+Copied
+`//@version=6  
+MAX_LABELS = 100  
+indicator("Show Last n High Pivots", "", true, max_labels_count = MAX_LABELS)  
+  
+pivotCountInput = input.int(5, "How many pivots to show", minval = 0, maxval = MAX_LABELS)  
+pivotLegsInput  = input.int(3, "Pivot legs", minval = 1, maxval = 5)  
+  
+// Create an array containing the user-selected max count of label IDs.  
+var labelIds = array.new<label>(pivotCountInput)  
+  
+pHi = ta.pivothigh(pivotLegsInput, pivotLegsInput)  
+if not na(pHi)  
+    // New pivot found; plot its label `pivotLegsInput` bars behind the current `bar_index`.  
+    pLabel = label.new(bar_index - pivotLegsInput, pHi, str.tostring(pHi, format.mintick), textcolor = color.white)  
+    // Queue the new label's ID by appending it to the end of the array.  
+    array.push(labelIds, pLabel)  
+    // De-queue the oldest label ID from the queue and delete the corresponding label.  
+    label.delete(array.shift(labelIds))  
+`
+## Negative indexing
+The array.get(), array.set(), array.insert(), and array.remove() functions support _negative indexing_ , which references elements starting from the end of the array. An index of `-1` refers to the last element in the array, an index of `-2` refers to the second to last element, and so on.
+When using a _positive_ index, functions traverse the array _forwards_ from the beginning of the array (_first to last_ element). The first element’s index is `0`, and the last element’s index is `array.size() - 1`. When using a _negative_ index, functions traverse the array _backwards_ from the end of the array (_last to first_ element). The last element’s index is `-1`, and the first element’s index is `–array.size()`:
+Pine Script®
+Copied
+`array<string> myArray = array.from("first", "second", "third", "fourth", "last")  
+  
+// Positive indexing: Indexes forwards from the beginning of the array.  
+myArray.get(0)                        // Returns "first" element  
+myArray.get(myArray.size() - 1)       // Returns "last" element  
+myArray.get(4)                        // Returns "last" element  
+  
+// Negative indexing: Indexes backwards from the end of the array.  
+myArray.get(-1)                       // Returns "last" element  
+myArray.get(-myArray.size())          // Returns "first" element  
+myArray.get(-5)                       // Returns "first" element  
+`
+Like positive indexing, negative indexing is bound by the size of the array. For example, functions operating on an array of 5 elements only accept indices of 0 to 4 (first to last element) or -1 to -5 (last to first element). Any other indices are out of bounds and will raise a runtime error.
+We can use negative indices to retrieve, update, add, and remove array elements. This simple script creates an “int” `countingArray` and calls the array.get(), array.set(), array.insert(), and array.remove() functions to perform various array operations using negative indices. It displays each array operation and its corresponding result using a table:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Negative indexing demo", overlay = false)  
+  
+//@variable A table that displays various array operations and their results.  
+var table displayTable = table.new(  
+     position.middle_center, 2, 15, bgcolor = color.white,   
+     frame_color = color.black, frame_width = 1, border_width = 1  
+ )  
+  
+//@function Initializes a `displayTable` row to output a "string" of an `arrayOperation` and the `operationResult`.  
+displayRow(int rowID, string arrayOperation, operationResult) =>  
+    //@variable Is white if the `rowID` is even, light blue otherwise. Used to set alternating table row colors.  
+    color rowColor = rowID % 2 == 0 ? color.white : color.rgb(33, 149, 243, 75)  
+    // Display the `arrayOperation` in the row's first cell.  
+    displayTable.cell(0, rowID, arrayOperation, text_color = color.black,   
+         text_halign = text.align_left, bgcolor = rowColor, text_font_family = font.family_monospace  
+     )  
+    // Display the `operationResult` in the row's second cell.  
+    displayTable.cell(1, rowID, str.tostring(operationResult), text_color = color.black,   
+         text_halign = text.align_right, bgcolor = rowColor  
+     )  
+  
+if barstate.islastconfirmedhistory  
+    //@variable Array of "int" numbers. Holds six multiples of 10, counting from 10 to 60.  
+    array<int> countingArray = array.from(10, 20, 30, 40, 50, 60)  
+  
+    // Initialize the table's header cells.  
+    displayTable.cell(0, 0, "ARRAY OPERATION")  
+    displayTable.cell(1, 0, "RESULT")  
+  
+    // Display the initial `countingArray` values.  
+    displayTable.cell(0, 1, "Initial `countingArray`",   
+         text_color = color.black, text_halign = text.align_center, bgcolor = color.yellow)  
+    displayTable.cell(1, 1, str.tostring(countingArray),   
+         text_color = color.black, text_halign = text.align_right, bgcolor = color.yellow)  
+  
+    // Retrieve array elements using negative indices in `array.get()`.  
+    displayRow(2, "`countingArray.get(0)`", countingArray.get(0))  
+    displayRow(3, "`countingArray.get(-1)`", countingArray.get(-1))  
+    displayRow(4, "`countingArray.get(-countingArray.size())`", countingArray.get(-countingArray.size()))  
+  
+    // Update array elements using negative indices in `array.set()` and `array.insert()`.  
+    countingArray.set(-2, 99)  
+    displayRow(5, "`countingArray.set(-2, 99)`", countingArray)  
+  
+    countingArray.insert(-5, 878)  
+    displayRow(6, "`countingArray.insert(-5, 878)`", countingArray)  
+  
+    // Remove array elements using negative indices in `array.remove()`.  
+    countingArray.remove(-3)  
+    displayRow(7, "`countingArray.remove(-3)`", countingArray)  
+`
+Note that not all array operations can use negative indices. For example, search functions like array.indexof() and array.binary_search() return the _positive_ index of an element if it’s found in the array. If the value is not found, the functions return `-1`. However, this returned value is **not** a negative index, and using it as one would incorrectly reference the last array element. If a script needs to use a search function’s returned index in subsequent array operations, it must appropriately differentiate between this `-1` result and other valid indices.
+## Calculations on arrays
+While series variables can be viewed as a horizontal set of values stretching back in time, Pine Script’s one-dimensional arrays can be viewed as vertical structures residing on each bar. As an array’s set of elements is not a time series, Pine Script’s usual mathematical functions are not allowed on them. Special-purpose functions must be used to operate on all of an array’s values. The available functions are: array.abs(), array.avg(), array.covariance(), array.min(), array.max(), array.median(), array.mode(), array.percentile_linear_interpolation(), array.percentile_nearest_rank(), array.percentrank(), array.range(), array.standardize(), array.stdev(), array.sum(), array.variance().
+Note that contrary to the usual mathematical functions in Pine Script, those used on arrays do not return `na` when some of the values they calculate on have `na` values. There are a few exceptions to this rule:
+  * When all array elements have `na` value or the array contains no elements, `na` is returned. `array.standardize()` however, will return an empty array.
+  * `array.mode()` will return `na` when no mode is found.
+
+
+## Manipulating arrays
+###  Concatenation
+Two arrays can be merged — or concatenated — using array.concat(). When arrays are concatenated, the second array is appended to the end of the first, so the first array is modified while the second one remains intact. The function returns the array ID of the first array:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`array.concat()`")  
+a = array.new<float>(0)  
+b = array.new<float>(0)  
+array.push(a, 0)  
+array.push(a, 1)  
+array.push(b, 2)  
+array.push(b, 3)  
+if barstate.islast  
+    label.new(bar_index, 0, "BEFORE\na: " + str.tostring(a) + "\nb: " + str.tostring(b), size = size.large)  
+    c = array.concat(a, b)  
+    array.push(c, 4)  
+    label.new(bar_index, 0, "AFTER\na: " + str.tostring(a) + "\nb: " + str.tostring(b) + "\nc: " + str.tostring(c), style = label.style_label_up, size = size.large)  
+`
+###  Joining
+The array.join() function converts an “int”, “float”, or “string” array’s elements into strings, then _joins_ each one to form a single “string” value with a specified `separator` inserted between each combined value. It provides a convenient alternative to converting values to strings with str.tostring() and performing repeated string concatenation operations.
+The following script demonstrates the array.join() function’s behaviors. It requests tuples of “string”, “int”, and “float” values from three different contexts with request.security() calls, creates separate arrays for each type with array.from(), then creates joined strings with the array.join() function. Lastly, it creates another array from those strings with array.from() and joins them with another array.join() call, using a newline as the separator, and displays the final string in the table:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Joining demo")  
+  
+//@function Returns a tuple containing the ticker ID ("string"), bar index ("int"), and closing price ("float").   
+dataRequest() =>  
+    [syminfo.tickerid, bar_index, close]  
+  
+if barstate.islast  
+    //@variable A single-cell table displaying the results of `array.join()` calls.  
+    var table displayTable = table.new(position.middle_center, 1, 1, color.blue)  
+    // Request data for three symbols.   
+    [ticker1, index1, price1] = request.security("SPY", "", dataRequest())  
+    [ticker2, index2, price2] = request.security("GLD", "", dataRequest())  
+    [ticker3, index3, price3] = request.security("TLT", "", dataRequest())  
+  
+    // Create separate "string", "int", and "float" arrays to hold the requested data.  
+    array<string> tickerArray = array.from(ticker1, ticker2, ticker3)  
+    array<int> indexArray = array.from(index1, index2, index3)  
+    array<float> priceArray = array.from(price1, price2, price3)  
+  
+    // Convert each array's data to strings and join them with different separators.   
+    string joined1 = array.join(tickerArray, ", ")  
+    string joined2 = indexArray.join("|")  
+    string joined3 = priceArray.join("\n")  
+  
+    //@variable A joined "string" containing the `joined1`, `joined2`, and `joined3` values.   
+    string displayText = array.from(joined1, joined2, joined3).join("\n---\n")  
+    // Initialize a cell to show the `displayText`.  
+    displayTable.cell(0, 0, displayText, text_color = color.white, text_size = 36)  
+`
+Note that:
+  * Each array.join() call inserts the specified separator only between each element string. It does _not_ include the separator at the start or end of the returned value.
+  * The array.join() function uses the same numeric format as the default for str.tostring(). See the String conversion and formatting section of the Strings page to learn more.
+  * Calls to array.join() cannot directly convert elements of “bool”, “color”, or other types to strings. Scripts must convert data of these types separately.
+
+
+###  Sorting
+Scripts can _sort_ arrays containing values of the “int”, “float”, or “string” type by using the array.sort() function. The function’s `order` parameter accepts one of the two `order.*` constants to specify the sorting order. If the argument is order.ascending (the default), a call to the function rearranges the specified array’s elements in ascending order by value. If the argument is order.descending, the call rearranges the elements in descending order instead.
+If an array contains “int” or “float” elements, the array.sort() function sorts the array using each element’s numeric value. If it uses ascending order, the element with the _lowest_ value becomes the array’s _first_ element (at index 0), and the one with the _highest_ value becomes the _last_ element. If it sorts in descending order, the element with the _highest_ value becomes the first element, and the one with the _lowest_ value becomes the last.
+The following example script uses the array.from() function to create an array of arbitrary “float” values on the last historical bar. It then sorts the array in ascending order, and then in descending order, using two array.sort() calls. The script creates a string representation of the array after each step, then formats those representations into a single string and displays the result in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting numeric arrays demo")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of arbitrary "float" values.  
+    array<float> numbers = array.from(2.1, 0.5, 1.2, 0.1, 1.4, 0.6)  
+    //@variable A string representing the array's unsorted, ascending, and descending order.  
+    string displayStr = "Unsorted:   " + str.tostring(numbers) + "\n"  
+  
+    // Sort the array in ascending order.  
+    // The `order` argument is optional; `order.ascending` is the default.  
+    array.sort(numbers, order = order.ascending)  
+    // Concatenate a string representation of the sorted array with the `displayStr` value.  
+    displayStr += "Ascending:  " + str.tostring(numbers) + "\n"  
+  
+    // Sort the `numbers` array again, this time in descending order.   
+    numbers.sort(order = order.descending)  
+    // Concatenate another string representation of the sorted result.  
+    displayStr += "Descending: " + str.tostring(numbers)  
+  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+If an array contains “string” elements, the array.sort() function sorts the elements based on the Unicode values of the strings’ _individual characters_. The sorting algorithm initially compares the _first_ character in each string, then compares subsequent characters as necessary if multiple strings have matching characters at the same position. The strings that have leading characters with the lowest Unicode values move to the beginning of the array if the order is ascending, or to the end of the array if the order is descending.
+The example script below defines an arbitrary literal string, then uses the str.split() function to split the string and construct an array of substrings. Afterward, the script calls the array.sort() function to sort the array’s elements in ascending order. The script displays formatted text representing the original string, and the array’s structure before and after sorting, in a label on the last historical bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting string arrays demo")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable A literal string to split at each `,` character.  
+    string originalStr = "abc,abC,Abc,ABC,{ABC},!,123,12.3, "  
+  
+    //@variable References an array of substrings formed by splitting the original string at each comma.  
+    array<string> splitStrArray = str.split(originalStr, ",")  
+  
+    //@variable A string to represent the original string and the array of substrings.  
+    string displayStr = str.format("Original string: ''{0}''\n\nSubstring array: {1}\n", originalStr, splitStrArray)  
+  
+    // Sort the array in ascending order, based on the Unicode values of characters in each string.  
+    splitStrArray.sort()  
+    // Concatenate a string representing the sorted result.  
+    displayStr += str.format("Sorted array:    {0}\n", splitStrArray)  
+  
+    // Display the final `displayStr` value's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+Note that:
+  * The `" "` string appears first in the sorted array because standard whitespace and control characters have the _lowest_ Unicode values (U+0000 - U+0020). The space character’s Unicode value is U+0020.
+  * ASCII _digits_ (U+0030 - U+0039) have _lower_ Unicode values than all _letter_ characters. Therefore, the sorted array lists all strings that start with digits before those that start with letters.
+  * _Uppercase_ ASCII letters (U+0041 - U+005A) have lower Unicode values than _lowercase_ ASCII letters (U+0061 - U+007A). Therefore, strings that start with `A` appear _before_ those that start with `a` in the sorted array.
+  * Some ASCII punctuation marks and symbols have lower Unicode values than ASCII letters or digits, and some others have Unicode values that are between or higher than those of such characters. For instance, the sorted array lists the `"!"` string before other strings except for `" "` because the Unicode value of `!` is U+0021. By contrast, it lists the `"{ABC}"` string at the end because the `{` character’s Unicode value is U+007B.
+
+
+Every array.sort() call directly _changes_ the positions of elements in the original array, as demonstrated above. However, in some cases, a programmer might need to access an array’s elements in a sorted order _without_ rearranging the array itself.
+To access an array’s sorted elements without modifying the array, programmers can use the array.sort_indices() function. This function creates a _separate_ “int” array containing the _indices_ of the original array’s elements, organized in the _sorted order_ for those elements. Scripts can use the indices in the resulting array to read the original array’s elements in the specified order (order.ascending by default) while also preserving the original array’s unsorted order for other calculations.
+The following example script queues close values into a persistent array across the chart. It calls the array.sort_indices() function on the last historical bar to get the ID of an array containing sorted indices, and constructs a string representation of both arrays. Then, it loops through the array of indices using a for…in loop. On each iteration, the script concatenates the string with another string representing a value from the `prices` array, that value’s index in the array, and the value’s sorted position. It then displays the final string in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Getting sorted indices demo")  
+  
+//@variable References a persistent array that stores the last 10 `close` values.  
+var array<float> prices = array.new<float>(10)  
+// Push a new value to the end of the array, and remove the oldest (first) element.  
+prices.push(close)  
+prices.shift()  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an "int" array containing the `prices` array indices in ascending order by element value.   
+    //          The `array.sort_indices()` call maps sorted positions in the array without modifying it.  
+    array<int> indices = prices.sort_indices()  
+    //@variable A formatted string to display in a label.  
+    string displayStr = str.format("Prices: {0}\n\nSorted indices: {1}\n\nSort results:", prices, indices)  
+  
+    // Loop through the `indices` array.  
+    // The `i` variable stores the current index of the `indices` array's element.  
+    // The `index` variable stores that element's value (the index for one of the `prices` array's elements).  
+    // Using `index` to retrieve `prices` array's elements accesses those elements in ascending order.  
+    for [i, index] in indices  
+        // Concatenate the `displayStr` value with a string representing the sorted `prices` array element,   
+        // the original position (index) of the element, and the sorted position of that element.   
+        displayStr += str.format(  
+            "\nPrice: {0,number,0.000}, Original position: {1} -> Sorted position: {2}",   
+            prices.get(index), index, i  
+        )  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 20,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+NoteIf an “int”, “float”, or “string” array contains elements with `na` values or empty strings (e.g., `""`), an array.sort() call moves those elements to the _end_ of the array if the `order` argument is order.ascending, or to the _beginning_ of the array if the argument is order.descending. Likewise, the array constructed by an array.sort_indices() call stores the indices for na values or empty strings as its _first_ or _last_ elements, depending on the `order` argument.
+#### Sorting arrays of user-defined types
+The array.sort() and array.sort_indices() functions can also sort arrays whose elements refer to objects of user-defined types (UDTs). For such arrays, the functions compare values from one of the “int”, “float”, or “string” _fields_ of each object referenced by the array’s elements, using the sorting rules described in the Sorting section above.
+The `sort_field` parameter of these functions specifies _which_ object field they analyze to sort a UDT array’s elements. The parameter can specify a field using either a _“const int”_ or _“const string”_ argument:
+  * A “const int” argument specifies a field by its _field index_ , where a value of 0 refers to the _first_ field listed in the type declaration, 1 refers to the _second_ field, and so on. The value can be any non-negative, non-na number up to one less than the total number of fields.
+  * A “const string” argument specifies a field by its _identifier (name)_. The string must literally match one of the field names listed in the type declaration.
+
+
+The default `sort_field` value is 0, meaning that an array.sort() or array.sort_indices() call attempts to compare values from the first field of each object referenced by the specified array if no argument is specified.
+The following example script demonstrates the sorting behavior for arrays of UDT elements. The script declares a custom type named `myType` with three fields: `field0`, `field1`, and `field2`. On the last historical bar, it creates five `myType` objects, stores their IDs in an array, then executes an array.sort() call to sort the array in ascending order using each object’s first, second, or third field, depending on the selected inputs. The script loops through the sorted array using a for…in loop to create a custom string representation of its structure, then displays the resulting string’s text in a label:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sorting UDT arrays demo")  
+  
+//@type  A custom type for creating objects that store "float", "string", and "int" values.  
+type myType  
+    float  field0 // This field's index is 0.  
+    string field1 // This field's index is 1.  
+    int    field2 // This field's index is 2.  
+  
+//@variable A string to indicate whether the script specifies sorting fields by index or name.  
+string specifyInput = input.string("Index", "Specify a field using its", ["Index", "Name"])  
+//@variable The index of the field to use for sorting if the `specifyInput` value is `"Index"`.  
+int indexInput = input.int(0, "Field index", 0, 2, active = specifyInput == "Index")  
+//@variable The name of the field to use for sorting if the `specifyInput` value is `"Name"`.  
+string nameInput = input.string("field0", "Field name", ["field0", "field1", "field2"], active = specifyInput == "Name")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array that stores the IDs of `myType` objects.  
+    array<myType> udtArray = array.from(  
+        myType.new(field0 = 2.0, field1 = "D", field2 = 1), myType.new(field0 = 1.0, field1 = "E", field2 = 2),  
+        myType.new(field0 = 3.0, field1 = "C", field2 = 3), myType.new(field0 = 5.0, field1 = "A", field2 = 4),  
+        myType.new(field0 = 4.0, field1 = "B", field2 = 5)  
+    )  
+    // Sort the array in ascending order. Use the field at the specified index if the `specifyInput` value is `"Index"`.  
+    if specifyInput == "Index"  
+        switch indexInput  
+            0 => udtArray.sort(sort_field = 0)  
+            1 => udtArray.sort(sort_field = 1)  
+            2 => udtArray.sort(sort_field = 2)  
+    // Otherwise, sort using the field with the specified name.  
+    else  
+        switch nameInput  
+            "field0"  => udtArray.sort(sort_field = "field0")  
+            "field1"  => udtArray.sort(sort_field = "field1")  
+            "field2"  => udtArray.sort(sort_field = "field2")  
+      
+    //@variable A string representing the structure of the sorted array.  
+    string displayStr = switch specifyInput  
+        "Index" => str.format("Sorted using field at index {0}\n\n[", indexInput)  
+        =>         str.format("Sorted using field named ''{0}''\n\n[",    nameInput)  
+      
+    // Concatenate formatted strings to represent the array's structure.  
+    for [i, id] in udtArray  
+        displayStr += str.format(  
+            " (field0: {0,number,0.0}, field1: {1}, field2: {2}),\n",  
+            id.field0, id.field1, id.field2  
+        )  
+    // Adjust the final result to align enclosing brackets.  
+    displayStr := str.replace(str.substring(displayStr, 0, str.length(displayStr) - 2), "[ ", "[") + "]"   
+    // Display the final string's text in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 30,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+Note that:
+  * The `sort_field` parameter accepts only values that have the _“const”_ qualifier; it cannot accept values qualified as “input”, “simple”, or “series”. Therefore, to sort the array using an input-specified field, this script uses a _separate_ array.sort() call for each input combination.
+
+
+It’s important to emphasize that the array.sort() and array.sort_indices() functions can sort UDT arrays only by referencing object fields of the type “int”, “float”, or “string”. They cannot sort elements using fields of any other type.
+For example, the following script declares a custom `myColor` type whose first field is of the type “color”. It creates an array of `myColor` IDs, then attempts to sort the array using an array.sort() call. The call does not include a `sort_field` argument, so it references each object’s _first_ field, which is _incompatible_ with the sorting algorithm. Consequently, a _compilation error_ occurs:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Incompatible sorting field demo", overlay = true)  
+  
+//@type  A custom type for creating objects that contain color information.  
+type myColor  
+    color c // Index 0.  
+    float r // Index 1.  
+    float g // Index 2.  
+    float b // Index 3.  
+  
+//@function Creates a new `myColor` instance with pseudorandom field values.  
+randColor() =>  
+    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
+    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
+  
+//@variable References an array of `myColor` IDs.  
+var array<myColor> arr = array.new<myColor>()  
+  
+if barstate.isfirst  
+    // Populate the array with 10 `myColor` IDs.  
+    for i = 1 to 10  
+        arr.push(randColor())  
+  
+    // Call `array.sort()` using the default `sort_field` argument (0).  
+    // This call causes a *compilation error*, because the `array.sort()` function cannot sort "color" values.  
+    arr.sort()  
+  
+//@variable The index of the array element to retrieve.  
+int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
+  
+//@variable The `myColor` ID stored at index `ind`.   
+myColor id = arr.get(ind)  
+  
+// Color the bar using the `id.c` value.  
+barcolor(id.c)  
+`
+To resolve the error, we can either rearrange the type declaration to list one of the type’s “float” fields as the _first_ one, or include a `sort_field` argument in the array.sort() call to specify one of those fields. For example:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Changing first field demo", overlay = true)  
+  
+//@type  A custom type for creating objects that contain color information.  
+type myColor  
+    float g // Moved to index 0.  
+    color c // Moved to index 1.  
+    float r // Moved to index 2.  
+    float b // Moved to index 3.  
+  
+//@function Creates a new `myColor` instance with pseudorandom field values.  
+randColor() =>  
+    color c = color.rgb(math.random(0, 128), math.random(128, 255), math.random(128, 255))  
+    myColor.new(c = c, r = color.r(c), g = color.g(c), b = color.b(c))  
+  
+//@variable References an array of `myColor` IDs.  
+var array<myColor> arr = array.new<myColor>()  
+  
+if barstate.isfirst  
+    // Populate the array with 10 `myColor` IDs.  
+    for i = 1 to 10  
+        arr.push(randColor())  
+  
+    // This call does *not* cause an error, because the default `sort_field` argument now refers   
+    // to the type's `g` field ("float").  
+    arr.sort()  
+  
+//@variable The index of the array element to retrieve.  
+int ind = nz(int(math.round(9 * (close - low) / (high - low))))  
+  
+//@variable The `myColor` ID stored at index `ind`.   
+myColor id = arr.get(ind)  
+  
+// Color the bar using the `id.c` value.  
+barcolor(id.c)  
+`
+The array.sort and array.sort_indices functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
+For example, the script below declares a type named `Number` with a single “float” field named `value`. On the last historical bar, it creates an array containing multiple `Number` IDs, two of which are na. Calling array.sort() to rearrange that array causes an error, because the na elements in the array do not refer to valid `Number` objects:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Cannot sort `na` IDs demo")  
+  
+//@variable A custom type for creating objects that store a single "float" value.  
+type Number  
+    float value  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Number` IDs, two of which are `na`.  
+    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
+  
+    // This call causes a runtime error. The `na` elements do not refer to valid `Number` objects, so the function  
+    // cannot access `value` fields for sorting.   
+    numbers.sort()  
+      
+    //@variable A string representing the array's structure.  
+    string displayStr = "["  
+    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
+    for number in numbers  
+        displayStr += str.tostring(number.value) + ", "  
+    // Remove the final `", "` sequence and add a closing bracket.  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
+    // Display the resulting string's text in a label.  
+    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
+`
+To prevent such errors, _remove_ all na IDs from a UDT array before using the array.sort() or array.sort_indices() function on it, or _replace_ them with the IDs of _new_ objects that contain na _fields_ instead.
+For example, the script version below includes a user-defined function named `replaceNa()`, which replaces na `Number` IDs in an array with the IDs of new objects that contain na `value` fields. Using this function before sorting the array with the array.sort() call prevents the runtime error:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing `na` IDs for sorting demo")  
+  
+//@variable A custom type for creating objects that store a single "float" value.  
+type Number  
+    float value  
+  
+//@function Replaces `na` instances in a specified `Number` array with the IDs of new `Number` objects with `na` fields.  
+replaceNa(array<Number> arrID) =>  
+    if array.includes(arrID, na)  
+        // Loop through the array referenced by `arrID`.   
+        for [i, objID] in arrID  
+            // If the `objID` variable stores `na`, replace the element at index `i` with a new `Number` ID.  
+            if na(objID)  
+                arrID.set(i, Number.new())  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of `Number` IDs, two of which are `na`.  
+    array<Number> numbers = array.from(Number.new(1.2), na, Number.new(5.4), na, Number.new(3.14))  
+    // If we call `replaceNa()` before sorting the array, no error occurs, because all elements now refer   
+    // to a valid `Number` object.  
+    replaceNa(numbers)  
+    numbers.sort()  
+      
+    //@variable A string representing the array's structure.  
+    string displayStr = "["  
+    // Concatenate a string representing the `value` field from each object referenced by the sorted array.  
+    for number in numbers  
+        displayStr += str.tostring(number.value) + ", "  
+    // Remove the final `", "` sequence and add a closing bracket.  
+    displayStr := str.substring(displayStr, 0, str.length(displayStr) - 2) + "]"  
+    // Display the resulting string's text in a label.  
+    label.new(bar_index, 0, displayStr, style = label.style_label_center, size = 40, textalign = text.align_left)  
+`
+Note that:
+  * This example moves the IDs of all objects with an na `value` field to the _end_ of the array because the script’s array.sort() call sorts the array’s elements in ascending order. If we use order.descending as the `order` argument, those elements move to the _beginning_ of the array instead.
+
+
+###  Reversing
+Use array.reverse() to reverse an array:
+Pine Script®
+Copied
+`//@version=6  
+indicator("`array.reverse()`")  
+a = array.new<float>(0)  
+array.push(a, 0)  
+array.push(a, 1)  
+array.push(a, 2)  
+if barstate.islast  
+    array.reverse(a)  
+    label.new(bar_index, 0, "a: " + str.tostring(a))  
+`
+## Copying arrays
+A _copy_ of an array is a _separate_ array object initialized to have the same structure as the original. Any changes to the elements stored by the copy do not affect the contents of the original array. Scripts can create shallow copies for arrays of any type by using the array.copy() function. For reference-type arrays, scripts can also use custom logic to create deep copies whose elements reference separate objects.
+NoteAssigning one variable’s stored array ID to another variable _does not_ create a copy of the array. Any changes to the array referenced by one of the variables directly affect the one referenced by the other, because both refer to the same array object. See the Modifying variables vs. objects section of the Type system page to learn more about this behavior.
+### Shallow copies
+The array.copy() function creates a _shallow copy_ of an array of any type. A shallow copy is a new array object that initially has the same size as the original and stores the _same_ values or references (IDs) as elements.
+Although a shallow copy initially shares the same structure as the original array, it is an _independent object_. The script can insert new elements and overwrite, remove, reverse, or sort existing elements in the copied array _without_ affecting the original array’s contents, regardless of the type of elements it contains.
+For example, the following script creates an array of “float” values and assigns its ID to a variable named `original` on the last historical bar. It then uses the array.copy() function to create a shallow copy of the array and assigns its ID to a variable named `copy`. The script uses the array.push(), array.shift(), array.set(), and array.sort() functions to modify the copied array, then displays a string representation of the original array and the copy in a label. As shown by the label’s text, the copied array’s contents change, while the original array remains _unchanged_ :
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Modifying shallow copies demo")  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array of arbitrary "float" values.  
+    array<float> original = array.from(-1.0, 4.0, 3.0, 2.0)  
+    //@variable References a shallow copy of the `original` array.  
+    array<float> copy = array.copy(original)  
+  
+    //#region  
+    // The calls in this region modify only the *copied* array. They do not affect the original array,   
+    // because the `copy` and `original` variables reference separate objects.   
+    // If we change `copy` to `original` in these calls, they affect only the original array, not the copy.   
+  
+    // Add a new element to the end of the copy.  
+    copy.push(1.0)  
+    // Remove the copy's first element.  
+    copy.shift()  
+    // Assign a new value to the copy's second element.  
+    copy.set(1, 3.5)  
+    // Sort the elements of the copy in ascending order.  
+    array.sort(copy)  
+    //#endregion  
+  
+    //@variable A string representation of the original array and the copied array after modification.  
+    string displayStr = str.format("Original:      {0}\nModified copy: {1}", str.tostring(original), str.tostring(copy))  
+  
+    // Display the text from the formatted string in a label.   
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 36,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
+`
+For an array of value types, all changes to the data associated with a shallow copy are completely _separate_ from the original array, because the only way to change the data accessed by an element in either array is by replacing the element.
+By contrast, it _is_ possible to modify the data associated with arrays of reference types through a shallow copy. When the array.copy() function copies an array of object IDs, it does **not** create new copies of the _objects_ referenced by those elements; it creates a new array whose elements store the **same IDs** as the original. Consequently, if the script modifies the _object_ referenced by one of the elements in the shallow copy, it also modifies the one referenced by the corresponding element in the original array, and vice versa, because _both_ elements refer to the _same object_ that exists elsewhere in memory.
+The following example demonstrates this behavior. The script below creates an array containing the ID of a chart point on the last historical bar, then uses the array.copy() function to create a shallow copy of that array. The script uses the -= and := operators to modify the `index` field of the chart point referenced by the original array and the `price` field of the one referenced by the copy. Then, it displays formatted text containing the chart coordinates retrieved through both arrays inside labels positioned at those coordinates. Both labels anchor to the same location on the chart and display the same values, because the elements in the original array and the shallow copy access the same chart.point object:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Shallow copy of reference-type array demo")  
+  
+//@function Creates a string representing an array of `chart.point` IDs. Each listed item enclosed in parentheses   
+//          represents the `index` and `price` coordinates from the referenced chart point.    
+repr(array<chart.point> source) =>  
+    string result = "["  
+    for item in source  
+        result += str.format("(index: {0,number,#}, price: {1,number,#.#####}), ", item.index, item.price)  
+    result := str.substring(result, 0, str.length(result) - 2) + "]"  
+  
+  
+if barstate.islastconfirmedhistory  
+    //@variable References an array containing a single `chart.point` ID.  
+    array<chart.point> original = array.from(chart.point.from_index(index = bar_index, price = 0))  
+  
+    // The `array.copy()` call below copies the *original* chart point's *ID* into the new array.  
+    // It **does not** create a copy of that object for the new array to reference.  
+  
+    array<chart.point> shallowCopy = array.copy(original) // Equivalent to: array.from(original.first())  
+  
+    // These variables reference the same chart point as the arrays, not copies of it.   
+    chart.point originalPoint = original.first()  
+    chart.point pointFromCopy = shallowCopy.first()  
+  
+    // These two operations modify the `index` and `price` fields of the **same** chart point, regardless of whether   
+    // they access that object using the `originalPoint` or `pointFromCopy` variable:  
+  
+    originalPoint.index -= 10 // Equivalent to: pointFromCopy.index -= 10  
+    pointFromCopy.price := 1  // Equivalent to: originalPoint.price := 1  
+  
+    // Create string representations of the two arrays.   
+    // Because both arrays reference the *same* object, both strings contain the *same data*.  
+    string originalStr    = "Original array:\n" + repr(original)  
+    string shallowCopyStr = "Shallow copy:\n"   + repr(shallowCopy)  
+  
+    // Draw labels using the chart point referenced by `originalPoint` and `pointFromCopy`.  
+    // The two labels anchor to the same coordinates (x = bar_index - 10, y = 1).  
+    label.new(originalPoint, originalStr,    size = 36)  
+    label.new(pointFromCopy, shallowCopyStr, size = 36, style = label.style_label_up)  
+`
+Note that:
+  * Assigning the IDs retrieved from an array to separate variables _does not_ create copies of the associated objects. For instance, the `originalPoint` and `pointFromCopy` variables in this script reference the _same_ chart point as their respective arrays.
+
+
+### Deep copies
+A _deep copy_ of a reference-type array is a new array that has the same structure as the original, but stores separate elements. Unlike a shallow copy, which stores the _same_ object IDs as the original array, a deep copy contains the IDs of _copies_ of the original objects. In other words, the deep copy references _different objects_ initialized with the same properties as the original objects. Therefore, modifying the objects referenced by the original array or the deep copy does _not_ affect the objects referenced by the other array.
+Creating a deep copy of an array is necessary only if the array stores elements of a _reference type_ , and the script must modify the objects referenced by the copy _without_ modifying those referenced by the original, or vice versa. If the original and copied arrays must reference the same objects, or if the script does not modify the array’s associated objects, creating a _shallow copy_ with the array.copy() function is sufficient.
+NoteFor a value-type array, a shallow copy is semantically the _same_ as a deep copy, because values are not referenced entities that the script can modify _outside_ the array. The only way to change the data associated with the elements of a value-type array, or its copies, is to _overwrite_ those elements.
+To create a deep copy of an array, programmers can do either of the following:
+  * Create a new array of the same type with the array.new<type>() function. For each element in the original array, create a _copy_ of the referenced object, then insert the copied object’s ID into the new array at the same index.
+  * Create a shallow copy of the original array with the array.copy() function, then convert the shallow copy to a deep copy by _replacing_ each element with the ID of a copied object.
+
+
+In the example below, we modified the _second_ script from the Shallow copies section by adding a user-defined function named `deepCopy()`. The function uses an array.copy() call to create an initial shallow copy of the array, then loops through the copy’s elements to convert it to a deep copy. Each iteration creates a shallow copy of the object referenced by the current element, then calls the array.set() function to replace that element with the copied object’s ID.
+This version of the script calls `deepCopy(original)` to create a deep copy of the original array rather than creating a shallow copy. With this change, modifying the object referenced by the copied array no longer affects the one referenced by the original, because both arrays now reference different objects:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Deep copies demo")  
+  
+//@function      Creates a deep copy of a reference-type array. Each element in the copy refers to a shallow copy of   
+//               the object referenced by the corresponding element in the original array.  
+//@param source  The ID of an array with elements of the `chart.point` type, a drawing type, or a user-defined type.  
+//@returns       The ID of the deep copy.   
+
+
 ---
 
 
 
-# processed_20_matrices_20260601_065355
+# processed_20_matrices_20260604_064114
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -12237,7 +13120,7 @@ matrix<float> m = matrix.new<float>(3, 5, 1)
   
 plot(m.det()) // Raises a runtime error. You can't calculate the determinant of a 3x5 matrix.  
 `
- Previous   Next Maps
+ Previous Arrays    Next Maps
 
 
 ## Code Examples
@@ -13213,7 +14096,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260601_065355
+# processed_21_maps_20260604_064114
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -13929,7 +14812,7 @@ mapOfMaps.put(symbol3, requestData(symbol3, tf))
 debugLabel.set_text(mapOfMaps.toString())  
 debugLabel.set_x(bar_index)  
 `
- Previous
+ Previous Matrices
 
 ## * Overview
 * Introduction
@@ -14259,7 +15142,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260601_065355
+# processed_22_overview_20260604_064114
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -14700,9 +15583,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260601_065355
+# processed_23_backgrounds_20260604_064114
 
-## 23_backgrounds_20260601_065355
+## 23_backgrounds_20260604_064114
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -14831,7 +15714,7 @@ Note that:
 
 
 See the Colors page for more examples of backgrounds.
- Previous   Next Bar coloring
+ Previous Overview    Next Bar coloring
 
 
 ## Code Examples
@@ -14845,9 +15728,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260601_065355
+# processed_24_bar-coloring_20260604_064114
 
-## 24_bar-coloring_20260601_065355
+## 24_bar-coloring_20260604_064114
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -14908,7 +15791,7 @@ Note that:
   * In the barcolor() call, we use embedded ?: ternary operator expressions to select the color.
 
 
- Previous   Next Bar plotting
+ Previous Backgrounds    Next Bar plotting
 
 
 ## Code Examples
@@ -14922,7 +15805,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260601_065355
+# processed_25_bar-plotting_20260604_064114
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -15017,7 +15900,7 @@ paletteColor = close >= open ? color.lime : color.red
 plotbar(open, high, low, close, color = paletteColor)  
 `
 !image
- Previous   Next Colors
+ Previous Bar coloring    Next Colors
 
 
 ## Code Examples
@@ -15035,7 +15918,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260601_065355
+# processed_26_colors_20260604_064114
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -15414,13 +16297,13 @@ plot(low, "", color.new(color.orange, 0), 1)
 `
 ### Customize gradients
 When building gradients, adapt them to the visuals they apply to. If you are using a gradient to color candles, for example, it is usually best to limit the number of steps in the gradient to ten or less, as it is more difficult for the eye to perceive intensity variations of discrete objects. As we did in our examples, cap minimum and maximum transparency levels so your visual elements remain visible and do not overwhelm when it’s not necessary.
- Previous   Next Fills
+ Previous Bar plotting    Next Fills
 
 ---
 
 
 
-# processed_27_fills_20260601_065355
+# processed_27_fills_20260604_064114
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -15613,7 +16496,7 @@ if barstate.islastconfirmedhistory
     box.new(points.get(3), points.get(7), bgcolor = color.purple)  
 `
 See this manual’s Lines and boxes page to learn more about working with these types.
- Previous   Next Levels
+ Previous Colors    Next Levels
 
 
 ## Code Examples
@@ -15634,7 +16517,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260601_065355
+# processed_28_levels_20260604_064114
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -15710,7 +16593,7 @@ Note that:
   * We use color.teal in our second fill because it produces a green that fits the color scheme better than the color.green used for the 25 level.
 
 
- Previous   Next Lines and boxes
+ Previous Fills    Next Lines and boxes
 
 
 ## Code Examples
@@ -15724,7 +16607,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260601_065355
+# processed_29_lines-and-boxes_20260604_064114
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -15772,19 +16655,20 @@ The first overload of this function contains the `first_point` and `second_point
 The second overload specifies `x1`, `y1`, `x2`, and `y2` values independently, where `x1` and `x2` are int values representing the starting and ending x-coordinates of the line, and `y1` and `y2` are float values representing the y-coordinates. Whether the line considers the `x` values as bar indices or timestamps depends on the `xloc` value in the function call.
 Both overloads share the same additional parameters:
 `xloc`
-xloc.bar_index.
-`xloc` value of xloc.bar_index tells the function to use the `index` fields of the `first_point` and `second_point`, and a value of xloc.bar_time tells the function to use the `time` fields of the points.
-`xloc` value of xloc.bar_index prompts the function to treat the `x1` and `x2` arguments as bar index values. When using xloc.bar_time, the function will treat `x1` and `x2` as time values.
-_bar index_ values, it’s important to note that the minimum x-coordinate allowed is `bar_index - 10000`. For larger offsets, one can use xloc.bar_time.
+Controls whether the x-coordinates of the new line use bar index or time values. Its default value is xloc.bar_index.
+When calling the first overload, using an `xloc` value of xloc.bar_index tells the function to use the `index` fields of the `first_point` and `second_point`, and a value of xloc.bar_time tells the function to use the `time` fields of the points.
+When calling the second overload, an `xloc` value of xloc.bar_index prompts the function to treat the `x1` and `x2` arguments as bar index values. When using xloc.bar_time, the function will treat `x1` and `x2` as time values.
+When the specified x-coordinates represent _bar index_ values, it’s important to note that the minimum x-coordinate allowed is `bar_index - 10000`. For larger offsets, one can use xloc.bar_time.
 `extend`
-extend.left, extend.right, extend.both, or extend.none (default).
+Determines whether the drawn line will infinitely extend beyond its defined start and end coordinates. It accepts one of the following values: extend.left, extend.right, extend.both, or extend.none (default).
 `color`
-color.blue.
+Specifies the color of the line drawing. The default is color.blue.
 `style`
-Line styles section. The default value is line.style_solid.
+Specifies the line’s style, which can be any of the options listed in this page’s Line styles section. The default value is line.style_solid.
 `width`
+Controls the width of the line, in pixels. The default value is 1.
 `force_overlay`
-`true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
+If `true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
 The example below demonstrates how one can draw lines in their simplest form. This script draws a new vertical line connecting the open and close prices at the horizontal center of each chart bar:
 !image
 Pine Script®
@@ -16133,36 +17017,38 @@ This function’s first overload includes the `top_left` and `bottom_right` para
 The second overload specifies `left`, `top`, `right`, and `bottom` edges of the box. The `left` and `right` parameters accept int values specifying the box’s left and right x-coordinates, which can be bar index or time values depending on the `xloc` value in the function call. The `top` and `bottom` parameters accept float values representing the box’s top and bottom y-coordinates.
 The function’s additional parameters are identical in both overloads:
 `border_color`
-color.blue.
+Specifies the color of all four of the box’s borders. The default is color.blue.
 `border_width`
+Specifies the width of the borders, in pixels. Its default value is 1.
 `border_style`
-Box styles section of this page.
+Specifies the style of the borders, which can be any of the options in the Box styles section of this page.
 `extend`
-extend.left, extend.right, extend.both, or extend.none (default).
+Determines whether the box’s borders extend infinitely beyond the left or right x-coordinates. It accepts one of the following values: extend.left, extend.right, extend.both, or extend.none (default).
 `xloc`
-xloc.bar_index.
-`xloc` value of xloc.bar_index means that the function will use the `index` fields of the `top_left` and `bottom_right` chart points, and an `xloc` value of xloc.bar_time means that it will use their `time` fields.
-`xloc` value of xloc.bar_index means the function treats the `left` and `right` values as bar indices, and xloc.bar_time means it will treat them as timestamps.
-_bar index_ values, it’s important to note that the minimum x-coordinate allowed is `bar_index - 10000`. For larger offsets, one can use xloc.bar_time.
+Determines whether the left and right edges of the box use bar index or time values as x-coordinates. The default is xloc.bar_index.
+In the first overload, an `xloc` value of xloc.bar_index means that the function will use the `index` fields of the `top_left` and `bottom_right` chart points, and an `xloc` value of xloc.bar_time means that it will use their `time` fields.
+In the second overload, using an `xloc` value of xloc.bar_index means the function treats the `left` and `right` values as bar indices, and xloc.bar_time means it will treat them as timestamps.
+When the specified x-coordinates represent _bar index_ values, it’s important to note that the minimum x-coordinate allowed is `bar_index - 10000`. For larger offsets, one can use xloc.bar_time.
 `bgcolor`
-color.blue.
+Specifies the background color of the space inside the box. The default value is color.blue.
 `text`
+The text to display inside the box. By default, its value is an empty string.
 `text_size`
-`size.*` constants. The “int” size can be any positive integer. The `size.*` constants and their equivalent “int” sizes are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), and size.huge (36). The default value is size.auto.
+Specifies the size of the text within the box. It accepts both “int” size values and “string” `size.*` constants. The “int” size can be any positive integer. The `size.*` constants and their equivalent “int” sizes are: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), and size.huge (36). The default value is size.auto.
 `text_color`
-color.black.
+Controls the color of the text. Its default is color.black.
 `text_halign`
-text.align_left, text.align_right, or text.align_center (default).
+Specifies the horizontal alignment of the text within the box’s boundaries. It accepts one of the following: text.align_left, text.align_right, or text.align_center (default).
 `text_valign`
-text.align_top, text.align_bottom, or text.align_center (default).
+Specifies the vertical alignment of the text within the box’s boundaries. It accepts one of the following: text.align_top, text.align_bottom, or text.align_center (default).
 `text_wrap`
-text.wrap_auto, the box wraps the text to ensure it does not span past its vertical borders. It also clips the wrapped text when it extends past the bottom. If the value is text.wrap_none, the box displays the text on a single line that can extend beyond its borders. The default is text.wrap_none.
+Determines whether the box will wrap the text within it. If its value is text.wrap_auto, the box wraps the text to ensure it does not span past its vertical borders. It also clips the wrapped text when it extends past the bottom. If the value is text.wrap_none, the box displays the text on a single line that can extend beyond its borders. The default is text.wrap_none.
 `text_font_family`
-font.family_default displays the box’s text with the system’s default font. The font.family_monospace displays the text in a monospace format. The default value is font.family_default.
+Defines the font family of the box’s text. Using font.family_default displays the box’s text with the system’s default font. The font.family_monospace displays the text in a monospace format. The default value is font.family_default.
 `force_overlay`
-`true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
+If `true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
 `text_formatting`
-text.format_none displays the text with no special formatting. This parameter also accepts the arguments text.format_bold or text.format_italic. Using `text.format_bold + text.format_italic` applies both formats together to display text that is both bold and italicized. The default value is text.format_none.
+Specifies the formatting of the box’s text. Using text.format_none displays the text with no special formatting. This parameter also accepts the arguments text.format_bold or text.format_italic. Using `text.format_bold + text.format_italic` applies both formats together to display text that is both bold and italicized. The default value is text.format_none.
 Let’s write a simple script to display boxes on a chart. The example below draws a box projecting each bar’s high and low values from the horizontal center of the current bar to the center of the next available bar.
 On each bar, the script creates `topLeft` and `bottomRight` points via chart.point.now() and chart.point.from_index(), then calls box.new() to construct a new box and display it on the chart. It also highlights the background on the unconfirmed chart bar using bgcolor() to indicate that it redraws that box until the bar’s last update:
 !image
@@ -16446,22 +17332,23 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 The following eight parameters affect the behavior of a polyline drawing:
 `points`
-array of chart.point objects that determine the coordinates of each point in the polyline. The drawing connects the coordinates from each element in the array sequentially, starting from the _first_. Whether the polyline uses the `index` or `time` field from each chart point for its x-coordinates depends on the `xloc` value in the function call.
+Accepts an array of chart.point objects that determine the coordinates of each point in the polyline. The drawing connects the coordinates from each element in the array sequentially, starting from the _first_. Whether the polyline uses the `index` or `time` field from each chart point for its x-coordinates depends on the `xloc` value in the function call.
 `curved`
-chart.point in the `points` array. The default value is `false`, meaning it uses straight line segments.
+Specifies whether the drawing uses curved line segments to connect each chart.point in the `points` array. The default value is `false`, meaning it uses straight line segments.
 `closed`
-chart.point in the `points` array to the first, forming a _closed polyline_. The default value is `false`.
+Controls whether the polyline will connect the last chart.point in the `points` array to the first, forming a _closed polyline_. The default value is `false`.
 `xloc`
-chart.point in the `points` array the polyline uses for its x-coordinates. When its value is xloc.bar_index, the function uses the `index` fields to create the polyline. When its value is xloc.bar_time, the function uses the `time` fields. The default value is xloc.bar_index.
+Specifies which field from each chart.point in the `points` array the polyline uses for its x-coordinates. When its value is xloc.bar_index, the function uses the `index` fields to create the polyline. When its value is xloc.bar_time, the function uses the `time` fields. The default value is xloc.bar_index.
 `line_color`
-`color.blue`.
+Specifies the color of all line segments in the polyline drawing. The default is `color.blue`.
 `fill_color`
-na.
+Controls the color of the closed space filled by the polyline drawing. Its default value is na.
 `line_style`
-Line styles section of this page. The default is line.style_solid.
+Specifies the style of the polyline, which can be any of the available options in the Line styles section of this page. The default is line.style_solid.
 `line_width`
+Specifies the width of the polyline, in pixels. The default value is 1.
 `force_overlay`
-`true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
+If `true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
 This script demonstrates a simple example of drawing a polyline on the chart. It uses array.push to push the reference of a new chart.point object with an alternating `price` value into a `points` array and colors the background with bgcolor() once every `length` bars.
 On the last confirmed historical bar, where barstate.islastconfirmedhistory is `true`, the script creates a new polyline with polyline.new(). The polyline drawing passes through the coordinates of each chart point in the `points` array in order, starting from the first point:
 !image
@@ -16857,7 +17744,7 @@ if barstate.isrealtime
     line.new(firstPoint, secondPoint)  
 `
 Such issues can be confusing, but they’re quite rare. The Pine Script team hopes to eliminate them over time.
- Previous   Next Plots
+ Previous Levels    Next Plots
 
 ## * Introduction
 * Lines
@@ -16930,7 +17817,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260601_065355
+# processed_30_plots_20260604_064114
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -17011,8 +17898,9 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 The parameters of plot() are:
 `series`
-auto-casting rules in Pine Script® convert in the “int” 🠆 “float” 🠆 “bool” direction, a “bool” type variable cannot be used as is for the `series`; it must be converted to an equivalent “int” or “float” type argument. For example, to plot a series based on a “bool” variable `newDay`, we can pass `newDay ? 1 : 0` as the `series` argument to plot 1 when the variable is `true` and 0 when it is `false`.
+It is the only mandatory parameter. Its argument must be of “series int/float” type. Note that because the auto-casting rules in Pine Script® convert in the “int” 🠆 “float” 🠆 “bool” direction, a “bool” type variable cannot be used as is for the `series`; it must be converted to an equivalent “int” or “float” type argument. For example, to plot a series based on a “bool” variable `newDay`, we can pass `newDay ? 1 : 0` as the `series` argument to plot 1 when the variable is `true` and 0 when it is `false`.
 `title`
+Requires a “const string” argument, so it must be known at compile time. The string appears:
   * In the script’s scale when the “Chart settings/Scales/Indicator Name Label” field is checked.
   * In the Data Window.
   * In the “Settings/Style” tab.
@@ -17022,26 +17910,28 @@ auto-casting rules in Pine Script® convert in the “int” 🠆 “float” �
 
 
 `color`
-na as the color, or any color with a transparency of 100, is one way to hide plots when they are not needed.
+Accepts “series color”, so can be calculated on the fly, bar by bar. Plotting with na as the color, or any color with a transparency of 100, is one way to hide plots when they are not needed.
 `linewidth`
-plot.style_columns is used.
+Is the plotted element’s size, but it does not apply to all styles. When a line is plotted, the unit is pixels. It has no impact when plot.style_columns is used.
 `style`
+The available arguments are:
                 
 
 `trackprice`
-`false`. When it is `true`, a dotted line made up of small squares will be plotted the full width of the script’s visual space. It is often used in conjuction with `show_last = 1, offset = -99999` to hide the actual plot and only leave the residual dotted line.
+The default value of this is `false`. When it is `true`, a dotted line made up of small squares will be plotted the full width of the script’s visual space. It is often used in conjuction with `show_last = 1, offset = -99999` to hide the actual plot and only leave the residual dotted line.
 `histbase`
-plot.style_area, plot.style_columns and plot.style_histogram. It determines the level separating positive and negative values of the `series` argument. It cannot be calculated dynamically, as an “input int/float” is required.
+It is the reference point used with plot.style_area, plot.style_columns and plot.style_histogram. It determines the level separating positive and negative values of the `series` argument. It cannot be calculated dynamically, as an “input int/float” is required.
 `offset`
+This allows shifting the plot in the past/future using a negative/positive offset in bars. The value cannot change during the script’s execution.
 `join`
-plot.style_circles or plot.style_cross. When `true`, the shapes are joined by a one-pixel line.
+This only affect styles plot.style_circles or plot.style_cross. When `true`, the shapes are joined by a one-pixel line.
 `editable`
-`true`.
+This boolean parameter controls whether or not the plot’s properties can be edited in the “Settings/Style” tab. Its default value is `true`.
 `show_last`
-_backward_ from the last bar. Bars beyond the specified amount show na values for this plot. It accepts an “input int” type argument, so it cannot be calculated dynamically.
+Controls the number of bars on which the plot values are visible, counting _backward_ from the last bar. Bars beyond the specified amount show na values for this plot. It accepts an “input int” type argument, so it cannot be calculated dynamically.
 `display`
-display.all. This parameter supports addition and subtraction of `display.*` options, e.g., `display.all - display.pane` hides the pane visuals but displays the plot’s numeric results everywhere else, while `display.status_line + display.data_window` displays results only in those two locations.
-display.none, the script calculates the plot values, but does not display them in the script pane, status line, or Data Window, and the hidden plot does not affect the scale of the script’s visual space. This display option can be useful for plots intended for use as external inputs for other scripts, or for plots used with the `{{plot("[plot_title]")}}` placeholder in alertcondition() calls, e.g.:
+Controls the locations where plot values appear, which include the script pane, status line, price scale, and Data Window. The default is display.all. This parameter supports addition and subtraction of `display.*` options, e.g., `display.all - display.pane` hides the pane visuals but displays the plot’s numeric results everywhere else, while `display.status_line + display.data_window` displays results only in those two locations.
+When this parameter is set to display.none, the script calculates the plot values, but does not display them in the script pane, status line, or Data Window, and the hidden plot does not affect the scale of the script’s visual space. This display option can be useful for plots intended for use as external inputs for other scripts, or for plots used with the `{{plot("[plot_title]")}}` placeholder in alertcondition() calls, e.g.:
 Pine Script®
 Copied
 `//@version=6  
@@ -17052,16 +17942,17 @@ plot(r, "RSI", display = display.none)
 alertcondition(xUp, "xUp alert", message = 'RSI is bullish at: {{plot("RSI")}}')  
 `
 `format`
-format.price, format.percent, or format.volume.
-indicator() or strategy() declaration statement. If the plot and declaration use different formats, then the plot’s `format` argument takes precedence.
+Specifies the numeric format used to represent plot values in the status line, Data Window, and price scale. It accepts one of the following values: format.price, format.percent, or format.volume.
+By default, the plot uses the same format as the script’s indicator() or strategy() declaration statement. If the plot and declaration use different formats, then the plot’s `format` argument takes precedence.
 `precision`
-indicator() or strategy() declaration statement. If the plot and declaration use different precisions, then the plot’s `precision` argument takes precedence.
-`precision` parameter does not affect plot results formatted using the format.volume argument, because the decimal precision rules of the volume formatting take precedence.
+Specifies the number of digits included after the decimal point for the plot’s numeric values. It accepts a positive integer argument from 0 to 16. This precision affects the results displayed in the status line, Data Window, and price scale.
+By default, the plot uses the same precision as the script’s indicator() or strategy() declaration statement. If the plot and declaration use different precisions, then the plot’s `precision` argument takes precedence.
+The `precision` parameter does not affect plot results formatted using the format.volume argument, because the decimal precision rules of the volume formatting take precedence.
 `force_overlay`
-`true`, the plotted results display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
+If `true`, the plotted results display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
 `linestyle`
-plot.linestyle_solid, plot.linestyle_dashed, or plot.linestyle_dotted.
-`style` parameter must use one of the following arguments: plot.style_line (the default), plot.style_linebr, plot.style_stepline, plot.style_stepline_diamond, or plot.style_area for it to take effect.
+Controls the style of plotted lines, using one of the following arguments: plot.linestyle_solid, plot.linestyle_dashed, or plot.linestyle_dotted.
+This parameter only modifies lines, so the `style` parameter must use one of the following arguments: plot.style_line (the default), plot.style_linebr, plot.style_stepline, plot.style_stepline_diamond, or plot.style_area for it to take effect.
 
 ## Plotting conditionally
 Scripts cannot call the plot() function from conditional structures such as if blocks, but can control plots by varying their plotted values or their color. When no plot is required, you can either plot na values, or plot values using na color or any color with 100 transparency (which also makes it invisible).
@@ -17263,7 +18154,7 @@ Note that:
   * The manipulations we make here are typical of the compromises required to bring two indicators with different scales in the same visual space, even when their values, contrary to MACD, are bounded in a fixed range.
 
 
- Previous   Next Tables
+ Previous Lines and boxes    Next Tables
 
 ## * Introduction
 * `plot()` parameters
@@ -17288,7 +18179,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260601_065355
+# processed_31_tables_20260604_064114
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -17493,7 +18384,7 @@ Note that:
   * Remember to control the execution of your table code wisely by restricting it to the necessary bars only. This saves server resources and your charts will display faster, so everybody wins.
 
 
- Previous   Next Text and shapes
+ Previous Plots    Next Text and shapes
 
 ## * Introduction
 * Creating tables
@@ -17507,7 +18398,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260601_065355
+# processed_32_text-and-shapes_20260604_064114
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -18007,7 +18898,7 @@ if barstate.islast
             barMoveTable.cell_set_text_formatting(0, 0, text.format_none)  
             rangeBox.set_text_formatting(text.format_none)  
 `
- Previous
+ Previous Tables
 
 
 ## Code Examples
@@ -18056,7 +18947,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260601_065355
+# processed_33_alerts_20260604_064114
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -18411,7 +19302,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260601_065355
+# processed_34_bar-states_20260604_064114
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -18541,13 +19432,13 @@ Note that:
 
 This last example shows how the realtime bar’s label will turn yellow after the first execution on the bar. This is the way the label will usually appear on realtime bars:
 !image
- Previous   Next Chart information
+ Previous Alerts    Next Chart information
 
 ---
 
 
 
-# processed_35_chart-information_20260601_065355
+# processed_35_chart-information_20260604_064114
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -18632,13 +19523,13 @@ Session information is available in different forms:
   * The syminfo.session built-in variable returns a value that is either session.regular or session.extended. It reflects the session setting on the chart for that symbol. If the “Chart settings/Symbol/Session” field is set to “Extended”, it will only return “extended” if the symbol and the user’s feed allow for extended sessions. It is used when a session type is expected, for example as the argument for the `session` parameter in ticker.new().
   
 
- Previous   Next Inputs
+ Previous Bar states    Next Inputs
 
 ---
 
 
 
-# processed_36_inputs_20260601_065355
+# processed_36_inputs_20260604_064114
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -18693,34 +19584,34 @@ Most input parameters require “const” arguments. However, two parameters all
 The parameters that require “const” arguments _cannot_ use dynamic values or results from other `input*()` calls as arguments, because “input” and other qualifiers are _stronger_ than the “const” qualifier. See the Type system page for more information.
 Let’s examine each parameter:
 `defval`
-`input*()` functions. The required type for a `defval` argument depends on the input function type, e.g., an “int” `defval` argument for input.int(), a “string” `defval` argument for input.string(), etc. The generic input function infers its input type based on the `defval` argument used in the input() call.
+The default value assigned to the input variable, and the initial value that appears in the input widget. It is the first parameter of all `input*()` functions. The required type for a `defval` argument depends on the input function type, e.g., an “int” `defval` argument for input.int(), a “string” `defval` argument for input.string(), etc. The generic input function infers its input type based on the `defval` argument used in the input() call.
 `title`
-`title` string, the input variable’s name appears as the label.
+The input field’s label in the “Inputs” tab. If the function call does not specify a `title` string, the input variable’s name appears as the label.
 `tooltip`
-`tooltip` argument displays a question mark icon to the right of the input field, which shows the tooltip’s text when users hover over it. The `tooltip` string supports newline (`\n`) characters.
-`inline`), the tooltip always appears to the right of the _rightmost_ field and displays the text of the _last_ `tooltip` argument specified in the line.
+An optional string that offers more information about the input. Using a `tooltip` argument displays a question mark icon to the right of the input field, which shows the tooltip’s text when users hover over it. The `tooltip` string supports newline (`\n`) characters.
+Note that if multiple input widgets appear on the same line (using `inline`), the tooltip always appears to the right of the _rightmost_ field and displays the text of the _last_ `tooltip` argument specified in the line.
 `inline`
-`inline` argument in multiple `input*()` calls displays their input widgets on the _same line_ in the “Inputs” tab. The tab’s width limits the amount of input widgets that can fit on one line; longer lines are automatically wrapped. The `inline` string is case-sensitive, so `input*()` calls must use the same characters and letter case in their `inline` arguments to appear in the same line.
-`inline` argument, unique or otherwise, displays the input’s field immediately after its label, rather than keeping it left-aligned with other input fields as default. Unlike the `group` heading, the `inline` string does not appear in the “Inputs” tab.
+Using the same `inline` argument in multiple `input*()` calls displays their input widgets on the _same line_ in the “Inputs” tab. The tab’s width limits the amount of input widgets that can fit on one line; longer lines are automatically wrapped. The `inline` string is case-sensitive, so `input*()` calls must use the same characters and letter case in their `inline` arguments to appear in the same line.
+Using any `inline` argument, unique or otherwise, displays the input’s field immediately after its label, rather than keeping it left-aligned with other input fields as default. Unlike the `group` heading, the `inline` string does not appear in the “Inputs” tab.
 `group`
-`group` argument in any number of `input*()` calls groups the inputs in an _organized section_ in the “Inputs” tab. The string used as the `group` argument becomes the section’s heading. The `group` string is case-sensitive, so `input*()` calls must use the same characters and letter case in their `group` arguments to appear in the same section.
+Using the same `group` argument in any number of `input*()` calls groups the inputs in an _organized section_ in the “Inputs” tab. The string used as the `group` argument becomes the section’s heading. The `group` string is case-sensitive, so `input*()` calls must use the same characters and letter case in their `group` arguments to appear in the same section.
 ` display`
-display.all, display.status_line, display.data_window, or display.none. The default is display.all for all input types except “bool” and “color” inputs, which use display.none by default.
-`display` argument.
+Controls whether the input value appears next to the script title in the status line and Data Window. It accepts the following values: display.all, display.status_line, display.data_window, or display.none. The default is display.all for all input types except “bool” and “color” inputs, which use display.none by default.
+Note that the input value always appears in the “Inputs” tab, regardless of the `display` argument.
 `active`
-`true` by default. If `false`, the input field appears dimmed and users cannot change its value. This parameter accepts an “input bool” argument, so an input’s `active` state can depend on the value of _other_ inputs.
-`showAverageInput` toggle to show or hide an average line, we can use `active = showAverageInput` in other inputs related to the average, such as `averageLengthInput` or `averageColorInput`, to enable them only when users select the “Show average” checkbox.
+Controls whether users can change the input value in the “Inputs” tab; it is `true` by default. If `false`, the input field appears dimmed and users cannot change its value. This parameter accepts an “input bool” argument, so an input’s `active` state can depend on the value of _other_ inputs.
+For example, if a script uses a “bool” `showAverageInput` toggle to show or hide an average line, we can use `active = showAverageInput` in other inputs related to the average, such as `averageLengthInput` or `averageColorInput`, to enable them only when users select the “Show average” checkbox.
 `options`
-tuple, which is a comma-separated list of elements enclosed in square brackets (e.g., `["ON", "OFF"]`, `[1, 2, 3]`, `[myEnum.On, myEnum.Off]`). These elements appear in a dropdown widget, from which users can select only one value at a time. If an input uses the `options` parameter, the `defval` value must be one of the list’s elements.
+A list specifying the possible values that this input can have. This parameter accepts a tuple, which is a comma-separated list of elements enclosed in square brackets (e.g., `["ON", "OFF"]`, `[1, 2, 3]`, `[myEnum.On, myEnum.Off]`). These elements appear in a dropdown widget, from which users can select only one value at a time. If an input uses the `options` parameter, the `defval` value must be one of the list’s elements.
 `minval`
-integer input or float input.
+The minimum valid value for the input field in an integer input or float input.
 `maxval`
-integer input or float input.
+The maximum valid value for the input field in an integer input or float input.
 `step`
-integer input or float input widget. The default `step` value is 1.
+The increment by which the field’s value changes when clicking the up/down arrows in an integer input or float input widget. The default `step` value is 1.
 `confirm`
-`true`, the input widget appears in a “Confirm inputs” dialog box when users add the script to the chart, prompting them to configure the input value before the script executes. By default, this parameter’s value is `false`. If more than one `input.*()` call uses `confirm = true` in the same script, multiple input widgets appear in the dialog box.
-`confirm = true` for a time input or price input enables an interactive input mode where users can click on the chart to set time and price values.
+If `true`, the input widget appears in a “Confirm inputs” dialog box when users add the script to the chart, prompting them to configure the input value before the script executes. By default, this parameter’s value is `false`. If more than one `input.*()` call uses `confirm = true` in the same script, multiple input widgets appear in the dialog box.
+Using `confirm = true` for a time input or price input enables an interactive input mode where users can click on the chart to set time and price values.
 The `minval`, `maxval`, and `step` parameters are only present in the second signatures of the input.int() and input.float() functions. Their first signatures use the `options` parameter instead. Function calls that use a `minval`, `maxval`, or `step` argument cannot also use an `options` argument.
 
 ## Input types
@@ -19220,7 +20111,7 @@ Note that:
   * To make up for the misalignment, we pad the `title` argument in the `ma2SourceInput` line with three Unicode EN spaces (U+2002). Unicode spaces are necessary because ordinary spaces would be stripped from the label. You can achieve precise alignment by combining different quantities and types of Unicode spaces. See here for a list of Unicode spaces of different widths.
 
 
- Previous   Next Libraries
+ Previous Chart information    Next Libraries
 
 ## * Introduction
 * Input functions
@@ -19269,7 +20160,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260601_065355
+# processed_37_libraries_20260604_064114
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -19605,7 +20496,7 @@ Note that:
   * We use a second call to `allTime.hi()`, but this time using close as its argument, to plot the highest close in the chart’s history.
 
 
- Previous   Next Non-standard charts data
+ Previous Inputs    Next Non-standard charts data
 
 ## * Introduction
 * Creating a library
@@ -19651,7 +20542,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260601_065355
+# processed_38_non-standard-charts-data_20260604_064114
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -19755,13 +20646,13 @@ pnfTicker = ticker.pointfigure(syminfo.tickerid, "hl", "ATR", 14, 3)
 plot(pnfO, "PnF Open", color.green, 4, plot.style_linebr)  
 plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)  
 `
- Previous   Next Other timeframes and data
+ Previous Libraries    Next Other timeframes and data
 
 ---
 
 
 
-# processed_39_other-timeframes-and-data_20260601_065355
+# processed_39_other-timeframes-and-data_20260604_064114
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -20446,12 +21337,27 @@ As shown below, the plots and logs of the two variables display _different_ valu
 !image
 Pine Script®
 Copied
-`//@function Creates a new `Wrapper` instance to wrap the specified `collection`.  
-newWrapper(array<float> collection) =>  
-    Wrapper.new(collection)  
+`//@version=6  
+indicator("Modifying variables after requests demo")  
   
-//@variable An array of `Wrapper` IDs requested from the 1-minute timeframe.  
-array<Wrapper> wrappers = request.security_lower_tf(syminfo.tickerid, "1", newWrapper(array.from(close)))  
+//@variable A counter that starts at 0 and increments by 1 on each bar.   
+var int counter = 0  
+  
+//@variable Holds a consistent value of 0.   
+//          `request.security()` cannot evaluate `counter += 1` in its requested context   
+//          because that modification occurs *after* the call.   
+int requestedCounter = request.security(syminfo.tickerid, timeframe.period, counter)  
+  
+// Increment the `counter` by 1. This operation is *not* included in the `requestedCounter` calculation.  
+counter += 1  
+  
+// Plot both variables for comparison.   
+plot(counter, "Original counter", color.purple, 3)  
+plot(requestedCounter, "Requested counter", color.red, 3)  
+  
+// Log the values of both variables in the Pine Logs pane.  
+if barstate.isconfirmed  
+    log.info("counter: {0}, requestedCounter: {1}", counter, requestedCounter)  
 `
 ####  Tuples
 Tuples in Pine Script are comma-separated lists of expressions enclosed in square brackets. Programmers often use tuples when creating functions, conditional structures, or loops that return multiple values or references from their local scopes.
@@ -22498,7 +23404,7 @@ Note that:
   * Pine Seeds data is searchable from the chart’s symbol search bar. To load a data feed on the chart, enter the _“Repo:File” pair_ , similar to searching for an “Exchange:Symbol” pair.
 
 
- Previous   Next Repainting
+ Previous Non-standard charts data    Next Repainting
 
 ## * Introduction
 * Common characteristics
@@ -22914,65 +23820,7 @@ library("DynamicRequests")
 //@returns         A tuple containing the last confirmed `open`, `high`, `low`, and `close` from the requested context.  
 
 
-@function Creates a new `Wrapper` instance to wrap the specified `collection`.  
-newWrapper(array<float> collection) =>  
-    Wrapper.new(collection)  
-  
-//@variable An array of `Wrapper` IDs requested from the 1-minute timeframe.  
-array<Wrapper> wrappers = request.security_lower_tf(syminfo.tickerid, "1", newWrapper(array.from(close)))  
-`
-####  Tuples
-Tuples in Pine Script are comma-separated lists of expressions enclosed in square brackets. Programmers often use tuples when creating functions, conditional structures, or loops that return multiple values or references from their local scopes.
-The request.security() function can accept a tuple as its `expression` argument, allowing scripts to request multiple series of different types using a single function call. The expressions within requested tuples can be of any type outlined throughout the Requestable data section of this page, excluding other tuples.
-NoteThe combined size of all tuples returned by `request.*()` calls in a script cannot exceed 127 elements. See the Tuple element limit section of the Limitations page for more information.
-Tuples are particularly helpful when a script needs to retrieve more than one value from a specific context.
-For example, the following script calculates the percent rank of the close series over `length` bars and assigns the result to the `rank` variable. It then calls request.security() to request a tuple containing the values of `rank`, `ta.crossover(rank, 50)`, and `ta.crossunder(rank, 50)` from a specified timeframe. The script plots the `requestedRank` series in a separate pane, then uses the result of a ternary expression based on the `crossOver` and `crossUnder` values within a bgcolor() call to conditionally highlight the pane’s background:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Requesting tuples demo", "Percent rank cross")  
-  
-//@variable The timeframe of the request.  
-string timeframe = input.timeframe("240", "Timeframe")  
-//@variable The number of bars in the calculation.  
-int length = input.int(20, "Length")  
-  
-//@variable The previous bar's percent rank of the `close` price over `length` bars.  
-float rank = ta.percentrank(close, length)[1]  
-  
-// Request the `rank` value from another `timeframe`, and two "bool" values indicating the `rank` from the `timeframe`  
-// crossed over or under 50.  
-[requestedRank, crossOver, crossUnder] = request.security(  
-     syminfo.tickerid, timeframe, [rank, ta.crossover(rank, 50), ta.crossunder(rank, 50)],  
-     lookahead = barmerge.lookahead_on  
- )  
-  
-// Plot the `requestedRank` and create a horizontal line at 50.  
-plot(requestedRank, "Percent Rank", linewidth = 3)  
-hline(50, "Cross line", linewidth = 2)  
-// Highlight the background of all bars where the `timeframe`'s `crossOver` or `crossUnder` value is `true`.  
-bgcolor(crossOver ? color.new(color.green, 50) : crossUnder ? color.new(color.red, 50) : na)  
-`
-Note that:
-  * We’ve offset the `rank` variable’s expression by one bar using the history-referencing operator [[]](https://www.tradingview.com/pine-script-reference/v6/#op_%5B%5D) and included barmerge.lookahead_on in the request.security() call to ensure the values on realtime bars do not repaint after becoming historical bars. See the Avoiding repainting section for more information.
-  * The request.security() call returns a tuple, so we use a _tuple declaration_ to declare the `requestedRank`, `crossOver`, and `crossUnder` variables. To learn more about using tuples, see this section of our User Manual’s Type system page.
-
-
-#### User-defined functions
-User-defined functions and methods are custom functions written by users. They allow users to define sequences of operations associated with an identifier that scripts can conveniently call throughout their executions (e.g., `myUDF()`).
-The request.security() function can request the results of user-defined functions and methods whose scopes consist of any types outlined throughout this page’s Requestable data section.
-For example, this script contains a user-defined `weightedBB()` function that calculates Bollinger Bands with the basis average weighted by a specified `weight` series. The function returns a tuple of custom band values. The script calls the `weightedBB()` as the `expression` argument in request.security() to retrieve a tuple of band values calculated on the specified `timeframe` and plots the results on the chart:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Requesting user-defined functions demo", "Weighted Bollinger Bands", true)  
-  
-//@variable The timeframe of the request.  
-string timeframe = input.timeframe("480", "Timeframe")  
-  
-//@function     Calculates Bollinger Bands with a custom weighted basis.  
+@function     Calculates Bollinger Bands with a custom weighted basis.  
 //@param source The series of values to process.  
 //@param length The number of bars in the calculation.  
 //@param mult   The standard deviation multiplier.  
@@ -22984,7 +23832,7 @@ string timeframe = input.timeframe("480", "Timeframe")
 
 
 
-# processed_40_repainting_20260601_065355
+# processed_40_repainting_20260604_064114
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -23229,7 +24077,7 @@ As time goes by, these factors cause your chart’s history to start at differen
 ### Revision of historical data
 Historical and realtime bars are built using two different data feeds supplied by exchanges/brokers: historical data, and realtime data. When realtime bars elapse, exchanges/brokers sometimes make what are usually small adjustments to bar prices, which are then written to their historical data. When the chart is refreshed or the script is re-executed on those elapsed realtime bars, they will then be built and calculated using the historical data, which will contain those usually small price revisions, if any have been made.
 Historical data may also be revised for other reasons, e.g., for stock splits.
- Previous   Next Sessions
+ Previous Other timeframes and data    Next Sessions
 
 ## * Introduction
 * For script users
@@ -23252,7 +24100,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260601_065355
+# processed_41_sessions_20260604_064114
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -23590,7 +24438,7 @@ Scripts can use the following “string” variables to work with named sessions
 | syminfo.session  | Holds the current symbol’s session information.  |  
 | session.regular  | Represents the regular trading session.  |  
 | session.extended  | Represents the extended trading session.  |  
- Previous   Next Strategies
+ Previous Repainting    Next Strategies
 
 
 ## Code Examples
@@ -23604,7 +24452,7 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260601_065355
+# processed_42_strategies_20260604_064114
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -25165,13 +26013,17 @@ NoticeLimit verification can change the _times_ of some order fills. However, st
 Designing a strategy that performs well, especially in a broad class of markets, is a challenging task. Most strategies are designed for specific market patterns/conditions and can produce uncontrolled losses when applied to other data. Therefore, a strategy’s risk management behavior can be critical to its performance. Programmers can set risk management criteria in their strategy scripts using the `strategy.risk.*()` commands.
 Strategies can incorporate any number of risk management criteria in any combination. All risk management commands execute _on every tick and order execution event_ , regardless of any changes to the strategy’s calculation behavior. There is no way to deactivate any of these commands on specific script executions. Irrespective of a risk management command’s location, it _always_ applies to the strategy unless the programmer removes the call from the code.
 strategy.risk.allow_entry_in()
-strategy.entry() commands in the script. When a user specifies the trade direction with the strategy.risk.allow_entry_in() function (e.g., strategy.direction.long), the strategy enters trades only in that direction. If a script calls an entry command in the opposite direction while there’s an open market position, the strategy simulates a market order to _close_ the position.
+This command overrides the market direction allowed for all strategy.entry() commands in the script. When a user specifies the trade direction with the strategy.risk.allow_entry_in() function (e.g., strategy.direction.long), the strategy enters trades only in that direction. If a script calls an entry command in the opposite direction while there’s an open market position, the strategy simulates a market order to _close_ the position.
 strategy.risk.max_cons_loss_days()
+This command cancels all pending orders, closes any open market position, and stops all additional trade actions after the strategy simulates a defined number of trading days with consecutive losses.
 strategy.risk.max_drawdown()
+This command cancels all pending orders, closes any open market position, and stops all additional trade actions after the strategy’s drawdown reaches the amount specified in the function call.
 strategy.risk.max_intraday_filled_orders()
+This command specifies the maximum number of filled orders per trading day (or per chart bar if the timeframe is higher than daily). If the strategy creates more orders than the maximum, the command cancels all pending orders, closes any open market position, and halts trading activity until the end of the current session.
 strategy.risk.max_intraday_loss()
+This command controls the maximum loss the strategy tolerates per trading day (or per chart bar if the timeframe is higher than daily). When the strategy’s losses reach this threshold, it cancels all pending orders, closes the open market position, and stops all trading activity until the end of the current session.
 strategy.risk.max_position_size()
-strategy.entry() commands. If the quantity of an entry command results in a market position that exceeds this threshold, the strategy reduces the order quantity so that the resulting position does not exceed the limit.
+This command specifies the maximum possible position size when using strategy.entry() commands. If the quantity of an entry command results in a market position that exceeds this threshold, the strategy reduces the order quantity so that the resulting position does not exceed the limit.
 
 ## Margin
 _Margin_ is the minimum percentage of a market position that a trader must hold in their account as collateral to receive and sustain a loan from their broker to achieve their desired _leverage_. The `margin_long` and `margin_short` parameters of the strategy() declaration statement and the “Margin for long/short positions” inputs in the “Properties” tab of the script settings specify margin percentages for long and short positions. For example, if a trader sets the margin for long positions to 25%, they must have enough funds to cover 25% of an open long position. This margin percentage also means the trader can potentially spend up to 400% of their equity on their trades.
@@ -25445,7 +26297,7 @@ In this approach, traders optimize strategy parameters on the IS data, and they 
 Outside of Deep Backtesting, a strategy can keep track of up to 9000 orders. If a strategy creates more than 9000 orders, the earliest orders are _trimmed_ so that the strategy stores the information for only the most recent orders.
 Trimmed orders do **not** appear in the Strategy Tester. Referencing the trimmed order IDs using `strategy.closedtrades.*` functions returns na.
 The strategy.closedtrades.first_index variable holds the index of the oldest _untrimmed_ trade, which corresponds to the first trade listed in the List of Trades. If the strategy creates less than 9000 orders, there are no trimmed orders, and this variable’s value is 0.
- Previous   Next Strings
+ Previous Sessions    Next Strings
 
 ## * Introduction
 * A simple strategy example
@@ -25539,7 +26391,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260601_065355
+# processed_43_strings_20260604_064114
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -26188,7 +27040,7 @@ if barstate.isfirst
     log.info("\n\nOriginal: {0}\nUppercase: {1}\nLowercase: {2}", originalString, uppercaseString, lowercaseString)  
 `
 ### Trimming whitespaces
-The str.trim() function copies a `source` string and removes leading and trailing whitespace characters, including the standard space (`\n`), and tab space (`\t`). Below is the function’s signature:
+The str.trim() function copies a `source` string and removes leading and trailing whitespace characters, including the standard space (), newline (`\n`), and tab space (`\t`). Below is the function’s signature:
 
 ```
 
@@ -26933,7 +27785,7 @@ It is equivalent to `[\x{61}-\x{7A}\x{41}-\x{5A}]`.
 The syntax `[a-z[A-Z]]` also produces the same match.  |  
 | ``  | The syntax for a class that matches any character _except_ for the ones specified.  
   
-For example, the regex string `""` matches any character except for `a`, `b`, `c`, `\n` (newline), or   
+For example, the regex string `""` matches any character except for `a`, `b`, `c`, `\n` (newline), or (space).  
   
 Note that only a caret (`^`) at the _start_ of the enclosed text signifies _negation_. If the character comes after that point, the regex considers it a possible _literal_ match (e.g., `"[ab^c]"` matches the `a`, `b`, `^`, or `c` character literally).  |  
 | `[...&&[...]]`  | The syntax for a nested class structure that matches any character within the _intersection_ of two character classes.  
@@ -27141,7 +27993,7 @@ For example, the regex string `"(?x)[a-f ] 1 2\n3 # this is a comment!"` produce
 Regex strings with this modifier can include multiple comments on _separate lines_ (e.g., `"a #match 'a' \nb #followed by 'b'"` matches `ab`).  
   
 To match whitespaces or the `#` character in this mode, _escape_ them using backslashes or the `\Q...\E` syntax. For instance, `"(?x)\\#\\ \\# #comment"` and `"(?x)\\Q# #\\E #comment"` both literally match the sequence `# #`.  |  
- Previous   Next Time
+ Previous Strategies    Next Time
 
 ## * Introduction
 * Literal strings
@@ -27252,7 +28104,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260601_065355
+# processed_44_time_20260604_064114
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -28720,7 +29572,7 @@ Note that:
   * Before the while loop, the function subtracts the number of days in a partial starting month from the initial day count, aligning the counters with the beginning of a new month. It re-adds the subtracted days after the loop to adjust the counters for partial months. It adjusts the month and year counters based on the days in the `startMonth` if the `startDay` is less than halfway through that month. Otherwise, it adjusts the values based on the days in the `endMonth`.
 
 
- Previous   Next Timeframes
+ Previous Strings    Next Timeframes
 
 ## * Introduction
 * UNIX timestamps
@@ -28782,7 +29634,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260601_065355
+# processed_45_timeframes_20260604_064114
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -28824,13 +29676,13 @@ Note that:
   * We finally print the two timeframe values converted to minutes.
 
 
- Previous
+ Previous Time
 
 ---
 
 
 
-# processed_46_style-guide_20260601_065355
+# processed_46_style-guide_20260604_064114
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -29208,7 +30060,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260601_065355
+# processed_47_debugging_20260604_064114
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -30832,7 +31684,7 @@ Below are a few helpful coding recommendations based on our Style guide and best
   * Document the code using comments and compiler annotations (`//@function`, `//@variable`, etc.). The Pine Editor’s autosuggest displays the text from annotations when the mouse pointer hovers over identifiers, making it simple to recall what different parts of the code represent.
 
 
- Previous   Next Profiling and optimization
+ Previous Style guide    Next Profiling and optimization
 
 ## * Introduction
 * Common debug outputs
@@ -30942,7 +31794,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260601_065355
+# processed_48_profiling-and-optimization_20260604_064114
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -32537,7 +33389,7 @@ gcd(int a, int b) =>
 plot(gcd(10000, 10000 + bar_index), "GCD")  
 `
 TipThis process might require trial and error, because identifying the number of executions that a computationally heavy script can handle before timing out is not necessarily straightforward. If a script takes too long to execute after enabling the Profiler, experiment with different ways to limit its executions until you can profile it successfully.
- Previous   Next Publishing scripts
+ Previous Debugging    Next Publishing scripts
 
 ## * Introduction
 * Pine Profiler
@@ -32570,7 +33422,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260601_065355
+# processed_49_publishing_20260604_064114
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -32767,15 +33619,17 @@ Many traders use public scripts in their analysis to reinforce trade decisions. 
 Our Script Publishing Rules establish the core criteria for publishing scripts on TradingView, and our Vendor Requirements define additional criteria for vendors. The script moderators curate the Community scripts based on these rules and our House Rules. If a publication does not meet these criteria, it becomes _hidden_ , and our moderators send the author a message explaining the issues that need correction. The author can then prepare a _new publication_ with the necessary corrections if they want to share their script publicly.
 We recommend all authors review and understand our rules and verify a script publication’s compliance _before_ publishing it. Below, we list a few simple tips:
 **Publish original content**
-_your_ unique interests and expertise.
+Publish a script publicly if you believe it is original and might benefit the community. Avoid rehashing, mimicking, or copying existing scripts or other public domain code. Likewise, avoid publishing scripts that combine available indicators or other code without a clear purpose. In other words, aim to provide a helpful tool for the community based on _your_ unique interests and expertise.
 **Reuse code responsibly**
-Script Publishing Rules, which take precedence over all open-source licenses. These criteria include crediting the original author, making meaningful improvements to the code, and sharing the code open-source unless the original author grants _explicit permission_ to publish it closed-source.
+Authors can publish scripts that reuse open-source code from other publications. However, they must meet the “Open-source reuse” criteria in our Script Publishing Rules, which take precedence over all open-source licenses. These criteria include crediting the original author, making meaningful improvements to the code, and sharing the code open-source unless the original author grants _explicit permission_ to publish it closed-source.
 **Use a clear chart**
-_necessary_ to demonstrate its outputs and behaviors. See the “Chart” section of our Script Publishing Rules to understand our chart criteria, and this portion of the Preparing a publication section above for detailed recommendations.
+A script publication’s chart showcases the script’s visual outputs to help users understand how it works. This display is not for demonstrating complex charting setups with multiple scripts or drawing tools. If the chart of a published script contains unnecessary scripts or drawings, it will not add clarity for users, and it can potentially mislead them.
+Therefore, when publishing a public script, ensure the chart only includes what is _necessary_ to demonstrate its outputs and behaviors. See the “Chart” section of our Script Publishing Rules to understand our chart criteria, and this portion of the Preparing a publication section above for detailed recommendations.
 **Provide helpful documentation**
-Script Publishing Rules to understand the criteria for helpful script descriptions. The Title and description section above provides detailed recommendations based on these criteria.
-Editors’ picks. To see examples of our recommended description format, refer to the publications from the TradingView and PineCoders accounts.
- Previous   Next Limitations
+Similar to how users rely on our documentation to understand Pine, users rely on the documentation in an author’s publications to understand their scripts. When a script publication does not include a helpful description that explains the script’s workings and how to use it, users often struggle to understand and use it effectively. Therefore, when sharing a script publicly, include a clear description explaining everything users need to know about it and its use.
+See the “Description” and “Language” sections of our Script Publishing Rules to understand the criteria for helpful script descriptions. The Title and description section above provides detailed recommendations based on these criteria.
+For examples of compliant script descriptions, refer to the publications featured in our Editors’ picks. To see examples of our recommended description format, refer to the publications from the TradingView and PineCoders accounts.
+ Previous Profiling and optimization    Next Limitations
 
 ## * Introduction
 * Script publications
@@ -32802,7 +33656,7 @@ Editors’ picks. To see examples of our recommended description format, refer t
 
 
 
-# processed_50_limitations_20260601_065355
+# processed_50_limitations_20260604_064114
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -33140,7 +33994,7 @@ The number of bars appearing on charts is dependent on the amount of historical 
 ### Trade orders in backtesting
 A script can place a maximum of 9000 orders when backtesting strategies. Once it reaches that limit, the earlier orders are _trimmed_ to store the information of new orders. Programmers can use the strategy.closedtrades.first_index variable to reference the index of the earliest untrimmed trade.
 When using Deep Backtesting, the order limit is 1,000,000.
- Previous
+ Previous Publishing scripts
 
 ## * Introduction
 * Time
@@ -33170,7 +34024,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260601_065355
+# processed_51_overview_20260604_064114
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -33197,7 +34051,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260601_065355
+# processed_52_CE10101_20260604_064114
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -33280,7 +34134,7 @@ pivot = ta.pivothigh(10, 10)
 if not na(pivot)  
     label.new(bar_index[10], pivot, "Pivot High")  
 `
- Previous   Next CW10003
+ Previous Overview    Next CW10003
 
 ## * The condition of the “X” statement must evaluate to a “bool” value
 * Using numeric conditions
@@ -33290,7 +34144,7 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260601_065355
+# processed_53_CW10003_20260604_064114
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -33423,13 +34277,13 @@ For example, forcing calls to the label.new() function inside an if structure to
 ###  Exceptions
 Not all functions use previous values from their scopes in their calculations. Calls to such functions _do not_ require execution on every bar for correct results. For example, the built-in math.max() function returns the maximum value from its specified arguments. It does not use past values from its scope in its calculations. Therefore, calling the function conditionally or iteratively does _not_ affect the function’s behavior.
 If the use of a function call in a local block does not cause a compiler warning, it is typically safe to use the call in that block without affecting the call’s calculations. However, if the warning occurs, move the function call to the global scope and outside ternary or and/or operations to ensure consistency. If you choose to keep a function call within a local block or a conditional expression despite encountering a warning, debug the script carefully to avoid unintended results.
- Previous   Next RE10139
+ Previous CE10101    Next RE10139
 
 ---
 
 
 
-# processed_54_RE10139_20260601_065355
+# processed_54_RE10139_20260604_064114
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -33674,13 +34528,13 @@ In general, to help minimize the resource usage of drawings, optimize them by us
 The total number of trades or orders simulated by strategies can impact memory consumption. When running strategy scripts that generate frequent orders on large datasets, reduce the number of unnecessary historical orders and trades that persist in memory by limiting the _starting point_ of the strategy.
 To limit the starting point of a strategy, a simple and effective approach is to use a conditional structure that activates the strategy’s order placement commands only when the bar’s opening or closing time comes after a specified date.
 See the How do I filter trades by a date or time range? portion of our Strategies FAQ page for an example of this technique.
- Previous   Next RE10143
+ Previous CW10003    Next RE10143
 
 ---
 
 
 
-# processed_55_RE10143_20260601_065355
+# processed_55_RE10143_20260604_064114
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -33773,7 +34627,7 @@ if barstate.isrealtime
 // its `x1` coordinate into a timestamp. With an appropriate buffer size defined, no error occurs.   
 max_bars_back(time, 500)  
 `
- Previous
+ Previous RE10139
 
 ## * The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 * Potential fixes
@@ -33786,7 +34640,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260601_065355
+# processed_56_general_20260604_064114
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -33970,7 +34824,7 @@ vw = fixnan(series)
 plot(series, style = plot.style_linebr, color = color.red)  // series has na values  
 plot(vw)  // all na values are replaced with the last non-empty value  
 `
- Previous   Next Alerts
+ Previous Limitations    Next Alerts
 
 ## * Get real OHLC price on a Heikin Ashi chart
 * Get non-standard OHLC values on a standard chart
@@ -33988,7 +34842,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260601_065355
+# processed_57_alerts_20260604_064114
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -34138,22 +34992,22 @@ When a user creates an alert using the “Create Alert” dialog box, that actio
 ## Why aren’t my alerts working?
 Here are some common reasons why alerts might not work as expected, and how to solve them:
 **Make sure the alert is active and has not expired**
-**do not** directly create alerts. Users must create alerts in the “Create Alert” dialog box, where they specify the “Condition” that triggers the alert and the “Expiration” time. Created alerts do not fire after they expire. See this Help Center article on Setting up alerts.
+Scripts that include alert triggers **do not** directly create alerts. Users must create alerts in the “Create Alert” dialog box, where they specify the “Condition” that triggers the alert and the “Expiration” time. Created alerts do not fire after they expire. See this Help Center article on Setting up alerts.
 **Check the alert logs**
-alert manager to see whether an alert occurred. To set up notifications for an alert, use the options in the “Notifications” tab of the “Create/Edit Alert” dialog box.
+An alert can fire without a notification, depending on the alert’s settings. Check the logs in the alert manager to see whether an alert occurred. To set up notifications for an alert, use the options in the “Notifications” tab of the “Create/Edit Alert” dialog box.
 **Check for repainting**
-_repainting_ might be the cause. Refer to the Repainting page for more information.
+If an alert fires at a different time than expected, _repainting_ might be the cause. Refer to the Repainting page for more information.
 **Limit the frequency of alerts**
-_halts_ further alerts. This frequency limit helps prevent excessive notifications and potential server overload.
+If more than 15 alerts occur within three minutes, the system automatically _halts_ further alerts. This frequency limit helps prevent excessive notifications and potential server overload.
 **Debug script errors**
-_runtime error_ at some point during its executions, alerts from that instance **cannot** fire because the error stops the script from continuing to execute its code. Some common issues that can halt alerts include:
+If a script instance raises a _runtime error_ at some point during its executions, alerts from that instance **cannot** fire because the error stops the script from continuing to execute its code. Some common issues that can halt alerts include:
   * Attempting to store more than 100,000 elements within a collection
   * Trying to access an item from a collection at an _out-of-bounds_ index
   * Referencing historical values of a time series outside its allocated memory buffer
   * Using loops that take longer than 500 ms to complete their iterations
 
 
-this page for additional details about common error messages and troubleshooting tips.
+See this page for additional details about common error messages and troubleshooting tips.
 
 ## Why is my alert firing at the wrong time?
 Sometimes, alerts may fire when users do not expect according to what their script displays on the chart. Repainting is the typical cause of such issues.
@@ -34161,11 +35015,11 @@ A chart’s realtime and historical bars often rely on _different_ data feeds. D
 Scripts may also behave differently on historical and realtime bars, which can lead to repainting. On historical bars, scripts execute once per bar close, whereas on realtime bars, where alerts fire, scripts execute once for _each new tick_ from the data feed. Therefore, if a script behaves differently on those bars, users may see differences between its signals and triggered alerts after reloading the chart.
 Below are some common repainting issues that can affect a script’s alerts:
 **Alerts firing before bar close**
-fluid data values that update after new ticks during an unconfirmed realtime bar and finalize after the bar closes. Consequently, an alert that fires on an open bar may not reflect the _final state_ of the condition after the bar’s confirmation. Set the alert’s frequency to “Once Per Bar Close” to avoid this issue.
+Most scripts have fluid data values that update after new ticks during an unconfirmed realtime bar and finalize after the bar closes. Consequently, an alert that fires on an open bar may not reflect the _final state_ of the condition after the bar’s confirmation. Set the alert’s frequency to “Once Per Bar Close” to avoid this issue.
 **Using `calc_on_every_tick` in strategies**
-`calc_on_every_tick = true` in its declaration statement or the user selects the “On every tick” option in the “Recalculate” section of the strategy’s properties, it recalculates on _every_ price update in the realtime data. This behavior can cause strategies to repaint because historical bars do not contain the same information as realtime bars. See this section of the Strategies page to learn more.
+When a strategy script includes `calc_on_every_tick = true` in its declaration statement or the user selects the “On every tick” option in the “Recalculate” section of the strategy’s properties, it recalculates on _every_ price update in the realtime data. This behavior can cause strategies to repaint because historical bars do not contain the same information as realtime bars. See this section of the Strategies page to learn more.
 **Incorrect usage of `request.security()` calls**
-request.security() calls to fetch data from alternative timeframes can cause discrepancies on historical bars that scripts **cannot** reproduce on realtime bars. Ensure you follow the best practices for _non-repainting_ data requests to avoid such discrepancies, especially with higher-timeframe data. See the Avoiding repainting section of the Other timeframes and data page and the Higher-timeframe requests publication from PineCoders for more information.
+Using request.security() calls to fetch data from alternative timeframes can cause discrepancies on historical bars that scripts **cannot** reproduce on realtime bars. Ensure you follow the best practices for _non-repainting_ data requests to avoid such discrepancies, especially with higher-timeframe data. See the Avoiding repainting section of the Other timeframes and data page and the Higher-timeframe requests publication from PineCoders for more information.
 
 ## Can I use variable messages with alertcondition()?
 The `message` parameter of the alertcondition() function requires a “const string” argument, which **cannot change** after compilation. However, the “string” can include placeholders, which an alert substitutes with corresponding dynamic values from a script each time it fires.
@@ -34250,9 +35104,9 @@ Firing an alert only on its first occurrence can help avoid redundant notificati
 For alerts with alertcondition() triggers, setting them to fire once using the “Only Once” option in the “Create Alert” dialog box is not an optimal solution because it requires _manual_ reactivation each time an alert occurs. Alerts from the alert() function do not have an “Only Once” frequency option. The programmer must use conditional logic to ensure the call executes at the appropriate time.
 There are two primary ways to code repeating alerts that fire on only the first instance of a condition:
 **Using stricter criteria**
-`close > ma`, which may remain `true` for multiple consecutive bars, try using a more strict condition like `ta.crossover(close, ma)`. For simple cases, this is the easiest method.
+Rather than relying on a continuous condition like `close > ma`, which may remain `true` for multiple consecutive bars, try using a more strict condition like `ta.crossover(close, ma)`. For simple cases, this is the easiest method.
 **Using state control**
-_states_ , which entails setting flags or specific values to signify certain conditions.
+More complex scenarios might require controlling and tracking _states_ , which entails setting flags or specific values to signify certain conditions.
 The example script below manages separate bullish and bearish states, and it colors the background to represent each state. When a bullish or bearish state first occurs, an alert() call executes and the script plots a triangle on the chart. It also plots smaller triangles to show where other signals occur within a state, which do not trigger additional alerts:
 // !image
 Pine Script®
@@ -34504,7 +35358,7 @@ Sending TradingView alerts directly to Telegram is challenging due to protocol d
 
 
 See the Telegram Bot API documentation for detailed technical information.
- Previous   Next Data structures
+ Previous General    Next Data structures
 
 ## * How do I make an alert available from my script?
 * How are the types of alerts different?
@@ -34548,7 +35402,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260601_065355
+# processed_58_data-structures_20260604_064114
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -34763,9 +35617,9 @@ For further details, consult the sections concerning variable declaration modes 
 ## What are queues and stacks?
 Scripts can use arrays to create queues and stacks.
 **Stacks**
-array.push() and remove elements from the end of the array using array.pop().
+A stack uses the “last in, first out” (LIFO) principle, where the most recently added item is the first to be taken away. Think of this like a stack of plates, where you can only place a new plate on top or remove the top plate. To use an array as a stack, add elements to the end of the array using array.push() and remove elements from the end of the array using array.pop().
 **Queues**
-array.push() and remove them from the beginning using array.shift().
+A queue uses the “first in, first out” (FIFO) principle, where the first item to be added is the first to be removed. This kind of queue in code is like a queue in real life, such as in a coffee shop, where no matter how many people join the end of the queue, the first person still gets served first. To use an array as a queue, add elements to the end of the array using array.push() and remove them from the beginning using array.shift().
 Stacks are particularly useful for accessing the most recent data, such as for tracking price levels. Queues are used for sequential data processing tasks, like event handling. Two example scripts follow, to illustrate these different usages.
 **Example: Arrays as stacks**
 This script uses arrays as stacks to manage pivot points. It draws lines from the pivot points and extends the lines with each new bar until price intersects them. When the script detects a pivot point, it adds (pushes) a new line to the stack. With each new bar, the script extends the end point of each line in the stack. It then checks whether price has intersected the high or low pivot lines at the top of the stack. If so, the script removes (pops) the intersected line from the stack, meaning that it will no longer be extended with new bars. Note that we do not need to iterate through the arrays to check all the lines, because price is always between only the high and low pivot lines at the end of each array.
@@ -35238,9 +36092,9 @@ removeLines(pivotHiArray, true), removeLines(pivotLoArray, false)
 ## Can I use matrices or multidimensional arrays in Pine Script?
 Pine Script does not directly support multidimensional arrays; however, it provides matrices and user-defined types (UDTs). Programmers can use these data structures to create and manipulate complex datasets.
 **Matrices**
-matrices are like two-dimensional arrays. They organize data in a rectangular grid, facilitating operations like transformations, linear algebra, and other complex calculations. They are particularly useful for quantitative modeling, such as portfolio optimization, correlation matrix analysis, and more. Just as in arrays, all elements in a matrix must be of the same type, which can be a built-in or a user-defined type. Pine Script provides a range of functions for manipulating and performing calculations on matrices, including addition, subtraction, multiplication, and more.
+Pine Script matrices are like two-dimensional arrays. They organize data in a rectangular grid, facilitating operations like transformations, linear algebra, and other complex calculations. They are particularly useful for quantitative modeling, such as portfolio optimization, correlation matrix analysis, and more. Just as in arrays, all elements in a matrix must be of the same type, which can be a built-in or a user-defined type. Pine Script provides a range of functions for manipulating and performing calculations on matrices, including addition, subtraction, multiplication, and more.
 **Using UDTs for multidimensional structures**
-user-defined types (UDTs). For example, a script can define a UDT that includes an array as one of its fields. UDTs themselves can be contained in arrays. In this way, scripts can effectively have arrays of arrays.
+Programmers can achieve similar functionality to multidimensional arrays through defining user-defined types (UDTs). For example, a script can define a UDT that includes an array as one of its fields. UDTs themselves can be contained in arrays. In this way, scripts can effectively have arrays of arrays.
 For more information, see the sections on Matrices, Maps, and Objects in the User Manual.
 
 ## How can I debug objects?
@@ -35292,7 +36146,7 @@ if session.isfirstbar_regular
     arrayQueue(openLineArray, 4, ol)  
     debugOpenLine(ol)  
 `
- Previous   Next Functions
+ Previous Alerts    Next Functions
 
 ## * What data structures can I use in Pine Script®?
 * Tuples
@@ -35430,15 +36284,15 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260601_065355
+# processed_59_functions_20260604_064114
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
 Check the Reference Manual entry for a function to see what type of values a function can process.
 **Additional resources**
-ta library on the TradingView profile. This library offers a range of extended TA-related capabilities and custom implementations.
+For more advanced versions of functions that support “series” lengths, or for extra technical analysis tools explore the ta library on the TradingView profile. This library offers a range of extended TA-related capabilities and custom implementations.
 **User-defined functions**
-ta library, consider creating a user-defined function.
+For built-in functions that do not accept “series” lengths and for which the functionality is not available in the ta library, consider creating a user-defined function.
 
 ## How can I calculate values depending on variable lengths that reset on a condition?
 To calculate certain values that are dependent on varying lengths, which also reset under specific conditions, the ta.barssince() function can be useful. This function counts the number of bars since the last occurrence of a specified condition, automatically resetting the count each time this condition is met. There are, however, some considerations to take into account when using this function for this purpose.
@@ -35503,11 +36357,11 @@ To round values to the tick precision of a chart’s symbol, use the function ma
 ## How can I abbreviate large values?
 There are different ways to abbreviate large numerical values, such as volume. For instance, the number 1,222,333.0 can be simplified to 1.222M. Here are some methods to accomplish this:
 **Apply a global setting**
-`format = format.volume` within either the indicator() or strategy() statements. Using this setting, displays all values in the script in their abbreviated forms.
+Use the argument `format = format.volume` within either the indicator() or strategy() statements. Using this setting, displays all values in the script in their abbreviated forms.
 **Abbreviate specific values**
-`str.tostring(value, format.volume)` function.
+To abbreviate only certain values for string display, use the `str.tostring(value, format.volume)` function.
 **Use a custom function**
-user-defined function `abbreviateValue()` divides the `value` by a power of ten based on its magnitude, and adds an abbreviation letter (K, M, B, or T) to represent the magnitude of the original value. The function also adds a subtle space between the value and the magnitude letter. The `print()` function displays the value on the chart for visualization.
+To specify a custom precision or abbreviate values up to trillions, use a custom function. In the following example script, the user-defined function `abbreviateValue()` divides the `value` by a power of ten based on its magnitude, and adds an abbreviation letter (K, M, B, or T) to represent the magnitude of the original value. The function also adds a subtle space between the value and the magnitude letter. The `print()` function displays the value on the chart for visualization.
 Pine Script®
 Copied
 `//@version=6  
@@ -35562,13 +36416,13 @@ NoteThis function might not address all potential scenarios. Therefore, we recom
 ## How do I calculate averages?
 The method of calculating averages depends on the type of values to average.
 **Distinct variables**
-math.avg(). Simply pass each of the variables as an argument to this function.
+To find the average of a small number of discrete variables, use the function math.avg(). Simply pass each of the variables as an argument to this function.
 **Bar prices**
-hl2, hlc3, and ohlc4.
+To find the average price of a single bar, use the built-in variables hl2, hlc3, and ohlc4.
 **Series values**
-_n_ values in a series, use the function ta.sma().
+To compute the average of the last _n_ values in a series, use the function ta.sma().
 **Custom datasets**
-array and use array.avg(). For complex datasets, programmers can use the matrix.avg() function to average the contents of a matrix. For a deeper understanding of averaging custom datasets, refer to this conditional averages publication.
+To average a custom set of values, organize them into an array and use array.avg(). For complex datasets, programmers can use the matrix.avg() function to average the contents of a matrix. For a deeper understanding of averaging custom datasets, refer to this conditional averages publication.
 
 ## How can I calculate an average only when a certain condition is true?
 The usual methods of calculating averages, which were discussed in the calculating averages section above, apply across _all_ data points in a range. To calculate averages of only those values that occur under specific conditions, calculate _conditional averages_ using custom functions.
@@ -35649,7 +36503,7 @@ Pine Script®
 Copied
 `float dbzTest = nz(close / (close - close))  
 `
- Previous   Next Indicators
+ Previous Data structures    Next Indicators
 
 ## * Can I use a variable length in functions?
 * How can I calculate values depending on variable lengths that reset on a condition?
@@ -35690,7 +36544,7 @@ Copied
 
 
 
-# processed_60_indicators_20260601_065355
+# processed_60_indicators_20260604_064114
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -35702,9 +36556,9 @@ The Volume and Visible Range Volume Profile indicators (along with some other bu
 
 It is difficult for Pine Script® indicators to plot values in the same way.
 **Limitations of `plot.style_columns`**
-volume, or another series, plotted as columns, it is anchored to the bottom of the chart, and the width and length of the bars can adjust dynamically. However, the tops of the bars are defined by absolute price values. This means that it is not possible for the series to be plotted on the main chart without distorting the price scale. Also, plots must be defined during processing of the bar they are plotted on, and cannot be plotted retroactively.
+If volume, or another series, plotted as columns, it is anchored to the bottom of the chart, and the width and length of the bars can adjust dynamically. However, the tops of the bars are defined by absolute price values. This means that it is not possible for the series to be plotted on the main chart without distorting the price scale. Also, plots must be defined during processing of the bar they are plotted on, and cannot be plotted retroactively.
 **Limitations of drawings**
-lines and boxes are anchored to an absolute price scale, not to the edge of the chart. Drawing objects do not adjust their length automatically. Lines do not adjust their width automatically. Although boxes can be drawn exactly one bar wide, and so adjust their width automatically, they cannot be drawn so as to fit exactly in one bar; they always draw from the middle of one bar to the middle of another.
+Drawing objects such as lines and boxes are anchored to an absolute price scale, not to the edge of the chart. Drawing objects do not adjust their length automatically. Lines do not adjust their width automatically. Although boxes can be drawn exactly one bar wide, and so adjust their width automatically, they cannot be drawn so as to fit exactly in one bar; they always draw from the middle of one bar to the middle of another.
 The following example script demonstrates some techniques for approximating the way that the built-in Volume indicator displays.
   * We use the chart.right_visible_bar_time and chart.left_visible_bar_time built-in variables, through the PineCoders’ VisibleChart library, to define the bars that are visible. Then we calculate the highest and lowest price, and the highest volume, for that period.
   * We plot lines retroactively, after the visible window and all related values are known.
@@ -35786,7 +36640,7 @@ Copied
 `
 Alternatively, the “Scale price chart only” in the chart settings maintains the script’s scale. To access these settings, right-click on the chart’s price scale.
 To determine if a condition is true or false, use the plotshape() function, which records a 1 (for true) or 0 (for false) in the CSV file.
- Previous   Next Other data and timeframes
+ Previous Functions    Next Other data and timeframes
 
 ## * Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 * Can I use a Pine script with the TradingView screener?
@@ -35798,7 +36652,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260601_065355
+# processed_61_other-data-and-timeframes_20260604_064114
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -36014,7 +36868,7 @@ Intraday open, high, low, close, and volume (OHLCV) values can be different from
 
 
 For an extended list of factors with detailed explanations, refer to the Data feeds section in the User Manual.
- Previous   Next Programming
+ Previous Indicators    Next Programming
 
 ## * What kinds of data can I get from a higher timeframe?
 * Which `request.*()` function should I use for lower timeframes?
@@ -36047,7 +36901,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260601_065355
+# processed_62_programming_20260604_064114
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -36136,9 +36990,9 @@ In this example, we create an object `newPivot`, which is an instance of the use
 ## How can I access the source code of built-in indicators?
 There are two ways to access the source code of built-in indicators that are written in Pine:
 **Create a new indicator**
-_Create new_ ” > “ _Built in…_ ” option. Select the built-in indicator that you want to work with.
+In the Pine Script Editor, click the dropdown menu (the arrow in the upper-left corner of the editor pane) and choose the “ _Create new_ ” > “ _Built in…_ ” option. Select the built-in indicator that you want to work with.
 **Edit the code**
-`{}` next to the indicator name to open it in the Pine Editor. To edit the code, click the option to create a working copy.
+With the indicator displayed on the chart, click on the curly braces `{}` next to the indicator name to open it in the Pine Editor. To edit the code, click the option to create a working copy.
 Some built-in indicators, such as the Volume Profile or chart pattern indicators, are not written in Pine and so the code for these indicators is not accessible. These indicators are not included in the “ _Built-in script_ ” menu, and curly braces are not displayed next to their names on the chart.
 
 ## How can I examine the value of a string in my script?
@@ -36168,7 +37022,7 @@ Plotting numerical values on the main chart pane can distort the price scale if 
 One way around this is not to plot the values on the chart, but use the Data Window to inspect them. Add `display = display.data_window` to the plot() call, and the values are visible in the Data Window for any single historical or realtime bar that the cursor hovers over.
 Another option is to set the script to display in a separate pane by using `overlay = false` in the indicator() declaration. The user needs to delete and re-add the script to the chart if this parameter is changed. Plot the numeric values to track in the separate pane, and draw the rest of the script visuals on the main chart pane by using the `force_overlay` parameter.
 Additionally, right-clicking on the scale on the chart brings out the dropdown menu. The “Scale Price Chart Only” option there makes it so the Auto mode of the chart scale only takes the chart itself into account, without adjusting for plots or other graphics of all indicators that overlay that chart.
- Previous   Next Strategies
+ Previous Other data and timeframes    Next Strategies
 
 ## * What does “scope” mean?
 * How can I convert a script to a newer version of Pine Script®?
@@ -36184,7 +37038,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260601_065355
+# processed_63_strategies_20260604_064114
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -36282,21 +37136,21 @@ For more information, see the entry in the User Manual on strategy.exit().
 ### How do I set an advanced stop-loss order?
 Scripts can use different types of exits that are more advanced than simply closing the position at a predetermined level.
 **Bracket orders**
-strategy.exit() function call. See the FAQ entry about bracket orders for more details.
+A bracket order is a pair of orders that close the position if price moves far enough in either direction. Scripts can combine a stop-loss and take-profit order within a single strategy.exit() function call. See the FAQ entry about bracket orders for more details.
 **Trailing stop losses**
-strategy.exit() function. Refer to the FAQ on implementing a trailing stop loss for information and examples.
+A trailing stop loss is a stop loss that moves with price, but in the profitable direction only. To create a trailing stop, either adjust the stop price with each new bar, or use the built-in trailing stop parameters in the strategy.exit() function. Refer to the FAQ on implementing a trailing stop loss for information and examples.
 **Scaled exits**
-multiple exits for more information.
+Scaled exits use multiple exit orders at varied price levels. When using tiered exit strategies, which progressively scale out of a position, ensure that the total quantity of all exit orders does not surpass the size of the initial entry position. Consult the FAQ on multiple exits for more information.
 **Moving a stop loss to breakeven**
-moving stop losses to breakeven.
+Adjusting a stop loss to the breakeven point once a specific condition is met can help in risk management. Details can be found in the FAQ on moving stop losses to breakeven.
 **Adjusting position size based on stop loss**
-position sizing.
+Modify the position size relative to the stop loss to maintain a constant risk percentage of total equity. For more insights, see the FAQ on position sizing.
 ### How can I save the entry price in a strategy?
 Scripts can access the entry price for a _specific trade_ , or the average entry price for a _position_.
 **Average entry price**
-strategy.position_avg_price variable automatically updates to the average entry price of the current position. If the position consist of only one trade, the average price of the position is equal to the entry price of that single trade. If a strategy closes a market position that consists of multiple trades, trades are closed in the order they were opened, by default. Since the average price of the open position changes according to which positions are still open, be aware of the order in which trades are closed, and if necessary, configure it using the `close_entries_rule` parameter of the strategy() declaration function.
+The strategy.position_avg_price variable automatically updates to the average entry price of the current position. If the position consist of only one trade, the average price of the position is equal to the entry price of that single trade. If a strategy closes a market position that consists of multiple trades, trades are closed in the order they were opened, by default. Since the average price of the open position changes according to which positions are still open, be aware of the order in which trades are closed, and if necessary, configure it using the `close_entries_rule` parameter of the strategy() declaration function.
 **Specific entry price**
-strategy.opentrades.entry_price() function returns the entry price for a given trade ID. To find the entry price for the most recent open trade, and remembering that the trade indexes start at zero, use `float entryPrice = strategy.opentrades.entry_price(strategy.opentrades - 1)`.
+The strategy.opentrades.entry_price() function returns the entry price for a given trade ID. To find the entry price for the most recent open trade, and remembering that the trade indexes start at zero, use `float entryPrice = strategy.opentrades.entry_price(strategy.opentrades - 1)`.
 ### How do I filter trades by a date or time range?
 Using a date and time range filter in a strategy allows trades to be simulated only during a certain time period. Such filters can be useful to backtest specific historical periods, or to focus on particular times of the trading day.
 Additionally, if the strategy sends signals for live trading, consider excluding all trades earlier than the trading start date and time, to ensure that the broker emulator starts in a neutral state.
@@ -36681,9 +37535,9 @@ Custom trailing stop values are typically updated at the close of each bar, and 
 #### Using built-in trailing stop functionality
 To set a trailing stop in the strategy.exit() function, specify both _when_ the trail should activate and _how far_ behind price it should trail.
 **Activation level**
-`trail_points` parameter, or as a price value via the `trail_price` parameter.
+When price crosses this level, the trailing stop activates. The activation level can be set as a number of ticks past the entry price via the `trail_points` parameter, or as a price value via the `trail_price` parameter.
 **Trail offset**
-high or low price by this distance, defined in ticks using the `trail_offset` parameter.
+After it activates, the stop loss trails behind the bar’s high or low price by this distance, defined in ticks using the `trail_offset` parameter.
 In the following long-only example script, the strategy.exit() function uses the `trail_points` and `trail_offset` parameters to set a trailing stop. The stop-loss trails the high, minus the offset points, after it activates. The script creates and plots a separate `trailingStop` variable to visualize the trailing stop price that the function calculates internally, although this is not necessary for the trailing stop to function. We also set a separate stop-loss order to close trades that go too low before they trigger the trailing stop.
 !image
 Pine Script®
@@ -36979,10 +37833,11 @@ Note that:
 Strategy results can vary over time depending on where the historical data starts. The starting point of the data set aligns with the start of the nearest day, week, month or year, depending on the chart timeframe. Additionally, different TradingView plans provide access to varying amounts of historical bars. Refer to the User Manual entry on starting points for a discussion of these factors.
 For strategies, this means the historical results seen today might change as the dataset’s starting point moves. This can lead to a natural repainting of strategy results over time. To reduce the effect of these changes on backtesting, follow these tips:
 **Export strategy results**
-exporting strategy results to file maintains a record of performance over time despite changes in historical data. Use the “Export Data” option in the top of the Strategy Tester to export data.
+Regularly exporting strategy results to file maintains a record of performance over time despite changes in historical data. Use the “Export Data” option in the top of the Strategy Tester to export data.
 **Use Deep Backtesting**
-Premium and higher plans have access to the Deep Backtesting feature, which provides results from the entire available dataset of a symbol. Deep Backtesting results are displayed in the Strategy Tester but are not visible on the chart.
+Users with Premium and higher plans have access to the Deep Backtesting feature, which provides results from the entire available dataset of a symbol. Deep Backtesting results are displayed in the Strategy Tester but are not visible on the chart.
 **Use Bar Replay**
+Use the Bar Replay feature on the first chart bar to extend the dataset backward, allowing a strategy to run on an additional full dataset prior to the current range. This process can be repeated a few times to analyze multiple datasets.
 ### Why is backtesting on Heikin Ashi and other non-standard charts not recommended?
 Non-standard charts like Heikin Ashi, Renko, Line Break, Kagi, Point & Figure, and Range Charts offer unique perspectives on price action. However, these chart types are not suited for strategy backtesting or automated trading systems execution, because the prices and time intervals do not match market prices and times.
 Renko, Line Break, Kagi, Point & Figure, and Range Charts simplify price action, losing some price detail. Heikin Ashi charts calculate synthetic prices for each bar’s open, high, low, and close (OHLC) values based on averages.
@@ -36993,9 +37848,9 @@ For a more detailed analysis of how non-standard chart types affect strategy res
 ### How can I backtest deeper into history?
 Different TradingView plans give access to different amounts of historical information. To conduct more comprehensive backtesting in Pine Script, exploring further into an asset’s historical data, use Bar Replay or Deep Backtesting.
 **Bar Replay**
-Bar Replay from the first chart bar in history effectively rolls back the dataset to an earlier point in time. Each iteration of the bar replay extends the dataset further back, offering analysis of multiple historical datasets. However, there is a limit to the number of times this process can be repeated. This method has the added benefit of visualizing the strategy’s performance directly on the chart, which can be insightful for understanding trade entries, exits, and behavior during specific historical market conditions.
+Starting the Bar Replay from the first chart bar in history effectively rolls back the dataset to an earlier point in time. Each iteration of the bar replay extends the dataset further back, offering analysis of multiple historical datasets. However, there is a limit to the number of times this process can be repeated. This method has the added benefit of visualizing the strategy’s performance directly on the chart, which can be insightful for understanding trade entries, exits, and behavior during specific historical market conditions.
 **Deep Backtesting**
-Premium and higher plans, the Deep Backtesting feature calculates the strategy on _all_ historical data available for the selected symbol. The results are displayed in the Strategy Tester but are not visible on the chart. The results from Deep Backtesting might be different from results from the Strategy Tester in regular mode, as explained in this Help Center article.
+For TradingView users with Premium and higher plans, the Deep Backtesting feature calculates the strategy on _all_ historical data available for the selected symbol. The results are displayed in the Strategy Tester but are not visible on the chart. The results from Deep Backtesting might be different from results from the Strategy Tester in regular mode, as explained in this Help Center article.
 ### How can I backtest multiple symbols?
 Each Pine Script strategy runs on one symbol at a time. To evaluate a strategy across various markets or instruments:
   * Apply the strategy to the chart and then switch the chart to the desired symbol.
@@ -37095,9 +37950,11 @@ bgcolor(entryCondition ? color.new(color.lime, 85) : tradeExited ? color.
 `
 Consider the following limitations when adding time-based delays.
 **Historical bars**
-**delay times are assessed in increments equal to the chart bar’s duration**.
+Strategies calculate at the close of each bar, so they can only evaluate time-based conditions at that moment. This constraint entails that on historical bars, **delay times are assessed in increments equal to the chart bar’s duration**.
 **Session times**
+Strategies cannot evaluate delays when the market is closed, because there are no price updates to trigger script execution. This means that if a delay extends beyond the end of a trading session, the delay condition cannot be identified until the script runs again on the next session, resulting in a longer-than-anticipated time between orders.
 **Delay duration on different timeframes**
+If the delay value is not divisible by the duration of a chart bar, each delay lasts at least one additional chart bar. For instance, setting a delay of 100 seconds on a 1-minute chart effectively means a minimum of two bars before the delay is exceeded.
 ### How can I calculate custom statistics in a strategy?
 To track metrics other than the default metrics that the Strategy Tester tracks, strategies can calculate custom statistics. These calculations might need to detect order executions, track closed trades, monitor entries into trades, and assess whether a trade is active. Changes in built-in variables such as strategy.opentrades and strategy.closedtrades can track the execution of orders.
 The following example script uses a moving average crossover strategy to generate orders. It calculates custom metrics, including the price risk at entry, average position size, and the average percentage of bars involved in trades across the dataset, and plots the custom metrics and some built-in variables to the Data Window. Users can view the history of values plotted in the Data Window by moving the cursor over any bar. In contrast, the Strategy Tester summarizes data over the entire testing period.
@@ -37169,7 +38026,7 @@ Trading with _leverage_ means borrowing capital from a broker to control larger 
 For example, setting a 20% margin ratio means that the trader’s balance funds only 20% of the position’s value, allowing positions up to five times the account balance. A margin ratio of 20% is therefore the same as 5:1 leverage. With an available balance of $10,000 and a 20% margin setting, a strategy can open positions up to $50,000 in value.
 Pine Script strategies can simulate trading with leverage by specifying margin requirements for long and short positions. Users can adjust the “Margin for long positions” and Margin for short positions” in the strategy’s “Properties” tab. Programmers can set the default margin in the script using the `margin_long` and `margin_short` parameters in the strategy() declaration function.
 NoticeIf a leveraged trade, or even a short trade with 1
-_margin call_ event by liquidating _four times_ the amount required to cover the loss. This behavior helps prevent constant margin calls on subsequent bars.
+leverage, incurs significant losses that cause the strategy’s account balance to drop below the required margin, the broker emulator initiates a _margin call_ event by liquidating _four times_ the amount required to cover the loss. This behavior helps prevent constant margin calls on subsequent bars.
 For more information on using leverage in strategies, see the Help Center article How do I simulate trading with leverage?
 ### Can you hedge in a Pine Script strategy?
 When traders offset the risk of one position by opening another position at the same time, this is called _hedging_.
@@ -37190,16 +38047,18 @@ TipWhen configuring alerts for forward testing, it is often helpful to restrict 
 If a strategy that is running on the chart does not place any orders, the Strategy Tester’s “Overview” tab displays the message, “This strategy did not generate any orders throughout the testing range.” By contrast, while no strategy is loaded and visible on the chart, the Strategy Tester displays a different message: “To test a strategy, apply it to the chart.”
 If a valid script that uses the strategy() declaration statement is running but is not placing any orders, consider the following potential problems and their solutions:
 **Lack of order placement commands**
-strategy.order() or strategy.entry() order placement commands to place orders. Add log.info messages and review the Pine Logs to check whether the conditions to run the commands are met.
+The strategy must use either the strategy.order() or strategy.entry() order placement commands to place orders. Add log.info messages and review the Pine Logs to check whether the conditions to run the commands are met.
 **Insufficient capital**
-syminfo.pointvalue, which can be significantly greater than the chart price. For a quick fix, increase the initial capital to a very high value in the _Properties_ tab.
+Verify that the strategy has enough initial capital to cover the position sizes it attempts to open. Remember, the cost of entering a futures contract position is the chart price multiplied by the syminfo.pointvalue, which can be significantly greater than the chart price. For a quick fix, increase the initial capital to a very high value in the _Properties_ tab.
 **Runtime errors**
+Check for runtime errors indicated by a red exclamation mark on the chart pane next to the script’s title. Resolve any issues by correcting the script as necessary.
 For more detailed guidance and troubleshooting tips, refer to the dedicated article on this topic in the Help Center.
 ### Why does my strategy not place any orders on recent bars?
 If a strategy places one or more orders early in the testing range but then stops placing orders, check the following issues.
 **Total account loss**
+Check whether the simulated account balance experienced a total loss of equity earlier in the available history. As a result, the account might lack sufficient capital to continue trading the symbol and fail to show trades only in the chart’s recent history.
 **No exit condition**
-strategy.close() or strategy.exit() commands, the strategy might display only a single entry order early in the chart’s history and in the _List of Trades_ tab. If trades are not closed, they do not generate results in the _Overview_.
+Some programmers define entry conditions that rely on having no positions currently open. Make sure to explicitly close trades by specifying corresponding exit conditions for all trades. Without explicit instructions to close an open position using strategy.close() or strategy.exit() commands, the strategy might display only a single entry order early in the chart’s history and in the _List of Trades_ tab. If trades are not closed, they do not generate results in the _Overview_.
 ### Why is my strategy repainting?
 Pine scripts _repaint_ if they behave differently on historical and realtime bars. If strategies repaint, their backtesting results are not reliable because they do not accurately represent the strategy’s behavior in realtime.
 Some strategy properties cause repainting:
@@ -37218,7 +38077,7 @@ Pine Script®
 Copied
 `strategy.exit("Exit", stop = stopLevel, limit = limitLevel, disable_alert = true)  
 `
- Previous   Next Strings and formatting
+ Previous Programming    Next Strings and formatting
 
 ## * Overview
 * Strategy basics
@@ -37304,7 +38163,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260601_065355
+# processed_64_strings-and-formatting_20260604_064114
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -37497,7 +38356,7 @@ if barstate.islast
     var label = label.new(na, na, txt, xloc.bar_index, yloc.price, color(na), label.style_label_left, chart.fg_color, size.large, text.align_left)  
     label.set_xy(label, bar_index, open)  
 `
- Previous   Next Techniques
+ Previous Strategies    Next Techniques
 
 ## * How can I place text on the chart?
 * Plotting text
@@ -37524,7 +38383,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260601_065355
+# processed_65_techniques_20260604_064114
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -38307,7 +39166,7 @@ Tips:
 A script can use `plot*()` functions and other plot visuals only in the global scope — they cannot be included in the local scopes of conditional structures, loops, or user-defined functions and methods. Therefore, plots can only use variables and literals that are declared globally.
 However, programmers can extract data from local scopes to the global scope to make the data accessible to `plot*()` functions. Assign the local scope values to globally declared variables, using return expressions or reference types, then use these global variables in `plot*()` calls to visualize the local data.
 Alternatively, use Pine Logs or drawings to display values from within local scopes directly.
- Previous   Next Times, dates, and sessions
+ Previous Strings and formatting    Next Times, dates, and sessions
 
 ## * How can I prevent the “Bar index value of the `x` argument is too far from the current bar index. Try using `time` instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 * How can I update the right side of all lines or boxes?
@@ -38370,7 +39229,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260601_065355
+# processed_66_times-dates-and-sessions_20260604_064114
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -38837,11 +39696,11 @@ plot(loValue,            "Low",               color.f
 ## How can I detect bars opening at a specific hour?
 The following example script demonstrates three methods for detecting bars that open at 18:00 hours:
 **Check the current bar’s time**
-hour variable is equal to eighteen and the minute variable is equal to zero.
+We check whether the built-in hour variable is equal to eighteen and the minute variable is equal to zero.
 **Detect the start of the session**
-time() function with a time-based session string returns the time of the current bar if it is within the session time. If it’s outside the session time, the function returns na. We determine the first bar that falls within the session by verifying that the current returned time is not na but was na one bar earlier.
+Using the time() function with a time-based session string returns the time of the current bar if it is within the session time. If it’s outside the session time, the function returns na. We determine the first bar that falls within the session by verifying that the current returned time is not na but was na one bar earlier.
 **Check current time against a timestamp**
-timestamp() function by specifying 18 hours and 0 minutes, as well as the current day, month, and year. We then verify whether the bar’s time matches this timestamp.
+We generate a timestamp using the timestamp() function by specifying 18 hours and 0 minutes, as well as the current day, month, and year. We then verify whether the bar’s time matches this timestamp.
 Pine Script®
 Copied
 `//@version=6  
@@ -39073,7 +39932,7 @@ bool isNewMonth = timeframe.change("1M")
   * In Pine V5 and below, scripts can assign values of type “float” and “int” to a boolean variable. A value of zero is equivalent to false, and any other value to true. In later versions of Pine, scripts can assign only boolean values to boolean variables. So in V5, this code works: `bool isNewMonth = ta.change(month)` but in later versions this equivalent code is needed: `bool isNewMonth = ta.change(month) != 0`.
 
 
- Previous   Next Variables and operators
+ Previous Techniques    Next Variables and operators
 
 ## * How can I get the time of the first bar in the dataset?
 * How can I convert a time to a date-time string?
@@ -39175,7 +40034,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260601_065355
+# processed_67_variables-and-operators_20260604_064114
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -39368,7 +40227,7 @@ if barstate.islastconfirmedhistory
       )  
 `
 To avoid unwanted false negatives, write code that checks for na values and, if necessary, replaces them. For a discussion of na values and how to manage them, see the ​na​ value section of the User Manual.
- Previous   Next Visuals
+ Previous Times, dates, and sessions    Next Visuals
 
 ## * What is the variable name for the current price?
 * Why declare variables with the `var` keyword?
@@ -39396,7 +40255,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260601_065355
+# processed_68_visuals_20260604_064114
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -39747,17 +40606,17 @@ Note that:
 ## How can I use colors in my indicator plots?
 The strategic use of color in indicator plots helps comprehension, pattern and trend recognition, and differentiation of categories or values. For example, different hues can represent different data thresholds, and gradients can indicate increases or decreases in values. When a script transforms numbers into colors in an intelligent way, it enhances the user’s ability to spot anomalies, trends, and significant data points. Here are some Pine features that script authors can use to work with colors:
 **Predefined colors**
-color constants, such as color.red. In the Pine Editor, clicking the automatically generated color swatch next to a color constant opens up a color picker; choosing a different color from the picker updates the code that defines the color.
+Without needing to specify hexadecimal or RGB (Red Green Blue) values, programmers can use predefined color constants, such as color.red. In the Pine Editor, clicking the automatically generated color swatch next to a color constant opens up a color picker; choosing a different color from the picker updates the code that defines the color.
 **Custom colors**
-color.rgb() function to specify the RGB values. For the hexadecimal and RGB equivalents of the built-in color constants, see the table in the Constant colors section.
+For a more personalized appearance, programmers can create custom colors, either by specifying a hexadecimal code, or by using the color.rgb() function to specify the RGB values. For the hexadecimal and RGB equivalents of the built-in color constants, see the table in the Constant colors section.
 **Transparency settings**
-color.new() function can create colors with a specific transparency. The `transp` parameter can even take series values, meaning that a single color declaration can provide a color with dynamic transparency.
+The color.new() function can create colors with a specific transparency. The `transp` parameter can even take series values, meaning that a single color declaration can provide a color with dynamic transparency.
 **Conditional coloring**
-conditional colors to color plots, fills, shapes, drawings, or the chart background differently on different bars.
+Scripts can assign different colors to variables based on logical conditions. Programmers can use conditional colors to color plots, fills, shapes, drawings, or the chart background differently on different bars.
 **Gradient transitions**
-color.from_gradient() function creates color gradients that can highlight shifts in data values while ensuring a smooth transition between colors. For detailed guidance and innovative examples on implementing gradients, consult the Color Gradient Framework by PineCoders.
+The color.from_gradient() function creates color gradients that can highlight shifts in data values while ensuring a smooth transition between colors. For detailed guidance and innovative examples on implementing gradients, consult the Color Gradient Framework by PineCoders.
 **Fills**
-create shaded areas between lines, plots, or hlines, as well as within boxes and polylines. Fills can be especially useful for highlighting ranges, zones, or contrasts.
+Scripts can create shaded areas between lines, plots, or hlines, as well as within boxes and polylines. Fills can be especially useful for highlighting ranges, zones, or contrasts.
 In our example script below, we use various color display techniques such as conditional colors, fills, and gradients to depict areas of rising or falling values, as well as overbought and oversold levels. The script automatically recognizes whether the user’s chart background is light or dark, and adjusts the color scheme accordingly. For a light theme, it captures the ambiance of a day at the beach with coastal teal and coral hues, while for a dark theme, it reflects the vibrant neon hues of city nightlife:
 !image
 !image
@@ -40140,7 +40999,7 @@ if barstate.isfirst
 ## How can I color the chart’s background on a condition detected on the last bar?
 The usual way to color the chart background is by calling the bgcolor() function, which colors the chart background _for the bar on which it is called_. The background for a particular bar cannot be changed on later bars, and bars cannot be colored retroactively, using this method.
 To color the entire chart background based on a condition detected on the last bar, one workaround is to use a table sized to the visible area of the chart, and color the background of the cell. See this example in the page on tables.
- Previous
+ Previous Variables and operators
 
 ## * Why can’t I use a plot in an `if` or `for` statement?
 * Can I plot diagonals between two points on the chart?
@@ -40210,7 +41069,7 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260601_065355
+# processed_69_release-notes_20260604_064114
 
 ## 2026
 ### April 2026
@@ -40236,27 +41095,17 @@ Likewise, multiline strings automatically include _all spaces_ used for indentat
 Pine Script®
 Copied
 `//@version=6  
-indicator("Indentation in multiline strings demo")  
+indicator("Line wrapping expressions with multiline strings demo")  
   
-//@variable A multiline string with indentation defined in the global scope.  
-string globalIndentedStr = """No indentation.  
-Also no indentation.  
- Indented by one space.  
-    Indented by four spaces.  
-            Indented by 12 spaces.  
-"""  
+//@variable A string formed by concatenating three multiline strings.  
+string concatenated = """String 1  
+""" + """String 2  
+""" + '''String 3  
+'''  
   
-if barstate.islastconfirmedhistory  
-    //@variable A multiline string with indentation defined in a local block.  
-    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
-    //          Any indentation in the definition is still included literally in the string.  
-    string localIndentedStr = """---  
-No indentation.  
-    Indented by four spaces.   
-    """  
-  
-    // Concatenate both strings and display the result in a label.  
-    label.new(bar_index, 0, globalIndentedStr + localIndentedStr, textalign = text.align_left)  
+// Log the resulting string's text in the Pine Logs pane on the first bar.  
+if barstate.isfirst  
+    log.info(concatenated)  
 `
 Expressions can use multiline strings as operands and arguments, just like single-line strings. Therefore, programmers can use the multiline string syntax to create unique line wrapping formats in their code. For example:
 Pine Script®
@@ -41560,7 +42409,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 * The first version of Pine Script is introduced to all TradingView users, initially as an open beta, on December 13th.
 
 
- Previous   Next To Pine Script® version 5
+ Previous FAQ    Next To Pine Script® version 5
 
 ## * Overview
 * 2026
@@ -41709,7 +42558,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260601_065355
+# processed_70_overview_20260604_064114
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -41721,7 +42570,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260601_065355
+# processed_71_to-pine-version-6_20260604_064114
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -42677,7 +43526,7 @@ for i = 0 to lastCount
 // Plot the `belowCount` in a separate pane.   
 plot(belowCount, "Closes below OHLC4", color.blue, 3)  
 `
- Previous   Next To Pine Script® version 5
+ Previous Overview    Next To Pine Script® version 5
 
 ## * Introduction
 * Converting v5 to v6 using the Pine Editor
@@ -42711,7 +43560,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260601_065355
+# processed_72_to-pine-version-5_20260604_064114
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -43110,7 +43959,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | --- | --- |  
 | `tostring(x, y)`  | `str.tostring(value, format)`  |  
 | `tonumber(x)`  | `str.tonumber(string)`  |  
- Previous   Next To Pine Script® version 4
+ Previous To Pine Script® version 6    Next To Pine Script® version 4
 
 ## * Introduction
 * v4 to v5 converter
@@ -43143,7 +43992,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 
 
 
-# processed_73_to-pine-version-4_20260601_065355
+# processed_73_to-pine-version-4_20260604_064114
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -43177,7 +44026,7 @@ if close > open
     src := close  
 plot(src)  
 `
- Previous   Next To Pine Script® version 3
+ Previous To Pine Script® version 5    Next To Pine Script® version 3
 
 ## * Overview
 * Converter
@@ -43188,7 +44037,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260601_065355
+# processed_74_to-pine-version-3_20260604_064114
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -43296,7 +44145,7 @@ col = sum == 1 ? white : sum == 2 ? blue : sum == 3 ? red : 
 bgcolor(col)  
 `
 Function `bton` (abbreviation of boolean-to-number) explicitly converts any boolean value to a number if you really need this.
- Previous   Next To Pine Script® version 2
+ Previous To Pine Script® version 4    Next To Pine Script® version 2
 
 ## * Overview
 * Default behaviour of security function has changed
@@ -43309,9 +44158,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260601_065355
+# processed_75_to-pine-version-2_20260604_064114
 
-## 75_to-pine-version-2_20260601_065355
+## 75_to-pine-version-2_20260604_064114
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -43362,20 +44211,20 @@ src = close
 length = input(10)  
 plot(sma(src, length))  
 `
- Previous
+ Previous To Pine Script® version 3
 
 ---
 
 
 
-# processed_76_where-can-i-get-more-information_20260601_065355
+# processed_76_where-can-i-get-more-information_20260604_064114
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.
   * The `/r/TradingView` subreddit is the place for all TradingView-related feature requests, including suggestions about Pine Script functionality.
 
 
- Previous
+ Previous To Pine Script® version 3
 
 ---
 
