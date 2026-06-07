@@ -760,8 +760,9 @@ float myVar = na
 Alternatively, we can use the float() function to explicitly cast the na value’s type to “float”, causing the variable to automatically inherit the “float” type:
 Pine Script®
 Copied
-`// This declaration does not cause an error, because `na` is cast to "float", and `myVar` inherits the type.  
-myVar = float(na)  
+`// Declare a tuple with `_` as the second identifier, signifying that the script does not use the second returned value.  
+// The `_` identifier in this tuple is *not* usable elsewhere in the code.  
+[hlSum, _] = calcSumAndProduct(high, low)  
 `
 Scripts can test whether the result from a variable or expression is na by using the na() function. The function returns `true` if the value or reference is _undefined_. Otherwise, it returns `false`. For example, the following ternary operation returns 0 if the value of `myVar` is na, or close if the value is defined:
 Pine Script®

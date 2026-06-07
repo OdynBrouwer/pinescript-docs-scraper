@@ -322,28 +322,15 @@ For example, the script below declares a variable named `myVar` without using a 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Efficient line management demo", overlay = true)  
+indicator("Type inheritance demo")  
   
-//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
-bool newPeriod = timeframe.change("1D")  
+//@variable Counts the number of bars remaining until the script reaches the latest bar.  
+//          The expression returns a "series int" value. Therefore, the variable automatically inherits the "int" type.  
+//          You can hover over the `myVar` identifier to confirm the type.  
+myVar = last_bar_index - bar_index  
   
-// Declare a variable that persistently stores a `line` ID or `na` across bars until reassigned.  
-var line currLine = na  
-  
-if barstate.islast  
-    // At the start of a new period, create a new `line` object with coordinates for the current bar, and reassign  
-    // the `currLine` variable. The variable stores the new `line` ID until the `newPeriod` value is `true` again.  
-    if newPeriod  
-        currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
-    // Set the `x2` and `y2` (end) coordinates of the current line to the current bar's `time` and `close` values  
-    // while the period is open.  
-    currLine.set_xy2(time, close)  
-else if newPeriod  
-    // Update the end coordinates of the latest line on historical bars to the final value of the previous period.  
-    currLine.set_xy2(time[1], close[1])  
-    // Create a new `line` object and assign its ID to the `currLine` variable. On the next historical bar where  
-    // a new period starts, the script modifies the new line.  
-    currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
+// Plot the value on the chart.  
+plot(myVar, "Bars remaining", color.purple, 3)  
 `
 Note that:
   * The variable’s _qualified type_ is “series int”, because the built-in variables in the expression store “series” values that change from bar to bar. See the Qualifiers section of the Type system page and the Qualifier keywords section below to learn more.

@@ -22,17 +22,27 @@ Likewise, multiline strings automatically include _all spaces_ used for indentat
 Pine Script®
 Copied
 `//@version=6  
-indicator("Line wrapping expressions with multiline strings demo")  
+indicator("Indentation in multiline strings demo")  
   
-//@variable A string formed by concatenating three multiline strings.  
-string concatenated = """String 1  
-""" + """String 2  
-""" + '''String 3  
-'''  
+//@variable A multiline string with indentation defined in the global scope.  
+string globalIndentedStr = """No indentation.  
+Also no indentation.  
+ Indented by one space.  
+    Indented by four spaces.  
+            Indented by 12 spaces.  
+"""  
   
-// Log the resulting string's text in the Pine Logs pane on the first bar.  
-if barstate.isfirst  
-    log.info(concatenated)  
+if barstate.islastconfirmedhistory  
+    //@variable A multiline string with indentation defined in a local block.  
+    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
+    //          Any indentation in the definition is still included literally in the string.  
+    string localIndentedStr = """---  
+No indentation.  
+    Indented by four spaces.   
+    """  
+  
+    // Concatenate both strings and display the result in a label.  
+    label.new(bar_index, 0, globalIndentedStr + localIndentedStr, textalign = text.align_left)  
 `
 Expressions can use multiline strings as operands and arguments, just like single-line strings. Therefore, programmers can use the multiline string syntax to create unique line wrapping formats in their code. For example:
 Pine Script®
