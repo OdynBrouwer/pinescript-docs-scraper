@@ -202,13 +202,19 @@ The script below attempts to assign the result of a math.random() call to a `ran
 Pine Script®
 Copied
 `//@version=6  
-indicator("Cannot assign a 'series' value demo")  
+indicator("Invalid reassignment demo")  
   
-// This declaration causes an error. `math.random()` returns a "series float" value, but the `rand` variable   
-// requires a "float" value with the "simple" qualifier or a weaker one.  
-simple float rand = math.random()  
+//@variable Holds a reference to an array of three pseudorandom "float" values.  
+//          Although the variable is declared using `const`, the reference returned by `array.from()` has the "series"   
+//          qualifier, because each execution creates a new, unique array object. Additionally, all elements in the   
+//          array are of the type "series float".  
+const array<float> randArray = array.from(math.random(), math.random(), math.random())  
   
-plot(rand)  
+// This line causes an error, because the `const` keyword prevents reassignment operations on the `randArray` variable.  
+randArray := array.new<float>(3, 0.0)  
+  
+// Plot the sum of the `randArray` elements.  
+plot(randArray.sum())  
 `
 NoteUsing the simple keyword is optional in most cases. However, the keyword is required to define exported _library functions_ that accept only arguments with “simple” or weaker qualifiers and return “simple” results. See the Libraries page to learn more.
 ###  series
@@ -760,9 +766,8 @@ float myVar = na
 Alternatively, we can use the float() function to explicitly cast the na value’s type to “float”, causing the variable to automatically inherit the “float” type:
 Pine Script®
 Copied
-`// Declare a tuple with `_` as the second identifier, signifying that the script does not use the second returned value.  
-// The `_` identifier in this tuple is *not* usable elsewhere in the code.  
-[hlSum, _] = calcSumAndProduct(high, low)  
+`// This declaration does not cause an error, because `na` is cast to "float", and `myVar` inherits the type.  
+myVar = float(na)  
 `
 Scripts can test whether the result from a variable or expression is na by using the na() function. The function returns `true` if the value or reference is _undefined_. Otherwise, it returns `false`. For example, the following ternary operation returns 0 if the value of `myVar` is na, or close if the value is defined:
 Pine Script®

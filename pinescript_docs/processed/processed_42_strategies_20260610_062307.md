@@ -7,25 +7,26 @@ The following script is a simple strategy that simulates entering a long or shor
 Pine Script®
 Copied
 `//@version=6  
-strategy("Order execution demo", "My strategy", true, margin_long = 100, margin_short = 100)  
+strategy("Simple strategy demo", overlay = true, margin_long = 100, margin_short = 100)  
   
-//@function Displays the specified `txt` in a label at the `high` of the current bar.   
-debugLabel(string txt) =>   
-    label.new(  
-         bar_index, high, text = txt, color=color.lime, style = label.style_label_lower_right,   
-         textcolor = color.black, size = size.large  
-     )  
+//@variable The length of the `fastMA` and half the length of the `slowMA`.  
+int lengthInput = input.int(14, "Base length", 2)  
   
-//@variable Is `true` on every 20th bar, `false` otherwise.  
-bool longCondition = bar_index % 20 == 0  
+// Calculate two moving averages with different lengths.  
+float fastMA = ta.sma(close, lengthInput)  
+float slowMA = ta.sma(close, lengthInput * 2)  
   
-// Draw a label and place a long market order when `longCondition` occurs.  
-if longCondition  
-    debugLabel("Long entry order created")  
-    strategy.entry("My Long Entry Id", strategy.long)  
+// Place an order to enter a long position when `fastMA` crosses over `slowMA`.  
+if ta.crossover(fastMA, slowMA)  
+    strategy.entry("buy", strategy.long)  
   
-// Place a closing market order whenever there is an open position.  
-strategy.close_all()  
+// Place an order to enter a short position when `fastMA` crosses under `slowMA`.  
+if ta.crossunder(fastMA, slowMA)  
+    strategy.entry("sell", strategy.short)  
+  
+// Plot the moving averages.  
+plot(fastMA, "Fast MA", color.aqua)  
+plot(slowMA, "Slow MA", color.orange)  
 `
 Note that:
   * The strategy() function call declares that the script is a strategy named “Simple strategy demo” that displays visuals on the main chart pane.
