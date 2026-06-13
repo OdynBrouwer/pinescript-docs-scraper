@@ -9,21 +9,26 @@ In the example below, we create a custom array and go over it to extend lines wi
 Pine Script®
 Copied
 `//@version=6  
-indicator("Chart type", "", true)  
+indicator("Update x2 demo", "", true)  
   
-chartTypeToString() =>  
-    string result = switch  
-        chart.is_standard   => "Standard"  
-        chart.is_heikinashi => "Heikin-Ashi"  
-        chart.is_kagi       => "Kagi"  
-        chart.is_linebreak  => "Line Break"  
-        chart.is_pnf        => "Point and Figure"  
-        chart.is_range      => "Range"  
-        chart.is_renko      => "Renko"  
+int activeLevelsInput = input.int(10, "Number of levels")  
+int pivotLegsInput    = input.int(5,  "Pivot length")  
   
-if barstate.islastconfirmedhistory  
-    var table display = table.new(position.bottom_right, 1, 1, bgcolor = chart.fg_color)  
-    table.cell(display, 0, 0, str.format("Chart type: {0}", chartTypeToString()), text_color = chart.bg_color)  
+// Save pivot prices.  
+float pHi = ta.pivothigh(pivotLegsInput, pivotLegsInput)  
+// Initialize an array for lines on the first bar, sized to match the number of levels to track.  
+var array<line> pivotLines = array.new<line>(activeLevelsInput)  
+  
+// Check for a pivot. Add a new line to the array. Remove and delete the oldest line.  
+if not na(pHi)  
+    line newPivotLine = line.new(bar_index[pivotLegsInput], pHi, bar_index, pHi)  
+    pivotLines.push(newPivotLine)  
+    pivotLines.shift().delete()  
+  
+// Update all line x2 values.  
+if barstate.islast  
+    for eachLine in pivotLines  
+        eachLine.set_x2(bar_index)  
 `
 As an alternative to adding new drawings to a custom array, scripts can use the appropriate built-in variable that collects all instances of a drawing type. These arrays use the `<drawingNamespace>.all` naming scheme: for example, scritps can access all drawn labels by referring to label.all, all polylines with polyline.all, etc. Scripts can iterate over these arrays in the same way as with custom arrays.
 This example implements gets the same result using the line.all built-in array instead:

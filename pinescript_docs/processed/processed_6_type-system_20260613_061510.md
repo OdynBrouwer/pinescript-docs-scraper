@@ -202,19 +202,13 @@ The script below attempts to assign the result of a math.random() call to a `ran
 Pine Script®
 Copied
 `//@version=6  
-indicator("Invalid reassignment demo")  
+indicator("Cannot assign a 'series' value demo")  
   
-//@variable Holds a reference to an array of three pseudorandom "float" values.  
-//          Although the variable is declared using `const`, the reference returned by `array.from()` has the "series"   
-//          qualifier, because each execution creates a new, unique array object. Additionally, all elements in the   
-//          array are of the type "series float".  
-const array<float> randArray = array.from(math.random(), math.random(), math.random())  
+// This declaration causes an error. `math.random()` returns a "series float" value, but the `rand` variable   
+// requires a "float" value with the "simple" qualifier or a weaker one.  
+simple float rand = math.random()  
   
-// This line causes an error, because the `const` keyword prevents reassignment operations on the `randArray` variable.  
-randArray := array.new<float>(3, 0.0)  
-  
-// Plot the sum of the `randArray` elements.  
-plot(randArray.sum())  
+plot(rand)  
 `
 NoteUsing the simple keyword is optional in most cases. However, the keyword is required to define exported _library functions_ that accept only arguments with “simple” or weaker qualifiers and return “simple” results. See the Libraries page to learn more.
 ###  series
