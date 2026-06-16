@@ -2683,16 +2683,30 @@ A simple way to resolve this error is to _remove_ one of the script’s two plot
 Pine Script®
 Copied
 `//@version=6  
-indicator("Pine Seeds demo", format=format.volume)  
+indicator("Removed footprint request demo")  
   
-//@variable The total positive sentiment for BTC extracted from the "seed_crypto_santiment" repository.  
-float positiveTotal = request.seed("seed_crypto_santiment", "BTC_SENTIMENT_POSITIVE_TOTAL", close)  
-//@variable The total negative sentiment for BTC extracted from the "seed_crypto_santiment" repository.  
-float negativeTotal = request.seed("seed_crypto_santiment", "BTC_SENTIMENT_NEGATIVE_TOTAL", close)  
+//@variable The size of each footprint row, expressed in ticks.  
+int ticksInput = input.int(100, "Ticks per row", 1)  
   
-// Plot the data.  
-plot(positiveTotal, "Positive sentiment", color.teal, 2, plot.style_stepline)  
-plot(negativeTotal, "Negative sentiment", color.maroon, 2, plot.style_stepline)  
+//#region  
+// Although this code is still defined in the global scope, it does *not* execute in this scope, because the script's   
+// outputs no longer depend on the data assigned to the `fp`, `poc`, or `pocMA` variables now that we removed the   
+// `plot(pocMA)` call.  
+  
+footprint  fp    = request.footprint(ticksInput)  
+volume_row poc   = na(fp) ? na : fp.poc()  
+float      pocMA = ta.sma(na(poc) ? na : math.avg(poc.up_price(), poc.down_price()), 5)  
+//#endregion  
+  
+// This request still copies all code in the region above to calculate a POC average on the "1D" timeframe.   
+// The compiler does not discard this request, including the `request.footprint()` call that executes in its context,   
+// because the script still uses the `requestedMA` variable in its outputs.  
+float requestedMA = request.security(syminfo.tickerid, "1D", pocMA)  
+  
+// If we plot only the `requestedMA` series, and *not* the `pocMA` series, the "Too many `request.footprint()` calls"   
+// error no longer occurs, because the script no longer requires two separate footprint requests to determine its outputs.  
+// The only footprint request that it requires now is the one copied into the `request.security()` call's context.  
+plot(requestedMA, "Daily POC MA", color.purple, 3)  
 `
 Note that:
   * Although the `pocMA` variable declaration and its dependencies no longer execute directly, the Pine Profiler displays performance details next to that code in the Pine Editor. Those details represent the performance of the _copied_ calculations that execute within the request.security() call’s context in this case, as the profiler cannot display that information elsewhere. See the When requesting other contexts section of the Profiling and optimization page to learn more about this behavior.

@@ -473,37 +473,26 @@ For example, the script version below uses the simple keyword for the `INPUT_TIT
 Pine Script®
 Copied
 `//@version=6  
-indicator("Avoiding shadowing demo", overlay = true, max_labels_count = 500)  
+indicator("Invalid argument qualifier demo", overlay = true)  
   
-// Declare "input" variables specifying allowed directions, and whether only strong patterns appear in the result.  
-bool bullInput       = input.bool(true,  "Include bullish patterns")  
-bool bearInput       = input.bool(false, "Include bearish patterns")  
-bool showStrongInput = input.bool(true,  "Show strong patterns only")  
+// The `simple` keyword explicitly sets the variable's qualifier to "simple".  
+simple string INPUT_TITLE = "Length"  
   
-// Declare variables to store candle body information for pattern detection.  
-float bodyLow   = math.min(close, open)  
-float bodyHigh  = math.max(close, open)  
-float bodyDir   = math.sign(close - open)  
-float bodyRange = bodyHigh - bodyLow  
+// The `input.int()` call causes a compilation error. The `title` parameter requires a "const" argument. It cannot  
+// accept an argument with a stronger qualifier such as "simple".  
+int lengthInput = input.int(10, title = INPUT_TITLE, minval = 1)  
   
-//@variable Holds a "bool" value indicating whether an engulfing pattern is detected on the current bar.  
-bool isEngulf = (  
-    bodyDir != bodyDir[1] and bodyLow <= bodyLow[1] and bodyHigh >= bodyHigh[1] and bodyRange > bodyRange[1]  
-)  
+int lengthVal = chart.is_standard ? lengthInput : 1  
+float rma = ta.rma(close, length = lengthVal)  
+color plotColor = color.gray  
   
-if isEngulf  
-    // This statement uses the `:=` operator instead of the `=` operator. Now, the script directly modifies the  
-    // global variable from line 16 instead of creating a new variable that shadows it.  
-    isEngulf := switch bodyDir  
-        1  => bullInput and (showStrongInput ? bodyHigh >= high[1] : true)  
-        -1 => bearInput and (showStrongInput ? bodyLow  <= low[1] : true)  
-    // `isEngulf` in this nested statement now refers to the global variable.  
-    if isEngulf  
-        label.new(bar_index, bodyDir == 1 ? low : high, style = label.style_diamond, size = size.small)  
+if ta.change(rma) > 0  
+    plotColor := color.green  
+else  
+    plotColor := color.red  
   
-// Now that the `if` structure modifies the global `isEngulf` variable, this call colors the same recent bars where  
-// a label drawing occurs.  
-barcolor(isEngulf ? (bodyDir == 1 ? color.yellow : color.orange) : na, title = "Engulfing bar color")  
+// Plot the `rma` series.  
+plot(rma, "RMA", plotColor, 3)  
 `
 
 ## Variable reassignment
