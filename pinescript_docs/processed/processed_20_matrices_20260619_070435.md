@@ -288,42 +288,28 @@ In the following code, we’ve defined a `replaceRow()` method that uses the mat
 Pine Script®
 Copied
 `//@version=6  
-indicator("Replacing rows demo")  
+indicator("Shallow copy demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable Initial value of the original matrix elements.  
+var label newLabel = label.new(  
+     bar_index, 1, "Original", color = color.blue, textcolor = color.white, size = size.huge  
+ )  
   
-//@function Replaces the `row` of `this` matrix with a new array of `values`.  
-//@param    row The row index to replace.  
-//@param    values The array of values to insert.  
-method replaceRow(matrix<float> this, int row, array<float> values) =>  
-    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
-    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
+//@variable A 1x1 matrix containing a new `label` instance.  
+var matrix<label> myMatrix = matrix.new<label>(1, 1, newLabel)  
+//@variable A shallow copy of `myMatrix`.  
+var matrix<label> myCopy = myMatrix.copy()  
   
-//@variable A 3x3 matrix.  
-var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
+//@variable The first label from the `myCopy` matrix.  
+label testLabel = myCopy.get(0, 0)  
   
-if bar_index == last_bar_index - 1  
-    m.debugLabel(note = "Original")  
-    // Replace each row of `m`.  
-    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
-    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
-    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
-    m.debugLabel(bar_index + 10, note = "Replaced rows")  
+// Change the `text`, `style`, and `x` values of `testLabel`. Also affects the `newLabel`.  
+testLabel.set_text("Copy")  
+testLabel.set_style(label.style_label_up)  
+testLabel.set_x(bar_index)  
+  
+// Plot the total number of labels.  
+plot(label.all.size(), linewidth = 3)  
 `
 
 ## Looping through a matrix
@@ -1719,42 +1705,28 @@ In the following code, we’ve defined a `replaceRow()` method that uses the mat
 Pine Script®
 Copied
 `//@version=6  
-indicator("Replacing rows demo")  
+indicator("Shallow copy demo")  
   
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
+//@variable Initial value of the original matrix elements.  
+var label newLabel = label.new(  
+     bar_index, 1, "Original", color = color.blue, textcolor = color.white, size = size.huge  
+ )  
   
-//@function Replaces the `row` of `this` matrix with a new array of `values`.  
-//@param    row The row index to replace.  
-//@param    values The array of values to insert.  
-method replaceRow(matrix<float> this, int row, array<float> values) =>  
-    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
-    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
+//@variable A 1x1 matrix containing a new `label` instance.  
+var matrix<label> myMatrix = matrix.new<label>(1, 1, newLabel)  
+//@variable A shallow copy of `myMatrix`.  
+var matrix<label> myCopy = myMatrix.copy()  
   
-//@variable A 3x3 matrix.  
-var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
+//@variable The first label from the `myCopy` matrix.  
+label testLabel = myCopy.get(0, 0)  
   
-if bar_index == last_bar_index - 1  
-    m.debugLabel(note = "Original")  
-    // Replace each row of `m`.  
-    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
-    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
-    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
-    m.debugLabel(bar_index + 10, note = "Replaced rows")  
+// Change the `text`, `style`, and `x` values of `testLabel`. Also affects the `newLabel`.  
+testLabel.set_text("Copy")  
+testLabel.set_style(label.style_label_up)  
+testLabel.set_x(bar_index)  
+  
+// Plot the total number of labels.  
+plot(label.all.size(), linewidth = 3)  
 `
 ## Looping through a matrix
 ### ​`for`​

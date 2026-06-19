@@ -1056,52 +1056,60 @@ Here, we’ve modified the previous example script’s `customMA()` function to 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Inspecting individual elements demo")  
+indicator("Extraction using return expressions demo", overlay = true)  
   
-//@variable The number of bars in the calculation.   
-int lengthInput = input.int(20, "Length", 2)  
+//@variable The number of bars in the `customMA()` calculation.  
+int lengthInput = input.int(50, "Length", 2)  
   
-//@variable The change in price across `lengthInput` - 1 bars.   
-float priceChange = ta.change(close, lengthInput - 1)  
-//@variable The total `close` range over `lengthInput` bars.  
-float priceRange = ta.range(close, lengthInput)  
+//@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
+//@param source  The series of values to process.  
+//@param length  The number of bars in the quartile calculation.  
+//@returns       The adaptive moving average value.  
+customMA(float source, int length) =>  
+    //@variable The custom moving average.  
+    var float result = na  
+    // Calculate the 25th and 75th `source` percentiles (first and third quartiles) over `length` bars.  
+    float q1 = ta.percentile_linear_interpolation(source, length, 25)  
+    float q3 = ta.percentile_linear_interpolation(source, length, 75)  
+    //@variable The distance from `source` to its interquartile range.   
+    float outerRange = 0.0  
+    // To extract `upperRange` and `lowerRange` values, we need to make them accessible to the function's main scope.  
+    // Here, we added a tuple at the end of the `if` statement's local block, then declared a tuple in the function's   
+    // scope to hold the returned values.  
+    [upper, lower] = if not na(source)  
+        float upperRange = source - q3  
+        float lowerRange = q1 - source  
+        outerRange := math.max(upperRange, lowerRange, 0.0)  
+        [upperRange, lowerRange]  
+    //@variable The total range of `source` values over `length` bars.  
+    float totalRange = ta.range(source, length)  
+    //@variable Half the ratio of the `outerRange` to the `totalRange`.  
+    float alpha = 0.5 * outerRange / totalRange  
+    // Mix the `source` with the `result` based on the `alpha` value.  
+    result := (1.0 - alpha) * nz(result, source) + alpha * source  
+    // Return a tuple containing the `result` and other local variables.  
+    [result, q1, q3, upper, lower, outerRange, totalRange, alpha]  
   
-//@variable The ratio of the `priceChange` to the `priceRange`.   
-float osc = priceChange / priceRange  
+//@variable The `customMA()` of `close` over `lengthInput` bars.   
+[maValue, q1Dbg, q3Dbg, upperDbg, lowerDbg, outerRangeDbg, totalRangeDbg, alphaDbg] = customMA(close, lengthInput)  
   
-//@variable Teal if `osc` is positive, maroon otherwise.  
-color oscColor = osc > 0 ? color.teal : color.maroon  
+// Plot the `maValue`.  
+plot(maValue, "Custom MA", color.blue, 3)  
   
-// Draw a label at the current bar's `bar_index` and `close` displaying `priceChange` when `osc` is 1 or -1.   
-if math.abs(osc) == 1  
-    string labelText = str.format("priceChange: {0,number,#.####}", priceChange)  
-    label.new(bar_index, close, labelText, color = oscColor, textcolor = color.white, force_overlay = true)  
+// When the bar is confirmed, log an "info" message containing formatted debug information for each variable.   
+if barstate.isconfirmed  
+    log.info(  
+        "maValue: {0,number,#.#####}\nq1Dbg: {1,number,#.#####}, q3Dbg: {2,number,#.#####}"  
+        + "\nupperDbg: {3,number,#.#####}, lowerDbg: {4,number,#.#####}"  
+        + "\nouterRangeDbg: {5,number,#.#####}, totalRangeDbg: {6,number,#.#####}\nalphaDbg: {7,number,#.#####}",   
+        maValue, q1Dbg, q3Dbg, upperDbg, lowerDbg, outerRangeDbg, totalRangeDbg, alphaDbg  
+    )  
   
-// Plot the `osc` using the `oscColor`.  
-plot(osc, "Oscillator", oscColor, 1, plot.style_area)  
-  
-// On the first or last tick of the latest bar, inspect all labels on the chart.  
-if barstate.islast and (barstate.isnew or barstate.isconfirmed)  
-    // Log a message containing the current `bar_index` and `label.all.size()`.  
-    log.info("Current bar: {0,number,#}, Active labels: {1}", bar_index, label.all.size())  
-    // Loop through the `label.all` array.  
-    for [i, lbl] in label.all  
-        // Log a message containing the array index (`i`) and the label's `x`, `y`, and `text` properties.   
-        log.info(  
-             "{0}, x: {1,number,#}, y: {2,number,#.#####}, text: {3}", i, lbl.get_x(), lbl.get_y(), lbl.get_text()  
-         )  
-  
-// Initialize variables for the oldest and newest active labels.   
-label oldestLabel = na  
-label newestLabel = na  
-// Reassign the variables to the first and last labels in `label.all` when the array is not empty.   
-if label.all.size() > 0  
-    oldestLabel := label.all.first()  
-    newestLabel := label.all.last()  
-  
-// Plot the y-coordinate history of the `oldestLabel` and `newestLabel`.   
-plot(label.get_y(oldestLabel), "oldestLabel y-coordinate", color.fuchsia, force_overlay = true)  
-plot(label.get_y(newestLabel), "newestLabel y-coordinate", color.aqua,    force_overlay = true)  
+// Display the extracted `q1` and `q3` data in all plot locations.  
+plot(q1Dbg, "q1Dbg", color.new(color.maroon, 50))  
+plot(q3Dbg, "q3Dbg", color.new(color.teal, 50))  
+// Highlight the chart's background when the extracted `alpha` value is 0.  
+bgcolor(alphaDbg == 0.0 ? color.new(color.orange, 90) : na, title = "`alpha == 0.0` highlight")  
 `
 Note that:
   * We added a tuple at the _end_ of the if structure’s block to _return_ the `upperRange` and `lowerRange` values from its local scope. The function assigns the result to a two-variable tuple in its main scope, enabling it to include the if structure’s local values in the return expression.
@@ -1698,6 +1706,12 @@ if time >= startTime and time <= endTime
 //                  The default is `na`.  
 //@param size       Optional. The size of the table's text in typographic points. The default is 18.  
 //@returns          A single-cell table with dynamic text.    
+
+
+@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
+//@param source  The series of values to process.  
+//@param length  The number of bars in the quartile calculation.  
+//@returns       The adaptive moving average value.  
 
 
 @function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
