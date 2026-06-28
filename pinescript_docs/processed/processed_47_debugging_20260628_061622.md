@@ -664,60 +664,24 @@ Let’s look at a simple example that calculates a few numeric series with diffe
 Pine Script®
 Copied
 `//@version=6  
-indicator("Extraction using return expressions demo", overlay = true)  
+indicator("Plotting without affecting the scale demo", "Weighted average", true, precision = 5)  
   
-//@variable The number of bars in the `customMA()` calculation.  
-int lengthInput = input.int(50, "Length", 2)  
+//@variable The number of bars in the average.  
+int lengthInput = input.int(20, "Length", 1)  
   
-//@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
-//@param source  The series of values to process.  
-//@param length  The number of bars in the quartile calculation.  
-//@returns       The adaptive moving average value.  
-customMA(float source, int length) =>  
-    //@variable The custom moving average.  
-    var float result = na  
-    // Calculate the 25th and 75th `source` percentiles (first and third quartiles) over `length` bars.  
-    float q1 = ta.percentile_linear_interpolation(source, length, 25)  
-    float q3 = ta.percentile_linear_interpolation(source, length, 75)  
-    //@variable The distance from `source` to its interquartile range.   
-    float outerRange = 0.0  
-    // To extract `upperRange` and `lowerRange` values, we need to make them accessible to the function's main scope.  
-    // Here, we added a tuple at the end of the `if` statement's local block, then declared a tuple in the function's   
-    // scope to hold the returned values.  
-    [upper, lower] = if not na(source)  
-        float upperRange = source - q3  
-        float lowerRange = q1 - source  
-        outerRange := math.max(upperRange, lowerRange, 0.0)  
-        [upperRange, lowerRange]  
-    //@variable The total range of `source` values over `length` bars.  
-    float totalRange = ta.range(source, length)  
-    //@variable Half the ratio of the `outerRange` to the `totalRange`.  
-    float alpha = 0.5 * outerRange / totalRange  
-    // Mix the `source` with the `result` based on the `alpha` value.  
-    result := (1.0 - alpha) * nz(result, source) + alpha * source  
-    // Return a tuple containing the `result` and other local variables.  
-    [result, q1, q3, upper, lower, outerRange, totalRange, alpha]  
+//@variable The weight applied to the price on each bar.  
+float weight = math.pow(close - open, 2)  
   
-//@variable The `customMA()` of `close` over `lengthInput` bars.   
-[maValue, q1Dbg, q3Dbg, upperDbg, lowerDbg, outerRangeDbg, totalRangeDbg, alphaDbg] = customMA(close, lengthInput)  
+//@variable The numerator of the average.  
+float numerator = math.sum(weight * close, lengthInput)  
+//@variable The denominator of the average.  
+float denominator = math.sum(weight, lengthInput)  
   
-// Plot the `maValue`.  
-plot(maValue, "Custom MA", color.blue, 3)  
+//@variable The weighted average over `lengthInput` bars.  
+float average = numerator / denominator  
   
-// When the bar is confirmed, log an "info" message containing formatted debug information for each variable.   
-if barstate.isconfirmed  
-    log.info(  
-        "maValue: {0,number,#.#####}\nq1Dbg: {1,number,#.#####}, q3Dbg: {2,number,#.#####}"  
-        + "\nupperDbg: {3,number,#.#####}, lowerDbg: {4,number,#.#####}"  
-        + "\nouterRangeDbg: {5,number,#.#####}, totalRangeDbg: {6,number,#.#####}\nalphaDbg: {7,number,#.#####}",   
-        maValue, q1Dbg, q3Dbg, upperDbg, lowerDbg, outerRangeDbg, totalRangeDbg, alphaDbg  
-    )  
-  
-// Display the extracted `q1` and `q3` data in all plot locations.  
-plot(q1Dbg, "q1Dbg", color.new(color.maroon, 50))  
-plot(q3Dbg, "q3Dbg", color.new(color.teal, 50))  
-// Highlight the chart's background when the extracted `alpha` value is 0.  
-bgcolor(alphaDbg == 0.0 ? color.new(color.orange, 90) : na, title = "`alpha == 0.0` highlight")  
+// Plot the `average`.  
+plot(average, "Weighted average", linewidth = 3)  
 `
 Note that:
   * This script includes `precision = 5` in the indicator() declaration statement, which specifies that it plots numbers with five fractional digits instead of using the chart’s default precision setting.
@@ -1742,12 +1706,6 @@ if time >= startTime and time <= endTime
 //                  The default is `na`.  
 //@param size       Optional. The size of the table's text in typographic points. The default is 18.  
 //@returns          A single-cell table with dynamic text.    
-
-
-@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
-//@param source  The series of values to process.  
-//@param length  The number of bars in the quartile calculation.  
-//@returns       The adaptive moving average value.  
 
 
 @function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  

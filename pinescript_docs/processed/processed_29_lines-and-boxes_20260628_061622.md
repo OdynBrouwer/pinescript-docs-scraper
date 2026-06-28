@@ -862,51 +862,50 @@ On each occurrence of the `newPolygon` condition, the script clears the `points`
 Pine Script®
 Copied
 `//@version=6  
-indicator("Redrawing polylines demo", "OHLC polygons", true, max_polylines_count = 100)  
+indicator("Closed shapes demo", "N-sided polygons", true)  
   
-//@variable The length of the period.  
-int length = input.int(100, "Length", 1)  
+//@variable The size of the horizontal semi-axis.  
+float xScale = input.float(3.0, "X scale", 1.0)  
+//@variable The size of the vertical semi-axis.  
+float yScale = input.float(1.0, "Y scale") * ta.atr(2)  
   
-//@variable A `chart.point` representing the start of each period.  
-var chart.point openPoint = na  
-//@variable A `chart.point` representing the highest point of each period.  
-var chart.point highPoint = na  
-//@variable A `chart.point` representing the lowest point of each period.  
-var chart.point lowPoint = na  
-//@variable A `chart.point` representing the current bar's closing point.  
-closePoint = chart.point.now(close)  
+//@variable An array of `chart.point` objects containing vertex coordinates.  
+var points = array.new<chart.point>()  
   
-//@variable The current period's polyline drawing.  
-var polyline currentDrawing = na  
+//@variable The condition that triggers a new polygon drawing. Based on the horizontal axis to prevent overlaps.  
+bool newPolygon = bar_index % int(math.round(2 * xScale)) == 0 and barstate.isconfirmed  
   
-//@variable Is `true` once every `length` bars.  
-bool newPeriod = bar_index % length == 0  
+if newPolygon  
+    // Clear the `points` array.  
+    points.clear()  
   
-if newPeriod  
-    // Assign new chart points to the `openPoint`, `highPoint`, and `closePoint`.  
-    openPoint := chart.point.now(open)  
-    highPoint := chart.point.now(high)  
-    lowPoint  := chart.point.now(low)  
-else  
-    // Assign a new `chart.point` to the `highPoint` when the `high` is greater than its `price`.  
-    if high > highPoint.price  
-        highPoint := chart.point.now(high)  
-    // Assign a new `chart.point` to the `lowPoint` when the `low` is less than its `price`.  
-    if low < lowPoint.price  
-        lowPoint := chart.point.now(low)  
+    //@variable The number of sides and vertices in the new polygon.  
+    int numberOfSides = int(math.random(3, 7))  
+    //@variable A random rotation offset applied to the new polygon, in radians.  
+    float rotationOffset = math.random(0.0, 2.0) * math.pi  
+    //@variable The size of the angle between each vertex, in radians.  
+    float step = 2 * math.pi / numberOfSides  
   
-//@variable Is teal when the `closePoint.price` is greater than the `openPoint.price`, maroon otherwise.  
-color drawingColor = closePoint.price > openPoint.price ? color.teal : color.maroon  
+    //@variable The counter-clockwise rotation angle of each vertex.  
+    float angle = rotationOffset  
   
-// Delete the polyline assigned to the `currentDrawing` if it's not a `newPeriod`.  
-if not newPeriod  
-    polyline.delete(currentDrawing)  
-// Assign a new polyline to the `currentDrawing`.  
-// Uses the `index` field from each `chart.point` in its array as x-coordinates.  
-currentDrawing := polyline.new(  
-     array.from(openPoint, highPoint, closePoint, lowPoint), closed = true,  
-     line_color = drawingColor, fill_color = color.new(drawingColor, 60)  
- )  
+    for i = 1 to numberOfSides  
+        //@variable The approximate x-coordinate from an ellipse at the `angle`, rounded to the nearest integer.  
+        int xValue = int(math.round(xScale * math.cos(angle))) + bar_index  
+        //@variable The y-coordinate from an ellipse at the `angle`.  
+        float yValue = yScale * math.sin(angle) + hl2  
+  
+        // Push a new `chart.point` containing the `xValue` and `yValue` into the `points` array.  
+        // The new point does not contain `time` information.  
+        points.push(chart.point.from_index(xValue, yValue))  
+        // Add the `step` to the `angle`.  
+        angle += step  
+  
+    // Draw a closed polyline connecting the `points`.  
+    // The polyline uses the `index` field from each `chart.point` in the `points` array.  
+    polyline.new(  
+         points, closed = true, line_color = color.navy, fill_color = color.new(color.orange, 50), line_width = 3  
+     )  
 `
 Note that:
   * This example shows the last ~50 polylines on the chart, as we have not specified a `max_polylines_count` value in the indicator() function call.

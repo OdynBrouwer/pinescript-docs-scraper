@@ -1221,16 +1221,43 @@ This script demonstrates a simple example of matrix addition and subtraction in 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Invalid sum dimensions demo")   
+indicator("Matrix sum and diff example")  
   
-//@variable A 2x3 matrix.   
-matrix<float> m1 = matrix.new<float>(2, 3, 1)  
-//@variable A 3x4 matrix.  
-matrix<float> m2 = matrix.new<float>(3, 4, 2)  
+//@function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
   
-mSum = matrix.sum(m1, m2) // Raises an error. `m1` and `m2` don't have matching dimensions.  
+//@variable A 3x3 matrix.  
+m = matrix.new<float>()  
   
-plot(mSum.get(0, 0))  
+// Add rows to `m`.  
+m.add_row(0, array.from(0.5, 1.0, 1.5))  
+m.add_row(1, array.from(2.0, 2.5, 3.0))  
+m.add_row(2, array.from(3.5, 4.0, 4.5))  
+  
+if bar_index == last_bar_index - 1  
+    // Display `m`.  
+    m.debugLabel(note = "A")  
+    // Get and display the transpose of `m`.  
+    matrix<float> t = m.transpose()  
+    t.debugLabel(bar_index + 10, note = "Aᵀ")  
+    // Calculate the sum of the two matrices. The resulting matrix is symmetric.  
+    matrix.sum(m, t).debugLabel(bar_index + 20, color.green, note = "A + Aᵀ")  
+    // Calculate the difference between the two matrices. The resulting matrix is antisymmetric.  
+    matrix.diff(m, t).debugLabel(bar_index + 30, color.red, note = "A - Aᵀ")  
 `
 Note that:
   * In this example, we’ve labeled the original matrix as “A” and the transpose as “Aᵀ”.
@@ -2433,16 +2460,43 @@ This script demonstrates a simple example of matrix addition and subtraction in 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Invalid sum dimensions demo")   
+indicator("Matrix sum and diff example")  
   
-//@variable A 2x3 matrix.   
-matrix<float> m1 = matrix.new<float>(2, 3, 1)  
-//@variable A 3x4 matrix.  
-matrix<float> m2 = matrix.new<float>(3, 4, 2)  
+//@function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
   
-mSum = matrix.sum(m1, m2) // Raises an error. `m1` and `m2` don't have matching dimensions.  
+//@variable A 3x3 matrix.  
+m = matrix.new<float>()  
   
-plot(mSum.get(0, 0))  
+// Add rows to `m`.  
+m.add_row(0, array.from(0.5, 1.0, 1.5))  
+m.add_row(1, array.from(2.0, 2.5, 3.0))  
+m.add_row(2, array.from(3.5, 4.0, 4.5))  
+  
+if bar_index == last_bar_index - 1  
+    // Display `m`.  
+    m.debugLabel(note = "A")  
+    // Get and display the transpose of `m`.  
+    matrix<float> t = m.transpose()  
+    t.debugLabel(bar_index + 10, note = "Aᵀ")  
+    // Calculate the sum of the two matrices. The resulting matrix is symmetric.  
+    matrix.sum(m, t).debugLabel(bar_index + 20, color.green, note = "A + Aᵀ")  
+    // Calculate the difference between the two matrices. The resulting matrix is antisymmetric.  
+    matrix.diff(m, t).debugLabel(bar_index + 30, color.red, note = "A - Aᵀ")  
 `
 Note that:
   * In this example, we’ve labeled the original matrix as “A” and the transpose as “Aᵀ”.
