@@ -74,10 +74,18 @@ Any variable or function parameter that requires a “const” value _cannot_ ac
 For example, the following script combines a literal string with the value of syminfo.ticker to set the value of a `scriptTitle` variable. Then, it attempts to use the variable as the `title` argument of the indicator() declaration statement, causing a _compilation error_. The `title` parameter requires a “const string” argument, but `scriptTitle` holds a value of the type _“simple string”_ :
 Pine Script®
 Copied
-`[v1, v2] = if close > open  
-    [high, close]  
-else  
-    [close, low]  
+`//@version=6  
+  
+//@variable Holds a value intended for use as the `title` argument in the `indicator()` call.  
+//          However, this variable's type is "simple string", not "const string", because   
+//          the value of `syminfo.ticker` is not available until *after* compilation.  
+var scriptTitle = "My indicator for " + syminfo.ticker  
+  
+// This statement causes an error. The `indicator()` statement cannot use a "simple string"  
+// value as its `title` argument. It requires a "const string" value.  
+indicator(title = scriptTitle)  
+  
+plot(close - open)  
 `
 Note that:
   * The syminfo.ticker variable holds a “simple string” value because it depends on data that is available only at _runtime_. Combining this value with a literal string produces another “simple string” value, because “simple” is a stronger qualifier than “const”.
