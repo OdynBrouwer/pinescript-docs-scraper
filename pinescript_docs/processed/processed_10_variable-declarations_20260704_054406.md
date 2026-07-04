@@ -699,40 +699,28 @@ A newcomer to Pine might expect the script to color the same bars for which it a
 Pine Script®
 Copied
 `//@version=6  
-indicator("Shadowing demo", overlay = true, max_labels_count = 500)  
+indicator("Efficient line management demo", overlay = true)  
   
-// Declare "input" variables specifying allowed directions, and whether only strong patterns appear in the result.  
-bool bullInput       = input.bool(true,  "Include bullish patterns")  
-bool bearInput       = input.bool(false, "Include bearish patterns")  
-bool showStrongInput = input.bool(true,  "Show strong patterns only")  
+//@variable Holds `true` on the first bar in a "1D" period, and `false` on all other bars.  
+bool newPeriod = timeframe.change("1D")  
   
-// Declare variables to store candle body information for pattern detection.  
-float bodyLow   = math.min(close, open)  
-float bodyHigh  = math.max(close, open)  
-float bodyDir   = math.sign(close - open)  
-float bodyRange = bodyHigh - bodyLow  
+// Declare a variable that persistently stores a `line` ID or `na` across bars until reassigned.  
+var line currLine = na  
   
-//@variable Holds a "bool" value indicating whether an engulfing pattern is detected on the current bar.  
-bool isEngulf = (  
-    bodyDir != bodyDir[1] and bodyLow <= bodyLow[1] and bodyHigh >= bodyHigh[1] and bodyRange > bodyRange[1]  
-)  
-  
-if isEngulf  
-    // The following statement *does not* modify the variable declared on line 16.  
-    // Instead, it declares a *new local variable* named `isEngulf`, causing a compiler warning. After the  
-    // declaration, the local variable *shadows* the global variable with the same name, making that variable  
-    // *inaccessible* to all code that follows in the enclosing `if` structure's local block.  
-    isEngulf = switch bodyDir  
-        1  => bullInput and (showStrongInput ? bodyHigh >= high[1] : true)  
-        -1 => bearInput and (showStrongInput ? bodyLow  <= low[1] : true)  
-    // `isEngulf` in this nested `if` statement refers to the *local* variable above, **not** the one from line 16.  
-    if isEngulf  
-        label.new(bar_index, bodyDir == 1 ? low : high, style = label.style_diamond, size = size.small)  
-  
-// This call colors *all* bars with an engulfing pattern, regardless of the specified inputs,  
-// because the `isEngulf` identifier here refers to the *global* variable, and that variable is *not* affected by  
-// the `if` structure's logic.  
-barcolor(isEngulf ? (bodyDir == 1 ? color.yellow : color.orange) : na, title = "Engulfing bar color")  
+if barstate.islast  
+    // At the start of a new period, create a new `line` object with coordinates for the current bar, and reassign  
+    // the `currLine` variable. The variable stores the new `line` ID until the `newPeriod` value is `true` again.  
+    if newPeriod  
+        currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
+    // Set the `x2` and `y2` (end) coordinates of the current line to the current bar's `time` and `close` values  
+    // while the period is open.  
+    currLine.set_xy2(time, close)  
+else if newPeriod  
+    // Update the end coordinates of the latest line on historical bars to the final value of the previous period.  
+    currLine.set_xy2(time[1], close[1])  
+    // Create a new `line` object and assign its ID to the `currLine` variable. On the next historical bar where  
+    // a new period starts, the script modifies the new line.  
+    currLine := line.new(time, open, time, close, xloc.bar_time, color = color.purple)  
 `
 This behavior occurs because the script uses the = operator with the `isEngulf` identifier inside the if structure, then uses the identifier further in the local block to specify the condition that controls the label drawings. That = operation declares a new, _local_ variable named `isEngulf`, and the new variable _shadows_ the global variable declared on line 16. Consequently, the logic of the structure does not affect the value of the global `isEngulf` variable. The compiler also displays a warning on line 25 in the code, where the local `isEngulf` declaration occurs.
 We can align the script’s visuals and resolve the compiler warning by replacing the = operator with the reassignment operator (:=) in the if structure. This simple change causes the script to _reassign_ the global `isEngulf` variable using the switch statement’s result rather than creating a new local variable. Because the script directly changes the value of the global variable in the if structure and uses that variable to control both the label and the bar color, both outputs now occur on the same recent bars:
