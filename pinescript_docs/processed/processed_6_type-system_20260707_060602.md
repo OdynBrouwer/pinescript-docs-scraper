@@ -1013,24 +1013,13 @@ For example, the following script declares a `myLabel` variable and assigns it t
 Pine Script®
 Copied
 `//@version=6  
-indicator("Modifying objects demo", overlay = true)  
+indicator("'series' reference demo")  
   
-//@variable Maintains a persistent reference to one `chart.point` object with an initial `price` field of `na`.   
-var chart.point myPoint = chart.point.now(na)  
-  
-//@variable Maintains a persistent reference to one `label` object initialized using the `myPoint` chart point.  
-var label myLabel = label.new(myPoint, "Persistent label")  
-  
-// Update the chart point referenced by `myPoint` on each bar by reassigning the object's *fields*.  
-myPoint.index := bar_index  
-myPoint.price := close  
-  
-// Update the label referenced by `myLabel` using a call to `label.set_point()`. The call uses the `index` field of   
-// the chart point for the label's x-coordinate, and the `price` field for the y-coordinate.  
-label.set_point(myLabel, myPoint)  
-  
-// Retrieve the y-coordinate from the `myLabel` label, confirming that both persistent objects were modified.  
-plot(label.get_y(myLabel), "Label y-coordinate")  
+//@variable References a label created on the first bar using "const" arguments.  
+//          Although the script creates only one label, using constant values, this variable's type is "series label"   
+//          because the assigned `label` reference is *unique*. No additional function calls can create the same label   
+//          instance or return the same reference.  
+var label myLabel = label.new(0, 0, "A new 'series' label")  
 `
 Note that:
   * The script creates a label only on the first bar because the variable that stores its reference is declared in the _global scope_ using the var keyword. See the Declaration modes section of the Variable declarations page to learn more.

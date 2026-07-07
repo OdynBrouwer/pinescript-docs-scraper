@@ -440,35 +440,18 @@ This script allows the execution of the first request.security() call within the
 Pine Script®
 Copied
 `//@version=6  
-indicator("Requesting collections demo", "Bar range ratio")  
+indicator("Nested requests demo", dynamic_requests = false)  
   
-//@variable The ticker ID to request data from.  
-string symbol = input.symbol("", "Symbol")  
-//@variable The timeframe of the request.  
-string timeframe = input.timeframe("30", "Timeframe")  
+//@variable A concatenated string containing the current `syminfo.tickerid` and `timeframe.period`.  
+string info1 = request.security("", "", syminfo.tickerid + "_" + timeframe.period)  
+//@variable The same value as `info1`. This call does not evalutate the call on line 5 because dynamic requests aren't   
+//          allowed. Instead, it only uses the value of `info1`, meaning its result does not change.   
+string info2 = request.security("NASDAQ:AAPL", "240", info1)  
   
-//@variable A map with "string" keys and "float" values.  
-var map<string, float> data = map.new<string, float>()  
-  
-// Put key-value pairs into the `data` map.  
-map.put(data, "High", high)  
-map.put(data, "Low", low)  
-map.put(data, "Highest", ta.highest(10))  
-map.put(data, "Lowest", ta.lowest(10))  
-  
-//@variable A new `map` whose data is calculated from the last confirmed bar of the requested context.  
-map<string, float> otherData = request.security(symbol, timeframe, data[1], lookahead = barmerge.lookahead_on)  
-  
-//@variable The ratio of the context's bar range to the max range over 10 bars. Returns `na` if no data is available.  
-float ratio = na  
-if not na(otherData)  
-    ratio := (otherData.get("High") - otherData.get("Low")) / (otherData.get("Highest") - otherData.get("Lowest"))  
-  
-//@variable A gradient color for the plot of the `ratio`.  
-color ratioColor = color.from_gradient(ratio, 0, 1, color.purple, color.orange)  
-  
-// Plot the `ratio`.  
-plot(ratio, "Range Ratio", ratioColor, 3, plot.style_area)  
+// Log the results from both calls in the Pine Logs pane on the last historical bar.   
+if barstate.islastconfirmedhistory  
+    log.info("First request: {0}", info1)  
+    log.info("Second request: {0}", info2)  
 `
 
 ## Data feeds
