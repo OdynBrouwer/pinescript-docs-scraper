@@ -837,49 +837,52 @@ To verify that the script’s logic works as intended, we can inspect each of th
 Pine Script®
 Copied
 `//@version=6  
-indicator("Plotting and coloring compound conditions demo")  
+indicator("Inspecting individual elements demo")  
   
-//@variable The length of the RSI and median RSI calculations.  
-int lengthInput = input.int(14, "Length", 2)  
+//@variable The number of bars in the calculation.   
+int lengthInput = input.int(20, "Length", 2)  
   
-//@variable The RSI over `lengthInput` bars.  
-float rsi = ta.rsi(close, lengthInput)  
-//@variable The median of the `rsi` over `lengthInput` bars.  
-float median = ta.median(rsi, lengthInput)  
+//@variable The change in price across `lengthInput` - 1 bars.   
+float priceChange = ta.change(close, lengthInput - 1)  
+//@variable The total `close` range over `lengthInput` bars.  
+float priceRange = ta.range(close, lengthInput)  
   
-//@variable Condition #1: Is `true` when the 1-bar `rsi` change switches from 1 to -1.  
-bool changeNegative = ta.change(math.sign(ta.change(rsi))) == -2  
-//@variable Condition #2: Is `true` when the previous bar's `rsi` is greater than 70.  
-bool prevAbove70 = rsi[1] > 70.0  
-//@variable Condition #3: Is `true` when the current `close` is lower than the previous bar's `open`.  
-bool closeBelow = close < open[1]  
-//@variable Condition #4: Is `true` when the `rsi` is between 60 and 70.  
-bool betweenLevels = bool(math.max(70.0 - rsi, 0.0) * math.max(rsi - 60.0, 0.0))  
-//@variable Condition #5: Is `true` when the `rsi` is above the `median`.  
-bool aboveMedian = rsi > median  
+//@variable The ratio of the `priceChange` to the `priceRange`.   
+float osc = priceChange / priceRange  
   
-//@variable Is `true` when the first condition occurs alongside conditions 2 and 3 or 4 and 5.  
-bool compundCondition = changeNegative and ((prevAbove70 and closeBelow) or (betweenLevels and aboveMedian))  
-   
-//Plot the `rsi` and the `median`.  
-plot(rsi, "RSI", color.teal, 3)  
-plot(median, "RSI Median", color.gray, 2)  
+//@variable Teal if `osc` is positive, maroon otherwise.  
+color oscColor = osc > 0 ? color.teal : color.maroon  
   
-// Highlight the background red when the `compundCondition` occurs.  
-bgcolor(compundCondition ? color.new(color.red, 60) : na, title = "compundCondition")  
+// Draw a label at the current bar's `bar_index` and `close` displaying `priceChange` when `osc` is 1 or -1.   
+if math.abs(osc) == 1  
+    string labelText = str.format("priceChange: {0,number,#.####}", priceChange)  
+    label.new(bar_index, close, labelText, color = oscColor, textcolor = color.white, force_overlay = true)  
   
-// Use `plotshape()` to show `compundCondition` values in the status line and Data Window.  
-plotshape(  
-     compundCondition, "compundCondition (1 and (2 and 3) or (4 and 5))",   
-     color = chart.fg_color, display = display.all - display.pane  
- )  
+// Plot the `osc` using the `oscColor`.  
+plot(osc, "Oscillator", oscColor, 1, plot.style_area)  
   
-// Plot characters on the chart and numbers in the status line and Data Window when conditions 1-5 occur.  
-plotchar(changeNegative, "changeNegative (1)", "", location.top, text = "1",         textcolor = chart.fg_color)  
-plotchar(prevAbove70,    "prevAbove70 (2)",    "", location.top, text = "\n2",       textcolor = chart.fg_color)  
-plotchar(closeBelow,     "closeBelow (3)",     "", location.top, text = "\n\n3",     textcolor = chart.fg_color)  
-plotchar(betweenLevels,  "betweenLevels (4)",  "", location.top, text = "\n\n\n4",   textcolor = chart.fg_color)  
-plotchar(aboveMedian,    "aboveMedian (5)",    "", location.top, text = "\n\n\n\n5", textcolor = chart.fg_color)  
+// On the first or last tick of the latest bar, inspect all labels on the chart.  
+if barstate.islast and (barstate.isnew or barstate.isconfirmed)  
+    // Log a message containing the current `bar_index` and `label.all.size()`.  
+    log.info("Current bar: {0,number,#}, Active labels: {1}", bar_index, label.all.size())  
+    // Loop through the `label.all` array.  
+    for [i, lbl] in label.all  
+        // Log a message containing the array index (`i`) and the label's `x`, `y`, and `text` properties.   
+        log.info(  
+             "{0}, x: {1,number,#}, y: {2,number,#.#####}, text: {3}", i, lbl.get_x(), lbl.get_y(), lbl.get_text()  
+         )  
+  
+// Initialize variables for the oldest and newest active labels.   
+label oldestLabel = na  
+label newestLabel = na  
+// Reassign the variables to the first and last labels in `label.all` when the array is not empty.   
+if label.all.size() > 0  
+    oldestLabel := label.all.first()  
+    newestLabel := label.all.last()  
+  
+// Plot the y-coordinate history of the `oldestLabel` and `newestLabel`.   
+plot(label.get_y(oldestLabel), "oldestLabel y-coordinate", color.fuchsia, force_overlay = true)  
+plot(label.get_y(newestLabel), "newestLabel y-coordinate", color.aqua,    force_overlay = true)  
 `
 Note that:
   * The `char` argument of each plotchar() call is an empty string, meaning the function displays its `text` value without a character above it.
