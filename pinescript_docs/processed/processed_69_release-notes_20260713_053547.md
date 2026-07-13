@@ -195,17 +195,25 @@ Scripts now have improved line wrapping behavior. Previously, all multiline text
 We’ve removed the indentation restriction for all parts of an expression or statement enclosed in _parentheses_ , including operations, function calls, and function parameter declarations. Scripts can now indent wrapped lines enclosed in parentheses by _zero or more_ spaces, including multiples of four. For example:
 Pine Script®
 Copied
-`//@version=5  
-indicator("My script")  
+`//@version=6  
   
-//@variable A constant `string` used as the `title` in the `plot()` function.  
-const string plotTitle = "My plot"  
-//@variable An `int` variable whose value is consistent after the first chart bar.  
-simple int a = 10  
-//@variable An `int` variable whose value can change on every bar.  
-series int b = bar_index  
+// Before the update, wrapped lines in this code that start at multiples of four spaces caused compilation errors.  
   
-plot(b % a, title = plotTitle)  
+indicator(  
+    "Line wrapping between parentheses demo", // Indented by four spaces.  
+        overlay = true                        // Indented by eight spaces.  
+)                                             // No indentation.  
+  
+float median = 0.5 * (  
+    ta.highest(20) + ta.lowest(20) // Indented by four spaces.  
+)                                  // No indentation.  
+  
+plot(  
+median,              // No indentation.  
+  "Median",          // Indented by two spaces.  
+   chart.fg_color,   // Indented by three spaces.  
+    3                // Indented by four spaces.  
+)                    // No indentation.  
 `
 However, if a line-wrapped expression is not enclosed in parentheses, all subsequent lines still require an indentation that is _not_ a multiple of four spaces. For example:
 Pine Script®

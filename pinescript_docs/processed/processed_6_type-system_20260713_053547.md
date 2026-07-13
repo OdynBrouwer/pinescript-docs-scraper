@@ -716,24 +716,54 @@ Where:
 The following example declares a UDT named `pivotPoint`. The type contains two fields for storing pivot data: `pivotTime` and `priceLevel`. The `pivotTime` field is of the type “int”, and `priceLevel` is of the type “float”:
 Pine Script®
 Copied
-`//@type             A custom type for creating objects that store pivot information.  
-//@field pivotTime  Stores the pivot's timestamp.  
-//@field priceLevel Stores the pivot's price.  
-type pivotPoint  
-    int   pivotTime  
-    float priceLevel  
+`//@version=6  
+indicator("Modifying globally referenced objects in functions demo")  
+  
+//@variable The number of conditions that occur before the counter value resets.  
+int cycleSizeInput = input.int(10, "Cycle size", 1)  
+  
+//@type         A custom type for creating objects that store counter data.  
+//@field value  The counter value, initialized to 0 by default.   
+type Counter  
+    int value = 0  
+  
+//@variable A persistent global variable that holds the reference of a `Counter` object.  
+var Counter myCounter = Counter.new()  
+  
+//@function Increments and cyclically resets the `value` field of the object referenced by `myCounter` based on a   
+//          pseudorandom condition.  
+//          This function does *not* cause an error, because it does not modify the global variable.   
+updateCounter() =>  
+    if math.random() < 0.5  
+        // Increase the `value` *field* of the `Counter` object referenced by `myCounter` when the condition occurs.  
+        myCounter.value += 1  
+        // Reset the `value` field to 1 if it exceeds the value of `cycleSizeInput`.   
+        if myCounter.value > cycleSizeInput  
+            myCounter.value := 1  
+  
+// Modify the object referenced by `myCounter`. This function call works without issue.  
+updateCounter()  
+  
+// Plot the value of the object's `value` field, i.e., the condition counter.  
+plot(myCounter.value, "Counter value")  
 `
 User-defined types can contain fields for referencing other UDT objects. Additionally, UDTs support _type recursion_ , meaning a UDT can include fields for referencing objects of the _same_ UDT. Below, we added a `nextPivot` field to our `pivotPoint` type. Objects of this version of the UDT can store a _reference (ID)_ to a separate object of the same `pivotPoint` type in this field:
 Pine Script®
 Copied
-`//@type             A custom type for creating objects that store pivot information.  
-//@field pivotTime  Stores the pivot's timestamp.  
-//@field priceLevel Stores the pivot's price.  
-//@field nextPivot  Stores the reference to *another* instance of the `pivotPoint` type.  
-type pivotPoint  
-    int        pivotTime  
-    float      priceLevel  
-    pivotPoint nextPivot  
+`//@version=6  
+indicator("Value type independence demo")  
+  
+// Initialize the first variable with a value of 10.  
+int myVar1 = 10  
+// Initialize the second variable using the first. This variable's value is now 10.  
+int myVar2 = myVar1  
+  
+// Increase the first variable's value by 10. Now, the value of `myVar1` is 20, but the value of `myVar2` is still 10.  
+myVar1 += 10  
+  
+// Plot both values for comparison.  
+plot(myVar1, "First variable", color.blue, 3)  
+plot(myVar2, "Second variable", color.purple, 3)  
 `
 Every user-defined type includes built-in `*.new()` and `*.copy()` functions for creating objects or copying existing ones. Both functions construct a new object on every call and return that object’s ID. For example, `pivotPoint.new()` creates a new instance of our `pivotPoint` type and returns its ID for use in other parts of the script.
 To learn more about objects of UDTs and how to use them, see the Objects page.
