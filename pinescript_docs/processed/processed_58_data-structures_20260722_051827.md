@@ -344,44 +344,66 @@ Note that neither of these operations requires knowing the index of the array el
 Pine Script®
 Copied
 `//@version=6  
-indicator("Debugging arrays with tables", overlay = true)  
+indicator("Example: `for...in` loop", overlay = true)  
   
-// Import the `getSeries` PineCoders library to build fixed-size arrays populated on specific conditions.  
-//      https://www.tradingview.com/v/Bn7QkdZR/  
-import PineCoders/getSeries/1 as PCgs  
+// @function            Queues a new `value` at the end of the `id` array and removes  
+//                      the first element if the array size exceeds the specified `maxSize`.  
+// @param id            (<any array type>) The array in which to queue the element.  
+// @param maxSize       (int) The maximum allowed number of elements in the array.  
+//                      If the array exceeds this size, the first element is removed.  
+// @param value         (<type of the array>) The new element to add to the array.  
+// @returns             (<type of the array>) The removed element.  
+arrayQueue(id, int maxSize, value) =>  
+    id.push(value)  
+    if id.size() > maxSize  
+        id.shift()  
   
-// Calculate MAs and create cross condition.  
-float ma50        = ta.sma(close,  50)  
-float ma200       = ta.sma(close,  200)  
-bool  goldenCross = ta.cross(ma50, ma200)  
+// @function                Adds a new horizontal line to an array at a certain pivot level and removes the oldest line.  
+// @param id                (array<line>) The array to which to add the new line.  
+// @param pivot             (float) The price level at which to draw the horizontal line.  
+// @param numLines          (int) The number of lines to keep in the queue.  
+// @param lineColor         (color) The color of the line to draw.  
+// @returns                 (void) The function has no explicit return.  
+queueLine(array<line> id, float pivot, int numLines, color lineColor) =>  
+    if not na(pivot)  
+        arrayQueue(id, numLines, line.new(bar_index - 10, pivot, bar_index, pivot, color = lineColor))  
   
-// Calculate the RSI and determine if it's hitting a new all-time high.  
-float myRsi       = ta.rsi(close,  20)  
-bool newRsiAth    = myRsi == ta.max(myRsi)  
+// @function                Extends the endpoint (`x2`) of each line in an array to the current `bar_index`.  
+// @param id                (array<line>) The array containing the line objects to update.  
+// @returns                 (void) The function has no explicit return.  
+extendLines(array<line> id) =>  
+    for eachLine in id  
+        eachLine.set_x2(bar_index)  
   
-// Create two arrays using the imported `whenSince()` function.  
-array<float> goldenCrossesTimes = PCgs.whenSince(time_close, goldenCross, length = 6)  
-array<float> barIndicesOfHiRSIs = PCgs.whenSince(bar_index,  newRsiAth,   length = 8)  
+// @function                Adjusts the color of each line in an array. If the `close` is above the line, the line is   
+//                          set to `bullColor` (support), else, `bearColor` (resistance).  
+// @param id                (array<line>) The array containing the line objects.  
+// @param bullColor         (color) The color to apply to the line if `close` is equal to or higher than the line's price.  
+// @param bearColor         (color) The color to apply to the line if `close` is below the line's price.  
+// @returns                 (void) The function has no explicit return.  
+colorLines(array<line> id, color bullColor, color bearColor) =>  
+    for eachLine in id  
+        if close >= eachLine.get_price(bar_index)  
+            eachLine.set_color(bullColor)  
+        else  
+            eachLine.set_color(bearColor)  
   
-// Plot the MAs for cross reference.  
-plot(ma50,  "50 MA",  color.aqua)  
-plot(ma200, "200 MA", color.orange)  
+// Find the pivot high and pivot low prices.  
+float pivotLo = ta.pivotlow(10,  10)  
+float pivotHi = ta.pivothigh(10, 10)  
   
-// On the last historical bar, display the date and time of the last crosses.  
-if barstate.islast  
-    // Declare our MA table to display the Golden Cross times.   
-    var table maTable  = table.new(position.top_right, 2, 8, color.new(color.black, 100), color.gray, 1, color.gray, 1)  
-    // Create a title cell for the MA table and merge cells to form a banner two cells wide.  
-    table.cell(maTable , 0, 0, "Golden Cross Times", text_color = color.black, bgcolor = #FFD700)  
-    table.merge_cells(maTable , 0, 0, 1, 0)  
-    // Loop the array and write cells to the MA table containing the cross time for each element of the array. Number each element in the left row.  
-    // Format the UNIX time value to a formatted time string using `str.format_time()`.  
-    for [i, timeValue] in goldenCrossesTimes  
-        table.cell(maTable, 0, i + 1, str.tostring(i + 1), text_color = #FFD700)  
-        table.cell(maTable, 1, i + 1, str.format_time(int(timeValue), "yyyy.MM.dd 'at' HH:mm:ss z"), text_color = chart.fg_color)  
-    // Create a second table to display the indices of the last eight RSI all-time highs.  
-    var table rsiTable = table.new(position.bottom_right, 1, 1, color.new(color.black, 100), color.gray, 1, color.gray, 1)  
-    table.cell(rsiTable, 0, 0, "Bar indices of RSI ATHs\n" + str.tostring(barIndicesOfHiRSIs), text_color = chart.fg_color)  
+// Initialize two arrays on the first bar to queue our lines in.  
+var array<line> pivotHiArray = array.new<line>(), var array<line> pivotLoArray = array.new<line>()  
+  
+// If a pivot occurs, draw a line from the pivot to the current bar, add it to the queue, and remove the oldest line.  
+queueLine(pivotHiArray, pivotHi, 4, color.orange), queueLine(pivotLoArray, pivotLo, 4, color.aqua)  
+  
+// Extend all lines in each array to the current bar on each bar.  
+extendLines(pivotHiArray), extendLines(pivotLoArray)  
+  
+// Set the color of lines as support or resistance by checking if the closing price is above or below the lines.  
+colorLines(pivotHiArray, color.aqua, color.orange)  
+colorLines(pivotLoArray, color.aqua, color.orange)  
 `
 **Example: retrieving array elements and indices**
 In our second script, we use the two-argument variant of the for…in loop to access elements and their indices in an array. This method facilitates operations that depend on element indices, such as managing parallel arrays or incorporating index values into calculations. The script pairs a boolean array with an array of positive and negative random integers. The boolean array flags whether each corresponding integer in the primary array is positive.
@@ -786,6 +808,36 @@ if session.isfirstbar_regular
 
 @function                Extends the endpoint (`x2`) of each line in an array to the current `bar_index`.  
 // @param id                (array<line>) The array containing the line objects to update.  
+// @returns                 (void) The function has no explicit return.  
+
+
+@function            Queues a new `value` at the end of the `id` array and removes  
+//                      the first element if the array size exceeds the specified `maxSize`.  
+// @param id            (<any array type>) The array in which to queue the element.  
+// @param maxSize       (int) The maximum allowed number of elements in the array.  
+//                      If the array exceeds this size, the first element is removed.  
+// @param value         (<type of the array>) The new element to add to the array.  
+// @returns             (<type of the array>) The removed element.  
+
+
+@function                Adds a new horizontal line to an array at a certain pivot level and removes the oldest line.  
+// @param id                (array<line>) The array to which to add the new line.  
+// @param pivot             (float) The price level at which to draw the horizontal line.  
+// @param numLines          (int) The number of lines to keep in the queue.  
+// @param lineColor         (color) The color of the line to draw.  
+// @returns                 (void) The function has no explicit return.  
+
+
+@function                Extends the endpoint (`x2`) of each line in an array to the current `bar_index`.  
+// @param id                (array<line>) The array containing the line objects to update.  
+// @returns                 (void) The function has no explicit return.  
+
+
+@function                Adjusts the color of each line in an array. If the `close` is above the line, the line is   
+//                          set to `bullColor` (support), else, `bearColor` (resistance).  
+// @param id                (array<line>) The array containing the line objects.  
+// @param bullColor         (color) The color to apply to the line if `close` is equal to or higher than the line's price.  
+// @param bearColor         (color) The color to apply to the line if `close` is below the line's price.  
 // @returns                 (void) The function has no explicit return.  
 
 
