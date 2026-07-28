@@ -80,8 +80,43 @@ plot(m.get(1, 1), "Row 1, Column 1 Value", color.blue, 2)
 To overwrite all matrix elements with a specific value, use matrix.fill(). This function points all items in the entire matrix or within the `from_row/column` and `to_row/column` index range to the `value` specified in the call. For example, this snippet declares a 4x4 square matrix, then fills its elements with the result of a math.random() call:
 Pine Script®
 Copied
-`myMatrix = matrix.new<float>(4, 4)  
-myMatrix.fill(math.random())  
+`//@version=6  
+indicator("Replacing rows demo")  
+  
+//@function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
+  
+//@function Replaces the `row` of `this` matrix with a new array of `values`.  
+//@param    row The row index to replace.  
+//@param    values The array of values to insert.  
+method replaceRow(matrix<float> this, int row, array<float> values) =>  
+    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
+    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
+  
+//@variable A 3x3 matrix.  
+var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
+  
+if bar_index == last_bar_index - 1  
+    m.debugLabel(note = "Original")  
+    // Replace each row of `m`.  
+    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
+    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
+    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
+    m.debugLabel(bar_index + 10, note = "Replaced rows")  
 `
 Note when using matrix.fill() with matrices of _reference types_ (line, linefill, box, polyline, label, table, or chart.point) or UDTs, all replaced elements will point to the same object passed in the function call.
 This script declares a matrix with four rows and columns of label references, which it fills with a new label reference on the first bar. On each bar, the script sets the `x` property of the label referenced at row 0, column 0 to bar_index, and the `text` property of the one referenced at row 3, column 3 to the number of labels on the chart. Although the matrix can reference 16 (4x4) labels, each element refers to the _same_ label object, resulting in only one label on the chart with coordinates and displayed text that update on each bar:
@@ -1641,6 +1676,166 @@ plot(m.det()) // Raises a runtime error. You can't calculate the deter
 
 
 @function Displays the rows of a matrix in a label with a note.  
+//@param    this The matrix to display.  
+//@param    barIndex The `bar_index` to display the label at.  
+//@param    bgColor The background color of the label.  
+//@param    textColor The color of the label's text.  
+//@param    note The text to display above the rows.  
+method debugLabel(  
+     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
+     color textColor = color.white, string note = ""  
+ ) =>  
+    labelText = note + "\n" + str.tostring(this)  
+    if barstate.ishistory  
+        label.new(  
+             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
+             textcolor = textColor, size = size.huge  
+         )  
+  
+//@function Replaces the `row` of `this` matrix with a new array of `values`.  
+//@param    row The row index to replace.  
+//@param    values The array of values to insert.  
+method replaceRow(matrix<float> this, int row, array<float> values) =>  
+    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
+    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
+  
+//@variable A 3x3 matrix.  
+var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
+  
+if bar_index == last_bar_index - 1  
+    m.debugLabel(note = "Original")  
+    // Replace each row of `m`.  
+    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
+    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
+    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
+    m.debugLabel(bar_index + 10, note = "Replaced rows")  
+`
+Note when using matrix.fill() with matrices of _reference types_ (line, linefill, box, polyline, label, table, or chart.point) or UDTs, all replaced elements will point to the same object passed in the function call.
+This script declares a matrix with four rows and columns of label references, which it fills with a new label reference on the first bar. On each bar, the script sets the `x` property of the label referenced at row 0, column 0 to bar_index, and the `text` property of the one referenced at row 3, column 3 to the number of labels on the chart. Although the matrix can reference 16 (4x4) labels, each element refers to the _same_ label object, resulting in only one label on the chart with coordinates and displayed text that update on each bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Object matrix fill demo")  
+  
+//@variable A 4x4 label matrix.  
+var matrix<label> m = matrix.new<label>(4, 4)  
+  
+// Fill `m` with a new label object on the first bar.  
+if bar_index == 0  
+    m.fill(label.new(0, 0, textcolor = color.white, size = size.huge))  
+  
+//@variable The number of label objects on the chart.  
+int numLabels = label.all.size()  
+  
+// Set the `x` of the label from the first row and column to `bar_index`.  
+m.get(0, 0).set_x(bar_index)  
+// Set the `text` of the label at the last row and column to the number of labels.  
+m.get(3, 3).set_text(str.format("Total labels on the chart: {0}", numLabels))  
+`
+## Rows and columns
+###  Retrieving
+Scripts can retrieve all the data from a specific row or column in a matrix via the matrix.row() and matrix.col() functions. These functions return the row or column contents as an array sized according to the other dimension of the matrix. The size of a matrix.row() array equals the number of columns (matrix.columns()), and the size of a matrix.col() array equals the number of rows matrix.rows().
+The script below populates a 3x2 `m` matrix with the values 1 - 6 on the first chart bar. It uses matrix.row() and matrix.col() method calls to access the first row and column arrays from the matrix and displays them on the chart in a label along with the array sizes:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Retrieving rows and columns demo")  
+  
+//@variable A 3x2 rectangular matrix.  
+var matrix<float> m = matrix.new<float>(3, 2)  
+  
+if bar_index == 0  
+    m.set(0, 0, 1.0) // Set row 0, column 0 value to 1.  
+    m.set(0, 1, 2.0) // Set row 0, column 1 value to 2.  
+    m.set(1, 0, 3.0) // Set row 1, column 0 value to 3.  
+    m.set(1, 1, 4.0) // Set row 1, column 1 value to 4.  
+    m.set(2, 0, 5.0) // Set row 2, column 0 value to 5.  
+    m.set(2, 1, 6.0) // Set row 2, column 1 value to 6.  
+  
+//@variable The first row of the matrix.  
+array<float> row0 = m.row(0)  
+//@variable The first column of the matrix.  
+array<float> column0 = m.col(0)  
+  
+//@variable Displays the first row and column of the matrix and their sizes in a label.  
+var label debugLabel = label.new(0, 0, color = color.blue, textcolor = color.white, size = size.huge)  
+debugLabel.set_x(bar_index)  
+debugLabel.set_text(str.format("Row 0: {0}, Size: {1}\nCol 0: {2}, Size: {3}", row0, m.columns(), column0, m.rows()))  
+`
+Note that:
+  * To get the sizes of the arrays displayed in the label, we used the matrix.rows() and matrix.columns() methods rather than array.size() to demonstrate that the size of the `row0` array equals the number of matrix columns and the size of the `column0` array equals the number of matrix rows.
+
+
+The matrix.row() and matrix.col() functions copy the contents of a row/column to a new array. Modifications to the arrays returned by these functions do not directly affect the elements or the shape of a matrix.
+Here, we’ve modified the previous script to set the first element of `row0` to 10 via the array.set() method before displaying the label. This script also plots the value from row 0, column 0. As we see, the label shows that the first element of the `row0` array is 10. However, the plot shows that the corresponding matrix element still has a value of 1:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Retrieving rows and columns demo")  
+  
+//@variable A 3x2 rectangular matrix.  
+var matrix<float> m = matrix.new<float>(3, 2)  
+  
+if bar_index == 0  
+    m.set(0, 0, 1.0) // Set row 0, column 0 value to 1.  
+    m.set(0, 1, 2.0) // Set row 0, column 1 value to 2.  
+    m.set(1, 0, 3.0) // Set row 1, column 0 value to 3.  
+    m.set(1, 1, 4.0) // Set row 1, column 1 value to 4.  
+    m.set(2, 0, 5.0) // Set row 1, column 0 value to 5.  
+    m.set(2, 1, 6.0) // Set row 1, column 1 value to 6.  
+  
+//@variable The first row of the matrix.  
+array<float> row0 = m.row(0)  
+//@variable The first column of the matrix.  
+array<float> column0 = m.col(0)  
+  
+// Set the first `row` element to 10.  
+row0.set(0, 10)  
+  
+//@variable Displays the first row and column of the matrix and their sizes in a label.  
+var label debugLabel = label.new(0, m.get(0, 0), color = color.blue, textcolor = color.white, size = size.huge)  
+debugLabel.set_x(bar_index)  
+debugLabel.set_text(str.format("Row 0: {0}, Size: {1}\nCol 0: {2}, Size: {3}", row0, m.columns(), column0, m.rows()))  
+  
+// Plot the first element of `m`.  
+plot(m.get(0, 0), linewidth = 3)  
+`
+Although changes to an array constructed from matrix.row() or matrix.col() do not directly affect a parent matrix, it’s important to note the resulting array from a matrix containing UDTs or special types, including line, linefill, box, polyline, label, table, or chart.point, behaves as a _shallow copy_ of a row/column, i.e., the elements within an array returned from these functions reference the same objects as the corresponding matrix elements.
+This script contains a custom `myUDT` type containing a `value` field with an initial value of 0. It declares a 1x1 `m` matrix to hold a single `myUDT` instance on the first bar, then calls `m.row(0)` to copy the first row of the matrix as an array. On every chart bar, the script adds 1 to the `value` field of the first `row` array element. In this case, the `value` field of the matrix element increases on every bar as well, because both elements refer to the same object:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Row with reference types demo")  
+  
+//@type A custom type that holds a float value.  
+type myUDT  
+    float value = 0.0  
+  
+//@variable A 1x1 matrix of `myUDT` type.  
+var matrix<myUDT> m = matrix.new<myUDT>(1, 1, myUDT.new())  
+//@variable A shallow copy of the first row of `m`.  
+array<myUDT> row = m.row(0)  
+//@variable The first element of the `row`.  
+myUDT firstElement = row.get(0)  
+  
+firstElement.value += 1.0 // Add 1 to the `value` field of `firstElement`. Also affects the element in the matrix.  
+  
+plot(m.get(0, 0).value, linewidth = 3) // Plot the `value` of the `myUDT` object from the first row and column of `m`.  
+`
+###  Inserting
+Scripts can add new rows and columns to a matrix via matrix.add_row() and matrix.add_col(). These functions insert the values or references from an array into a matrix at the specified `row/column` index. If the `id` matrix is empty (has no rows or columns), the array referenced by `array_id` in the call can be of any size. If a row/column exists at the specified index, the matrix increases the index value for the existing row/column and all after it by one.
+The script below declares an empty `m` matrix and inserts rows and columns by calling matrix.add_row() and matrix.add_col() as methods. It first inserts an array with three elements at row 0, turning `m` into a 1x3 matrix, then another at row 1, changing the shape to 2x3. After that, the script inserts another array at row 0, which changes the shape of `m` to 3x3 and shifts the index of all rows previously at index 0 and higher. It inserts another array at the last column index, changing the shape to 3x4. Finally, it adds an array with four values at the end row index.
+The resulting matrix has four rows and columns and contains values 1-16 in ascending order. The script displays the rows of the matrix after each row/column insertion with a user-defined `debugLabel()` function to visualize the process:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Rows and columns demo")  
+  
+//@function Displays the rows of a matrix in a label with a note.  
 //@param    this The matrix to display.  
 //@param    barIndex The `bar_index` to display the label at.  
 //@param    bgColor The background color of the label.  
