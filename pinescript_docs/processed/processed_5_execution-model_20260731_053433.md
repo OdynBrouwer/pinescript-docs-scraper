@@ -139,7 +139,7 @@ Note that:
   * If the script restarts, all the realtime bars from the previous script run become _historical bars_ in the new run. Therefore, after restarting, the script executes only **once** on each of those bars and does _not_ highlight their background.
 
 
-Note _Strategy_ scripts do not execute in the same way as indicators by default; they execute only _once_ on _every bar_ , including all _realtime bars_. Calculations occur on each realtime bar only after the bar **closes**. Users can change this behavior with the `calc_on_every_tick` and `calc_on_order_fills` parameters of the strategy() function. See the Strategies page to learn more about strategy scripts and how they differ from indicators.
+Note _Strategy_ scripts do not execute in the same way as indicators by default; they execute only _once_ on _every bar_ , including all _realtime bars_. Calculations occur on each realtime bar only after the bar **closes**. Users can change this behavior with the `calc_on_every_tick`, `calc_on_order_fills`, and `calc_on_every_history_tick` parameters of the strategy() function. See the Strategies page to learn more about strategy scripts and how they differ from indicators.
 
 ## The details
 The following sections provide in-depth details about Pine’s execution model, including the mechanics of executions on historical bars and realtime bars, which events trigger script executions, and how the runtime system maintains data across executions in a time series format.
@@ -153,7 +153,7 @@ While the script loads, the runtime system performs the following steps for _eac
   3. After the execution ends, the system commits (saves) all necessary data for the current bar to the time series. The script can then access that data from historical buffers during its executions on subsequent bars by using the history-referencing operator or the built-in functions that reference past bars internally.
 
 
-These steps repeat for every successive bar up to the most recent bar. After the runtime system completes this process across the dataset, the script’s committed _outputs_ — such as plots, drawings, Pine Logs, and Strategy Tester results — become available to the user.
+These steps repeat for every successive bar up to the most recent bar. After the runtime system completes this process across the dataset, the script’s committed _outputs_ — such as plots, drawings, Pine Logs, and strategy report results — become available to the user.
 All the closed bars on which the script executes while loading are _historical_ , because they represent data points that were confirmed before the event that triggered the loading process. By default, all scripts execute **once** for each historical bar.
 TipScripts can identify which bars have a historical state with the barstate.ishistory variable. Its value is `true` for every closed bar accessed during the script’s loading time and `false` for all bars that close afterward. See the Bar states page to learn more about `barstate.*` variables.
 Let’s examine a simple indicator to understand how script executions work on historical bars.
@@ -244,9 +244,9 @@ Note that:
   * An alternative, more robust method to track code executions is to use the Pine Profiler. The profiler analyzes the total runtime and execution count of every significant part of the source code. To learn more about this feature, see the Profiling and optimization page.
 
 
-It’s important to note that, unlike indicators, strategies can execute _more than once_ per historical bar, depending on the specified calculation behavior. If the strategy() declaration statement includes `calc_on_order_fills = true`, or if the user selects the “After order is filled” checkbox in the “Settings/Properties” tab, the runtime system executes the script on _each available tick_ where the broker emulator fills an order, or once per bar when there is no order to fill.
+It’s important to note that, unlike indicators, strategies can execute _more than once_ per historical bar, depending on the specified calculation behavior. If the strategy() declaration statement includes `calc_on_order_fills = true`, or if the user selects the “On order fill” checkbox in the strategy’s Script execution settings, the runtime system executes the script on _each available tick_ where the broker emulator fills an order, or once per bar when there is no order to fill. Similarly, if the statement includes `calc_on_every_history_tick = true`, or if the user selects the “On history bar tick” checkbox in the strategy’s execution settings, the system executes the script on _every_ historical tick — even on the ticks where the broker emulator does not fill an order.
 Let’s look at a simple example. The following strategy changes the direction of its simulated position on each execution. If there is an open short position or no position, the strategy places a market order to close all short trades and enter a long trade. If a long position is open, the strategy places a market order to close it and open a short trade.
-As with the previous example, this script increments an `executionNum` variable declared with varip to count new executions, plots the result alongside bar_index for comparison, and highlights the background of historical bars in orange with bgcolor():
+As with the previous example, this script increments an `executionNum` variable declared with varip to count new executions, plots the result alongside the bar_index series for comparison, and highlights the background of historical bars in orange with a bgcolor() call:
 !image
 Pine Script®
 Copied
@@ -277,7 +277,7 @@ Note that:
 
 
 The script above uses the default calculation behavior: it places a new order only at the close of each bar. The broker emulator fills the order at the next bar’s opening price, as the trade markers on the chart above indicate. The `executionNum` and bar_index plots show the same values because the script executes only once per bar.
-If we include `calc_on_order_fills = true` in the strategy() declaration statement, the runtime system _re-executes_ the script on a bar after each new order fill to update the calculations. Our script’s logic generates a new order on _every_ execution, and the broker emulator considers historical bars to have _four ticks_ for filling orders by default (the open, high, low, and close). Therefore, with this change, the script executes **four times** per historical bar instead of only once. As shown below, the strategy now shows four trade markers on each historical bar, and the `executionNum` value is four times that of the bar_index variable:
+If we include `calc_on_order_fills = true` in the strategy() declaration statement, then by default, the runtime system _re-executes_ the script on a bar after each new order fill to update the calculations. Our script’s logic generates a new order on _every_ execution, and the broker emulator considers historical bars to have _four ticks_ for filling orders by default (the open, high, low, and close). Therefore, with this change, the script executes **four times** per historical bar instead of only once. As shown below, the strategy now shows four trade markers on each historical bar, and the `executionNum` value is four times that of the bar_index variable:
 !image
 Pine Script®
 Copied
@@ -304,9 +304,9 @@ plot(bar_index,    "Bar index",        color.aqua,   2)
 bgcolor(barstate.ishistory ? color.new(color.orange, 70) : na, title = "Historical highlight", force_overlay = true)  
 `
 Note that:
-  * This script can execute _more than four_ times per bar if it uses Bar Magnifier mode, because this mode enables the broker emulator to fill orders on historical bars using intrabar prices from a _lower timeframe_.
+  * This script can execute _more than four_ times per chart bar if it enables high historical bar detail. When using high historical detail, the broker emulator uses OHLC values from a _lower timeframe_ to determine the available historical ticks for filling orders. Therefore, the script executes up to four times per _lower-timeframe bar_ when using this setting.
   * The script can execute numerous times on a _realtime_ bar, depending on the updates from the data feed, because _each new update_ to the bar is a valid tick for filling the strategy’s orders.
-  * An alternative way to confirm the script’s increased execution count is to select and clear the “After order is filled” checkbox in the “Settings/Properties” tab while profiling the code.
+  * An alternative way to confirm the script’s increased execution count is to select and clear the “On order fill” check box in the strategy’s Script execution settings while profiling the code.
 
 
 ### Executions on realtime bars
@@ -386,9 +386,9 @@ Note that:
 
 
 It’s important to note that strategies often execute differently than indicators on realtime bars. By default, they execute only **once** per bar at each _closing tick_ without undergoing rollback. However, users can modify a strategy’s calculation behavior to allow rollback and re-execution on a bar before its closing tick.
-If the strategy() statement includes `calc_on_every_tick = true`, or if the user selects the “On every tick” checkbox in the “Settings/Properties” tab, the script executes on a realtime bar after _each new update_ from the data feed, similar to an indicator.
-Additionally, if the strategy() statement includes `calc_on_order_fills = true` or the user selects “After order is filled” in the “Settings/Properties” tab, the script executes on _each tick_ where the broker emulator fills an order. With this behavior, the system can execute the script multiple times on the open bar, but only on the ticks where an _order fill_ occurs.
-NoteRollback typically occurs only after script executions on realtime bars. However, it can also happen on _historical bars_ for strategies that recalculate after an order fills, because such scripts can execute _more than once_ on _any_ bar.
+If the strategy() statement includes `calc_on_every_tick = true`, or if the user selects the “On realtime bar tick” checkbox in the strategy’s Script execution settings, the script executes on a realtime bar after _each new update_ from the data feed, similar to an indicator.
+Additionally, if the strategy() statement includes `calc_on_order_fills = true` or the user selects the “On order fill” checkbox in the strategy’s execution settings, the script executes on _each tick_ where the broker emulator fills an order. With this behavior, the system can execute the script multiple times on the open bar, but only on the ticks where an _order fill_ occurs.
+NoteRollback typically occurs only after script executions on realtime bars. However, it can also happen on _historical bars_ for strategies that use the “On order fill” or “On history bar tick* execution settings, because such scripts can execute _more than once_ on each historical bar.
 To summarize the general process for script executions on realtime bars:
   * An indicator or library script executes on the _first available tick_ in an open realtime bar, then _once per update_ to recalculate the results for the bar using the latest data. A strategy script executes only on the bar’s _closing tick_ by default, but users can modify its calculation behavior to allow executions while the bar is open.
   * Before each new script execution on an open bar, the runtime system executes a _rollback_ process, which _reverts_ all applicable variables, expressions, and objects to their _last committed states_ as of the previous bar’s close.
@@ -416,7 +416,7 @@ Below are the additional events that cause a script to load on the chart, either
 For scripts used in other locations, the following events trigger the loading process:
   * The user creates a new script alert from the “Create Alert” dialog box.
   * The user pauses and restarts an alert instance from the “Alerts” menu.
-  * The user clicks the “Generate report” button in the Strategy Tester while Deep Backtesting mode is enabled.
+  * The user selects a new testing range in the strategy report generated by a strategy script.
   * The user clicks the “Scan” button in the Pine Screener to run the script on the datasets from a chosen watchlist.
 
 

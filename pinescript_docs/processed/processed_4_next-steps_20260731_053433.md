@@ -1,7 +1,8 @@
-## ”indicators” vs “strategies”
-Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
-Pine Script indicators also contain calculations, but cannot be used in backtesting. Because they do not require the broker emulator, they use less resources and will run faster. It is thus advantageous to use indicators whenever you can.
-Both indicators and strategies can run in either overlay mode (over the chart’s bars) or pane mode (in a separate section below or above the chart). Both can also plot information in their respective space, and both can generate alert events.
+## ​“indicators” vs “strategies”
+Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to the broker emulator, which can then simulate their execution. Strategies display trade markers on the chart and simulated backtest results in a strategy report within the chart’s bottom panel.
+Pine Script _indicators_ contain calculations, but cannot be used in backtesting. They perform calculations across a dataset to generate outputs like visuals, alerts, or Pine Logs. Because they do not require the broker emulator, they often use fewer resources and run faster than strategies. It is thus advantageous to use indicators whenever you can.
+Both indicators and strategies can run in either overlay mode (displaying over the main chart’s bars) or pane mode (displaying in a separate section below or above the main chart). In either mode, both script types can also plot information, display drawing objects, and generate alert events.
+For more information about the unique characteristics of the different script types in Pine and how to declare them, refer to the Declaration statements page.
 
 ## How scripts are executed
 A Pine script is **not** like programs in many programming languages that execute once and then stop. In the Pine Script _runtime_ environment, a script runs in the equivalent of an invisible loop where it is executed once on each bar of whatever chart you are on, from left to right. Chart bars that have already closed when the script executes on them are called _historical bars_. When execution reaches the chart’s last bar and the market is open, it is on the _realtime bar_. The script then executes once every time a price or volume change is detected, and one last time for that realtime bar when it closes. That realtime bar then becomes an _elapsed realtime bar_. Note that when the script executes in realtime, it does not recalculate on all the chart’s historical bars on every price/volume update. It has already calculated once on those bars, so it does not need to recalculate them on every chart tick. See the Execution model page for more information.
@@ -43,7 +44,7 @@ We wish you a successful journey with Pine Script… and trading!
  Previous First indicator
 
 ## * Overview
-* ”indicators” vs “strategies”
+* ​“indicators” vs “strategies”
   * How scripts are executed
   * Time series
   * Publishing scripts

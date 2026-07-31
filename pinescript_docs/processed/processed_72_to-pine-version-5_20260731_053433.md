@@ -273,7 +273,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `time(resolution)`  | `time(timeframe)`  |  
 | `time_close(resolution)`  | `time_close(timeframe)`  |  
 | `nz(x, y)`  | `nz(source, replacement)`  |  
-#### ”ta” namespace for technical analysis functions and variables
+#### ​“ta” namespace for technical analysis functions and variables
 ##### Indicator functions and variables  
 | v4  | v5  |  
 | --- | --- |  
@@ -345,7 +345,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `stdev()`  | `ta.stdev()`  |  
 | `valuewhen()`  | `ta.valuewhen()`  |  
 | `variance()`  | `ta.variance()`  |  
-#### ”math” namespace for math-related functions and variables  
+#### ​“math” namespace for math-related functions and variables  
 | v4  | v5  |  
 | --- | --- |  
 | `abs(x)`  | `math.abs(number)`  |  
@@ -372,7 +372,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `tan(x)`  | `math.tan(angle)`  |  
 | `todegrees()`  | `math.todegrees()`  |  
 | `toradians()`  | `math.toradians()`  |  
-#### ”request” namespace for functions that request external data  
+#### ​“request” namespace for functions that request external data  
 | v4  | v5  |  
 | --- | --- |  
 | `financial()`  | `request.financial()`  |  
@@ -381,7 +381,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `splits()`  | `request.splits()`  |  
 | `dividends()`  | `request.dividends()`  |  
 | `earnings()`  | `request.earnings()`  |  
-#### ”ticker” namespace for functions that help create tickers  
+#### ​“ticker” namespace for functions that help create tickers  
 | v4  | v5  |  
 | --- | --- |  
 | `heikinashi()`  | `ticker.heikinashi()`  |  
@@ -390,7 +390,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `pointfigure()`  | `ticker.pointfigure()`  |  
 | `renko()`  | `ticker.renko()`  |  
 | `tickerid()`  | `ticker.new()`  |  
-#### ”str” namespace for functions that manipulate strings  
+#### ​“str” namespace for functions that manipulate strings  
 | v4  | v5  |  
 | --- | --- |  
 | `tostring(x, y)`  | `str.tostring(value, format)`  |  
@@ -418,8 +418,8 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
   * Removed functions and variables
   * Renamed functions and parameters
   * No namespace change
-  * ”ta” namespace for technical analysis functions and variables
-  * ”math” namespace for math-related functions and variables
-  * ”request” namespace for functions that request external data
-  * ”ticker” namespace for functions that help create tickers
-  * ”str” namespace for functions that manipulate strings
+  * ​“ta” namespace for technical analysis functions and variables
+  * ​“math” namespace for math-related functions and variables
+  * ​“request” namespace for functions that request external data
+  * ​“ticker” namespace for functions that help create tickers
+  * ​“str” namespace for functions that manipulate strings

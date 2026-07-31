@@ -1,5 +1,5 @@
 ## How can I get the time of the first bar in the dataset?
-The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
+The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in variable, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
 Pine Script®
 Copied
 `//@version=6  
@@ -114,8 +114,8 @@ bgcolor(isToday() ? color.new(color.red, 90) : na)
 Some symbols trade overnight, which means that today’s trading day actually started yesterday, or even several days ago. Many futures and Forex pairs trade overnight. Trading hours are defined by the exchange. On timeframes of one day and above, the chart visually adjusts the dates of these bars to ensure the date corresponds to the bar’s trading day; on intraday timeframes the date and time are shown as they are.
 In Pine Script, the opening time of a bar is represented by the variable time, which also returns the date and time without adjustment. Variables that return date-related values, like dayofmonth, weekofyear, etc., are calculated based on this opening time, which can lead to unexpected behavior on overnight symbols.
 The example script below outputs the value of the built-in dayofmonth variable onto a chart as a label. The following screenshot shows the output of this script on two symbols: one stock and one Forex. We added a vertical line on the chart using the drawing tools to highlight the bar that represents May 22nd.
-The stock symbol “NASDAQ:AAPL ” displays on the upper chart. Its trading hours open and close within a single day with no overnight session. Therefore, the label displays the same day as the vertical line.
-In contrast, on the lower chart, which displays the “FX:EURUSD ” symbol, the label shows `21` on the bar marked May 22nd. This is because the trading for May 22 actually starts on May 21, at 17:00 in the exchange’s time zone, and the dayofmonth variable uses this time to determine the day of the month for this bar.
+The stock symbol “NASDAQ:AAPL” displays on the upper chart. Its trading hours open and close within a single day with no overnight session. Therefore, the label displays the same day as the vertical line.
+In contrast, on the lower chart, which displays the “FX:EURUSD” symbol, the label shows `21` on the bar marked May 22nd. This is because the trading for May 22 actually starts on May 21, at 17:00 in the exchange’s time zone, and the dayofmonth variable uses this time to determine the day of the month for this bar.
 !image
 Pine Script®
 Copied

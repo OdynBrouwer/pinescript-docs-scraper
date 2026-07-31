@@ -423,13 +423,18 @@ For example, this strategy script places several orders on each bar in the datas
 Pine Script®
 Copied
 `//@version=5  
-indicator("Transparency demo v5")  
+strategy("Strategy order limit demo", overlay=true, pyramiding=5)  
   
-color myColor = close > open ? color.green : color.red  
-plot(close, color = myColor, transp = 80)  
+// Place several long orders on every even bar. This reaches the maximum orders limit in v5 and raises a runtime error.  
+if bar_index % 2 == 0  
+    for i = 1 to 5  
+        strategy.entry("Entry " + str.tostring(i), strategy.long, qty = 5)  
+// Place short orders on every odd bar.  
+else  
+    strategy.entry("Short", strategy.short, qty = 25)  
 `
 In v6, when the total number of orders exceeds 9000, the strategy does _not_ halt. Instead, the orders are _trimmed_ from the beginning until the limit is reached, meaning that the strategy only stores the information for the most recent orders.
-Trimmed orders no longer show in the Strategy Tester, and referencing them using the `strategy.closedtrades.*` functions returns na. Use strategy.closedtrades.first_index to get the index of the first _non-trimmed_ trade:
+Trimmed orders no longer show in the strategy report, and referencing them using the `strategy.closedtrades.*` functions returns na. Use strategy.closedtrades.first_index to get the index of the first _non-trimmed_ trade:
 !image
 Pine Script®
 Copied

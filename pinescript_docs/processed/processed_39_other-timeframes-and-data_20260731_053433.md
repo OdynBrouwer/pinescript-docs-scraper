@@ -265,7 +265,7 @@ In Pine Script v5, it is possible for scripts to call user-defined functions or 
   
 
 In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
-#### ”series” arguments
+#### ​“series” arguments
 Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
 In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
 The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.
@@ -2758,7 +2758,7 @@ Note that:
   * `currency`
   * `lookahead`
   * Dynamic requests
-  * ”series” arguments
+  * ​“series” arguments
   * In local scopes
   * In libraries
   * Nested requests
@@ -3026,7 +3026,7 @@ In Pine Script v5, it is possible for scripts to call user-defined functions or 
   
 
 In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
-#### ”series” arguments
+#### ​“series” arguments
 Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
 In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
 The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.

@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260728_051304
+# processed_1_welcome_20260731_053433
 
-## 1_welcome_20260728_051304
+## 1_welcome_20260731_053433
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260728_051304
+# processed_2_first-steps_20260731_053433
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260728_051304
+# processed_3_first-indicator_20260731_053433
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -235,12 +235,13 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260728_051304
+# processed_4_next-steps_20260731_053433
 
-## ”indicators” vs “strategies”
-Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to Pine Script’s broker emulator, which can then simulate their execution. Strategies display backtest results in the “Strategy Tester” tab at the bottom of the chart, next to the “Pine Editor” tab.
-Pine Script indicators also contain calculations, but cannot be used in backtesting. Because they do not require the broker emulator, they use less resources and will run faster. It is thus advantageous to use indicators whenever you can.
-Both indicators and strategies can run in either overlay mode (over the chart’s bars) or pane mode (in a separate section below or above the chart). Both can also plot information in their respective space, and both can generate alert events.
+## ​“indicators” vs “strategies”
+Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to the broker emulator, which can then simulate their execution. Strategies display trade markers on the chart and simulated backtest results in a strategy report within the chart’s bottom panel.
+Pine Script _indicators_ contain calculations, but cannot be used in backtesting. They perform calculations across a dataset to generate outputs like visuals, alerts, or Pine Logs. Because they do not require the broker emulator, they often use fewer resources and run faster than strategies. It is thus advantageous to use indicators whenever you can.
+Both indicators and strategies can run in either overlay mode (displaying over the main chart’s bars) or pane mode (displaying in a separate section below or above the main chart). In either mode, both script types can also plot information, display drawing objects, and generate alert events.
+For more information about the unique characteristics of the different script types in Pine and how to declare them, refer to the Declaration statements page.
 
 ## How scripts are executed
 A Pine script is **not** like programs in many programming languages that execute once and then stop. In the Pine Script _runtime_ environment, a script runs in the equivalent of an invisible loop where it is executed once on each bar of whatever chart you are on, from left to right. Chart bars that have already closed when the script executes on them are called _historical bars_. When execution reaches the chart’s last bar and the market is open, it is on the _realtime bar_. The script then executes once every time a price or volume change is detected, and one last time for that realtime bar when it closes. That realtime bar then becomes an _elapsed realtime bar_. Note that when the script executes in realtime, it does not recalculate on all the chart’s historical bars on every price/volume update. It has already calculated once on those bars, so it does not need to recalculate them on every chart tick. See the Execution model page for more information.
@@ -282,7 +283,7 @@ We wish you a successful journey with Pine Script… and trading!
  Previous First indicator
 
 ## * Overview
-* ”indicators” vs “strategies”
+* ​“indicators” vs “strategies”
   * How scripts are executed
   * Time series
   * Publishing scripts
@@ -293,7 +294,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260728_051304
+# processed_5_execution-model_20260731_053433
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -436,7 +437,7 @@ Note that:
   * If the script restarts, all the realtime bars from the previous script run become _historical bars_ in the new run. Therefore, after restarting, the script executes only **once** on each of those bars and does _not_ highlight their background.
 
 
-Note _Strategy_ scripts do not execute in the same way as indicators by default; they execute only _once_ on _every bar_ , including all _realtime bars_. Calculations occur on each realtime bar only after the bar **closes**. Users can change this behavior with the `calc_on_every_tick` and `calc_on_order_fills` parameters of the strategy() function. See the Strategies page to learn more about strategy scripts and how they differ from indicators.
+Note _Strategy_ scripts do not execute in the same way as indicators by default; they execute only _once_ on _every bar_ , including all _realtime bars_. Calculations occur on each realtime bar only after the bar **closes**. Users can change this behavior with the `calc_on_every_tick`, `calc_on_order_fills`, and `calc_on_every_history_tick` parameters of the strategy() function. See the Strategies page to learn more about strategy scripts and how they differ from indicators.
 
 ## The details
 The following sections provide in-depth details about Pine’s execution model, including the mechanics of executions on historical bars and realtime bars, which events trigger script executions, and how the runtime system maintains data across executions in a time series format.
@@ -450,7 +451,7 @@ While the script loads, the runtime system performs the following steps for _eac
   3. After the execution ends, the system commits (saves) all necessary data for the current bar to the time series. The script can then access that data from historical buffers during its executions on subsequent bars by using the history-referencing operator or the built-in functions that reference past bars internally.
 
 
-These steps repeat for every successive bar up to the most recent bar. After the runtime system completes this process across the dataset, the script’s committed _outputs_ — such as plots, drawings, Pine Logs, and Strategy Tester results — become available to the user.
+These steps repeat for every successive bar up to the most recent bar. After the runtime system completes this process across the dataset, the script’s committed _outputs_ — such as plots, drawings, Pine Logs, and strategy report results — become available to the user.
 All the closed bars on which the script executes while loading are _historical_ , because they represent data points that were confirmed before the event that triggered the loading process. By default, all scripts execute **once** for each historical bar.
 TipScripts can identify which bars have a historical state with the barstate.ishistory variable. Its value is `true` for every closed bar accessed during the script’s loading time and `false` for all bars that close afterward. See the Bar states page to learn more about `barstate.*` variables.
 Let’s examine a simple indicator to understand how script executions work on historical bars.
@@ -541,9 +542,9 @@ Note that:
   * An alternative, more robust method to track code executions is to use the Pine Profiler. The profiler analyzes the total runtime and execution count of every significant part of the source code. To learn more about this feature, see the Profiling and optimization page.
 
 
-It’s important to note that, unlike indicators, strategies can execute _more than once_ per historical bar, depending on the specified calculation behavior. If the strategy() declaration statement includes `calc_on_order_fills = true`, or if the user selects the “After order is filled” checkbox in the “Settings/Properties” tab, the runtime system executes the script on _each available tick_ where the broker emulator fills an order, or once per bar when there is no order to fill.
+It’s important to note that, unlike indicators, strategies can execute _more than once_ per historical bar, depending on the specified calculation behavior. If the strategy() declaration statement includes `calc_on_order_fills = true`, or if the user selects the “On order fill” checkbox in the strategy’s Script execution settings, the runtime system executes the script on _each available tick_ where the broker emulator fills an order, or once per bar when there is no order to fill. Similarly, if the statement includes `calc_on_every_history_tick = true`, or if the user selects the “On history bar tick” checkbox in the strategy’s execution settings, the system executes the script on _every_ historical tick — even on the ticks where the broker emulator does not fill an order.
 Let’s look at a simple example. The following strategy changes the direction of its simulated position on each execution. If there is an open short position or no position, the strategy places a market order to close all short trades and enter a long trade. If a long position is open, the strategy places a market order to close it and open a short trade.
-As with the previous example, this script increments an `executionNum` variable declared with varip to count new executions, plots the result alongside bar_index for comparison, and highlights the background of historical bars in orange with bgcolor():
+As with the previous example, this script increments an `executionNum` variable declared with varip to count new executions, plots the result alongside the bar_index series for comparison, and highlights the background of historical bars in orange with a bgcolor() call:
 !image
 Pine Script®
 Copied
@@ -574,7 +575,7 @@ Note that:
 
 
 The script above uses the default calculation behavior: it places a new order only at the close of each bar. The broker emulator fills the order at the next bar’s opening price, as the trade markers on the chart above indicate. The `executionNum` and bar_index plots show the same values because the script executes only once per bar.
-If we include `calc_on_order_fills = true` in the strategy() declaration statement, the runtime system _re-executes_ the script on a bar after each new order fill to update the calculations. Our script’s logic generates a new order on _every_ execution, and the broker emulator considers historical bars to have _four ticks_ for filling orders by default (the open, high, low, and close). Therefore, with this change, the script executes **four times** per historical bar instead of only once. As shown below, the strategy now shows four trade markers on each historical bar, and the `executionNum` value is four times that of the bar_index variable:
+If we include `calc_on_order_fills = true` in the strategy() declaration statement, then by default, the runtime system _re-executes_ the script on a bar after each new order fill to update the calculations. Our script’s logic generates a new order on _every_ execution, and the broker emulator considers historical bars to have _four ticks_ for filling orders by default (the open, high, low, and close). Therefore, with this change, the script executes **four times** per historical bar instead of only once. As shown below, the strategy now shows four trade markers on each historical bar, and the `executionNum` value is four times that of the bar_index variable:
 !image
 Pine Script®
 Copied
@@ -601,9 +602,9 @@ plot(bar_index,    "Bar index",        color.aqua,   2)
 bgcolor(barstate.ishistory ? color.new(color.orange, 70) : na, title = "Historical highlight", force_overlay = true)  
 `
 Note that:
-  * This script can execute _more than four_ times per bar if it uses Bar Magnifier mode, because this mode enables the broker emulator to fill orders on historical bars using intrabar prices from a _lower timeframe_.
+  * This script can execute _more than four_ times per chart bar if it enables high historical bar detail. When using high historical detail, the broker emulator uses OHLC values from a _lower timeframe_ to determine the available historical ticks for filling orders. Therefore, the script executes up to four times per _lower-timeframe bar_ when using this setting.
   * The script can execute numerous times on a _realtime_ bar, depending on the updates from the data feed, because _each new update_ to the bar is a valid tick for filling the strategy’s orders.
-  * An alternative way to confirm the script’s increased execution count is to select and clear the “After order is filled” checkbox in the “Settings/Properties” tab while profiling the code.
+  * An alternative way to confirm the script’s increased execution count is to select and clear the “On order fill” check box in the strategy’s Script execution settings while profiling the code.
 
 
 ### Executions on realtime bars
@@ -683,9 +684,9 @@ Note that:
 
 
 It’s important to note that strategies often execute differently than indicators on realtime bars. By default, they execute only **once** per bar at each _closing tick_ without undergoing rollback. However, users can modify a strategy’s calculation behavior to allow rollback and re-execution on a bar before its closing tick.
-If the strategy() statement includes `calc_on_every_tick = true`, or if the user selects the “On every tick” checkbox in the “Settings/Properties” tab, the script executes on a realtime bar after _each new update_ from the data feed, similar to an indicator.
-Additionally, if the strategy() statement includes `calc_on_order_fills = true` or the user selects “After order is filled” in the “Settings/Properties” tab, the script executes on _each tick_ where the broker emulator fills an order. With this behavior, the system can execute the script multiple times on the open bar, but only on the ticks where an _order fill_ occurs.
-NoteRollback typically occurs only after script executions on realtime bars. However, it can also happen on _historical bars_ for strategies that recalculate after an order fills, because such scripts can execute _more than once_ on _any_ bar.
+If the strategy() statement includes `calc_on_every_tick = true`, or if the user selects the “On realtime bar tick” checkbox in the strategy’s Script execution settings, the script executes on a realtime bar after _each new update_ from the data feed, similar to an indicator.
+Additionally, if the strategy() statement includes `calc_on_order_fills = true` or the user selects the “On order fill” checkbox in the strategy’s execution settings, the script executes on _each tick_ where the broker emulator fills an order. With this behavior, the system can execute the script multiple times on the open bar, but only on the ticks where an _order fill_ occurs.
+NoteRollback typically occurs only after script executions on realtime bars. However, it can also happen on _historical bars_ for strategies that use the “On order fill” or “On history bar tick* execution settings, because such scripts can execute _more than once_ on each historical bar.
 To summarize the general process for script executions on realtime bars:
   * An indicator or library script executes on the _first available tick_ in an open realtime bar, then _once per update_ to recalculate the results for the bar using the latest data. A strategy script executes only on the bar’s _closing tick_ by default, but users can modify its calculation behavior to allow executions while the bar is open.
   * Before each new script execution on an open bar, the runtime system executes a _rollback_ process, which _reverts_ all applicable variables, expressions, and objects to their _last committed states_ as of the previous bar’s close.
@@ -713,7 +714,7 @@ Below are the additional events that cause a script to load on the chart, either
 For scripts used in other locations, the following events trigger the loading process:
   * The user creates a new script alert from the “Create Alert” dialog box.
   * The user pauses and restarts an alert instance from the “Alerts” menu.
-  * The user clicks the “Generate report” button in the Strategy Tester while Deep Backtesting mode is enabled.
+  * The user selects a new testing range in the strategy report generated by a strategy script.
   * The user clicks the “Scan” button in the Pine Screener to run the script on the datasets from a chosen watchlist.
 
 
@@ -1123,7 +1124,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260728_051304
+# processed_6_type-system_20260731_053433
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -2506,7 +2507,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260728_051304
+# processed_7_script-structure_20260731_053433
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2789,9 +2790,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260728_051304
+# processed_8_identifiers_20260731_053433
 
-## 8_identifiers_20260728_051304
+## 8_identifiers_20260731_053433
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2857,11 +2858,11 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_declaration-statements_20260728_051304
+# processed_9_declaration-statements_20260731_053433
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
-Every script must include exactly **one** declaration statement, and that statement must be in the script’s global scope. Our style guide recommends placing the statement directly below the `@version=` compiler annotation at the top of the source code. For example:
+Every script must include exactly **one** declaration statement, and that statement must be in the script’s global scope. Our style guide recommends placing the statement directly below the `//@version=` compiler annotation at the top of the source code. For example:
 Pine Script®
 Copied
 `//@version=6  
@@ -2963,11 +2964,11 @@ The `precision` parameter determines the default number of _fractional digits_ t
 The `format` parameter determines whether the script displays plotted numbers and the numbers in the price scale using a price, percentage, or volume format, or if it inherits formatting settings from the chart or another script. The possible arguments are format.price, format.percent, format.volume and format.inherit. The default is format.inherit.
 Below, we list how a script formats plotted values when using each of these arguments:
 `format.price`
-The script formats plotted values as whole numbers with two fractional digits by default. For example, a script that uses this argument and default precision settings formats a plot value of 122 as 122.0, and a value of 122.355 as 122.36. If a rounded value is greater than or equal to 1000, the script uses a comma as the thousands separator. For instance, it formats a value of 14489245 as 14,489,245.00. If a number is extremely large, the script formats it as a rounded value in E notation (e.g., `1e+21`).
+The script formats plotted values as whole numbers with two fractional digits by default. For example, a script that uses this argument and default precision settings formats a plot value of 122 as 122.00, and a value of 122.355 as 122.36. If a rounded value is greater than or equal to 1000, the script uses a comma as the thousands separator. For instance, it formats a value of 14489245 as 14,489,245.00. If a number is extremely large, the script formats it as a rounded value in E notation (e.g., `1e+21`).
 `format.percent`
 The script applies similar formatting rules to those defined by format.price, and it appends a percent sign (`%`) to express plotted values as percentages. By default, the format rounds plotted numbers to two fractional digits. For example, it formats the value 39.787 as 39.79%. This format does _not_ recalculate values to express them as percentages. To represent a _ratio_ as a percentage when using this format, multiply the value by 100 before plotting it.
 `format.volume`
-The script formats plotted numbers as _abbreviated_ values that follow special precision rules. If a rounded value is greater than or equal to 1000, the script includes a letter representing a multiplied quantity: “K” for thousand, “M” for million, “B” for billion, or “T” for trillion. For example, it formats a plot value of 2474 as 2.74K, and a value of 14489245 as 14.49M. If a value is extremely large, the script displays a number with commas or E notation followed by “T”. For values less than 1000, the script displays those values rounded to the nearest whole number by default. Note that these formatting rules can apply to any plotted numbers; they are not limited to only volume values.
+The script formats plotted numbers as _abbreviated_ values that follow special precision rules. If a rounded value is greater than or equal to 1000, the script includes a letter representing a multiplied quantity: “K” for thousand, “M” for million, “B” for billion, or “T” for trillion. For example, it formats a plot value of 2474 as 2.47K, and a value of 14489245 as 14.49M. If a value is extremely large, the script displays a number with commas or E notation followed by “T”. For values less than 1000, the script displays those values rounded to the nearest whole number by default. Note that these formatting rules can apply to any plotted numbers; they are not limited to only volume values.
 `format.inherit`
 The script inherits the same formatting settings as those defined for the main chart series, or the global formatting settings for another script if it accesses one of the script’s plots using a source input. For example, the script uses price formatting when applied to a stock chart series, and percentage formatting when applied to a bond chart series.
 NoteIf the declaration statement uses format.inherit as the `format` argument, changing the script’s _precision_ settings via the `precision` parameter or the “Precision” field in the script’s “Settings/Style” tab causes it to _ignore_ the inherited format and instead use format.price settings with the specified precision, even if the inherited format uses format.volume rules.
@@ -3055,7 +3056,7 @@ Note that:
 
 ### ​`explicit_plot_zorder`​
 The `explicit_plot_zorder` parameter of the declaration statement determines the _visual order_ in which the script’s plots, horizontal levels, and fills _stack_ on the chart.
-If the value is `true`, the script visually stacks plots, levels, and fills based on the order of the `plot()*`, hline(), and fill() function calls in the source code, where each written call’s output appears _on top_ of the outputs from the calls that _precede_ it. For example, if the code lists a fill() call after a plot() call, the resulting fill appears on top of the plot. Likewise, if the code lists a plot() call after an hline() call, the plot appears on top of the horizontal line.
+If the value is `true`, the script visually stacks plots, levels, and fills based on the order of the `plot*()`, hline(), and fill() function calls in the source code, where each written call’s output appears _on top_ of the outputs from the calls that _precede_ it. For example, if the code lists a fill() call after a plot() call, the resulting fill appears on top of the plot. Likewise, if the code lists a plot() call after an hline() call, the plot appears on top of the horizontal line.
 If the value is `false` (default), the script visually stacks its plots, levels, and fills based on the order of those visuals in the z-index, regardless of the order in which the function calls for each type of output occur in the code. Horizontal levels always appear on top of plots, and plots always appear on top of fills. However, visual outputs of the _same_ type or group still stack on top of each other based on the order of their function calls. For example, if a script includes two calls to the plot() function, the _second_ plot appears on top of the first.
 NoteThis parameter **does not** affect visuals created by the bgcolor() function or drawing objects. Background colors and drawings _always_ stack on the chart in the order of the _z-index_ , regardless of the `explicit_plot_zorder` argument in the script’s declaration statement.
 ### ​`max_lines_count`​, ​`max_labels_count`​, ​`max_boxes_count`​, and ​`max_polylines_count`​
@@ -3142,7 +3143,7 @@ To learn more about the `request.*()` functions and the differences between dyna
 The strategy() function declares that the script is a  _strategy_. Strategies can simulate orders and trades across a dataset, enabling users to backtest and forward test their trading systems. They have many similar capabilities to indicators, while also providing the ability to analyze hypothetical trading performance in a dedicated tab.
 The built-in RSI Strategy script is an example of a simple strategy. The script simulates entering and exiting positions based on the RSI crossing the defined overbought and oversold levels. It displays trade markers directly on the chart and shows a detailed strategy report in a separate panel below the chart.
 Scripts declared as strategies have several unique characteristics, including the following:
-  * Strategies are the only scripts that can send orders to the broker emulator and display simulated performance results using the Strategy Tester.
+  * Strategies are the only scripts that can send orders to the broker emulator and display simulated performance results using the strategy report feature.
   * The “Settings” window for strategy scripts features a unique “Properties” tab, where users can customize the properties of the strategy simulation. Programmers can specify _default_ properties for this tab via the unique parameters in the strategy() statement.
   * Unlike indicators, strategies cannot run on data for other timeframes. They always use the same timeframe as the chart.
   * Strategies _cannot_ create alert triggers using the alertcondition() function, but they can create them by using calls to the alert() function. Additionally, unlike indicators, they can generate special alerts from order fill events.
@@ -3155,7 +3156,7 @@ The strategy() function has the following signature:
 
 ```
 
-strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_on_order_fills, calc_on_every_tick, max_bars_back, backtest_fill_limits_assumption, default_qty_type, default_qty_value, initial_capital, currency, slippage, commission_type, commission_value, process_orders_on_close, close_entries_rule, margin_long, margin_short, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, risk_free_rate, use_bar_magnifier, fill_orders_on_standard_ohlc, max_polylines_count, dynamic_requests, behind_chart) → void
+strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_on_order_fills, calc_on_every_tick, max_bars_back, backtest_fill_limits_assumption, default_qty_type, default_qty_value, initial_capital, currency, slippage, commission_type, commission_value, process_orders_on_close, close_entries_rule, margin_long, margin_short, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, risk_free_rate, use_bar_magnifier, fill_orders_on_standard_ohlc, max_polylines_count, dynamic_requests, behind_chart, calc_on_every_history_tick) → void
 
 ```
 
@@ -3201,11 +3202,12 @@ Note that:
   * The strategy enters a new trade after every occurrence of the long condition only if the `pyramiding` value is at least 5.
 
 
-### ​`calc_on_every_tick`​, ​`calc_on_order_fills`​, and ​`process_orders_on_close`​
-The `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters of the strategy() declaration statement specify the strategy’s default calculation behaviors. If the argument for each of these parameters is `false` (default), the strategy executes strictly _once per bar_ , on each bar’s _closing tick_ , and the broker emulator fills each order from the strategy on the _open_ of the next available bar. Specifying a value of `true` for any of these parameters changes the strategy’s default execution and order-fill behaviors. Users can also change these behaviors via the “On every tick”, “After order is filled”, and “On bar close” checkboxes in the script’s “Settings/Properties” tab.
+### ​`calc_on_every_tick`​, ​`calc_on_order_fills`​, ​`calc_on_every_history_tick`​, and ​`process_orders_on_close`​
+The `calc_on_every_tick`, `calc_on_order_fills`, `calc_on_every_history_tick`, and `process_orders_on_close` parameters of the strategy() declaration statement specify the strategy’s default calculation behaviors. If the argument for each of these parameters is `false` (default), the strategy executes strictly _once per bar_ , on each bar’s _closing tick_ , and the broker emulator fills each order from the strategy on the _open_ of the next available bar. Specifying a value of `true` for any of these parameters changes the strategy’s default execution and order-fill behaviors. Script users can override the specified defaults by adjusting the Script execution settings and the “Order execution delay” input in the script’s “Settings/Properties” tab.
 The `calc_on_every_tick` parameter specifies whether the strategy performs a _new execution_ on _each new tick_ of a realtime bar by default. If the value is `true`, the strategy executes once after _every update_ from the realtime data feed, similar to how an indicator executes, instead of waiting for each realtime bar to close. This parameter does _not_ affect the strategy’s executions on _historical bars_ , because realtime tick information is not available on those bars.
-The `calc_on_order_fills` parameter specifies whether the strategy can immediately recalculate and place additional orders on any bar where an _order fills_ by default. If the value is `true`, the strategy _re-executes_ on the next available tick following any tick where the broker emulator fills an order, even if that tick occurs during an open bar. This behavior enables the script to execute _more than once_ on any bar where an order fill occurs — up to four times per historical bar by default (at the open, high, low, and close), and up to once for each new tick on a realtime bar.
-NoticeA strategy that enables recalculation on each tick or after order fills can behave _differently_ on realtime bars and historical bars, and therefore repaint after it reloads. Additionally, with recalculation after order fills enabled, the broker emulator can fill some historical orders at prices that are not typically possible in real-world trading, such as the exact high or low price of a bar. Therefore, when using either of these settings, exercise caution and examine the script’s behaviors carefully to avoid misleading results.
+The `calc_on_order_fills` parameter specifies whether the strategy can immediately recalculate and place additional orders on any bar where an _order fills_ by default. If the value is `true`, the strategy _re-executes_ on the next available tick following any tick where the broker emulator fills an order, even if that tick occurs during an open bar. This behavior enables the script to execute _more than once_ on any bar where an order fill occurs — up to four times per historical bar by default (at the open, high, low, and close), and up to once for each new tick on a realtime bar. As the script executes on historical ticks, the variables that store price and volume information for the current bar consistently store the bar’s _final values_. This behavior can cause _lookahead bias_ when executing on ticks before a bar’s close. See the `calc_on_order_fills` section of the Strategies page to learn more.
+The `calc_on_every_history_tick` parameter specifies whether the strategy executes on _every_ available tick on _historical bars_ by default. An argument for this parameter must include the parameter’s name (e.g., `calc_on_every_history_tick = true`). If the value is `true`, the strategy executes on all historical ticks, even the ticks where the broker emulator does not fill a new order. As the script executes across the historical data, the values of the built-in variables that hold price and volume information for the current bar update on _each tick_ to represent the bar’s _developing_ values rather than its _final_ values. With this setting, the script executes four times per historical bar, or up to four times per _lower-timeframe_ bar if the script uses high historical bar detail. This strategy behavior is available only to accounts with Premium and Ultimate plans, and it is usable only on _standard_ chart types.
+NoticeModifying a strategy’s execution settings can cause it to behave _differently_ on realtime bars and historical bars, and therefore repaint after it reloads. Additionally, with recalculation after order fills enabled, the broker emulator can fill some historical orders at prices that are not typically possible in real-world trading. Therefore, when modifying these settings, exercise caution and examine the script’s behaviors carefully to avoid misleading results.
 The `process_orders_on_close` parameter specifies whether the broker emulator can fill an order on the _same closing tick_ where the strategy creates the order by default. If the value is `false` (default), the earliest point at which the broker emulator can fill an order that occurs on a bar’s close is at the _open_ of the _following bar_ , because that point is the next possible tick. If the value is `true`, the emulator fills the order _immediately_ on the bar’s close instead of waiting for the next bar’s opening tick.
 For example, the following strategy simulates opening a position after one exponential moving average (EMA) crosses over another. On each bar where the EMAs cross, the script highlights the chart’s background, then creates a long or short market order on that bar’s closing tick. With the default behavior defined by `process_orders_on_close = false`, the broker emulator does not fill each order on the same bar where the strategy creates it. Instead, it fills the order at the open of the following bar, because that point is the next available tick:
 !image
@@ -3262,10 +3264,10 @@ plot(slowMA, "Slow MA", color.orange, linewidth = 2)
 bgcolor(longCondition ? color.new(color.blue, 85) : shortCondition ? color.new(color.orange, 80) : na)  
 `
 NoticeForcing orders to fill on a bar’s close can be helpful in some scenarios, such as when backtesting manual strategies where traders enter or exit positions immediately before the market closes. However, it’s crucial to understand that it can also cause _misleading_ results in some cases, because creating and filling orders on the same tick is _not_ typically possible in real-world trading.
-See the Altering calculation behavior section of the Strategies page to learn more about the `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters. For detailed information about how scripts execute on historical and realtime bars, and how these parameters affect executions, refer to the Execution model page.
+See the Altering calculation behavior section of the Strategies page to learn more about the `calc_on_every_tick`, `calc_on_order_fills`, `calc_on_every_history_tick`, and `process_orders_on_close` parameters. For detailed information about how scripts execute on historical and realtime bars, and how these parameters affect executions, refer to the Execution model page.
 ### ​`slippage`​ and ​`backtest_fill_limits_assumption`​
-The `slippage` parameter of the `strategy()` declaration statement specifies the default fixed number of ticks that the strategy applies to the fill prices of _all_ market orders and stop orders to simulate slippage. If the argument is a positive “int” value, the strategy adds the specified number of ticks to the fill prices of long orders and subtracts it from the fill prices of short orders. This behavior helps simulate the disparity between expected and actual fill prices that might occur in real-world trading. If the `slippage` argument is 0 (default), the strategy fills orders at their expected prices without simulating any slippage. Users can change the specified slippage amount via the “Slippage” input in the strategy’s “Settings/Properties” tab.
-The `backtest_fill_limits_assumption` parameter specifies the default number of ticks by which the market price must _exceed_ the prices of limit orders before the broker emulator can fill the orders. If the argument is a positive “int” value, the broker emulator fills a limit order at the defined price only if the market price moves _past_ it by the specified number of ticks in the favorable direction. This behavior helps simulate the possibility of unfilled limit orders, as filling limit orders in the real world requires sufficient liquidity and price action around the limit level. If the argument is 0 (default), the emulator fills orders as soon as the market price reaches the limit price or a more favorable value. Users can adjust a strategy’s limit verification requirements via the “Verify price for limit orders” input in the “Settings/Properties” tab.
+The `slippage` parameter of the strategy() declaration statement specifies the default number of ticks that the strategy applies to the fill prices of _all_ market orders and stop orders to simulate slippage. If the argument is a positive “int” value, the strategy adds the specified number of ticks to the fill prices of long orders and subtracts it from the fill prices of short orders. This behavior helps simulate the disparity between expected and actual fill prices that might occur in real-world trading. If the `slippage` argument is 0 (default), the strategy fills orders at their expected prices without simulating any slippage. Users can change the specified slippage amount via the “Slippage” input in the strategy’s “Settings/Properties” tab.
+The `backtest_fill_limits_assumption` parameter specifies the default number of ticks by which the market price must _exceed_ the prices of limit orders before the broker emulator can fill the orders. If the argument is a positive “int” value, the broker emulator fills a limit order at the defined price only if the market price moves _past_ it by the specified number of ticks in the favorable direction. This behavior helps simulate the possibility of unfilled limit orders, as filling limit orders in the real world requires sufficient liquidity and price action around the limit level. If the argument is 0 (default), the emulator fills orders as soon as the market price reaches the limit price or a more favorable value.
 NoticeLimit verification can cause order fills to occur at _different times_ , depending on how long it takes for the market price to exceed limit levels by the specified amount. This tradeoff is necessary to enable filling limit orders at their verified prices without introducing lookahead bias in the simulation. However, in some cases, it can also cause some limit orders to fill at times that are not possible in the real world. We therefore recommend users understand this price-time tradeoff and analyze their strategies carefully when adding verification to limit orders.
 ### ​`default_qty_type`​ and ​`default_qty_value`​
 The `default_qty_type` and `default_qty_value` parameters of the strategy() declaration statement specify the initial _default order size_ for the strategy.entry() and strategy.order() commands. If a call to either command does not specify an order size, the resulting order uses the default order size defined by these parameters. Users can adjust these properties via the “Default order size” inputs in the script’s “Settings/Properties” tab.
@@ -3277,7 +3279,7 @@ The `default_qty_value` parameter accepts a “float” value that specifies the
 The specified default order size applies only to the orders from strategy.entry() and strategy.order() calls that do _not_ include a `qty` argument. If a call to either command does include a `qty` argument, that call creates an order for the number of contracts/shares/lots/units specified by the argument instead of using the default quantity type and value. See the Position sizing section of the Strategies page for an example.
 NoteThe `default_qty_type` and `default_qty_value` parameters do not affect orders from the strategy.exit() or strategy.close() commands, because those commands create orders specifically for _closing_ trades. The default order size for those commands is the size of the trades to which they apply.
 The following example demonstrates how different default order sizes can affect a strategy’s entry orders. The script below uses a strategy.entry() call, without a `qty` argument, to place a long market order when the close and volume values are rising over a specified number of bars, then uses a strategy.close_all() call to close the open position when the close value is falling while the volume value is rising. It also plots the value of the strategy.position_size variable in a separate pane to visualize the size of each open position.
-The strategy() statement in this example includes the arguments `default_qty_type = strategy.fixed` and `default_qty_value = 20`, which set the strategy’s default order size to 20 contracts/shares/lots/units. As shown by the trade markers and the plot on our NYSE:UBER chart below, each order from the strategy.entry() command consistently opens a 20-share trade:
+The strategy() statement in this example includes the arguments `default_qty_type = strategy.fixed` and `default_qty_value = 20`, which set the strategy’s default order size to 20 contracts/shares/lots/units. As shown by the trade markers and the plot on our “NYSE:UBER” chart below, each order from the strategy.entry() command consistently opens a 20-share trade:
 !image
 Pine Script®
 Copied
@@ -3338,34 +3340,35 @@ if risingVolume
 plot(strategy.position_size, "Position size", style = plot.style_area)  
 `
 ### ​`initial_capital`​ and ​`currency`​
-The `initial_capital` parameter of the `strategy()` declaration statement specifies the default _initial account balance_ for the strategy’s simulation, as a quantity of the account currency. It accepts a positive “int” or “float” argument. The default is 1000000. Users can change the strategy’s initial account balance by adjusting the “Initial capital” input in the script’s “Settings/Properties” tab.
-The `currency` parameter specifies the strategy’s default _account currency_. It is the currency unit for the strategy’s initial capital and for the internal calculations in the simulation that express values as currency amounts (equity, profit and loss, commission, etc.). The parameter accepts a `currency.*` constant (e.g., currency.USD) or a string representing a valid _currency code_ , (e.g., `"USD"`). The default is currency.NONE, which specifies that the strategy uses the _same currency_ as that of the quoted prices on the chart. Users can change the strategy’s account currency via the “Base currency” input in the “Settings/Properties” tab.
+The `initial_capital` parameter of the strategy() declaration statement specifies the default _initial account balance_ for the strategy’s simulation, as a quantity of the account currency. It accepts a positive “int” or “float” argument. The default is 1000000. Users can change the strategy’s initial account balance by adjusting the “Initial capital” input in the script’s “Settings/Properties” tab.
+The `currency` parameter specifies the strategy’s default _account currency_. It is the currency unit for the strategy’s initial capital and for the internal calculations in the simulation that express values as currency amounts (equity, profit and loss, commission, etc.). The parameter accepts a `currency.*` constant (e.g., currency.USD) or a string representing a valid _currency code_ , (e.g., `"USD"`). The default is currency.NONE, which specifies that the strategy uses the _same currency_ as that of the quoted prices on the chart. Users can change the strategy’s account currency via the input next to the “Initial capital” input in the “Settings/Properties” tab.
 If the specified account currency differs from the chart’s currency, the strategy _converts_ monetary values in its calculations to express them in the account currency. However, the prices of the strategy’s orders remain expressed in the chart’s currency. To convert necessary monetary values to the account currency, the strategy typically uses the previous _daily_ value of a corresponding _currency pair_ as the conversion rate, or the value from a spread if no direct currency pair is available. See the Currency section of the Strategies page for more information.
 ### ​`commission_type`​ and ​`commission_value`​
-The `commission_type` and `commission_value` parameters of the `strategy()` declaration statement specify the default commission fees that the broker emulator applies to the strategy’s simulated transactions. Users can customize the strategy’s commission settings via the “Commission” inputs in the “Settings/Properties” tab.
+The `commission_type` and `commission_value` parameters of the strategy() declaration statement specify the default commission fees that the broker emulator applies to the strategy’s simulated transactions. Users can customize the strategy’s commission settings via the “Commission” inputs in the “Settings/Properties” tab.
 The `commission_type` parameter determines the default _commission type_ for each executed order. The possible arguments and their effects are as follows:
       
 
 The default argument is strategy.commission.percent.
 The `commission_value` parameter accepts a positive “int” or “float” value specifying the default fee amount for the commission type. For example, if the value is 1, the strategy simulates a fee of one unit of the account currency per transaction, one unit of the account currency per contract/share/lot/unit, or one percent of each transaction’s size by default, depending on the `commission_type` value. The default argument is 0, meaning that the strategy does not simulate commission unless the user specifies a nonzero value for the first “Commission” input in the “Properties” tab.
+See the Commission section of the Strategies page for an example of how changing the `commission_*` arguments can affect a strategy’s simulated performance results.
 ### ​`close_entries_rule`​
 The `close_entries_rule` parameter of the strategy() declaration statement determines the order in which the strategy simulation closes the trades in an open market position. It accepts one of two “string” arguments: `"FIFO"` or `"ANY"`. If the value is `"FIFO"`, the broker emulator follows _First In, First Out (FIFO)_ rules when closing market positions. Under these rules, the _earliest_ open trade is always the _first_ to close, regardless of the entry IDs specified by the script’s strategy.exit() or strategy.close() calls. If the value is `"ANY"`, the broker emulator _ignores_ FIFO rules and closes the trades specified by the exit commands, even if an earlier trade with a different entry ID is open. The default is `"FIFO"`.
 NoteUsers cannot customize a strategy’s exit order rules from the script’s “Settings/Properties” tab, unlike other strategy properties. The only way to change this property is by specifying a `close_entries_rule` argument in the strategy() statement.
 Refer to the Closing a market position section of the Strategies page for an example of how changing the `close_entries_rule` argument can affect a strategy’s exit behavior.
 ### ​`margin_long`​ and ​`margin_short`​
-The `margin_long` and `margin_short` parameters of the strategy() declaration statement specify the default margin requirements for the strategy’s long and short positions, respectively. Users can adjust the strategy’s long and short margin requirements via the “Margin for long positions” and “Margin for short positions” inputs in the “Settings/Properties” tab.
-Margin is the percentage of a position’s value that the simulated account must retain in its balance as _collateral_ for the broker emulator to cover the rest of the position. It is the _inverse_ of _leverage_. For example, if the margin requirement for a long position is 50%, the strategy must maintain sufficient funds to cover _half_ of the open position. This level of margin means that the strategy’s leverage is 2:1. In other words, the strategy can risk up to _twice_ its available balance on a simulated trade.
-The default `margin_long` and `margin_short` arguments are 100, meaning that the strategy must cover _100%_ of each long and short position using its simulated account balance.
-If a strategy’s available funds drop below the required margin percentage, the broker emulator triggers a _margin call_ , which forcibly _liquidates_ part or all of the simulated position to cover the loss. For detailed information about margin simulation and margin call events, refer to the How to simulate trading with leverage in Pine Script article in our Help Center.
-NoticeIf a strategy’s long or short margin percentage is _zero_ , it effectively has _infinite_ leverage. It can open and maintain positions of _any size_ , regardless of its simulated account balance. This behavior can cause **misleading** results, because real-world brokers require traders to fund at least part of their positions. Therefore, we do not recommend using a value of 0 as the `margin_long` or `margin_short` argument.
+The `margin_long` and `margin_short` parameters of the strategy() declaration statement specify the default _margin requirements_ for the strategy’s long and short positions, respectively. The strategy automatically converts the values of these parameters to _leverage_ values, then uses the results to set the default values for the “Long leverage” and “Short leverage” inputs in the “Settings/Properties” tab.
+Margin is the percentage of a position’s value that the simulated account must retain in its balance as _collateral_ for the broker emulator to cover the rest of the position. It is the _inverse_ of _leverage_. For example, if the margin requirement for a long position is 50%, the strategy must maintain sufficient funds to cover _half_ of the open position. This level of margin means that the strategy’s leverage is 2:1 . In other words, the strategy can risk up to _twice_ its available balance on a simulated trade.
+The default `margin_long` and `margin_short` arguments are 100, meaning that the strategy must cover _100%_ of each long and short position using its simulated account balance. When using these arguments, the “Long leverage” and “Short leverage” inputs show a default value of 1, because 100% margin is equivalent to 1:1 leverage.
+If a strategy’s available funds drop below the required margin percentage, the broker emulator triggers a _margin call event_ , which forcibly _liquidates_ part or all of the simulated position to cover the loss. See the Margin and leverage section of the Strategies page to learn more about this behavior. For detailed information about how margin and leverage work in Pine, refer to the How to simulate trading with leverage in Pine Script article in our Help Center.
+NoticeIf a strategy’s long or short margin percentage is _zero_ , it effectively has _infinite_ leverage. It can open and maintain positions of _any size_ , regardless of its simulated account balance. This behavior can cause extremely **misleading** results, because real-world brokers require traders to fund at least part of their positions. Therefore, we do not recommend using a value of 0 as the `margin_long` or `margin_short` argument.
 ### ​`risk_free_rate`​
-The `risk_free_rate` parameter of the strategy() declaration statement specifies the annual percentage return of a hypothetical _risk-free_ investment. The strategy uses the specified risk-free rate to calculate the Sharpe ratio and Sortino ratio metrics displayed in the “Strategy report” panel. The default value is 2, meaning that these metrics assess the strategy’s _risk-adjusted returns_ relative to a hypothetical 2% risk-free rate.
+The `risk_free_rate` parameter of the strategy() declaration statement specifies the annual percentage return of a hypothetical _risk-free_ investment. The strategy uses the specified risk-free rate to calculate the Sharpe ratio and Sortino ratio metrics displayed in the strategy report. The default value is 2, meaning that these metrics assess the strategy’s _risk-adjusted returns_ relative to a hypothetical 2% risk-free rate.
 NoteUsers cannot adjust the risk-free rate from the “Settings/Properties” tab. The only way to change the value is by specifying a `risk_free_rate` argument in the strategy() statement.
 ### ​`use_bar_magnifier`​
-The `use_bar_magnifier` parameter of the strategy() declaration statement specifies whether the strategy enables the Bar Magnifier backtesting mode by default. Users can activate or deactivate the Bar Magnifier mode by selecting the “Using bar magnifier” checkbox in the strategy’s “Settings/Properties” tab. If the value is `true`, the broker emulator retrieves available prices from a _lower timeframe_ on historical bars by default for more precise intrabar order fills. If the argument is `false` (default), the broker emulator relies on default _assumptions_ about intrabar price movement instead of using prices from a lower timeframe. See the Broker emulator section of the Strategies page to learn more.
-NoteThe Bar Magnifier feature is available only to accounts with Premium and Ultimate plans.
+The `use_bar_magnifier` parameter of the strategy() declaration statement specifies whether the strategy enables high historical bar detail by default. Users can override the specified default via the Bar detalization settings in the strategy’s “Settings/Properties” tab and at the top of the strategy report. If the value is `true`, the broker emulator retrieves available prices from a _lower timeframe_ by default for more precise intrabar order fills on historical bars. If the argument is `false` (default), the broker emulator relies on default _assumptions_ about intrabar price movement rather than using prices from a lower timeframe. See the Broker emulator section of the Strategies page to learn more about this feature.
+NoteHigh historical bar detail is available only to accounts with Premium and Ultimate plans. Lower-tier plans cannot use it, regardless of whether the declaration statement includes `use_bar_magnifier = true`.
 ### ​`fill_orders_on_standard_ohlc`​
-The `fill_orders_on_standard_ohlc` parameter of the strategy() declaration statement specifies whether the broker emulator fills the strategy’s orders using actual prices by default when the strategy executes on a Heikin Ashi chart. Users can activate or deactivate the feature via the “Using standard OHLC” input in the strategy’s “Settings/Properties” tab. If the value is `false`, the emulator fills the strategy’s orders using the chart’s _synthetic prices_ by default. If `true`, it fills the orders using the _actual_ open, high, low, and close prices from a _standard chart_ dataset for more realistic results. The default argument is `false`.
+The `fill_orders_on_standard_ohlc` parameter of the strategy() declaration statement specifies whether the broker emulator fills the strategy’s orders using actual prices by default when the strategy executes on a Heikin Ashi chart. Users can activate or deactivate the feature via the “Heikin Ashi mode” input in the strategy’s “Settings/Properties” tab. If the value is `false`, the emulator fills the strategy’s orders using the chart’s _synthetic prices_ by default. If `true`, it fills the orders using the _actual_ open, high, low, and close prices from a _standard chart_ dataset for more realistic results. The default argument is `false`.
 NoticeThis feature **does not** affect backtests on other non-standard charts, such as Renko or Kagi. A strategy always uses the chart’s synthetic prices when executing on those chart types, and therefore produces _unreliable_ results, regardless of the specified `fill_orders_on_standard_ohlc` argument. See the Strategy produces unrealistic results on non-standard chart types article in our Help Center to learn more.
 
 ## ​`library()`​
@@ -3476,7 +3479,7 @@ if barstate.islast
 `
 Note that:
   * We included `dynamic_requests = true` in the library() statement only to emphasize the `dynamic_requests` parameter. Specifying this argument is unnecessary; the value is `true` by default. A compilation error occurs if we change the value to `false`, because the library cannot export the custom function or call it within the example code’s if structure.
-  * The `\\@description` annotation at the top of the script sets a _default description_ for the library. Similarly, the `\\@function`, `\\@param`, and `\\@returns` annotations specify documentation for the exported function. Users who import this hypothetical library can hover over its identifiers to view the formatted text from these annotations. Additionally, the “Publish script” window uses these annotations to generate a default publication description.
+  * The `//@description` annotation at the top of the script sets a _default description_ for the library. Similarly, the `//@function`, `//@param`, and `//@returns` annotations specify documentation for the exported function. Users who import this hypothetical library can hover over its identifiers to view the formatted text from these annotations. Additionally, the “Publish script” window uses these annotations to generate a default publication description.
   * The source code includes `//#region` and `//#endregion` annotations to define _collapsible regions_ that visually separate the library’s exported code from its non-exported code in the Pine Editor.
 
 
@@ -3496,7 +3499,7 @@ See the Request publication from the TradingView account for an advanced example
   * `dynamic_requests`
   * `strategy()`
   * `pyramiding`
-  * `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` 
+  * `calc_on_every_tick`, `calc_on_order_fills`, `calc_on_every_history_tick`, and `process_orders_on_close` 
   * `slippage` and `backtest_fill_limits_assumption` 
   * `default_qty_type` and `default_qty_value` 
   * `initial_capital` and `currency` 
@@ -3519,7 +3522,7 @@ indicator(title, shorttitle, overlay, format, precision, scale, max_bars_back, t
 ```
 
 ```pine
-strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_on_order_fills, calc_on_every_tick, max_bars_back, backtest_fill_limits_assumption, default_qty_type, default_qty_value, initial_capital, currency, slippage, commission_type, commission_value, process_orders_on_close, close_entries_rule, margin_long, margin_short, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, risk_free_rate, use_bar_magnifier, fill_orders_on_standard_ohlc, max_polylines_count, dynamic_requests, behind_chart) → void
+strategy(title, shorttitle, overlay, format, precision, scale, pyramiding, calc_on_order_fills, calc_on_every_tick, max_bars_back, backtest_fill_limits_assumption, default_qty_type, default_qty_value, initial_capital, currency, slippage, commission_type, commission_value, process_orders_on_close, close_entries_rule, margin_long, margin_short, explicit_plot_zorder, max_lines_count, max_labels_count, max_boxes_count, calc_bars_count, risk_free_rate, use_bar_magnifier, fill_orders_on_standard_ohlc, max_polylines_count, dynamic_requests, behind_chart, calc_on_every_history_tick) → void
 ```
 
 ```pine
@@ -3536,14 +3539,14 @@ library(title, overlay, dynamic_requests) → void
 //@returns       A tuple containing the EPS, total revenue, outstanding shares, and market cap values, respectively.  
 
 
-@function`, `\\@param`, and `\\@returns` annotations specify documentation for the exported function. Users who import this hypothetical library can hover over its identifiers to view the formatted text from these annotations. Additionally, the “Publish script” window uses these annotations to generate a default publication description.
+@function`, `//@param`, and `//@returns` annotations specify documentation for the exported function. Users who import this hypothetical library can hover over its identifiers to view the formatted text from these annotations. Additionally, the “Publish script” window uses these annotations to generate a default publication description.
 
 
 ---
 
 
 
-# processed_10_variable-declarations_20260728_051304
+# processed_10_variable-declarations_20260731_053433
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4679,7 +4682,7 @@ Note that:
 
 
 NoteIn contrast to objects of _built-in_ reference types, objects of user-defined types **do not** automatically apply varip behaviors to their _fields_ when referenced by variables declared using the varip keyword. To enable these behaviors for the fields of a UDT, prefix the identifier of each field with the varip keyword in the UDT declaration. See the Objects page for an example.
-It’s crucial to note that strategies execute _differently_ from indicators. By default, a strategy executes strictly _once per bar_ , even on realtime bars. Therefore, varip variables in a strategy behave the same as var variables by default. However, users can change a strategy’s calculation behavior to enable additional executions on each new tick or after order fills. These settings can cause a strategy’s varip variables to behave differently on both realtime and historical bars.
+It’s crucial to note that strategies execute _differently_ from indicators. By default, a strategy executes strictly _once per bar_ , even on realtime bars. Therefore, varip variables in a strategy behave the same as var variables by default. However, users can change a strategy’s calculation behavior to enable additional executions on each realtime tick, each historical tick, or after order fills. These settings can cause a strategy’s varip variables to behave differently on both realtime and historical bars.
 For example, the simple strategy below alternates between creating a long and short market order on each execution. It also declares two persistent variables named `counter1` and `counter2` and increments their values by one with the += operator. The first declaration uses var, and the second uses varip. The script also colors the background of all realtime bars for visual reference:
 Pine Script®
 Copied
@@ -4716,9 +4719,9 @@ bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = 
 `
 If we run the script with the default calculation behavior, the strategy executes only once on every closed bar. On realtime bars, it waits for each bar to close before performing a new execution. As such, the values of both variables consistently increment by the same amount across all bars and do not diverge:
 !image
-If we select the “On every tick” checkbox in the strategy’s “Properties” tab, the script executes on _each new tick_ in a realtime bar, similar to an indicator. With this change, the plot for the `counter2` variable diverges from that of the `counter1` variable on realtime bars:
+If we select the “On realtime bar tick” checkbox in the strategy’s Script execution settings, the script executes on _each new tick_ in a realtime bar, similar to an indicator. With this change, the plot for the `counter2` variable diverges from that of the `counter1` variable on realtime bars:
 !image
-If we select the “After an order is filled” checkbox, the script executes again on _any_ bar where the broker emulator fills an order. By default, the emulator assumes that the open, high, low, and close of historical bars are all valid ticks for filling orders, and our script creates a new order on every available tick. With this change, in addition to incrementing by the number of ticks on each realtime bar, the value of the `counter2` variable increments by _four_ instead of one on each _historical bar_ after the first:
+If we select the “On order fill” checkbox, the script executes again on _any_ bar where the broker emulator fills an order. By default, the emulator assumes that the open, high, low, and close of historical bars are all valid ticks for filling orders, and our script creates a new order on every available tick. With this change, in addition to incrementing by the number of ticks on each realtime bar, the value of the `counter2` variable increments by _four_ instead of one on each _historical bar_ after the first:
 !image
 For more detailed information about this historical behavior, see the Executions on historical bars section of the Execution model page.
 Notice
@@ -4747,7 +4750,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260728_051304
+# processed_11_operators_20260731_053433
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -5003,7 +5006,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260728_051304
+# processed_12_conditional-structures_20260731_053433
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5388,7 +5391,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260728_051304
+# processed_13_loops_20260731_053433
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -5476,7 +5479,7 @@ barcolor(barstate.islastconfirmedhistory ? color.orange : na, title = "La
 `
 Note that:
   * Each _iteration_ of the for loop retrieves a previous bar’s high with the history-referencing operator [[]], using the loop’s _counter_ (`i`) as the historical offset. The label.new() call also uses the counter to determine each label’s x-coordinate.
-  * The indicator declaration statement includes `max_labels_count = 500`, meaning the script can show up to 500 labels on the chart.
+  * The indicator() declaration statement includes the argument `max_labels_count = 500`, meaning the script can show up to 500 labels on the chart.
   * The script calls barcolor() to highlight the last historical chart bar, and it draws a horizontal line at that bar’s high for visual reference.
 
 ## Common characteristics
@@ -6358,7 +6361,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260728_051304
+# processed_14_built-ins_20260731_053433
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6472,7 +6475,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260728_051304
+# processed_15_user-defined-functions_20260731_053433
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8307,7 +8310,7 @@ Copied
 
 
 
-# processed_16_objects_20260728_051304
+# processed_16_objects_20260731_053433
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8614,7 +8617,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260728_051304
+# processed_17_enums_20260731_053433
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8932,7 +8935,7 @@ enum ta
 
 
 
-# processed_18_methods_20260728_051304
+# processed_18_methods_20260731_053433
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9580,7 +9583,7 @@ Copied
 
 
 
-# processed_19_arrays_20260728_051304
+# processed_19_arrays_20260731_053433
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -10369,7 +10372,7 @@ myColor id = arr.get(ind)
 // Color the bar using the `id.c` value.  
 barcolor(id.c)  
 `
-The array.sort and array.sort_indices functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
+The array.sort() and array.sort_indices() functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
 For example, the script below declares a type named `Number` with a single “float” field named `value`. On the last historical bar, it creates an array containing multiple `Number` IDs, two of which are na. Calling array.sort() to rearrange that array causes an error, because the na elements in the array do not refer to valid `Number` objects:
 Pine Script®
 Copied
@@ -11280,7 +11283,7 @@ myColor id = arr.get(ind)
 // Color the bar using the `id.c` value.  
 barcolor(id.c)  
 `
-The array.sort and array.sort_indices functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
+The array.sort() and array.sort_indices() functions can sort UDT arrays whose referenced objects have “int”, “float”, or “string” fields that contain `na` values. However, these functions **cannot** sort UDT arrays that contain na _elements_. In a UDT array, an na element represents a _nonexistent ID_ , meaning that there is _no associated object_ that contains the field required for sorting. Consequently, attempting to sort a UDT array with one or more na elements causes a _runtime error_.
 For example, the script below declares a type named `Number` with a single “float” field named `value`. On the last historical bar, it creates an array containing multiple `Number` IDs, two of which are na. Calling array.sort() to rearrange that array causes an error, because the na elements in the array do not refer to valid `Number` objects:
 Pine Script®
 Copied
@@ -11487,7 +11490,7 @@ indicator("Deep copies demo")
 
 
 
-# processed_20_matrices_20260728_051304
+# processed_20_matrices_20260731_053433
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -11571,43 +11574,8 @@ plot(m.get(1, 1), "Row 1, Column 1 Value", color.blue, 2)
 To overwrite all matrix elements with a specific value, use matrix.fill(). This function points all items in the entire matrix or within the `from_row/column` and `to_row/column` index range to the `value` specified in the call. For example, this snippet declares a 4x4 square matrix, then fills its elements with the result of a math.random() call:
 Pine Script®
 Copied
-`//@version=6  
-indicator("Replacing rows demo")  
-  
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
-  
-//@function Replaces the `row` of `this` matrix with a new array of `values`.  
-//@param    row The row index to replace.  
-//@param    values The array of values to insert.  
-method replaceRow(matrix<float> this, int row, array<float> values) =>  
-    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
-    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
-  
-//@variable A 3x3 matrix.  
-var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
-  
-if bar_index == last_bar_index - 1  
-    m.debugLabel(note = "Original")  
-    // Replace each row of `m`.  
-    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
-    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
-    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
-    m.debugLabel(bar_index + 10, note = "Replaced rows")  
+`myMatrix = matrix.new<float>(4, 4)  
+myMatrix.fill(math.random())  
 `
 Note when using matrix.fill() with matrices of _reference types_ (line, linefill, box, polyline, label, table, or chart.point) or UDTs, all replaced elements will point to the same object passed in the function call.
 This script declares a matrix with four rows and columns of label references, which it fills with a new label reference on the first bar. On each bar, the script sets the `x` property of the label referenced at row 0, column 0 to bar_index, and the `text` property of the one referenced at row 3, column 3 to the number of labels on the chart. Although the matrix can reference 16 (4x4) labels, each element refers to the _same_ label object, resulting in only one label on the chart with coordinates and displayed text that update on each bar:
@@ -13183,166 +13151,6 @@ method debugLabel(
              textcolor = textColor, size = size.huge  
          )  
   
-//@function Replaces the `row` of `this` matrix with a new array of `values`.  
-//@param    row The row index to replace.  
-//@param    values The array of values to insert.  
-method replaceRow(matrix<float> this, int row, array<float> values) =>  
-    this.add_row(row, values) // Inserts a copy of the `values` array at the `row`.  
-    this.remove_row(row + 1)  // Removes the old elements previously at the `row`.  
-  
-//@variable A 3x3 matrix.  
-var matrix<float> m = matrix.new<float>(3, 3, 0.0)  
-  
-if bar_index == last_bar_index - 1  
-    m.debugLabel(note = "Original")  
-    // Replace each row of `m`.  
-    m.replaceRow(0, array.from(1.0, 2.0, 3.0))  
-    m.replaceRow(1, array.from(4.0, 5.0, 6.0))  
-    m.replaceRow(2, array.from(7.0, 8.0, 9.0))  
-    m.debugLabel(bar_index + 10, note = "Replaced rows")  
-`
-Note when using matrix.fill() with matrices of _reference types_ (line, linefill, box, polyline, label, table, or chart.point) or UDTs, all replaced elements will point to the same object passed in the function call.
-This script declares a matrix with four rows and columns of label references, which it fills with a new label reference on the first bar. On each bar, the script sets the `x` property of the label referenced at row 0, column 0 to bar_index, and the `text` property of the one referenced at row 3, column 3 to the number of labels on the chart. Although the matrix can reference 16 (4x4) labels, each element refers to the _same_ label object, resulting in only one label on the chart with coordinates and displayed text that update on each bar:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Object matrix fill demo")  
-  
-//@variable A 4x4 label matrix.  
-var matrix<label> m = matrix.new<label>(4, 4)  
-  
-// Fill `m` with a new label object on the first bar.  
-if bar_index == 0  
-    m.fill(label.new(0, 0, textcolor = color.white, size = size.huge))  
-  
-//@variable The number of label objects on the chart.  
-int numLabels = label.all.size()  
-  
-// Set the `x` of the label from the first row and column to `bar_index`.  
-m.get(0, 0).set_x(bar_index)  
-// Set the `text` of the label at the last row and column to the number of labels.  
-m.get(3, 3).set_text(str.format("Total labels on the chart: {0}", numLabels))  
-`
-## Rows and columns
-###  Retrieving
-Scripts can retrieve all the data from a specific row or column in a matrix via the matrix.row() and matrix.col() functions. These functions return the row or column contents as an array sized according to the other dimension of the matrix. The size of a matrix.row() array equals the number of columns (matrix.columns()), and the size of a matrix.col() array equals the number of rows matrix.rows().
-The script below populates a 3x2 `m` matrix with the values 1 - 6 on the first chart bar. It uses matrix.row() and matrix.col() method calls to access the first row and column arrays from the matrix and displays them on the chart in a label along with the array sizes:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Retrieving rows and columns demo")  
-  
-//@variable A 3x2 rectangular matrix.  
-var matrix<float> m = matrix.new<float>(3, 2)  
-  
-if bar_index == 0  
-    m.set(0, 0, 1.0) // Set row 0, column 0 value to 1.  
-    m.set(0, 1, 2.0) // Set row 0, column 1 value to 2.  
-    m.set(1, 0, 3.0) // Set row 1, column 0 value to 3.  
-    m.set(1, 1, 4.0) // Set row 1, column 1 value to 4.  
-    m.set(2, 0, 5.0) // Set row 2, column 0 value to 5.  
-    m.set(2, 1, 6.0) // Set row 2, column 1 value to 6.  
-  
-//@variable The first row of the matrix.  
-array<float> row0 = m.row(0)  
-//@variable The first column of the matrix.  
-array<float> column0 = m.col(0)  
-  
-//@variable Displays the first row and column of the matrix and their sizes in a label.  
-var label debugLabel = label.new(0, 0, color = color.blue, textcolor = color.white, size = size.huge)  
-debugLabel.set_x(bar_index)  
-debugLabel.set_text(str.format("Row 0: {0}, Size: {1}\nCol 0: {2}, Size: {3}", row0, m.columns(), column0, m.rows()))  
-`
-Note that:
-  * To get the sizes of the arrays displayed in the label, we used the matrix.rows() and matrix.columns() methods rather than array.size() to demonstrate that the size of the `row0` array equals the number of matrix columns and the size of the `column0` array equals the number of matrix rows.
-
-
-The matrix.row() and matrix.col() functions copy the contents of a row/column to a new array. Modifications to the arrays returned by these functions do not directly affect the elements or the shape of a matrix.
-Here, we’ve modified the previous script to set the first element of `row0` to 10 via the array.set() method before displaying the label. This script also plots the value from row 0, column 0. As we see, the label shows that the first element of the `row0` array is 10. However, the plot shows that the corresponding matrix element still has a value of 1:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Retrieving rows and columns demo")  
-  
-//@variable A 3x2 rectangular matrix.  
-var matrix<float> m = matrix.new<float>(3, 2)  
-  
-if bar_index == 0  
-    m.set(0, 0, 1.0) // Set row 0, column 0 value to 1.  
-    m.set(0, 1, 2.0) // Set row 0, column 1 value to 2.  
-    m.set(1, 0, 3.0) // Set row 1, column 0 value to 3.  
-    m.set(1, 1, 4.0) // Set row 1, column 1 value to 4.  
-    m.set(2, 0, 5.0) // Set row 1, column 0 value to 5.  
-    m.set(2, 1, 6.0) // Set row 1, column 1 value to 6.  
-  
-//@variable The first row of the matrix.  
-array<float> row0 = m.row(0)  
-//@variable The first column of the matrix.  
-array<float> column0 = m.col(0)  
-  
-// Set the first `row` element to 10.  
-row0.set(0, 10)  
-  
-//@variable Displays the first row and column of the matrix and their sizes in a label.  
-var label debugLabel = label.new(0, m.get(0, 0), color = color.blue, textcolor = color.white, size = size.huge)  
-debugLabel.set_x(bar_index)  
-debugLabel.set_text(str.format("Row 0: {0}, Size: {1}\nCol 0: {2}, Size: {3}", row0, m.columns(), column0, m.rows()))  
-  
-// Plot the first element of `m`.  
-plot(m.get(0, 0), linewidth = 3)  
-`
-Although changes to an array constructed from matrix.row() or matrix.col() do not directly affect a parent matrix, it’s important to note the resulting array from a matrix containing UDTs or special types, including line, linefill, box, polyline, label, table, or chart.point, behaves as a _shallow copy_ of a row/column, i.e., the elements within an array returned from these functions reference the same objects as the corresponding matrix elements.
-This script contains a custom `myUDT` type containing a `value` field with an initial value of 0. It declares a 1x1 `m` matrix to hold a single `myUDT` instance on the first bar, then calls `m.row(0)` to copy the first row of the matrix as an array. On every chart bar, the script adds 1 to the `value` field of the first `row` array element. In this case, the `value` field of the matrix element increases on every bar as well, because both elements refer to the same object:
-Pine Script®
-Copied
-`//@version=6  
-indicator("Row with reference types demo")  
-  
-//@type A custom type that holds a float value.  
-type myUDT  
-    float value = 0.0  
-  
-//@variable A 1x1 matrix of `myUDT` type.  
-var matrix<myUDT> m = matrix.new<myUDT>(1, 1, myUDT.new())  
-//@variable A shallow copy of the first row of `m`.  
-array<myUDT> row = m.row(0)  
-//@variable The first element of the `row`.  
-myUDT firstElement = row.get(0)  
-  
-firstElement.value += 1.0 // Add 1 to the `value` field of `firstElement`. Also affects the element in the matrix.  
-  
-plot(m.get(0, 0).value, linewidth = 3) // Plot the `value` of the `myUDT` object from the first row and column of `m`.  
-`
-###  Inserting
-Scripts can add new rows and columns to a matrix via matrix.add_row() and matrix.add_col(). These functions insert the values or references from an array into a matrix at the specified `row/column` index. If the `id` matrix is empty (has no rows or columns), the array referenced by `array_id` in the call can be of any size. If a row/column exists at the specified index, the matrix increases the index value for the existing row/column and all after it by one.
-The script below declares an empty `m` matrix and inserts rows and columns by calling matrix.add_row() and matrix.add_col() as methods. It first inserts an array with three elements at row 0, turning `m` into a 1x3 matrix, then another at row 1, changing the shape to 2x3. After that, the script inserts another array at row 0, which changes the shape of `m` to 3x3 and shifts the index of all rows previously at index 0 and higher. It inserts another array at the last column index, changing the shape to 3x4. Finally, it adds an array with four values at the end row index.
-The resulting matrix has four rows and columns and contains values 1-16 in ascending order. The script displays the rows of the matrix after each row/column insertion with a user-defined `debugLabel()` function to visualize the process:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Rows and columns demo")  
-  
-//@function Displays the rows of a matrix in a label with a note.  
-//@param    this The matrix to display.  
-//@param    barIndex The `bar_index` to display the label at.  
-//@param    bgColor The background color of the label.  
-//@param    textColor The color of the label's text.  
-//@param    note The text to display above the rows.  
-method debugLabel(  
-     matrix<float> this, int barIndex = bar_index, color bgColor = color.blue,  
-     color textColor = color.white, string note = ""  
- ) =>  
-    labelText = note + "\n" + str.tostring(this)  
-    if barstate.ishistory  
-        label.new(  
-             barIndex, 0, labelText, color = bgColor, style = label.style_label_center,  
-             textcolor = textColor, size = size.huge  
-         )  
-  
 //Create an empty matrix.  
 var m = matrix.new<float>()  
   
@@ -14278,7 +14086,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260728_051304
+# processed_21_maps_20260731_053433
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -15324,7 +15132,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260728_051304
+# processed_22_overview_20260731_053433
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -15765,9 +15573,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260728_051304
+# processed_23_backgrounds_20260731_053433
 
-## 23_backgrounds_20260728_051304
+## 23_backgrounds_20260731_053433
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -15910,9 +15718,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260728_051304
+# processed_24_bar-coloring_20260731_053433
 
-## 24_bar-coloring_20260728_051304
+## 24_bar-coloring_20260731_053433
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -15987,7 +15795,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260728_051304
+# processed_25_bar-plotting_20260731_053433
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -16100,7 +15908,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260728_051304
+# processed_26_colors_20260731_053433
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -16485,7 +16293,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_27_fills_20260728_051304
+# processed_27_fills_20260731_053433
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -16699,7 +16507,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260728_051304
+# processed_28_levels_20260731_053433
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -16789,7 +16597,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260728_051304
+# processed_29_lines-and-boxes_20260731_053433
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -16921,7 +16729,7 @@ The `line.*` namespace contains multiple _setter_ functions that modify the prop
                   
 
 All setter functions directly modify the `id` line passed into the call and do not return any value. Each setter function accepts “series” arguments, as a script can change a line’s properties throughout its execution.
-The following example draws lines connecting the opening price of a `timeframe` to its closing price. The script uses the var keyword to declare `periodLine` and the variables that reference chart.point objects (`openPoint` and `closePoint`) only on the _first_ chart bar, and it assigns new references to these variables over its execution. After detecting a new bar on the specified timeframe with timeframe.change, the script uses line.set_color() to set the `color` property of the current line referenced by `periodLine`, creates new chart points for `openPoint` and `closePoint` using chart.point.now(), calls line.new() to create another line anchored to those points, then assigns the new line’s reference to `periodLine`.
+The following example draws lines connecting the opening price of a `timeframe` to its closing price. The script uses the var keyword to declare `periodLine` and the variables that reference chart.point objects (`openPoint` and `closePoint`) only on the _first_ chart bar, and it assigns new references to these variables over its execution. After detecting a new bar on the specified timeframe with timeframe.change(), the script uses line.set_color() to set the `color` property of the current line referenced by `periodLine`, creates new chart points for `openPoint` and `closePoint` using chart.point.now(), calls line.new() to create another line anchored to those points, then assigns the new line’s reference to `periodLine`.
 On other bars where the `periodLine` reference is not na, the script assigns a new chart.point reference to the `closePoint` variable, then uses line.set_second_point() and line.set_color() as methods to update the end coordinate and color of the latest line:
 !image
 Pine Script®
@@ -16994,7 +16802,7 @@ Note that:
 The `line.*` namespace includes _getter_ functions, which allow a script to retrieve values from a line object for further use:
       
 
-The script below draws a new line upon the onset of a rising or falling price pattern forming over `length` bars. It uses the var keyword to declare the `directionLine` variable on the first chart bar. The line reference assigned to `directionLine` persists over subsequent bars until the `newDirection` condition occurs, in which case the script assigns a creates a new line with line.new and assigns that line’s reference to the variable.
+The script below draws a new line upon the onset of a rising or falling price pattern forming over `length` bars. It uses the var keyword to declare the `directionLine` variable on the first chart bar. The line reference assigned to `directionLine` persists over subsequent bars until the `newDirection` condition occurs, in which case the script assigns a creates a new line with line.new() and assigns that line’s reference to the variable.
 On every bar, the script calls the line.get_y2(), line.get_y1(), line.get_x2(), and line.get_x1() getters as methods to retrieve values from the current line referenced by `directionLine` and calculate its slope, then uses the result to determine the color of each drawing and plot. The script retrieves an extended value of the current line from _beyond_ its second point using line.get_price() and plots the returned value on the chart:
 !image
 Pine Script®
@@ -17531,7 +17339,7 @@ Specifies the style of the polyline, which can be any of the available options i
 Specifies the width of the polyline, in pixels. The default value is 1.
 `force_overlay`
 If `true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
-This script demonstrates a simple example of drawing a polyline on the chart. It uses array.push to push the reference of a new chart.point object with an alternating `price` value into a `points` array and colors the background with bgcolor() once every `length` bars.
+This script demonstrates a simple example of drawing a polyline on the chart. It uses array.push() to push the reference of a new chart.point object with an alternating `price` value into a `points` array and colors the background with bgcolor() once every `length` bars.
 On the last confirmed historical bar, where barstate.islastconfirmedhistory is `true`, the script creates a new polyline with polyline.new(). The polyline drawing passes through the coordinates of each chart point in the `points` array in order, starting from the first point:
 !image
 Pine Script®
@@ -17999,7 +17807,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260728_051304
+# processed_30_plots_20260731_053433
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -18331,7 +18139,7 @@ hline(200)
 hline(150)  
 `
 Note that:
-  * We have added levels using hline to situate both signals.
+  * We have added levels using hline() to situate both signals.
   * In order for both signal lines to oscillate on the same range of 100, we divide the TSI value by 2 because it has a 200 range (-100 to +100). We then shift this value up by 150 so it oscillates between 100 and 200, making 150 its centerline.
   * The manipulations we make here are typical of the compromises required to bring two indicators with different scales in the same visual space, even when their values, contrary to MACD, are bounded in a fixed range.
 
@@ -18361,7 +18169,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260728_051304
+# processed_31_tables_20260731_053433
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -18580,7 +18388,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260728_051304
+# processed_32_text-and-shapes_20260731_053433
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -19129,7 +18937,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260728_051304
+# processed_33_alerts_20260731_053433
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -19484,7 +19292,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260728_051304
+# processed_34_bar-states_20260731_053433
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -19620,7 +19428,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_35_chart-information_20260728_051304
+# processed_35_chart-information_20260731_053433
 
 ## Introduction
 The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
@@ -19711,7 +19519,7 @@ Session information is available in different forms:
 
 
 
-# processed_36_inputs_20260728_051304
+# processed_36_inputs_20260731_053433
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -20342,7 +20150,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260728_051304
+# processed_37_libraries_20260731_053433
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -20385,7 +20193,7 @@ export <function_name>([simple/series] <parameter_type> <parameter_name> [=�
 <script_code>  
 `
 Note that:
-  * The `//@description`, `//@enum`, `//@type`, `@field`, `// @function`, `// @param`, and `// @returns` compiler annotations are optional but we highly recommend you use them. These annotations document the library’s code and populate the default library description, which authors can use when publishing the library.
+  * The `//@description`, `//@enum`, `//@type`, `//@field`, `//@function`, `//@param`, and `//@returns` compiler annotations are optional but we highly recommend you use them. These annotations document the library’s code and populate the default library description, which authors can use when publishing the library.
   * The export keyword is mandatory.
   * <parameter_type> is mandatory, contrary to user-defined function parameter definitions in indicators or strategies, which are typeless.
   * <script_code> can be any code one would normally use in an indicator, including inputs.
@@ -20707,7 +20515,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 //@returns <return_value_description>  
 
 
-@function`, `// @param`, and `// @returns` compiler annotations are optional but we highly recommend you use them. These annotations document the library’s code and populate the default library description, which authors can use when publishing the library.
+@function`, `//@param`, and `//@returns` compiler annotations are optional but we highly recommend you use them. These annotations document the library’s code and populate the default library description, which authors can use when publishing the library.
 
 
 @function Calculates the all-time high of a series.  
@@ -20724,7 +20532,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260728_051304
+# processed_38_non-standard-charts-data_20260731_053433
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -20834,7 +20642,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_39_other-timeframes-and-data_20260728_051304
+# processed_39_other-timeframes-and-data_20260731_053433
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -21103,7 +20911,7 @@ In Pine Script v5, it is possible for scripts to call user-defined functions or 
   
 
 In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
-#### ”series” arguments
+#### ​“series” arguments
 Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
 In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
 The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.
@@ -23596,7 +23404,7 @@ Note that:
   * `currency`
   * `lookahead`
   * Dynamic requests
-  * ”series” arguments
+  * ​“series” arguments
   * In local scopes
   * In libraries
   * Nested requests
@@ -23864,7 +23672,7 @@ In Pine Script v5, it is possible for scripts to call user-defined functions or 
   
 
 In Pine Script v6, scripts **cannot** use wrapped `request.*()` calls within the local blocks of these structures without enabling dynamic requests.
-#### ”series” arguments
+#### ​“series” arguments
 Scripts without dynamic requests enabled cannot use “series” arguments for most `request.*()` function parameters, which means the argument values _cannot change_. The only exception is the `expression` parameter in request.security(), request.security_lower_tf(), and request.seed(), which _always_ allows “series” values.
 In contrast, when a script allows dynamic requests, all `request.*()` function parameters that define parts of the ticker ID or timeframe of a request accept “series” arguments that _can change_ with each script execution. In other words, with dynamic requests, it’s possible for a single `request.*()` instance to fetch data from _different contexts_ in different executions. Some other optional parameters, such as `ignore_invalid_symbol`, can also accept “series” arguments, allowing additional flexibility in `request.*()` call behaviors.
 The following script declares a `symbolSeries` variable that is assigned four different symbol strings in 20-bar cycles, with its value changing after every five bars. The request.security() call uses this variable as the `symbol` argument. The script plots the `requestedClose` values, which therefore represent a different symbol’s close prices for each five-bar period.
@@ -24014,7 +23822,7 @@ library("DynamicRequests")
 
 
 
-# processed_40_repainting_20260728_051304
+# processed_40_repainting_20260731_053433
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -24282,7 +24090,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260728_051304
+# processed_41_sessions_20260731_053433
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -24634,236 +24442,367 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260728_051304
+# processed_42_strategies_20260731_053433
 
 ## Introduction
 Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
-When a script uses the strategy() function as its declaration statement, it gains access to the `strategy.*` namespace, which features numerous functions and variables for simulating orders and retrieving essential strategy information. It also displays relevant information and simulated performance results in the dedicated Strategy Tester tab.
+When a script uses the strategy() function as its declaration statement, it gains access to the `strategy.*` namespace, which features numerous functions and variables for simulating orders and retrieving essential strategy information. Additionally, the script generates a detailed strategy report in a dedicated tab below the chart.
 
 ## A simple strategy example
-The following script is a simple strategy that simulates entering a long or short position when two moving averages cross. When the `fastMA` crosses above the `slowMA`, it places a “buy” market order to enter a long position. When the `fastMA` crosses below the `slowMA`, it places a “sell” market order to enter a short position:
+The following script is a simple strategy that simulates entering a long or short position when two moving averages (MAs) cross. If the fast MA crosses over the slow MA, the strategy places a market order named “Buy” to enter a long position. If the fast MA crosses under the slow MA, it places a market order named “Sell” to open a short position instead:
 Pine Script®
 Copied
 `//@version=6  
-strategy("Simple strategy demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Simple strategy demo", overlay = true)  
   
-//@variable The length of the `fastMA` and half the length of the `slowMA`.  
-int lengthInput = input.int(14, "Base length", 2)  
+//@variable Defines the lengths of the fast and slow moving averages.  
+int lengthInput = input.int(14, "Base length", minval = 2)  
   
-// Calculate two moving averages with different lengths.  
+// Calculate a fast MA using the `lengthInput` value and a slow MA using twice that value.  
 float fastMA = ta.sma(close, lengthInput)  
 float slowMA = ta.sma(close, lengthInput * 2)  
   
-// Place an order to enter a long position when `fastMA` crosses over `slowMA`.  
+// If the fast MA crosses over the slow MA, place an order to close any short position and enter a long position.  
 if ta.crossover(fastMA, slowMA)  
-    strategy.entry("buy", strategy.long)  
+    strategy.entry("Buy", direction = strategy.long)  
   
-// Place an order to enter a short position when `fastMA` crosses under `slowMA`.  
+// If the fast MA crosses under the slow MA, place an order to close any long position and enter a short position.  
 if ta.crossunder(fastMA, slowMA)  
-    strategy.entry("sell", strategy.short)  
+    strategy.entry("Sell", direction = strategy.short)  
   
-// Plot the moving averages.  
+// Plot both moving averages for reference.   
 plot(fastMA, "Fast MA", color.aqua)  
 plot(slowMA, "Slow MA", color.orange)  
 `
 Note that:
   * The strategy() function call declares that the script is a strategy named “Simple strategy demo” that displays visuals on the main chart pane.
-  * The `margin_long` and `margin_short` arguments in the strategy() call specify that the strategy must have 100% of a long or short trade’s amount available to allow the trade. See this section for more information.
-  * The strategy.entry() function is the command that the script uses to create entry orders and reverse positions. The “buy” entry order closes any short position and opens a new long position. The “sell” entry order closes any long position and opens a new short position.
+  * The strategy.entry() function is the command that the script uses to create _entry orders_ and reverse positions. The “Buy” entry order closes any short position and opens a new long position. The “Sell” entry order closes any long position and opens a new short position.
 
 ## Applying a strategy to a chart
-To test a strategy, add it to the chart. Select a built-in or published strategy from the “Indicators, Metrics & Strategies” menu, or write a custom strategy in the Pine Editor and click the “Add to chart” option in the top-right corner:
+To test a strategy, add it to the chart. Select a built-in, published, or personal strategy from the “Indicators, metrics, and strategies” menu, or write a custom strategy in the Pine Editor and select the “Add to chart” button from the editor’s options:
 !image
-The script plots trade markers on the main chart pane and displays simulated performance results inside the Strategy Tester tab:
+The script plots trade markers on the bars in the main chart pane and displays detailed _strategy report_ within a separate tab in the chart’s bottom panel:
 !image
+See the Strategy report section below to learn how to read and interpret the performance data displayed by this tab.
 Notice
-The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, Line Break, Kagi, Point & Figure, and Range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not typically represent real-world market prices, leading to unrealistic strategy results.
+The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, line break, Kagi, point & figure, and range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not typically represent real-world market prices. Consequently, running a strategy on a non-standard chart typically produces **unrealistic** results.
   
 
-Therefore, we strongly recommend using **standard** chart types when testing strategies. Alternatively, on Heikin Ashi charts, users can simulate order fills using actual prices by enabling the _“Fill orders on standard OHLC”_ option in the strategy’s properties or including `fill_orders_on_standard_ohlc = true` in the strategy() declaration statement.
+Therefore, we strongly recommend using **standard** chart types when testing strategies. Alternatively, on Heikin Ashi charts, users can simulate order fills using actual prices by selecting the “Standard bars” option from the “Heikin Ashi mode” input in the script’s “Settings/Properties” tab. Programmers can specify that a strategy uses this behavior by default by including `fill_orders_on_standard_ohlc = true` in the strategy() declaration statement.
 
-## Strategy Tester
-The _Strategy Tester_ visualizes the hypothetical performance of a strategy script and displays its properties. To use it, add a script declared with the strategy() function to the chart, then open the “Strategy Tester” tab. If two or more strategies are on the chart, specify which one to analyze by selecting its name in the top-left corner.
-After the selected script executes across the chart’s data, the Strategy Tester populates the following four tabs with relevant strategy information:
-        
+## Strategy report
+The _strategy report_ visualizes the hypothetical trading performance of a simulated strategy. The report automatically appears within a tab in the chart’s bottom pannel if at least one strategy script is active on the chart. The report displays performance results for only _one_ strategy at a time. If two or more strategies are active on the chart, users can specify which strategy to analyze by selecting its name from the _context menu_ opened by the dropdown arrow in the tab’s header:
+!image
+After the selected script executes across the chart’s data, the strategy report populates two main sub-tabs with relevant data from the strategy simulation:
+  * The “Metrics” tab provdes a detailed summary of the strategy’s performance. The sections in the tab include a time-series chart for analyzing trade activity and equity growth, multiple graphs for analyzing essential performance data, and several useful metrics for assessing the strategy’s long, short, and overall trading performance.
+  * The “Trades” tab displays a list of the strategy’s simulated trades in chronological order. The items in the list show essential information about each trade, including the trade’s number and direction, the entry and exit prices, and multiple trade-wise performance metrics.
 
-###  Overview
-The Overview tab provides a quick look into a strategy’s performance over a sequence of simulated trades. This tab displays essential performance metrics and a chart with three helpful plots:
-  * The Equity baseline plot visualizes the strategy’s simulated equity across closed trades.
-  * The Drawdown column plot shows how far the strategy’s equity fell below its peak across trades.
-  * The Buy & hold equity plot shows the equity growth of a strategy that enters a single long position and holds that position throughout the testing range.
+
+Users can switch between these sub-tabs by selecting the icons in the top-left corner of the strategy report.
+TipUsers can also _download_ all applicable data that populates these sub-tabs by selecting the “Download data as XLSX” option in the context menu.
+The additional items next to the “Metrics” and “Trades” icons at the top of the strategy report provide quick options where users can customize the testing period and enable Deep Backtesting mode, set the strategy’s initial capital and account currency, control the level of historical bar detail in the simulation, and adjust the script’s execution settings, respectively:
+!image
+When a script author publishes a strategy, the publication’s script page includes a _compact_ version of the strategy report that displays hypothetical performance results from running the script with specific properties on the published chart. The publication’s report contains similar information to the report displayed below a user’s chart. It also contains an additional “Properties” tab, which displays the input values and properties that the author used while preparing the publication.
+### ​“Metrics” tab
+The “Metrics” tab of the strategy report provides a detailed summary of a strategy’s performance over a sequence of simulated trades. It organizes the performance details into five main sections:
+          
+
+Some of the tables in this tab contain “All”, “Long”, and “Short” columns. The “All” column shows the performance metrics for all simulated trades. The “Long” and “Short” columns show relevant metrics separately for long and short trades.
+The following sections explain the types of information that each part of the “Metrics” tab contains and how it displays the data.
+TipMost of the tables in the “Metrics” tab reveal a “Show description” icon next to a metric’s name when the user hovers over the metric’s row. Clicking that icon opens a Help Center article containing details about the metric’s calculations and meaning. Refer to the Strategy report metrics page in our Help Center for a list of these metrics and their corresponding articles.
+#### Key stats
+The “Key stats” section of the strategy report’s “Metrics” tab provides a quick overview of the strategy’s overall performance. The top of the section displays a few essential performance metrics, including the strategy’s total profit or loss, the maximum drawdown, the total number of profitable trades compared to the total number of closed trades, and the strategy’s profit factor.
+The “Performance” chart below these metrics optionally displays up to four plots to visualize equity growth and trade volatility:
+  * The “Cumulative PnL” baseline plot displays the cumulative change in the strategy’s equity across all closed trades, experessed as a currency amount or a percentage of the strategy’s initial capital.
+  * The “Buy and hold” plot displays the cumulative capital or percentage change in equity for a strategy that opens a single long trade and holds it throughout the entire trading period.
+  * The “Trades excursions” plot displays green and red columns representing the maximum _unrealized_ profit and loss for each trade, expressed as a currency amount or a percentage of the trade’s size.
+  * The “Run-ups and drawdowns” plot displays green and red horizontal bars to highlight periods of run-up and drawdown in the strategy’s equity across the trading range.
+
+
+Users can specify the chart’s scale type, download or share an image of the chart, and expand or collapse the chart view by selecting the icons above the chart’s top-right edge.
+!image
+Hovering over the points on the “Performance” chart anywhere above the “Run-ups and drawdowns” plot reveals a tooltip containing details for a specific trade, including the trade’s number, direction, and closing time. The tooltip also displays the values from the “Cumulative PnL”, “Buy and hold”, and “Trades excursions” plots, depending on which plots are active. When a user clicks the point highlighted by the tooltip, the main price chart automatically scrolls to the chart bar on which the corresponding trade closed, then displays that bar’s time in a temporary tooltip:
+!image
+Note that:
+  * The main price chart automatically scrolls to a trade’s closing bar only if the strategy uses the _default_ testing period. Selecting a different period from the “Testing period” menu at the top of the tab activates _Deep Backtesting_ mode, which does _not_ support scrolling the main chart from the report’s “Performance” chart.
+
+
+Users can also hover over the horizontal bars in the “Run-ups and drawdowns” plot to view a separate tooltip containing the total run-up or drawdown for each displayed period:
+!image
+#### Return details
+The “Return details” section of the “Metrics” tab analyzes the strategy’s cumulative returns and compares them to a buy-and-hold benchmark. The “Overview” sub-tab in this section displays two graphs:
+  * The “Profit structure” graph on the left displays bars representing the strategy’s total profit, total loss, total commissions, open profit or loss, and the total net profit or loss.
+  * The “Benchmarking” graph displays the maximum, minimum, and current total return of the strategy compared to the buy-and-hold return values over the same testing range.
+
+
+The sub-tab also displays the strategy’s open profit or loss, expected payoff per trade, outperformance, and Sharpe ratio above the graphs for quick reference:
+!image
+The other sub-tabs within this section display detailed information about the strategy’s overall returns:
+  * The “Returns” tab displays the strategy’s initial capital, open profit or loss, net profit or loss, gross profit and loss, profit factor, commissions paid, and expected payoff per trade. It displays applicable metrics separately for all trades, all long trades, and all short trades.
+  * The “Benchmarking” tab displays the overall returns of the buy-and-hold benchmark and the strategy’s outperformance.
+  * The “Risk-adjusted performance” tab displays the strategy’s Sharpe and Sortino ratios, which gauge a strategy’s risk-adjusted return relative to the risk-free rate specified by the strategy() declaration statement.
+
+
+!image
+#### Trades analysis
+The “Trades analysis” section of the “Metrics” tab analyzes the overall performance of the strategy’s individual trades. The “Overview” sub-tab in this section displays two graphs for analyzing the distribution of trade outcomes:
+  * The “Returns distribution” histogram graph displays the distribution of trade returns. Each column in the histogram shows the number of trades that closed with returns within a specific range. Red columns represent negative returns (losses), and green columns represent positive returns (profits). The graph also displays dashed vertical lines at the overall average profit and loss values.
+  * The “Trades distribution” donut graph displays the quantity of winning, losing, and break-even trades relative to the strategy’s total number of trades.
+
+
+The “Overview” sub-tab also displays the strategy’s average profit or loss, the average number of bars per trade, and the larget profit and loss from a single trade above the two graphs:
+!image
+The “Trades analysis details” sub-tab displays multiple useful statistics for all trades, all long trades, and all short trades. It includes metrics such as the total number of trades, the total winning and losing trades, the percentage of profitable trades, the average return amounts, the maximum profit and loss, and the number of outliers in the returns distribution:
+!image
+#### Equity run-ups and drawdowns
+The “Equity run-ups and drawdowns” section of the “Metrics” tab analyzes the strategy’s periods of equity growth (_run-up_) and decline (_drawdown_). The “Overview” sub-tab in this section includes two graphs to simplify run-up and drawdown inspection:
+  * The “Alternating growth and decline” graph displays vertical bars for periods of run-up and drawdown in chronological order. Green bars represent run-up periods, and red bars represent drawdown periods.
+  * The “Comparison of growth and decline periods” graph displays horizontal bars representing the maximum, average, and current run-up and drawdown percentages for a quick visual comparison.
+
+
+The sub-tab also displays the average run-up and drawdown durations, the maximum drawdown as a percentage of the initial capital, and the ratio of the total profit or loss to the maximum drawdown above the graphs:
+!image
+The “Run-ups” and “Drawdowns” sub-tabs display tables containing detailed metrics for the strategy’s run-up and drawdown periods, including:
+  * The average duration of each run-up/drawdown period.
+  * The average run-up/drawdown amount per period.
+  * The maximum run-up/drawdown across the testing range on both an intrabar and close-to-close basis.
+  * The maximum intrabar run-up/drawdown as a percentage of the strategy’s initial capital.
+  * The ratio of the strategy’s total profit or loss relative to the maximum drawdown.
+
+
+!image
+#### Capital efficiency
+The “Capital efficiency” section of the “Metrics” tab evaluates how the strategy uses its simulated funds and available margin. The “Overview” sub-tab contains a “Margin usage” chart that displays the amount of margin used on each trade in order, expressed as a currency amount or a percentage of the strategy’s available funds. The sub-tab also shows the strategy’s compound annual growth rate (CAGR), the minimum account size required to avoid a margin call, the overall return on the initial capital, and the total number of _margin call events_ :
+!image
+The other sub-tabs in this section contain detailed information about the strategy’s capital and margin usage for all trades, all long trades, and all short trades:
+  * The “Capital usage” tab displays the strategy’s CAGR, the overall return based on the initial capital, the minimum account size, the overall return based on the minimum account size, and the net profit or loss as a percentage of the largest loss.
+  * The “Margin usage” tab displays the average margin per trade, the maximum margin used on a trade, the average profit per unit of margin, the total number of margin calls, and the total trade volume liquidated by all margin calls.
+
+
+!image
+### ​“Trades” tab
+The “Trades” tab of the strategy report lists the strategy’s simulated trades in ascending or descending order by time. The list includes two columns that are always active by default: “Trade number” and “Type”. The “Trade number” column lists each trade’s number and direction. Users can change the sorting order of the list’s items by clicking on the “Trade number” column heading. The list is sorted in descending order by default. The “Type” column contains fields for each trade’s entry and exit order. If the strategy is not running in Deep Backtesting mode, hovering the mouse over either field in a listed item reveals a “Show on chart” icon, which users can click to scroll the main chart to the trade’s entry or exit bar.
+The list optionally includes any of the following additional columns, depending on the user’s selections:
+  * “Date and time”: Shows the entry and exit date and time for each trade.
+  * “Signal”: Shows the name or comment assigned to each trade’s entry and exit orders.
+  * “Price”: Shows each trade’s entry and exit price in the instrument’s quoted currency.
+  * “Size”: Shows each trade’s size, expressed as a number of contracts/lots/shares/units and a quantity of the strategy’s account currency.
+  * “Return”: Shows each trade’s net return as a percentage of the trade’s size.
+  * “Favorable excursion”: Shows each trade’s maximum unrealized profit as a currency amount and a percentage of the trade’s size.
+  * “Adverse excursion”: Shows each trade’s maximum unrealized loss as a currency amount and a percentage of the trade’s size.
+  * “Cumulative PnL”: Shows the strategy’s total profit or loss at the time of each trade, expressed as a currency amount and a percentage of the strategy’s initial capital.
+  * “Duration (bars)”: Shows the number of bars for which each trade remained open.
+
+
+Users can specify which columns to display by selecting the “Column setup” icon above the list’s top-right edge. The adjacent “Download” icon enables users to download all available data for the list as a _CSV_ file.
+!image
+Note that:
+  * The downloaded CSV file for the list of trades contains data for _all_ available columns, regardless of the display columns selected in the “Column setup” menu.
+  * If a strategy uses the default testing range, it preserves individual data for up to the latest _9000 trades_. If the strategy uses a different testing range, enabling Deep Backtesting mode, it maintains individual trade data for _all_ trades. This behavior affects the results available from the list of trades, any downloaded CSV files, and the built-in `strategy.*()` functions that retrieve individual trade information. However, it does _not_ affect the data displayed in the “Metrics” tab or accessed by other `strategy.*` built-ins. See the trade limit section to learn more.
+
+
+### ​“Properties” tab
+When a script author publishes a strategy, the publication’s script page displays a _compact_ version of the strategy report to demonstrate the script’s performance results for a specific dataset. The published report also includes an extra _“Properties”_ tab, which displays details about the dataset, script inputs, and strategy properties that the author used while preparing the publication. The tab organizes this information into four collapsible sections:
+  * The “Date range” section shows the selected testing range and the overall available backtesting range.
+  * The “Symbol info” section displays the chart’s symbol, timeframe, type, point value, currency, and tick size. It also includes the chart’s specified precision setting.
+  * The “Strategy inputs” section lists the names and values of all the inputs available in the strategy’s “Settings/Inputs” tab. This section appears in the tab only if the script includes `input*()` calls or specifies a nonzero `calc_bars_count` argument in the strategy() declaration statement.
+  * The “Strategy properties” section provides an overview of the properties that the author specified in the script’s “Settings/Properties” tab, including the strategy’s initial capital, account currency, order size, leverage, pyramiding, commission, slippage, and other settings.
 
 
 !image
 Note that:
-  * The chart has two separate vertical scales. The “Equity” and “Buy & hold equity” plots use the scale on the left, and the “Drawdown” plot uses the scale on the right. Users can toggle the plots and choose between absolute or percentage scales using the options at the bottom.
-  * When a user clicks on a point in this chart, the main chart scrolls to the corresponding bar where the trade closed and displays a tooltip containing the closing time.
-
-
-### Performance Summary
-The Performance Summary tab presents an in-depth summary of a strategy’s key performance metrics, organized into separate columns. The “All” column shows performance information for all simulated trades, and the “Long” and “Short” columns show relevant metrics separately for long and short trades. This view provides more detailed insights into a strategy’s overall and directional trading performance:
-!image
-### List of Trades
-The List of Trades tab chronologically lists a strategy’s simulated trades. Each item in the list displays vital information about a trade, including the dates and times of entry and exit orders, the names of the orders, the order prices, and the number of contracts/shares/lots/units. In addition, each item shows the trade’s profit or loss and the strategy’s cumulative profit, run-up, and drawdown:
-!image
-Note that:
-  * Hovering the mouse over a list item’s entry or exit information reveals a “Scroll to bar” button. Clicking that button navigates the main chart to the bar where the entry or exit occurred.
-  * The list shows each trade in _descending_ order by default, with the latest trade at the top. Users can reverse this order by clicking the “Trade #” button above the list.
-
-
-###  Properties
-The “Properties” tab provides detailed information about a strategy’s configuration and the dataset that it executes across, organized into four collapsible sections:
-  * The “Date Range” section shows the range of dates that had simulated trades, and the overall available backtesting range.
-  * The “Symbol Info” section displays the chart’s symbol, timeframe, type, point value, currency, and tick size. It also includes the chart’s specified precision setting.
-  * The “Strategy Inputs” section lists the names and values of all the inputs available in the strategy’s “Settings/Inputs” tab. This section only appears if the script includes `input*()` calls or specifies a nonzero `calc_bars_count` argument in the strategy() declaration statement.
-  * The “Strategy Properties” section provides an overview of the strategy’s properties, including the initial capital, account currency, order size, margin, pyramiding, commission, slippage, and other settings.
-
-
-!image
+  * If users download performance data as an XLSX file from the strategy report below their charts, the exported data from that report also includes “Properties” tab data for reference.
 
 ## Broker emulator
-TradingView uses a _broker emulator_ to simulate trades while running a strategy script. Unlike in real-world trading, the emulator fills a strategy’s orders exclusively using available _chart data_ by default. Consequently, it executes orders on historical bars _after a bar closes_. Similarly, the earliest point that it can fill orders on realtime bars is after a new price tick. For more information about this behavior, see the Execution model page.
-Because the broker emulator only uses price data from the chart by default, it makes _assumptions_ about intrabar price movement when filling orders. The emulator analyzes the opening, high, low, and closing prices of chart bars to infer intrabar activity using the following logic:
-  * If the opening price of a bar is closer to the high than the low, the emulator assumes that the market price moved in this order: **open → high → low → close**.
-  * If the opening price of a bar is closer to the low than the high, the emulator assumes that the market price moved in this order: **open → low → high → close**.
-  * The emulator assumes _no gaps_ exist between intrabars inside each chart bar, meaning it considers _any_ value within a bar’s high-low range as a valid price for order execution.
-  * When filling _price-based orders_ (all orders except market orders), the emulator assumes intrabars **do not** exist within the gap between the previous bar’s close and the current bar’s open. If the market price crosses an order’s price during the gap between two bars, the emulator fills the order at the current bar’s _open_ and not at the specified price.
+TradingView uses a broker emulator to simulate trades while running a strategy script. Unlike brokers in real-world trading, the broker emulator fills a strategy’s orders using only the available _chart data_ by default. Consequently, it executes orders on historical bars _after a bar closes_. Similarly, depending on the selected calculation behavior, the earliest point at which it can fill orders on realtime bars is _after a new tick_. For detailed information about this behavior, refer to the Execution model page.
+Because the broker emulator uses only price data from the chart by default, it makes default _assumptions_ about intrabar price movement when filling orders on historical bars. The emulator analyzes the opening, high, low, and closing prices of chart bars to infer historical intrabar activity using the following logic:
+  * If the opening price of a bar is closer to the high than it is to the low, the emulator assumes that the market price moved in this order: **open → high → low → close**.
+  * If the opening price of a bar is closer to the low than it is to the high, the emulator assumes that the market price moved in this order: **open → low → high → close**.
+  * When filling _price-based orders_ (all orders except market orders), the emulator assumes that _no gaps_ exist inside each chart bar; it considers _any_ price within the bar’s range as a valid level for filling pending orders.
+  * If the market price crosses a price-based order’s level during the gap between one bar’s closing time and the next bar’s opening time, the emulator assumes that intrabar data _does not exist_ within the gap. Rather than filling the order at the specified price in that case, the emulator fills the order at the _opening price_ of the bar following the gap.
 
 
+The following image labels the OHLC values of a few historical bars using numbers 1-4 to demonstrate the broker emulator’s default assumptions about intrabar price movement. The “1” label represents the bar’s first tick, and the “4” label represents the last tick:
 !image
-### Bar magnifier
-Users with Premium and higher-tier plans can override the broker emulator’s default assumptions about intrabar prices by enabling the Bar Magnifier backtesting mode. In this mode, the emulator uses data from _lower timeframes_ to obtain more granular information about price action within bars, allowing more precise order fills in the strategy’s simulation.
-To enable the Bar Magnifier mode, include `use_bar_magnifier = true` in the strategy() declaration statement, or select the “Using bar magnifier” option in the “Fill orders” section of the strategy’s “Settings/Properties” tab.
-The following example script illustrates how the Bar Magnifier can enhance order-fill behavior. When the time of the bar’s open equals or exceeds the input time, it creates “Buy” and “Exit” limit orders at the calculated `entryPrice` and `exitPrice`. For visual reference, the script colors the background orange when it places the orders, and it draws two horizontal lines at the order prices. Here, we run the script on a weekly chart of “NASDAQ:MSFT ”:
+### Adjusting historical bar detail
+Users with Premium and Ultimate plans can override the broker emulator’s chart-based assumptions and increase the level of intrabar detail on historical bars, allowing for more precise order fills in the strategy’s backtest. To enable high historical bar detail, select the “High” option from the strategy’s Bar detalization settings, which are available in the “Settings/Properties” tab and at the top of the strategy report below the chart. Programmers can also configure a strategy to use high historical detail by default by including `use_bar_magnifier = true` in the strategy() declaration statement.
+If a strategy enables high historical detail, the broker emulator retrieves open, high, low, and close prices from the bars on a suitable _lower timeframe_ , when possible, to increase the number of ticks available for estimating price action and filling orders on historical bars. This setting also allows the script to perform multiple _additional executions_ on each historical bar, depending on the selected Script execution settings. See the Altering calculation behavior section below to learn more.
+The following example illustrates how changing the level of historical bar detail can enhance the behavior of limit orders. The script below creates entry and exit limit orders, named “Buy” and “Exit”, on the first bar whose opening time equals or exceeds an input timestamp. For visual reference, the script highlights the chart’s background in orange when it places the orders, and it draws two horizontal lines at the order prices. The strategy() statement does not include `use_bar_magnifier = true`. Therefore, the broker emulator uses only chart data to determine when it can fill both orders by default.
+When we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Bar Magnifier Demo", overlay = true, use_bar_magnifier = false)  
+strategy("Default historical detail demo", overlay = true, behind_chart = false)  
   
-//@variable The UNIX timestamp on or after which place the order.  
-int orderTime = input.time(timestamp("08 April 2024 00:00"), "Threshold time")  
+//@variable The minimum opening timestamp for the bar on which to place the orders.  
+int orderTime = input.time(timestamp("08 April 2024 00:00"), "Order time")  
   
-//@variable Is `color.orange` when `time` crosses the `orderTime`; false otherwise.  
-color orderColor = na  
-  
-// Entry and exit prices.  
-float entryPrice = hl2 - (high - low)  
-float exitPrice  = entryPrice + (high - low) * 0.25  
-  
-// Entry and exit lines.  
-var line entryLine = na  
+// Declare variables to reference the lines for the entry and exit levels.  
+var line buyLine = na  
 var line exitLine  = na  
   
-// Place orders when the bar open time equals or exceeds the threshold time for the first time.  
+//@variable Translucent orange for the bar on which the script creates the orders, and `na` on all other bars.   
+color orderColor = na  
+  
+// Logic to place and visualize the orders  
 if time[1] < orderTime and time >= orderTime  
-    // Draw new entry and exit lines.  
-    entryLine := line.new(bar_index, entryPrice, bar_index + 1, entryPrice, color = color.green, width = 2)  
-    exitLine  := line.new(bar_index, exitPrice, bar_index + 1, exitPrice, color = color.red, width = 2)  
+    // Calculate the order price levels.  
+    float buyPrice  = hl2 - (high - low)  
+    float exitPrice = buyPrice + (high - low) * 0.25   
   
-    // Update order highlight color.  
-    orderColor := color.new(color.orange, 80)  
-  
-    // Place limit orders at the `entryPrice` and `exitPrice`.  
-    strategy.entry("Buy", strategy.long, limit = entryPrice)  
+    // Place the "Buy" limit order at the `buyPrice` level.  
+    strategy.entry("Buy", strategy.long, limit = buyPrice)  
+    // Place the "Exit" limit order at the `exitPrice` level.  
     strategy.exit("Exit", "Buy", limit = exitPrice)  
   
-// Update lines while the position is open.  
-else if strategy.position_size > 0.0  
-    entryLine.set_x2(bar_index + 1)  
-    exitLine.set_x2(bar_index + 1)  
+    // Set the `orderColor` value to a translucent orange for the chart's background.  
+    orderColor := #ff980033  
+    // Initialize horizontal lines to visualize the order prices.  
+    buyLine  := line.new(bar_index, buyPrice,  bar_index + 1, buyPrice,  color = #2962ff, width = 2)  
+    exitLine := line.new(bar_index, exitPrice, bar_index + 1, exitPrice, color = #d500f9, width = 2)  
   
+// Extend the horizontal lines to the current bar when the position closes.   
+if ta.change(strategy.closedtrades) > 0  
+    buyLine.set_x2(bar_index)  
+    exitLine.set_x2(bar_index)  
+  
+// Highlight the chart's background on the order bar.   
 bgcolor(orderColor)  
 `
-Because the script does not include `use_bar_magnifier = true` in its strategy() declaration, the broker emulator uses the default assumptions when filling the orders: that the bar’s price moved from open to high, high to low, and then low to close. Therefore, after filling the “Buy” order at the price indicated by the green line, the broker emulator inferred that the market price did not go back up to touch the red line and trigger the “Exit” order. In other words, the strategy _could not_ enter and exit the position on the same bar, according to the broker emulator’s assumptions.
-If we enable the Bar Magnifier mode, the broker emulator can access _daily_ data on the weekly chart instead of relying on its assumptions about daily bars. On this timeframe, the market price _did_ move back up to the “Exit” order’s price on the day after it reached the “Buy” order’s price. Below, we show the same weekly chart alongside the daily chart with the entry and exit lines annotated, to show the lower timeframe data that the Bar Magnifier used to execute both orders on the same bar:
+If we include `use_bar_magnifier = true` in the strategy() statement, the strategy enables high historical detail by default. When this setting is active on a weekly chart, the broker emulator retrieves open, high, low, and close prices from the _daily timeframe_. The bars on the daily timeframe show that, contrary to the broker emulator’s default assumption, the market price _did_ move to the “Exit” order’s price after opening the trade in the same week. Therefore, the emulator can fill both orders on the _same weekly bar_ in this case. Below, we show the strategy’s result on the weekly chart after enabling high historical detail, alongside the bars on the daily chart with the entry and exit points annotated:
 !image
-NoteScripts can request a maximum of 200,000 bars from a lower timeframe. Due to this limitation, some symbols with lengthier history might _not_ have intrabar coverage for their initial chart bars. Enabling the Bar Magnifier mode **does not** affect the trades on chart bars that do not have available intrabar data.
+Pine Script®
+Copied
+`//@version=6  
+strategy("High historical detail demo", overlay = true, behind_chart = false, use_bar_magnifier = true)  
+  
+//@variable The minimum opening timestamp for the bar on which to place the orders.  
+int orderTime = input.time(timestamp("08 April 2024 00:00"), "Order time")  
+  
+// Declare variables to reference the lines for the entry and exit levels.  
+var line buyLine = na  
+var line exitLine  = na  
+  
+//@variable Translucent orange for the bar on which the script creates the orders, and `na` on all other bars.   
+color orderColor = na  
+  
+// Logic to place and visualize the orders  
+if time[1] < orderTime and time >= orderTime  
+    // Calculate the order price levels.  
+    float buyPrice  = hl2 - (high - low)  
+    float exitPrice = buyPrice + (high - low) * 0.25   
+  
+    // Place the "Buy" limit order at the `buyPrice` level.  
+    strategy.entry("Buy", strategy.long, limit = buyPrice)  
+    // Place the "Exit" limit order at the `exitPrice` level.  
+    strategy.exit("Exit", "Buy", limit = exitPrice)  
+  
+    // Set the `orderColor` value to a translucent orange for the chart's background.  
+    orderColor := #ff980033  
+    // Initialize horizontal lines to visualize the order prices.  
+    buyLine  := line.new(bar_index, buyPrice,  bar_index + 1, buyPrice,  color = #2962ff, width = 2)  
+    exitLine := line.new(bar_index, exitPrice, bar_index + 1, exitPrice, color = #d500f9, width = 2)  
+  
+// Extend the horizontal lines to the current bar when the position closes.   
+if ta.change(strategy.closedtrades) > 0  
+    buyLine.set_x2(bar_index)  
+    exitLine.set_x2(bar_index)  
+  
+// Highlight the chart's background on the order bar.   
+bgcolor(orderColor)  
+`
+Note that:
+  * We used the Horizontal line, Vertical line, and Callout drawing tools to annotate the daily chart on the right.
+
+
+Note
+A strategy’s “Bar detalization” setting _does not_ affect the level of bar detail on the “1S” or “1T” timeframes. The broker emulator always analyzes _one_ tick per bar on a “1T” chart, and _four_ ticks per bar on a “1S” chart.
+  
+
+Scripts can request a maximum of _200,000_ bars from any lower timeframe. Due to this limitation, the requested datasets for some symbols and timeframes might not include intrabar coverage for early bars on the chart. The broker emulator uses its default assumptions when filling orders on bars that do not have intrabar data on the requested timeframe.
 
 ## Orders and trades
-Pine Script strategies use orders to make trades and manage positions, similar to real-world trading. In this context, an _order_ is an instruction that a strategy sends to the broker emulator to perform a market action, and a _trade_ is the resulting transaction after the emulator fills an order.
+Pine Script strategies use orders to initiate trades and manage positions, similar to real-world trading. In this context, an _order_ is an instruction that a strategy sends to the broker emulator to perform a market action, and a _trade_ is the resulting transaction that opens after the emulator fills an entry order. A market position is total of all open trades.
 Let’s take a closer look at how strategy orders work and how they become trades. Every 20 bars, the following script creates a long market order with strategy.entry() and draws a label. It calls strategy.close_all() on each bar from the global scope to generate a market order to close any open position:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Order execution demo", "My strategy", true, margin_long = 100, margin_short = 100)  
+strategy("Order execution demo", overlay = true, behind_chart = false)  
   
-//@function Displays the specified `txt` in a label at the `high` of the current bar.   
-debugLabel(string txt) =>   
-    label.new(  
-         bar_index, high, text = txt, color=color.lime, style = label.style_label_lower_right,   
-         textcolor = color.black, size = size.large  
-     )  
-  
-//@variable Is `true` on every 20th bar, `false` otherwise.  
+//@variable Is `true` on every 20th bar, and `false` otherwise.  
 bool longCondition = bar_index % 20 == 0  
   
-// Draw a label and place a long market order when `longCondition` occurs.  
+// Place a long market order and draw a label when the `longCondition` value is `true`.  
 if longCondition  
-    debugLabel("Long entry order created")  
-    strategy.entry("My Long Entry Id", strategy.long)  
+    strategy.entry("My Long Entry ID", direction = strategy.long)  
+    label.new(  
+        bar_index, high, text = "Long entry order created",   
+        color = color.lime, style = label.style_label_lower_right,   
+        textcolor = color.black, size = size.large  
+    )  
   
-// Place a closing market order whenever there is an open position.  
+// Place a market order to close any open position.  
 strategy.close_all()  
 `
 Note that:
-  * Although the script calls strategy.close_all() on every bar, the function only creates a new exit order when the strategy has an _open position_. If there is no open position, the function call has no effect.
+  * Although the script calls strategy.close_all() on every bar, the function creates a new exit order only if the strategy has an _open position_. If there is no open position, the function call has no effect.
 
 
 The blue arrows on the above chart show where the strategy entered a long position, and the purple arrows mark the bars where the strategy closed the position. Notice that the label drawings appear one bar _before_ the entry markers, and the entry markers appear one bar _before_ the closing markers. This sequence illustrates order creation and execution in action.
-By default, the earliest point the broker emulator fills an order is on the next available price tick, because creating and filling an order on the same tick is unrealistic. Since strategies recalculate after each bar closes by default, the next available tick where the emulator fills a generated order is at the _open_ of the _following bar_. For example, when the `longCondition` occurs on bar 20, the script places an entry order to fill on the next tick, which is at the open of bar 21. When the strategy recalculates its values after bar 21 closes, it places an order to close the current position on the next tick, which is at the open of bar 22.
+By default, the earliest point at which the broker emulator fills an order is on the next available tick, because creating and filling an order on the _same_ tick is _unrealistic_. If a strategy uses the default calculation behavior, it updates its calculations only after a bar closes, meaning the next tick on which an order can fill is at the _open_ of the _following bar_. For example, when the above script’s `longCondition` value is `true` on bar 20, the script places an entry order that fills on the next available tick, which is at the open of bar 21. When the script updates its calculations at the close of bar 21, it then places an exit order to close the current position on the following tick, at the open of bar 22.
 
 ## Order types
-Pine Script strategies can simulate different order types to suit specific trading system needs. The main notable order types include market, limit, stop, and stop-limit.
+Pine Script strategies can simulate different order types to suit specific trading system needs. The main order types include market, limit, stop, and stop-limit.
 ### Market orders
-A _market order_ is the simplest type of order, which most order placement commands generate by default. A market order is an instruction to buy or sell a security as soon as possible, irrespective of the price. As such, the broker emulator always executes a market order on the next available tick.
-The example below alternates between placing a long and short market order once every `lengthInput` bars. When the bar_index is divisible by `2 * lengthInput`, the strategy generates a long market order. Otherwise, it places a short market order when the bar_index is divisible by the `lengthInput`:
+A _market order_ is the simplest type of order. A market order is an instruction to buy or sell an instrument as soon as possible, irrespective of the price. Therefore, the broker emulator always executes it on the next available tick. Most order placement commands generate market orders by default, but also include parameters for creating other types of orders.
+The example script below alternates between placing long and short market orders in cycles of a specified length. When the bar_index value is divisible by twice the input length, the script generates a long market order. If the bar_index value is divisible by the input length but not by twice the length, the script places a short market order instead. The script also draws labels to indicate bars on which it creates the orders:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Market order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Market order demo", overlay = true)  
   
-//@variable Number of bars between long and short entries.  
+//@variable The number of bars between long and short entries.  
 int lengthInput = input.int(10, "Cycle length", 1)  
   
-//@function Displays the specified `txt` in a label on the current bar.  
+//@function Displays a specified string in a label at the current bar's high.  
 debugLabel(string txt, color lblColor) => label.new(  
      bar_index, high, text = txt, color = lblColor, textcolor = color.white,   
      style = label.style_label_lower_right, size = size.large  
  )  
   
-//@variable Is `true` every `2 * lengthInput` bars, `false` otherwise.  
-longCondition = bar_index % (2 * lengthInput) == 0  
-//@variable Is `true` every `lengthInput` bars, `false` otherwise.  
-shortCondition = bar_index % lengthInput == 0  
+//@variable Is `true` every `2 * lengthInput` bars, and `false` otherwise.  
+bool longCondition = bar_index % (2 * lengthInput) == 0  
+//@variable Is `true` every `lengthInput` bars, and `false` otherwise.  
+bool shortCondition = bar_index % lengthInput == 0  
   
-// Generate a long market order with a `color.green` label on `longCondition`.  
+// Generate a long market order with a green label when the long condition occurs.  
 if longCondition  
     debugLabel("Long market order created", color.green)  
     strategy.entry("My Long Entry Id", strategy.long)  
-// Otherwise, generate a short market order with a `color.red` label on `shortCondition`.  
+// Otherwise, generate a short market order with a red label when the short condition occurs.  
 else if shortCondition  
     debugLabel("Short market order created", color.red)  
     strategy.entry("My Short Entry Id", strategy.short)  
 `
 Note that:
-  * The labels indicate the bars where the script generates the market orders. The broker emulator fills each order at the open of the following bar.
-  * The strategy.entry() command can automatically _reverse_ an open position in the opposite direction. See this section below for more information.
+  * This script uses the default calculation behavior: it executes once on each bar’s closing tick. Therefore, as indicated by the labels and trade markers, the broker emulator fills each new order at the open of the following bar.
+  * The strategy.entry() command can automatically _reverse_ an open position in the opposite direction. See the Reversing positions section below for more information.
 
 
 ### Limit orders
-A _limit order_ is an instruction to buy or sell a security at a specific price or better (lower than specified for long orders, and higher than specified for short orders), irrespective of the time. To simulate a limit order in a strategy script, pass a _price_ value to the `limit` parameter of an applicable order placement command.
-When the market price reaches a limit order’s value, or crosses it in the favorable direction, the broker emulator fills the order at that value or a better price. When a strategy generates a limit order at a _worse_ value than the current market price (higher for long orders and lower for short orders), the emulator fills the order without waiting for the market price to reach that value.
-For example, the following script generates a long limit order 800 ticks below the close of the bar 100 bars before the last chart bar using the strategy.entry() command. It draws a label to signify the bar where the strategy created the order and a line to visualize the order’s price:
+A _limit order_ is an instruction to buy or sell an instrument at a specific price or better (lower than specified for long orders, and higher than specified for short orders), irrespective of the time. To simulate a limit order in a strategy script, pass a _price_ value to the `limit` parameter of an applicable order placement command.
+When the market price reaches a limit order’s value, or crosses it in the favorable direction, the broker emulator fills the order at that value or a better price. When a strategy generates a limit order at a _worse_ value than the current market price (higher for long orders and lower for short orders), the emulator fills the order on the next available tick rather than waiting for the market price to reach that value.
+For example, when the following script executes on the bar that is 100 bars before the latest bar, it calls the strategy.entry() command with a `limit` argument to generate a long limit order 800 ticks above the bar’s close value. The script also draws a label on the bar where it creates the order, and it draws a horizontal line to visualize the order’s price:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Limit order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Limit order demo", overlay = true)  
   
-//@function Displays text passed to `txt` and a horizontal line at `price` when called.  
+//@function Draws a line and a label with specified text at a given price level.  
 debugLabel(float price, string txt) =>  
     label.new(  
          bar_index, price, text = txt, color = color.teal, textcolor = color.white,   
@@ -24874,21 +24813,21 @@ debugLabel(float price, string txt) =>
          style = line.style_dashed  
      )  
   
-// Generate a long limit order with a label and line 100 bars before the `last_bar_index`.  
+// Place a long limit order and draw a label and line 100 bars before the last bar.  
 if last_bar_index - bar_index == 100  
-    limitPrice = close - syminfo.mintick * 800  
+    float limitPrice = close - syminfo.mintick * 800  
     debugLabel(limitPrice, "Long Limit order created")  
     strategy.entry("Long", strategy.long, limit = limitPrice)  
 `
-Notice that in the chart above, the label and the start of the line occurred several bars before the “Long” entry marker. The broker emulator could not fill the order while the market price remained _above_ the `limitPrice` because such a price is a _worse_ value for the long trade. After the price fell and reached the `limitPrice`, the emulator filled the order mid-bar at that value.
-If we set the `limitPrice` to a value _above_ the bar’s close rather than _below_ , the broker emulator fills the order at the open of the following bar because the closing price is already a more _favorable_ value for the long trade. Here, we set the `limitPrice` in the script to 800 ticks above the bar’s close to demonstrate this effect:
+Notice that the label and the start of the line in the chart above occur several bars before the “Long” entry marker. The broker emulator cannot fill the limit order while the market price remains _above_ the `limitPrice` value, because that value is a _worse_ price for the long trade. After the price subsequently drops and reaches the order’s price, the emulator fills the order mid-bar at that price.
+If we change the previous example to place a long limit order _above_ the bar’s close value rather than _below_ , the broker emulator fills the order on the next available tick — similar to a market order — because the closing price is already a more _favorable_ value for the long trade. In the script version below, we set the limit order’s price to 800 ticks above the bar’s close to demonstrate this effect:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Limit order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Limit order demo", overlay = true)  
   
-//@function Displays text passed to `txt` and a horizontal line at `price` when called.  
+//@function Draws a line and a label with specified text at a given price level.  
 debugLabel(float price, string txt) =>  
     label.new(  
          bar_index, price, text = txt, color = color.teal, textcolor = color.white,   
@@ -24899,24 +24838,25 @@ debugLabel(float price, string txt) =>
          style = line.style_dashed  
      )  
   
-// Generate a long limit order with a label and line 100 bars before the `last_bar_index`.  
+// Place a long limit order and draw a label and line 100 bars before the last bar.  
 if last_bar_index - bar_index == 100  
-    limitPrice = close + syminfo.mintick * 800  
+    float limitPrice = close + syminfo.mintick * 800  
     debugLabel(limitPrice, "Long Limit order created")  
     strategy.entry("Long", strategy.long, limit = limitPrice)  
 `
 ### Stop and stop-limit orders
-A _stop order_ is an instruction to activate a new market or limit order when the market price reaches a specific price or a worse value (higher than specified for long orders and lower than specified for short orders). To simulate a stop order, pass a price value to the `stop` parameter of an applicable order placement command.
-When a strategy generates a stop order at a _better_ value than the current market price, it activates the subsequent order without waiting for the market price to reach that value.
-The following example calls strategy.entry() to place a stop order 800 ticks above the close 100 bars before the last historical chart bar. It also draws a label on the bar where it created the order and a line to display the stop price. As we see in the chart below, the strategy entered a long position immediately after the price crossed the stop level:
+A _stop order_ is an instruction to activate a new market or limit order when the market price reaches a specific price or a _worse_ value (higher than specified for long orders and lower than specified for short orders). To simulate a stop order, pass a price value to the `stop` parameter of an applicable order placement command.
+If a strategy generates a stop order at a _better_ value than the current market price, it activates the subsequent order without waiting for the market price to reach that value.
+The following example script calls the strategy.entry() with a `stop` argument to place a stop order 800 ticks above the current close value while executing on the bar that is 100 bars before the last bar. It also draws a label to indicate the bar on which it created the order, and it draws a horizontal line at the stop price.
+The following example calls strategy.entry() to place a stop order 800 ticks above the close 100 bars before the last historical chart bar. It also draws a label on the bar where it creates the order and a line to display the stop price. As we see in the chart below, the strategy enters a long position immediately after the price crosses the stop level:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Stop order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Stop order demo", overlay = true)  
   
-//@function Displays text passed to `txt` when called and shows the `price` level on the chart.  
-debugLabel(price, txt) =>  
+//@function Draws a line and a label with specified text at a given price level.  
+debugLabel(float price, string txt) =>  
     label.new(  
          bar_index, high, text = txt, color = color.teal, textcolor = color.white,   
          style = label.style_label_lower_right, size = size.large  
@@ -24927,26 +24867,26 @@ debugLabel(price, txt) =>
          style = line.style_dashed  
      )  
   
-// Generate a long stop order with a label and lines 100 bars before the last bar.  
+// Place a long stop order and draw a label and line 100 bars before the last bar.  
 if last_bar_index - bar_index == 100  
-    stopPrice = close + syminfo.mintick * 800  
+    float stopPrice = close + syminfo.mintick * 800  
     debugLabel(stopPrice, "Long Stop order created")  
     strategy.entry("Long", strategy.long, stop = stopPrice)  
 `
 Note that:
-  * A basic stop order is essentially the opposite of a limit order in terms of its execution based on the market price. If we use a limit order instead of a stop order in this scenario, the order executes immediately on the next bar. See the previous section for an example.
+  * A basic stop order is essentially the _opposite_ of a limit order in terms of its execution based on the market price. If we use a limit order instead of a stop order in this scenario, the order executes immediately on the next bar. See the Limit orders section above for an example.
 
 
-When a strategy.entry() or strategy.order() call includes a `stop` _and_ `limit` argument, it creates a _stop-limit order_. Unlike a basic stop order, which triggers a market order when the current price is at the `stop` level or a worse value, a stop-limit order creates a subsequent limit order to fill at the specified `limit` price.
-Below, we modified the previous script to simulate and visualize a stop-limit order. This script version includes the bar’s low as the `limit` price in the strategy.entry() command. It also includes additional drawings to show where the strategy activated the subsequent limit order and to visualize the limit price.
-In this example chart, notice how the market price reached the limit level on the next bar after the stop-limit order was created, but the strategy did not enter a position because the limit order was not yet active. After price later reached the stop level, the strategy placed the limit order, and then the broker emulator filled it after the market price dropped back down to the limit level:
+If a strategy.entry() or strategy.order() call includes a `stop` _and_ `limit` argument, it creates a _stop-limit order_. Unlike a basic stop order, which triggers a market order when the current price is at the `stop` level or a worse value, a stop-limit order creates a subsequent _limit order_ to fill at the specified `limit` price.
+Below, we modified the previous script to simulate and visualize a stop-limit order. This script version includes the bar’s low as the `limit` price in the strategy.entry() command. It also creates additional drawings to show where the strategy activates the subsequent limit order and to visualize the limit price.
+In example chart below, notice how the market price reaches the limit level on the next bar after the script creates the stop-limit order, but the strategy does not enter a position because the limit order is not yet active. After the market price reaches the stop level, the strategy places the subsequent limit order, and then the broker emulator fills that order after the market price reverses to the limit level:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Stop-Limit order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Stop-Limit order demo", overlay = true)  
   
-//@function Displays text passed to `txt` when called and shows the `price` level on the chart.  
+//@function Draws a line and a label with specified text at a given price level.  
 debugLabel(price, txt, lblColor, lineWidth = 1) =>  
     label.new(  
          bar_index, high, text = txt, color = lblColor, textcolor = color.white,   
@@ -24958,10 +24898,11 @@ debugLabel(price, txt, lblColor, lineWidth = 1) =>
          style = line.style_dashed, width = lineWidth  
      )  
   
+// Declare persistent variables to store the stop and limit prices.  
 var float stopPrice  = na  
 var float limitPrice = na  
   
-// Generate a long stop-limit order with a label and lines 100 bars before the last bar.  
+// Place a long stop-limit order and draw a label and lines 100 bars before the last bar.  
 if last_bar_index - bar_index == 100  
     stopPrice  := close + syminfo.mintick * 800  
     limitPrice := low  
@@ -24969,7 +24910,7 @@ if last_bar_index - bar_index == 100
     debugLabel(stopPrice, "Long Stop-Limit order created", color.teal)  
     strategy.entry("Long", strategy.long, stop = stopPrice, limit = limitPrice)  
   
-// Draw a line and label when the strategy activates the limit order.  
+// Draw another line and label when the strategy activates the limit order.  
 if high >= stopPrice  
     debugLabel(limitPrice, "Limit order activated", color.green, 2)  
     stopPrice := na  
@@ -24978,43 +24919,41 @@ if high >= stopPrice
 ## Order placement and cancellation
 The `strategy.*` namespace features the following five functions that simulate the placement of orders, known as _order placement commands_ : strategy.entry(), strategy.order(), strategy.exit(), strategy.close(), and strategy.close_all().
 Additionally, the namespace includes the following two functions that cancel pending orders, known as _order cancellation commands_ : strategy.cancel() and strategy.cancel_all().
-The segments below explain these commands, their unique characteristics, and how to use them.
+The sections below explain these commands, their unique characteristics, and how to use them.
 ### ​`strategy.entry()`​
-The strategy.entry() command generates _entry orders_. Its unique features help simplify opening and managing positions. This order placement command generates market orders by default. It can also create limit, stop, and stop-limit orders with the `limit` and `stop` parameters, as explained in the Order types section above.
+The strategy.entry() command generates _entry orders_. Its unique features help simplify opening and managing positions. This order placement command generates market orders by default. It can also create limit, stop, and stop-limit orders by using the `limit` and `stop` parameters, as explained in the Order types section above.
 #### Reversing positions
-One of the strategy.entry() command’s unique features is its ability to _reverse_ an open position automatically. By default, when an order from strategy.entry() executes while there is an open position in the opposite direction, the command automatically _adds_ the position’s size to the new order’s size. The added quantity allows the order to close the current position and open a new position for the specified number of contracts/lots/shares/units in the new direction.
-For instance, if a strategy has an open position of 15 shares in the strategy.long direction and calls strategy.entry() to place a new market order in the strategy.short direction, the size of the resulting transaction is the specified entry size **plus** 15 shares.
-The example below demonstrates this behavior in action. When the `buyCondition` occurs once every 100 bars, the script calls strategy.entry() with `qty = 15` to open a long position of 15 shares. Otherwise, when the `sellCondition` occurs on every 50th bar, the script calls strategy.entry() with `qty = 5` to enter a new short position of five shares. The script also highlights the chart’s background on the bars where the `buyCondition` and `sellCondition` occurs:
+One of the strategy.entry() command’s unique features is its ability to _reverse_ an open position automatically. By default, when an order from a strategy.entry() call executes while a position is open in the opposite direction, the command automatically _adds_ the position’s size to the new order’s size. The added quantity allows the order to close the current position and open a new position for the specified number of contracts/lots/shares/units in the new direction.
+For instance, if a strategy has an open position of 15 shares in the strategy.long direction, then calls strategy.entry() to place a new market order in the strategy.short direction, the size of the resulting transaction is the specified entry size **plus** 15 shares.
+The example below demonstrates this behavior in action. On each 100th bar, the script calls strategy.entry() with the argument `qty = 15` to enter a long position of 15 shares. Then, 50 bars later, it executes another call with a `qty` argument of 5, to enter a short position of five shares. The script also highlights the chart’s background in blue when the long condition occurs, and in red when the short condition occurs, to indicate the bars where it places each order:
 !image
 Pine Script®
 Copied
 `//@version=6  
 strategy("Reversing positions demo", overlay = true)  
   
-//@variable Is `true` on every 100th bar, `false` otherwise.  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
 bool buyCondition = bar_index % 100 == 0  
-//@variable Is `true` on every 50th bar, `false` otherwise.  
+//@variable Is `true` on every 50th bar, and `false` otherwise.  
 bool sellCondition = bar_index % 50 == 0  
    
 if buyCondition  
-    // Place a "buy" market order to close the short position and enter a long position of 15 shares.  
+    // Place a "buy" market order to close any short position and enter a long position of 15 shares.  
     strategy.entry("buy", strategy.long, qty = 15)  
 else if sellCondition  
-    // Place a "sell" market order to close the long position and enter a short position of 5 shares.  
+    // Place a "sell" market order to close any long position and enter a short position of 5 shares.  
     strategy.entry("sell", strategy.short, qty = 5)  
   
-// Highlight the background when the `buyCondition` or `sellCondition` occurs.  
+// Highlight the background when the `buyCondition` or `sellCondition` value is `true`.  
 bgcolor(buyCondition  ? color.new(color.blue, 90) : sellCondition ? color.new(color.red, 90) : na)  
 `
-The trade markers on the chart show the _transaction size_ , not the size of the resulting position. The markers above show that the transaction size was _20 shares_ on each order fill rather than 15 for long orders and five for short orders. Since strategy.entry() reverses a position in the opposite direction by default, each call _adds_ the open position’s size (e.g., 15 for long entries) to the new order’s size (e.g., 5 for short entries), resulting in a quantity of 20 shares on each entry after the first. Although each of these _transactions_ is 20 shares in size, the resulting positions are 5 shares for each short entry and 15 for each long entry.
-Note that:
-  * The strategy.risk.allow_entry_in() function _overrides_ the allowed direction for the strategy.entry() command. When a script specifies a trade direction with this risk management command, orders from strategy.entry() in the opposite direction _close_ the open position without allowing a reversal.
-
-
+Although the long and short orders open trades with different sizes, each trade marker on the chart above shows _20 shares_ as the traded quantity. These markers display the total size of each _transaction_ , not the size of each resulting _position_. Each execution of one of the strategy.entry() calls automatically reverses the current position by adding the position’s size (e.g., 15 for a long trade) to the new entry size (e.g., 5 for a short entry), resulting in a total transaction size of 20 shares. However, the resulting positions are 15 shares for long entries and 5 shares for short entries.
+NoteThe strategy.risk.allow_entry_in() function _overrides_ the allowed direction for the strategy.entry() command. If a script specifies a trade direction with this risk management command, orders from strategy.entry() calls in the opposite direction _close_ an open position _without_ reversing it.
 ####  Pyramiding
-Another unique characteristic of the strategy.entry() command is its connection to a strategy’s _pyramiding_ property. Pyramiding specifies the maximum number of open trades, from the orders created by strategy.entry() calls, that a strategy allows for a single position. After this limit, the script does not execute new orders from subsequent calls to the command until at least one of the existing trades closes.
-Users can set this property by including a `pyramiding` argument in the strategy() declaration statement or by adjusting the “Pyramiding” input in the script’s “Settings/Properties” tab. The default value is 1, meaning the strategy can open new positions but cannot add to them using orders from strategy.entry() calls.
-The following example uses strategy.entry() to place a market order when the `entryCondition` occurs on every 25th bar. The direction of the orders changes once every 100 bars, meaning every 100-bar cycle includes _four_ strategy.entry() calls with the same direction. For visual reference of the conditions, the script highlights the chart’s background based on the current direction each time the `entryCondition` occurs:
+Another unique characteristic of the strategy.entry() command is its connection to a strategy’s _pyramiding_ property. Pyramiding specifies the maximum number of open trades, from the orders created by strategy.entry() calls, that a strategy allows for a single position. After the number of open trades from strategy.entry() calls reaches the pyramiding limit, the strategy does not execute new orders from subsequent calls to the command until at least one of those trades closes.
+Programmers can specify the default pyramiding limit for a strategy by including a `pyramiding` argument in the strategy() declaration statement. The default argument is 1, meaning the strategy can open new positions but cannot add to them using orders from strategy.entry() calls. Script users can adjust a strategy’s pyramiding limit via the “Pyramiding” input in the “Settings/Properties” tab.
+The following example calls the strategy.entry() function to place a market order once on every 25th bar. The order direction changes once every 100 bars. Therefore, each 100-bar cycle executes the command using the same direction four times. The script highlights the chart’s background for each bar on which the entry condition occurs.
+As shown below, although the script calls the strategy.entry() command using the same `direction` argument four times per 100-bar cycle, only the _first_ call in each cycle results in a new trade if we run the script with the default settings. The others do not contribute to the open position because the script’s default `pyramiding` value is 1:
 !image
 Pine Script®
 Copied
@@ -25023,24 +24962,23 @@ strategy("Pyramiding demo", overlay = true)
   
 //@variable Represents the direction of the entry orders. A value of 1 means long, and -1 means short.  
 var int direction = 1  
-//@variable Is `true` once every 25 bars, `false` otherwise.  
+//@variable Is `true` once every 25 bars, and `false` otherwise.  
 bool entryCondition = bar_index % 25 == 0  
   
-// Change the `direction` on every 100th bar.  
+// Change the `direction` value on every 100th bar.  
 if bar_index % 100 == 0  
     direction *= -1  
   
-// Place a market order based on the current `direction` when the `entryCondition` occurs.  
+// Place a market order based on the current `direction` value when the `entryCondition` value is `true`.  
 if entryCondition  
     strategy.entry("Entry", direction == 1 ? strategy.long : strategy.short)  
   
-//@variable When the `entryCondition` occurs, is a blue color if the `direction` is 1 and a red color otherwise.  
+//@variable When the entry condition occurs, is a blue color if the `direction` is 1 and a red color otherwise.  
 color bgColor = entryCondition ? (direction == 1 ? color.new(color.blue, 80) : color.new(color.red, 80)) : na  
-// Highlight the chart's background using the `bgColor`.   
-bgcolor(bgColor, title = "Background highlight")  
+// Highlight the chart's background using the `bgColor` value.   
+bgcolor(bgColor, title = "Order highlight")  
 `
-Notice that although the script calls strategy.entry() with the same direction four times within each 100-bar cycle, the strategy _does not_ execute an order after every call. It cannot open more than one trade per position with strategy.entry() because it uses the default pyramiding value of 1.
-Below, we modified the script by including `pyramiding = 4` in the strategy() declaration statement to allow up to four successive trades in the same direction. Now, an order fill occurs after every strategy.entry() call:
+If we include `pyramiding = 4` in the script’s strategy() declaration statement, the script can use strategy.entry() calls to open up to four trades in the same direction by default. After applying this change to our example script, all the script’s entry orders now result in new trades:
 !image
 Pine Script®
 Copied
@@ -25049,35 +24987,35 @@ strategy("Pyramiding demo", overlay = true, pyramiding = 4)
   
 //@variable Represents the direction of the entry orders. A value of 1 means long, and -1 means short.  
 var int direction = 1  
-//@variable Is `true` once every 25 bars, `false` otherwise.  
+//@variable Is `true` once every 25 bars, and `false` otherwise.  
 bool entryCondition = bar_index % 25 == 0  
   
-// Change the `direction` on every 100th bar.  
+// Change the `direction` value on every 100th bar.  
 if bar_index % 100 == 0  
     direction *= -1  
   
-// Place a market order based on the current `direction` when the `entryCondition` occurs.  
+// Place a market order based on the current `direction` value when the `entryCondition` value is `true`.  
 if entryCondition  
     strategy.entry("Entry", direction == 1 ? strategy.long : strategy.short)  
   
-//@variable When the `entryCondition` occurs, is a blue color if the `direction` is 1 and a red color otherwise.  
+//@variable When the entry condition occurs, is a blue color if the `direction` is 1 and a red color otherwise.  
 color bgColor = entryCondition ? (direction == 1 ? color.new(color.blue, 80) : color.new(color.red, 80)) : na  
-// Highlight the chart's background using the `bgColor`.   
-bgcolor(bgColor, title = "Background highlight")  
+// Highlight the chart's background using the `bgColor` value.   
+bgcolor(bgColor, title = "Order highlight")  
 `
-NoticeIn some cases, _price-based_ orders from the strategy.entry() command can cause a strategy’s entry count for a position to exceed the specified pyramiding limit. If multiple calls to this command generate limit, stop, or stop-limit orders on the _same tick_ , the broker emulator fills each one that the price action triggers, regardless of the pyramiding setting.
+NoticeIn some cases, _price-based_ orders from the strategy.entry() command can cause a strategy’s entry count for a position to exceed the specified pyramiding limit. If multiple calls to this command generate limit, stop, or stop-limit orders on the _same tick_ , the broker emulator fills each one that the price action triggers, regardless of the specified limit.
 ### ​`strategy.order()`​
-The strategy.order() command generates a _basic order_. Unlike other order placement commands, which can behave differently based on a strategy’s properties and open trades, this command _ignores_ most properties, such as pyramiding, and simply creates orders with the specified parameters. This command generates market orders by default. It can also create limit, stop, and stop-limit orders with the `limit` and `stop` parameters. Orders from strategy.order() can open new positions and modify or close existing ones. When a strategy executes an order from this command, the resulting market position is the _net sum_ of the open position and the filled order quantity.
-The following script uses strategy.order() calls to enter and exit positions. The strategy places a long market order for 15 units once every 100 bars. On every 25th bar that is not a multiple of 100, it places a short market order for five units. The script highlights the background to signify where the strategy places a “buy” or “sell” order:
+The strategy.order() command generates a _basic order_. Unlike other order placement commands, which can behave differently based on a strategy’s properties and open trades, this command _ignores_ most properties, such as pyramiding, and simply creates orders with the specified parameters. This command generates market orders by default. It can also create limit, stop, and stop-limit orders by using the `limit` and `stop` parameters. Orders from strategy.order() calls can open new positions and modify or close existing ones. When a strategy executes an order from this command, the resulting market position is the _net sum_ of the open position size and the filled order quantity.
+The following script uses strategy.order() calls to enter and exit positions. The strategy places a long market order for 15 units once every 100 bars. On every 25th bar that is not a multiple of 100, it places a short market order for five units. The script also highlights the background to signify where the strategy places each “buy” and “sell” order:
 !image
 Pine Script®
 Copied
 `//@version=6  
 strategy("`strategy.order()` demo", overlay = true)  
   
-//@variable Is `true` on every 100th bar, `false` otherwise.  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
 bool buyCondition = bar_index % 100 == 0  
-//@variable Is `true` on every 25th bar, `false` otherwise.  
+//@variable Is `true` on every 25th bar, and `false` otherwise.  
 bool sellCondition = bar_index % 25 == 0  
   
 if buyCondition  
@@ -25087,36 +25025,36 @@ else if sellCondition
     // Place a "sell" market order to trade 5 units in the short direction.  
     strategy.order("sell", strategy.short, qty = 5)  
   
-// Highlight the background when the `buyCondition` or `sellCondition` occurs.  
+// Highlight the background when the `buyCondition` or `sellCondition` value is `true`.  
 bgcolor(buyCondition ? color.new(color.blue, 90) : sellCondition ? color.new(color.red, 90) : na)  
 `
-This particular strategy never simulates a _short position_. Unlike the strategy.entry() command, strategy.order() _does not_ automatically reverse open positions. After filling a “buy” order, the strategy has an open long position of 15 units. The three subsequent “sell” orders _reduce_ the position by five units each, and 15 - 5 * 3 = 0. In other words, the strategy opens a long position on every 100th bar and gradually reduces the size to 0 using three successive short orders. If we used strategy.entry() instead of the strategy.order() command in this example, the strategy would alternate between entering long and short positions of 15 and five units, respectively.
+The strategy above never opens a _short position_. Unlike the strategy.entry() command, the strategy.order() command _does not_ automatically reverse open positions. After filling a “buy” order, the strategy has an open long position of 15 units. The three subsequent “sell” orders _reduce_ the position by _five_ units each, and 15 - 5 * 3 = 0. In other words, the strategy opens a long position on every 100th bar and gradually reduces the size to 0 using three successive short orders. If we used the strategy.entry() command instead of strategy.order() in this example, the strategy would alternate between entering long and short trades of 15 and five units, respectively.
 ### ​`strategy.exit()`​
 The strategy.exit() command generates _exit orders_. It features several unique behaviors that link to open trades, helping to simplify closing market positions and creating multi-level exits with _take-profit_ , _stop-loss_ , and _trailing stop_ orders.
-Unlike other order placement commands, which can generate a _single order_ per call, each call to strategy.exit() can produce _more than one_ type of exit order, depending on its arguments. Additionally, a single call to this command can generate exit orders for _multiple entries_ , depending on the specified `from_entry` value and the strategy’s open trades.
+Unlike other order placement commands, which can generate a _single order_ per call, each call to strategy.exit() can produce _more than one_ type of exit order, depending on its arguments. Additionally, a single call to this command can generate exit orders for _multiple entries_ , depending on the specified `from_entry` argument and the strategy’s open trades.
 #### Take-profit and stop-loss
 The most basic use of the strategy.exit() command is the placement of limit orders to trigger exits after earning enough money (take-profit), stop orders to trigger exits after losing too much money (stop-loss), or both (bracket).
 Four parameters determine the prices of the command’s take-profit and stop-loss orders:
-  * The `profit` and `loss` parameters accept _relative_ values representing the number of _ticks_ the market price must move away from the entry price to trigger an exit.
+  * The `profit` and `loss` parameters accept _relative_ values representing the number of _ticks_ by which the market price must move away from the entry price to trigger an exit.
   * The `limit` and `stop` parameters accept _absolute_ values representing the specific _prices_ that trigger an exit when the market price reaches them.
 
 
 When a strategy.exit() call includes arguments for the relative _and_ absolute parameters defining take-profit or stop-loss levels (`profit` and `limit` or `loss` and `stop`), it creates orders only at the levels expected to trigger exits _first_.
-For instance, if the `profit` distance is 19 ticks and the `limit` level is 20 ticks past the entry price in the favorable direction, the strategy.exit() command places a take-profit order `profit` ticks past the entry price because the market price will move that distance before reaching the `limit` value. In contrast, if the `profit` distance is 20 ticks and the `limit` level is 19 ticks past the entry price in the favorable direction, the command places a take-profit order at the `limit` level because the price will reach that value first.
+For instance, if the `profit` distance is 19 ticks and the `limit` level is 20 ticks past the entry price in the favorable direction, the strategy.exit() command places a take-profit order based on the `profit` argument, because the market price will move 19 ticks past the entry price before it reaches the `limit` value. In contrast, if the `profit` distance is 20 ticks and the `limit` level is 19 ticks past the entry price in the favorable direction, the command places a take-profit order at the `limit` value because the price will reach that value first.
 NoticeThe strategy.exit() command’s `limit` and `stop` parameters **do not** behave the same as the `limit` and `stop` parameters of the strategy.entry() and strategy.order() commands. Calling strategy.entry() or strategy.order() with `limit` and `stop` arguments creates a single stop-limit order. In contrast, calling strategy.exit() with both arguments creates **two exit orders** : a take-profit order at the `limit` price and a stop-loss order at the `stop` price.
-The following example creates exit bracket (take-profit and stop-loss) orders with the strategy.exit() command. When the `buyCondition` occurs, the script calls strategy.entry() to place a “buy” market order. It also calls strategy.exit() with `limit` and `stop` arguments to create a take-profit order at the `limitPrice` and a stop-loss order at the `stopPrice`. The script plots the `limitPrice` and `stopPrice` values on the chart to visualize the exit order prices:
+The following example creates exit bracket (take-profit and stop-loss) orders with the strategy.exit() command. When the `buyCondition` value is `true`, the script calls the strategy.entry() command to place a “buy” market order. Then, it calls the strategy.exit() command with `limit` and `stop` arguments to create a take-profit order at the `limitPrice` value and a stop-loss order at the `stopPrice` value. The script plots the `limitPrice` and `stopPrice` values on the chart to visualize the exit order prices:
 !image
 Pine Script®
 Copied
 `//@version=6  
 strategy("Take-profit and stop-loss demo", overlay = true)  
   
-//@variable Is `true` on every 100th bar.  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
 bool buyCondition = bar_index % 100 == 0  
   
-//@variable The current take-profit order price.   
+//@variable Stores the current take-profit order price.   
 var float takeProfit = na  
-//@variable The current stop-loss order price.  
+//@variable Stores the current stop-loss order price.  
 var float stopLoss = na  
   
 if buyCondition  
@@ -25126,40 +25064,40 @@ if buyCondition
         stopLoss   := close * 0.99  
     // Place a long market order.   
     strategy.entry("buy", strategy.long)  
-    // Place a take-profit order at the `takeProfit` price and a stop-loss order at the `stopLoss` price.  
+    // Place a take-profit order at the `takeProfit` value and a stop-loss order at the `stopLoss` value.  
     strategy.exit("exit", "buy", limit = takeProfit, stop = stopLoss)  
   
-// Set `takeProfit` and `stopLoss` to `na` when the position closes.  
+// Set the `takeProfit` and `stopLoss` values to `na` when the position closes.  
 if ta.change(strategy.closedtrades) > 0  
     takeProfit := na  
     stopLoss   := na  
   
-// Plot the `takeProfit` and `stopLoss` values.  
+// Plot the `takeProfit` and `stopLoss` series to visualize the exit levels.  
 plot(takeProfit, "TP", color.green, style = plot.style_circles)  
-plot(stopLoss, "SL", color.red, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
 Note that:
   * We did not specify a `qty` or `qty_percent` argument in the strategy.exit() call, meaning it creates orders to exit 100% of the “buy” order’s size.
   * The strategy.exit() command’s exit orders _do not_ necessarily execute at the specified prices. Strategies can fill limit orders at _better_ prices and stop orders at _worse_ prices, depending on the range of values available to the broker emulator.
 
 
-When a strategy.exit() call includes a `from_entry` argument, the resulting exit orders only apply to existing entry orders that have a matching ID. If the specified `from_entry` value does not match the ID of any entry in the current position, the command _does not_ create any exit orders.
-Below, we changed the `from_entry` argument of the strategy.exit() call in our previous script to “buy2”, which means it creates exit orders only for open trades with the “buy2” entry ID. This version does not place _any_ exit orders because it does not create any entry orders with the “buy2” ID:
+If a strategy.exit() call includes a `from_entry` argument, the resulting exit orders apply to only the existing entry orders that have a matching ID. If the specified `from_entry` value does not match the entry ID of any trade in the current position, the command _does not_ create any exit orders.
+Below, we changed the `from_entry` argument of the strategy.exit() call in our previous script to `"buy2"`, instructing the command to create exit orders only for open trades that have the “buy2” entry ID. This version does not place _any_ exit orders, because the strategy does not create any entry order with the “buy2” ID:
 Pine Script®
 Copied
 `//@version=6  
 strategy("Invalid `from_entry` ID demo", overlay = true)  
   
-//@variable Is `true` on every 100th bar.  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
 bool buyCondition = bar_index % 100 == 0  
   
-//@variable The current take-profit order price.   
+//@variable Stores the current take-profit order price.   
 var float takeProfit = na  
-//@variable The current stop-loss order price.  
+//@variable Stores the current stop-loss order price.  
 var float stopLoss = na  
   
 if buyCondition  
-    // Update the `takeProfit` and `stopLoss` values before entering the trade.  
+    // Update the `takeProfit` and `stopLoss` values.  
     if strategy.opentrades == 0  
         takeProfit := close * 1.01  
         stopLoss   := close * 0.99  
@@ -25169,33 +25107,30 @@ if buyCondition
     // This call has no effect because the strategy does not create entry orders with the "buy2" ID.  
     strategy.exit("exit", "buy2", limit = takeProfit, stop = stopLoss)  
   
-// Set `takeProfit` and `stopLoss` to `na` when the position closes.  
+// Set the `takeProfit` and `stopLoss` values to `na` when the position closes.  
 if ta.change(strategy.closedtrades) > 0  
     takeProfit := na  
     stopLoss   := na  
   
-// Plot the `takeProfit` and `stopLoss` values.  
+// Plot the `takeProfit` and `stopLoss` series to visualize the exit levels.  
 plot(takeProfit, "TP", color.green, style = plot.style_circles)  
-plot(stopLoss, "SL", color.red, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
 Note that:
-  * When a strategy.exit() call _does not_ include a `from_entry` argument, it creates exit orders for _all_ the position’s open trades, regardless of their entry IDs. See the Exits for multiple entries section below to learn more.
+  * If a strategy.exit() call _does not_ include a `from_entry` argument, it creates exit orders for _all_ open trades in the current position, regardless of their entry IDs. See the Exits for multiple entries section below to learn more.
 
 
 #### Partial and multi-level exits
-Strategies can use more than one call to strategy.exit() to create successive _partial_ exit orders for the same entry ID, helping to simplify the formation of multi-level exit strategies. To use multiple strategy.exit() calls to exit from an open trade, include a `qty` or `qty_percent` argument in each call to specify how much of the traded quantity to close. If the sum of the exit order sizes exceeds the open position, the strategy automatically _reduces_ their sizes to match the position.
-Note that:
-  * When a strategy.exit() call includes _both_ `qty` and `qty_percent` arguments, the command uses the `qty` value to size the order and ignores the `qty_percent` value.
-
-
-This example demonstrates a simple strategy that creates two partial exit order brackets for an entry ID. When the `buyCondition` occurs, the script places a “buy” market order for two shares with strategy.entry(), and it creates “exit1” and “exit2” brackets using two calls to strategy.exit(). The first call uses a `qty` of 1, and the second uses a `qty` of 3:
+Strategies can use more than one call to the strategy.exit() command to create successive _partial_ exit orders for the same entry ID. This behavior helps simplify the formation of multi-level exit strategies. To exit from a position using multiple strategy.exit() calls, include a `qty` or `qty_percent` argument in each call to specify the portion of the traded quantity to close. If the sum of the exit order sizes exceeds the open position, the strategy automatically _reduces_ their sizes to match the total size of the position.
+NoteIf a strategy.exit() call includes _both_ `qty` and `qty_percent` arguments, the command uses the `qty` value to size the order and ignores the `qty_percent` value.
+The following example demonstrates a simple strategy that creates two partial exit order brackets for an entry ID. When the `buyCondition` value is `true`, the script places a “buy” market order for two shares with a strategy.entry() call, and it creates “exit1” and “exit2” bracket orders using two calls to strategy.exit(). The first call uses a `qty` value of 1, and the second uses a `qty` value of 3:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Multi-level exit demo", "test", overlay = true)  
+strategy("Multi-level exit demo", "test", overlay = true, behind_chart = false)  
   
-//@variable Is `true` on every 100th bar.  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
 bool buyCondition = bar_index % 100 == 0  
   
 //@variable The take-profit price for "exit1" orders.  
@@ -25208,111 +25143,112 @@ var float stopLoss1 = na
 var float stopLoss2 = na  
   
 if buyCondition  
-    // Update the `takeProfit*` and `stopLoss*` values before entering the trade.  
+    // Update the `takeProfit*` and `stopLoss*` values.  
     if strategy.opentrades == 0  
         takeProfit1 := close * 1.01  
         takeProfit2 := close * 1.02  
         stopLoss1   := close * 0.99  
         stopLoss2   := close * 0.98  
-    // Place a long market order with a `qty` of 2.  
+    // Place a long market order with a `qty` value of 2.  
     strategy.entry("buy", strategy.long, qty = 2)  
-    // Place an "exit1" bracket with a `qty` of 1 at the `takeProfit1` and `stopLoss1` prices.  
+    // Place an "exit1" bracket with a `qty` value of 1 at the `takeProfit1` and `stopLoss1` levels.  
     strategy.exit("exit1", "buy", limit = takeProfit1, stop = stopLoss1, qty = 1)  
-    // Place an "exit2" bracket with a `qty` of 3 at the `takeProfit1` and `stopLoss1` prices.  
-    // The size of the resulting orders decreases to match the open position.   
+    // Place an "exit2" bracket with a `qty` value of 3 at the `takeProfit2` and `stopLoss2` levels.  
+    // The size of the resulting orders *decreases* to match the open position,  
+    // because the "exit1" bracket always fills first.   
     strategy.exit("exit2", "buy", limit = takeProfit2, stop = stopLoss2, qty = 3)  
   
-// Set `takeProfit1` and `stopLoss1` to `na` when the price touches either value.   
+// Set the `takeProfit1` and `stopLoss1` values to `na` when the price reaches either value.   
 if high >= takeProfit1 or low <= stopLoss1  
     takeProfit1 := na  
     stopLoss1   := na  
-// Set `takeProfit2` and `stopLoss2` to `na` when the price touches either value.   
+// Set the `takeProfit2` and `stopLoss2` values to `na` when the price reaches either value.   
 if high >= takeProfit2 or low <= stopLoss2  
     takeProfit2 := na  
     stopLoss2   := na  
   
-// Plot the `takeProfit*` and `stopLoss*` values.  
+// Plot the `takeProfit*` and `stopLoss*` series to visualize the levels.  
 plot(takeProfit1, "TP1", color.green, style = plot.style_circles)  
 plot(takeProfit2, "TP2", color.green, style = plot.style_circles)  
-plot(stopLoss1, "SL1", color.red, style = plot.style_circles)  
-plot(stopLoss2, "SL2", color.red, style = plot.style_circles)  
+plot(stopLoss1,   "SL1", color.red,   style = plot.style_circles)  
+plot(stopLoss2,   "SL2", color.red,   style = plot.style_circles)  
 `
-As we can see from the trade markers on the chart above, the strategy first executes the “exit1” take-profit or stop-loss order to reduce the open position by one share, leaving one remaining share in the position. However, we specified a size of _three shares_ for the “exit2” order bracket, which exceeds the remaining position. Rather than using this specified quantity, the strategy automatically _reduces_ the “exit2” orders to one share, allowing it to close the position successfully.
+As we can see from the trade markers on the chart above, the strategy first executes the “exit1” take-profit or stop-loss order to reduce the open position by one share, leaving only one remaining share in the position. However, the “exit2” order bracket has a specified size of _three shares_ , which exceeds the remaining position. Rather than using this specified quantity, the strategy automatically _reduces_ the “exit2” orders to _one_ share, allowing it to close the position successfully.
 Note that:
-  * This strategy only fills **one** exit order from the “exit1” bracket, **not both**. When a strategy.exit() call generates more than one exit order type for an entry ID, the strategy fills the only the _first_ triggered one and automatically cancels the others.
-  * The strategy reduced the “exit2” orders because all orders from the strategy.exit() calls automatically belong to the same strategy.oca.reduce group by default. Learn more about OCA groups below.
+  * The broker emulator fills only **one** exit order from the “exit1” bracket, **not both**. If a strategy.exit() call generates more than one exit order type for an entry ID, the strategy fills the only the _first_ triggered one and automatically _cancels_ the others.
+  * The strategy reduces the “exit2” orders because all orders from the strategy.exit() calls automatically belong to the same strategy.oca.reduce _OCA group_ by default. See the OCA groups section below to learn more.
 
 
-When creating multiple exit orders with _different_ strategy.exit() calls, it’s crucial to note that the orders from each call _reserve_ a portion of the open position. The orders from one strategy.exit() call _cannot_ exit the portion of a position that a previous call already reserved.
-For example, this script generates a “buy” entry order for 20 shares with a strategy.entry() call and “limit” and “stop” exit orders with two separate calls to strategy.exit() 100 bars before the last chart bar. We specified a quantity of 19 shares for the “limit” order and 20 for the “stop” order:
+When creating multiple exit orders with _different_ strategy.exit() calls, it’s crucial to note that the orders from each call automatically _reserve_ a portion of the open position. The orders from one strategy.exit() call _cannot_ exit the portion of a position that a previous call already reserved.
+For example, the script below generates a “buy” entry order for 20 shares with a strategy.entry() call, then creates “limit” and “stop” exit orders with two separate calls to strategy.exit(), while executing on the bar that is 100 bars before the last bar. The exit commands specify a quantity of 19 shares for the “limit” order and 20 for the “stop” order:
 Pine Script®
 Copied
 `//@version=6  
-strategy("Reserved exit demo", "test", overlay = true)  
+strategy("Reserved exit demo", "test", overlay = true, behind_chart = false)  
   
 //@variable The price of the "limit" exit order.  
 var float limitPrice = na  
 //@variable The price of the "stop" exit order.  
 var float stopPrice = na  
-//@variable Is `true` 100 bars before the last chart bar.   
+//@variable Is `true` 100 bars before the last chart bar, and `false` otherwise.  
 bool longCondition = last_bar_index - bar_index == 100  
   
 if longCondition  
-    // Update the `limitPrice` and `stopPrice`.   
+    // Update the `limitPrice` and `stopPrice` values.  
     limitPrice := close * 1.01  
     stopPrice  := close * 0.99  
     // Place a long market order for 20 shares.  
     strategy.entry("buy", strategy.long, 20)  
-    // Create a take-profit order for 19 shares at the `limitPrice`.  
+    // Create a take-profit order for 19 shares at the `limitPrice` value.  
     strategy.exit("limit", limit = limitPrice, qty = 19)  
-    // Create a stop-loss order at the `stopPrice`. Although this call specifies a `qty` of 20, the previous   
-    // `strategy.exit()` call reserved 19, meaning this call creates an exit order for only 1 share.   
+    // Create a stop-loss order at the `stopPrice` value. Although this call specifies a `qty` value of 20, the   
+    // previous `strategy.exit()` call reserved 19 shares.   
+    // Consequently, this call creates an exit order for only **one share**.   
     strategy.exit("stop", stop = stopPrice, qty = 20)  
   
-//@variable Is `true` when the strategy has an open position, `false` otherwise.  
-bool showPlot = strategy.opentrades == 1  
+//@variable Is `true` if the strategy has an open position, and `false` otherwise.  
+bool showPlot = strategy.opentrades > 0  
   
-// Plot the `limitPrice` and `stopPrice` when `showPlot` is `true`.  
+// Plot the `limitPrice` and `stopPrice` values when the `showPlot` value is `true`.  
 plot(showPlot ? limitPrice : na, "Limit (take-profit) price", color.green, 2, plot.style_linebr)  
 plot(showPlot ? stopPrice : na, "Stop (stop-loss) price", color.red, 2, plot.style_linebr)  
 `
-Users unfamiliar with the strategy.exit() command’s unique behaviors might expect this strategy to close the entire market position if it fills the “stop” order before the “limit” order. However, the trade markers in the chart below show that the “stop” order only reduces the position by **one share**. The strategy.exit() call for the “limit” order executes first in the code, reserving 19 shares of the open position for closure with that order. This reservation leaves only one share available for the “stop” order to close, regardless of when the strategy fills it:
+Users who are unfamiliar with the strategy.exit() command’s unique behaviors might expect the above strategy to close the entire market position if it fills the “stop” order before the “limit” order. However, the trade markers on the chart below show that the “stop” order _reduces_ the position by only **one share**. The strategy.exit() call for the “limit” order executes _first_ in the code. Consequently, the “limit” exit order reserves _19 shares_ of the open position. This reservation leaves only one share available for the “stop” order to close, regardless of when the strategy fills it:
 !image
 #### Trailing stops
-One of the strategy.exit() command’s key features is its ability to create _trailing stops_ , i.e., stop-loss orders that trail behind the market price by a specified amount whenever it moves to a better value in the favorable direction (upward for long positions and downward for short positions).
-This type of exit order has two components: an _activation level_ and a _trail offset_. The activation level is the value the market price must cross to activate the trailing stop calculation, and the trail offset is the distance the activated stop follows behind the price as it reaches successively better values.
-Three strategy.exit() parameters determine the activation level and trail offset of a trailing stop order:
+One of the strategy.exit() command’s key features is its ability to create _trailing stops_ , i.e., stop-loss orders that trail behind the market price by a specified amount whenever it moves to a more favorable value (higher for long positions and lower for short positions).
+This type of exit order has two components: an _activation level_ and a _trail offset_. The activation level is the value that the market price must cross to activate the trailing stop calculation. The trail offset is the distance by which the activated stop follows behind the market price as it reaches successively better values.
+Three strategy.exit() parameters determine the activation level and the trail offset of a trailing stop order:
   * The `trail_price` parameter accepts an _absolute price value_ for the trailing stop’s activation level.
   * The `trail_points` parameter is an alternative way to specify the activation level. Its value represents the _tick distance_ from the entry price required to activate the trailing stop.
   * The `trail_offset` parameter accepts a value representing the order’s trail offset as a specified number of ticks.
 
 
 To create and activate a trailing stop order, a strategy.exit() call must specify a `trail_offset` argument and either a `trail_price` or `trail_points` argument. If the call contains both `trail_price` and `trail_points` arguments, the command uses the level expected to activate the stop _first_. For instance, if the `trail_points` distance is 50 ticks and the `trail_price` value is 51 ticks past the entry price in the favorable direction, the strategy.exit() command uses the `trail_points` value to set the activation level because the market price will move that distance _before_ reaching the `trail_price` level.
-The example below demonstrates how a trailing stop order works in detail. The strategy places a “Long” market order with the strategy.entry() command 100 bars before the last chart bar, and it calls strategy.exit() with `trail_price` and `trail_offset` arguments on the following bar to create a trailing stop. The script uses lines, labels, and a plot to visualize the trailing stop’s behavior.
-The green line on the chart shows the level the market price must reach to activate the trailing stop order. After the price reaches this level from below, the script uses a blue plot to display the trailing stop’s price. Each time the market price reaches a new high after activating the trailing stop, the stop’s price _increases_ to maintain a distance of `trailOffsetInput` ticks from the best value. The exit order _does not_ change its price level when the price decreases or does not reach a new high. Eventually, the market price crosses below the trailing stop, triggering an exit:
+The example below demonstrates how a trailing stop order works in detail. The strategy places a “Long” market order with the strategy.entry() command 100 bars before the last chart bar. Then, it calls the strategy.exit() command with `trail_price` and `trail_offset` arguments on the following bar to create a trailing stop. The script uses lines, labels, and a plot to visualize the trailing stop’s behavior.
+The green line on the chart shows the level that the market price must reach to activate the trailing stop order. After the price reaches that level from below, the script uses a blue plot to display the trailing stop’s price. Each time the market price reaches a new high after activating the trailing stop, the stop’s price _increases_ to maintain a maximum distance of `trailOffsetInput` ticks from the best value. The exit order _does not_ change its price level when the price decreases or does not reach a new high. Eventually, the market price crosses below the trailing stop, triggering an exit:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Trailing stop order demo", overlay = true, margin_long = 100, margin_short = 100)  
+strategy("Trailing stop order demo", overlay = true, behind_chart = false)  
   
 //@variable The distance from the entry price required to activate the trailing stop.  
 int activationOffsetInput = input.int(1000, "Activation level offset (in ticks)", 0)  
-//@variable The distance the stop follows behind the highest `high` after activation.  
+//@variable The distance the stop follows behind the highest `high` value after activation.  
 int trailOffsetInput = input.int(2000, "Trailing stop offset (in ticks)", 0)  
   
-//@variable Draws a label and an optional line at the specified `price`.  
+//@variable Draws a label and an optional line at the specified price level.  
 debugDrawings(float price, string txt, color drawingColor, bool drawLine = false) =>  
-    // Draw a label showing the `txt` at the `price` on the current bar.  
     label.new(  
-         bar_index, price, text = txt, color = drawingColor, textcolor = color.white,  
-         style = label.style_label_lower_right, size = size.large  
-     )  
-    // Draw a horizontal line at the `price` starting from the current bar when `drawLine` is `true`.  
-    line.new(  
-         bar_index, price, bar_index + 1, price, color = drawingColor, extend = extend.right,  
-         style = line.style_dashed  
-     )  
+        bar_index, price, text = txt, color = drawingColor, textcolor = color.white,  
+        style = label.style_label_lower_right, size = size.large  
+    )  
+    if drawLine  
+        line.new(  
+            bar_index, price, bar_index + 1, price, color = drawingColor, extend = extend.right,  
+            style = line.style_dashed  
+        )  
   
 //@variable The level required to activate the trailing stop.  
 var float activationLevel = na  
@@ -25327,114 +25263,114 @@ if last_bar_index - bar_index == 100
   
 // Create and visualize the exit order on the next bar.  
 if last_bar_index - bar_index == 99  
-    // Update the `activationLevel`.  
+    // Update the `activationLevel` value.  
     activationLevel := open + syminfo.mintick * activationOffsetInput  
-    // Create the trailing stop order that activates at the `activationLevel` and trails behind the `high` by   
+    // Create the trailing stop order that activates at the `activationLevel` value and trails behind the high by   
     // `trailOffsetInput` ticks.   
     strategy.exit(  
          "Trailing Stop", from_entry = "Long", trail_price = activationLevel,   
          trail_offset = trailOffsetInput  
      )  
-    // Create drawings to signify the activation level.  
+    // Create drawings to indicate the activation level.  
     debugDrawings(activationLevel, "Trailing Stop Activation Level", color.green, true)  
   
 // Visualize the trailing stop's levels while the position is open.  
 if strategy.opentrades == 1  
-    // Create drawings when the `high` is above the `activationLevel` for the first time to show when the   
+    // Create drawings when the high is above the `activationLevel` value for the first time to indicate when the   
     // stop activates.   
     if na(trailingStop) and high >= activationLevel  
         debugDrawings(activationLevel, "Activation level crossed", color.green)  
         trailingStop := theoreticalStopPrice  
         debugDrawings(trailingStop, "Trailing Stop Activated", color.blue)  
-    // Otherwise, update the `trailingStop` value when the `theoreticalStopPrice` reaches a new high.  
+    // Otherwise, update the `trailingStop` value when the `theoreticalStopPrice` value reaches a new high.  
     else if theoreticalStopPrice > trailingStop  
         trailingStop := theoreticalStopPrice  
   
-// Plot the `trailingStop` value to visualize the trailing price movement.   
+// Plot the `trailingStop` series to visualize the trailing stop's price movement.   
 plot(trailingStop, "Trailing Stop")  
 `
 #### Exits for multiple entries
 A single call to the strategy.exit() command can generate exit orders for _more than one_ entry in an open position, depending on the call’s `from_entry` value.
-If an open position consists of two or more entries with the same ID, a single call to strategy.exit() with that ID as the `from_entry` argument places exit orders for each corresponding entry created before or on the bar where the call occurs.
-For example, this script periodically calls strategy.entry() on two consecutive bars to enter and add to a long position. Both calls use “buy” as the `id` argument. After creating the second entry, the script calls strategy.exit() once with “buy” as its `from_entry` argument to generate separate exit orders for each entry with that ID. When the market price reaches the `takeProfit` or `stopLoss` value, the broker emulator fills _two_ exit orders and closes the position:
+If an open position consists of two or more entries with the same ID, a single strategy.exit() call that uses the ID as the `from_entry` argument places exit orders for _every_ corresponding entry created _before_ or _on_ the bar where the call occurs.
+For example, the following script periodically calls the strategy.entry() command on two consecutive bars to enter and add to a long position. Both calls use `"buy"` as the `id` argument. After creating the second entry order, the script calls the strategy.exit() command once with `"buy"` as its `from_entry` argument to generate _separate_ exit orders for each trade with that entry ID. When the market price reaches the `takeProfit` or `stopLoss` value, the broker emulator fills _two_ exit orders and closes the position:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exits for entries with the same ID demo", overlay = true, pyramiding = 2)  
+strategy("Exits for entries with the same ID demo", overlay = true, behind_chart = false, pyramiding = 2)  
   
-//@variable Take-profit price for exit commands.  
+//@variable The take-profit price for exit commands.  
 var float takeProfit = na  
-//@variable Stop-loss price for exit commands.  
+//@variable The stop-loss price for exit commands.  
 var float stopLoss   = na  
   
-//@variable Is `true` on two consecutive bars in 100-bar cycles.   
+//@variable Is `true` on two consecutive bars in 100-bar cycles, and `false` otherwise.   
 bool buyCondition = math.min(bar_index % 100, math.max(bar_index - 1, 0) % 100) == 0  
   
 if buyCondition  
     // Place a "buy" market order to enter a trade.   
     strategy.entry("buy", strategy.long)  
-    // Calculate exits on the second order.  
+    // Calculate exits after a trade is open.  
     if strategy.opentrades == 1  
-        // Update the `takeProfit` and `stopLoss`.  
+        // Update the `takeProfit` and `stopLoss` values.  
         takeProfit := close * 1.01  
         stopLoss   := close * 0.99  
-        // Place exit orders for both "buy" entries.  
+        // Place exit orders to close both "buy" trades.  
         strategy.exit("exit", "buy", limit = takeProfit, stop = stopLoss)  
   
-// Set `takeProfit` and `stopLoss` to `na` when both trades close.  
+// Set the `takeProfit` and `stopLoss` values to `na` after both trades close.  
 if ta.change(strategy.closedtrades) == 2  
     takeProfit := na  
     stopLoss   := na  
   
 // Plot the `takeProfit` and `stopLoss` values.  
 plot(takeProfit, "TP", color.green, style = plot.style_circles)  
-plot(stopLoss, "SL", color.red, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
-A single strategy.exit() call can also generate exit orders for _all_ entries in an open position, irrespective of entry ID, when it does not include a `from_entry` argument.
-Here, we changed the strategy.entry() instance in the above script to create an entry order with a distinct ID on each call, and we removed the `from_entry` argument from the strategy.exit() call. Since this version does not specify which entries the exit orders apply to, the strategy.exit() call creates orders for _every_ entry in the position:
+A single strategy.exit() call can also generate exit orders for _all_ entries in an open position, irrespective of entry ID, if it does _not_ include a `from_entry` argument.
+Below, we changed the strategy.entry() instance in the above script to create an entry order with a distinct ID on each call, and we removed the `from_entry` argument from the strategy.exit() call. Because this script version does not specify the entries to which the exit orders apply, the strategy.exit() call creates orders for _every_ trade in the position:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exits for entries with different IDs demo", overlay = true, pyramiding = 2)  
+strategy("Exits for entries with different IDs demo", overlay = true, behind_chart = false, pyramiding = 2)  
   
-//@variable Take-profit price for exit commands.  
+//@variable The take-profit price for exit commands.  
 var float takeProfit = na  
-//@variable Stop-loss price for exit commands.  
+//@variable The stop-loss price for exit commands.  
 var float stopLoss   = na  
   
-//@variable Is `true` on two consecutive bars in 100-bar cycles.   
+//@variable Is `true` on two consecutive bars in 100-bar cycles, and `false` otherwise.  
 bool buyCondition = math.min(bar_index % 100, math.max(bar_index - 1, 0) % 100) == 0  
   
 if buyCondition  
-    // Place a long market order with a unique ID.   
+    // Place a long market order with a *unique ID*.   
     strategy.entry("buy" + str.tostring(strategy.opentrades + strategy.closedtrades), strategy.long)  
-    // Calculate exits on the second order.  
+    // Calculate exits after a trade is open.  
     if strategy.opentrades == 1  
-        // Update the `takeProfit` and `stopLoss`.  
+        // Update the `takeProfit` and `stopLoss` values.  
         takeProfit := close * 1.01  
         stopLoss   := close * 0.99  
-        // Place exit orders for ALL entries in the position, irrespective of ID.  
+        // Place exit orders for *all* entries in the position, irrespective of ID.  
         strategy.exit("exit", limit = takeProfit, stop = stopLoss)  
   
-// Set `takeProfit` and `stopLoss` to `na` when both trades close.  
+// Set the `takeProfit` and `stopLoss` values to `na` after both trades close.  
 if ta.change(strategy.closedtrades) == 2  
     takeProfit := na  
     stopLoss   := na  
   
 // Plot the `takeProfit` and `stopLoss` values.  
 plot(takeProfit, "TP", color.green, style = plot.style_circles)  
-plot(stopLoss, "SL", color.red, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
-It’s crucial to note that a call to strategy.exit() without a `from_entry` argument _persists_ and creates exit orders for all open trades in a position, regardless of _when_ the entries occur. This behavior can affect strategies that manage positions with multiple entries or exits. When a strategy has an open position and calls strategy.exit() on any bar without specifying a `from_entry` ID, it generates exit orders for each entry created _before_ or on that bar, and it continues to generate exit orders for subsequent entries _after_ that bar until the position closes.
-Let’s explore this behavior and how it works. The script below creates a long entry order with strategy.entry() on each bar within a user-specified time range, and it calls strategy.exit() without a `from_entry` argument on _one bar_ within that range to generate exit orders for _every_ entry in the open position. The exit command uses a `loss` value of 0, which means an exit order fills each time the market price is not above an entry order’s price.
-The script prompts users to select three points before it starts its calculations. The first point specifies when order creation begins, the second determines when the single strategy.exit() call occurs, and the third specifies when order creation stops:
+It’s crucial to note that a call to strategy.exit() without a `from_entry` argument _persists_ and creates exit orders for all open trades in a position, regardless of _when_ the entries occur. This behavior can affect strategies that manage positions with multiple entries or exits. If a strategy has an open position and calls strategy.exit() on any bar without specifying a `from_entry` ID, it generates exit orders for each entry created _before_ or on that bar, and it _continues_ to generate exit orders for subsequent entries _after_ that bar until the position closes.
+Let’s explore this behavior and how it works. The script below calls the strategy.entry() command to create a long entry order on each bar within a user-specified time range. It also calls the strategy.exit() command without a `from_entry` argument on only _one bar_ within that range to generate exit orders for _every_ entry in the open position. The exit command uses a `loss` value of 0, which means that an exit order fills each time the market price is not above one of the entry prices.
+The script prompts the user to select three points before it starts its calculations. The first point specifies when order creation begins, the second determines when the single strategy.exit() call occurs, and the third specifies when order creation stops:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exit persist demo", overlay = true, margin_long = 100, margin_short = 100, pyramiding = 100)  
+strategy("Exit persist demo", overlay = true, behind_chart = false, pyramiding = 100)  
   
 //@variable The time when order creation starts.   
 int entryStartTime = input.time(0, "Start time for entries", confirm = true)  
@@ -25503,19 +25439,19 @@ bgcolor(callExit ? color.new(color.blue, 80) : na, title = "Exit call 
 bgcolor(entriesEnd ? color.new(color.red, 80) : na, title = "Entries end highlight")  
 `
 Note that:
-  * We included `pyramiding = 100` in the strategy() declaration statement, which allows the position to have up to 100 open entries from strategy.entry().
-  * The script uses labels and bgcolor() to signify when order placement starts and stops and when the strategy.exit() call occurs.
-  * The script draws a line and a label at the lowest entry price to show the value the market price must reach to close the position.
+  * We included `pyramiding = 100` in the strategy() declaration statement, allowing the position to include up to 100 open trades from strategy.entry() orders.
+  * The script uses labels and a bgcolor() call to signify when order placement starts and stops and when the strategy.exit() call occurs.
+  * The script draws a line and a label at the lowest entry price to show the value the market price must reach to close the entire position.
 
 
-We can observe the unique strategy.exit() behavior in this example by comparing the code itself with the script’s chart outputs. The script calls strategy.exit() _one time_ , only on the bar with the blue label. However, this single call placed exit orders for every entry **before** or on that bar and continued placing exit orders for all entries **after** that bar. This behavior occurs because strategy.exit() has no way to determine when to stop placing orders if it does not link to entries with a specific ID. In this case, the command only ceases to create new exit orders after the position fully closes.
-The above script would exhibit different behavior if we included a `from_entry` argument in the strategy.exit() call. When a call to this command specifies a `from_entry` ID, it only applies to entries with that ID which the strategy created _before_ or _on_ the bar of the call. The command does not place exit orders for subsequent entries created _after_ that bar in that case, even ones with the same ID.
-Here, we added `from_entry = "Entry"` to our script’s strategy.exit() call, meaning it only produces exit orders for entries with the “Entry” ID. Only 17 exits occur this time, each corresponding to an entry order created before or on the bar with the blue label. The call does not affect any entries that the strategy creates _after_ that bar:
+We can observe the unique exit behavior of the strategy.exit() command in this example by comparing the code itself with the script’s visuals. The script calls the strategy.exit() command _one time_ , only on the bar with the blue label. However, that single call places exit orders for _every_ entry that occurs **before** or on that bar, then continues placing exit orders for each new entry **after** that bar. This behavior occurs because the strategy.exit() function cannot determine when to stop placing orders if it does not link to entries with a specific ID. In this case, the command only ceases to create new exit orders only after the position fully _closes_.
+The above script exhibits different behaviors if we include a `from_entry` argument in the strategy.exit() call. If a call to this command specifies a `from_entry` ID, the exit orders apply to entries that the strategy created _before_ or _on_ the bar of the call using that ID. The command does not place exit orders for subsequent entries created _after_ the bar in that case, even if those entries have the same ID.
+In the script version below, we added `from_entry = "Entry"` to our script’s strategy.exit() call to specify that it produces exit orders only for entries that have the “Entry” ID. Only 17 exits occur across the same range this time, each corresponding to an entry order created _before_ or _on_ the bar with the blue label. The call does not generate new orders for any trade that the strategy opens _after_ that bar, regardless of their entry ID:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exit persist demo", overlay = true, margin_long = 100, margin_short = 100, pyramiding = 100)  
+strategy("Exit persist demo", overlay = true, behind_chart = false, pyramiding = 100)  
   
 //@variable The time when order creation starts.   
 int entryStartTime = input.time(0, "Start time for entries", confirm = true)  
@@ -25585,7 +25521,7 @@ bgcolor(entriesEnd ? color.new(color.red, 80) : na, title = "Entries en
 `
 ### ​`strategy.close()`​ and ​`strategy.close_all()`​
 The strategy.close() and strategy.close_all() commands generate orders to exit from an open position. Unlike strategy.exit(), which creates _price-based_ exit orders (e.g., stop-loss), these commands generate market orders that the broker emulator fills on the next available tick, irrespective of the price.
-The example below demonstrates a simple strategy that places a “buy” entry order with strategy.entry() once every 50 bars and a market order to close the long position with strategy.close() 25 bars afterward:
+The example script below demonstrates a simple strategy that enters and exits a position using only market orders. The script executes a strategy.entry() call to place a “buy” market order once every 50 bars, then calls the strategy.close() command to close any open “buy” trade 25 bars later:
 !image
 Pine Script®
 Copied
@@ -25605,8 +25541,8 @@ if sellCond
 bgcolor(buyCond  ? color.new(color.blue, 90) : na)  
 bgcolor(sellCond ? color.new(color.red, 90) : na)  
 `
-Notice that the strategy.close() call in this script uses “buy” as its required `id` argument. Unlike strategy.exit(), this command’s `id` parameter specifies the _entry ID_ of an open trade. It **does not** represent the ID of the resulting exit order. If a market position consists of multiple open trades with the same entry ID, a single strategy.close() call with that ID as its `id` argument generates a single market order to exit from all of them.
-The following script creates a “buy” order with strategy.entry() once every 25 bars, and it calls strategy.close() with “buy” as its `id` argument to close all open trades with that entry ID once every 100 bars. The market order from strategy.close() closes the entire position in this case because every open trade has the same “buy” entry ID:
+Notice that the strategy.close() call in this script uses “buy” as its required `id` argument. Unlike strategy.exit(), this command’s `id` parameter specifies the _entry ID_ of an open trade. It **does not** represent the ID of the resulting exit order. If a market position consists of multiple open trades with the same entry ID, a single strategy.close() call with that ID as its `id` argument generates a single market order to close all of those trades in one transaction.
+The following script creates a “buy” order using a strategy.entry() call once every 25 bars, and it calls the strategy.close() command with `"buy"` as its `id` argument to close all open trades with that entry ID once every 100 bars. The market order from the strategy.close() call closes the entire position in this case because every open trade in the position has the same “buy” entry ID:
 !image
 Pine Script®
 Copied
@@ -25627,11 +25563,11 @@ bgcolor(buyCond  ? color.new(color.blue, 90) : na)
 bgcolor(sellCond ? color.new(color.red, 90) : na)  
 `
 Note that:
-  * We included `pyramiding = 3` in the strategy() declaration statement, allowing the script to generate up to three entries per position with strategy.entry() calls.
+  * We included `pyramiding = 3` in the strategy() declaration statement, allowing the script to generate up to three entries per position using strategy.entry() calls.
 
 
-The strategy.close_all() command generates a market order to exit from the open position that _does not_ link to any specific entry ID. This command is helpful when a strategy needs to exit as soon as possible from a position consisting of multiple open trades with different entry IDs.
-The script below places “A”, “B”, and “C” entry orders sequentially based on the number of open trades as tracked by the strategy.opentrades variable, and then it calls strategy.close_all() to create a single order that closes the entire position on the following bar:
+The strategy.close_all() command generates a market order to close any open position. Unlike strategy.close(), this command _does not_ link to any specific entry ID. Using the strategy.close_all() command is helpful when a strategy must exit as soon as possible from a position consisting of multiple open trades with different entry IDs.
+The script below places “A”, “B”, and “C” entry orders sequentially based on the number of open trades as tracked by the strategy.opentrades variable. Then, it calls the strategy.close_all() command to create a single order that closes the entire position on the following bar:
 !image
 Pine Script®
 Copied
@@ -25645,9 +25581,10 @@ switch strategy.opentrades
     3 => strategy.close_all()  
 `
 ### ​`strategy.cancel()`​ and ​`strategy.cancel_all()`​
-The strategy.cancel() and strategy.cancel_all() commands allow strategies to cancel _unfilled_ orders before the broker emulator processes them. These order cancellation commands are most helpful when working with _price-based orders_ , including all orders from strategy.exit() calls and the orders from strategy.entry() and strategy.order() calls that use `limit` or `stop` arguments.
+The strategy.cancel() and strategy.cancel_all() commands allow strategies to cancel _unfilled_ orders before the broker emulator processes them. These order cancellation commands are most helpful when working with _price-based orders_ , including all orders from strategy.exit() calls and the orders from strategy.entry() or strategy.order() calls that include `limit` or `stop` arguments.
 The strategy.cancel() command has a required `id` parameter, which specifies the ID of the entry or exit orders to cancel. The strategy.cancel_all() command does not have such a parameter because it cancels _all_ unfilled orders, regardless of ID.
-The following strategy places a “buy” limit order 500 ticks below the closing price 100 bars before the last chart bar with strategy.entry(), and it cancels the order on the next bar with strategy.cancel(). The script highlights the chart’s background to signify when it places and cancels the “buy” order, and it draws a horizontal line at the order’s price. As we see below, our example chart shows no entry marker when the market price crosses the horizontal line because the strategy already cancels the order (when the chart’s background is orange) before it reaches that level:
+The following strategy calls the strategy.entry() command to place a “buy” limit order 500 ticks below the closing price while executing on the bar that is 100 bars before the latest bar. Then, on the next bar, it calls the strategy.cancel() command to cancel the order before the broker emulator executes it.
+The following strategy places a “buy” limit order 500 ticks below the closing price 100 bars before the last chart bar with strategy.entry(), and it cancels the order on the next bar with strategy.cancel(). The script highlights the chart’s background to signify when it places and cancels the “buy” order, and it draws a horizontal line at the order’s price. As shown below, our example chart shows no entry marker when the market price crosses the horizontal line, because the strategy already cancels the order (when the chart’s background is orange) before the price reaches that level:
 !image
 Pine Script®
 Copied
@@ -25672,8 +25609,8 @@ if last_bar_index - bar_index == 99
   
 bgcolor(bgColor)  
 `
-The strategy.cancel() command affects _all_ unfilled orders with a specified ID. It does nothing if the specified `id` represents the ID of an order that does not exist. When there is more than one unfilled order with the specified ID, the command cancels _all_ of them at once.
-Below, we’ve modified the previous script to place a “buy” limit order on three consecutive bars, starting 100 bars before the last chart bar. After placing all three orders, the strategy cancels them using strategy.cancel() with “buy” as the `id` argument, resulting in nothing happening when the market price reaches any of the order prices (horizontal lines):
+The strategy.cancel() command cancels _all_ unfilled orders that have the specified entry ID. It does nothing if the specified `id` represents the ID of an order that does not exist. If the strategy has more than one unfilled order with the same entry ID, the command cancels _all_ of them at once.
+Below, we modified the previous script to place a “buy” limit order on three consecutive bars, starting 100 bars before the last chart bar. After placing all three orders, the strategy cancels them using a single strategy.cancel() call with “buy” as the `id` argument, resulting in no new trades when the market price reaches any of the order prices indicated by the horizontal lines:
 !image
 Pine Script®
 Copied
@@ -25699,16 +25636,16 @@ if last_bar_index - bar_index == 97
 bgcolor(bgColor)  
 `
 Note that:
-  * We included `pyramiding = 3` in the strategy() declaration statement, allowing three successive entries from strategy.entry() per position. The script would also achieve the same result without this setting if it called strategy.order() instead because pyramiding _does not_ affect orders from that command.
+  * We included `pyramiding = 3` in the strategy() declaration statement, allowing three successive entries from strategy.entry() calls per position. The script would also achieve the same result without this setting if it called the strategy.order() command instead, because a strategy’s pyramiding setting _does not_ affect orders from that command.
 
 
-The strategy.cancel() and strategy.cancel_all() commands can cancel orders of any type, including market orders. However, it is important to note that either command can cancel a market order only if its call occurs on the _same_ script execution as the order placement command. If the call happens after that point, it has _no effect_ because the broker emulator fills market orders on the _next available tick_.
-This example places a “buy” market order 100 bars before the last chart bar with strategy.entry(), then it attempts to cancel the order on the next bar with strategy.cancel_all(). The cancellation command _does not_ affect the “buy” order because the broker emulator fills the order on the next bar’s _opening tick_ , which occurs _before_ the script evaluates the strategy.cancel_all() call:
+The strategy.cancel() and strategy.cancel_all() commands can cancel orders of any type, including market orders. However, it is important to note that either command can cancel a market order only if its call occurs on the _same_ script execution as the order placement command. The cancellation command has _no effect_ if the call happens after that point, because the broker emulator always fills market orders by the _next available tick_.
+The example below places a “buy” market order with a strategy.entry() call 100 bars before the latest bar. Then, it attempts to cancel that order with a strategy.cancel_all() call on the next bar. The cancellation command _does not_ affect the “buy” order in this case. The broker emulator fills the market order on the next bar’s opening tick, _before_ the script executes the strategy.cancel_all() call:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Cancel market demo", "test", overlay = true)  
+strategy("Cancel market demo", overlay = true)  
   
 //@variable Is `color.green` when the strategy places the "buy" order, `color.orange` when it tries to cancel the order.  
 color bgColor = na  
@@ -25725,17 +25662,20 @@ bgcolor(bgColor)
 `
 
 ## Position sizing
-Pine Script strategies feature two ways to control the sizes of the orders that open and manage positions:
-  * Set a default _fixed_ quantity type and value for the orders. Programmers can specify defaults for these properties by including `default_qty_type` and `default_qty_value` arguments in the strategy() declaration statement. Script users can adjust these values with the “Order size” inputs in the “Settings/Properties” tab.
-  * Include a _non-na_ `qty` argument in the strategy.entry() or strategy.order() call. When a call to either of these commands specifies a non-na `qty` value, that call ignores the strategy’s default quantity type and value and places an order for `qty` contracts/shares/lots/units instead.
+Pine Script strategies feature two ways to control the sizes of the orders that open and modify positions:
+  * Set a default _fixed_ quantity type and value for the orders. Programmers can specify defaults for these properties by including `default_qty_type` and `default_qty_value` arguments in the strategy() declaration statement. Script users can adjust these defaults via the “Default order size” inputs in the “Settings/Properties” tab.
+  * Include a _non-na_ `qty` argument in the strategy.entry() or strategy.order() call. If a call to either of these commands specifies a non-na `qty` value, that call _ignores_ the strategy’s default quantity type and value and places an order for `qty` contracts/shares/lots/units instead.
 
 
-The following example uses strategy.entry() calls with different `qty` values for long and short trades. When the current bar’s low equals the `lowest` value, the script places a “Buy” order to enter a long position of `longAmount` units. Otherwise, when the high equals the `highest` value, it places a “Sell” order to enter a short position of `shortAmount` units:
+The following example uses strategy.entry() calls with different `qty` arguments for long and short trades. When the current bar’s low equals the `lowest` value, the script places a “Buy” order to enter a long position of `longAmount` units. Otherwise, when the high equals the `highest` value, it places a “Sell” order to enter a short position of `shortAmount` units:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Buy low, sell high", overlay = true, default_qty_type = strategy.cash, default_qty_value = 5000)  
+strategy(  
+    "Orders with specified quantities demo", overlay = true,   
+    default_qty_type = strategy.cash, default_qty_value = 5000  
+)  
   
 int   length      = input.int(20, "Length", 1)  
 float longAmount  = input.float(4.0, "Long Amount", 0.0)  
@@ -25748,13 +25688,16 @@ switch
     low == lowest   => strategy.entry("Buy", strategy.long, longAmount)  
     high == highest => strategy.entry("Sell", strategy.short, shortAmount)  
 `
-Notice that although we’ve included `default_qty_type` and `default_qty_value` arguments in the strategy() declaration statement, the strategy _does not_ use this default setting to size its orders because the specified `qty` in the entry commands takes precedence. If we want to use the default size, we must _remove_ the `qty` arguments from the strategy.entry() calls or set their values to na.
-Here, we edited the previous script by including ternary expressions for the `qty` arguments in both strategy.entry() calls that replace input values of 0 with na. If the specified `longAmount` or `shortAmount` is 0, which is what we set as the new default, the corresponding entry orders use the strategy’s default order size instead, as we see below:
+Notice that although we’ve included `default_qty_type` and `default_qty_value` arguments in the strategy() declaration statement, the strategy _does not_ use this default setting to size its orders. Instead, the specified `qty` value in the entry commands takes precedence. To use the strategy’s default order size, we must _remove_ the `qty` arguments from the strategy.entry() calls or set their values to na.
+Below, we edited the previous script by including ternary expressions for the `qty` arguments in both strategy.entry() calls. These expressions replace input values of 0 with na. Now, if the specified `longAmount` or `shortAmount` value is 0, the corresponding entry orders use the strategy’s default order size instead, as we see below:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Buy low, sell high", overlay = true, default_qty_type = strategy.cash, default_qty_value = 5000)  
+strategy(  
+    "Orders using default quantities demo", overlay = true,   
+    default_qty_type = strategy.cash, default_qty_value = 5000  
+)  
   
 int   length      = input.int(20, "Length", 1)  
 float longAmount  = input.float(0.0, "Long Amount", 0.0)  
@@ -25769,13 +25712,13 @@ switch
 `
 
 ## Closing a market position
-By default, strategies close a market position using the _First In, First Out (FIFO)_ method, which means that any exit order closes or reduces the position starting with the _first_ open trade, even if the exit command specifies the entry ID of a _different_ open trade. To override this default behavior, include `close_entries_rule = "ANY"` in the strategy() declaration statement.
-The following example places “Buy1” and “Buy2” entry orders sequentially, starting 100 bars before the latest chart bar. When the position size is 0, it calls strategy.entry() to place the “Buy1” order for five units. After the strategy’s position size matches the size of that order, it uses strategy.entry() to place the “Buy2” order for ten units. The strategy then creates “bracket” exit orders for both entries using a single strategy.exit() call without a `from_entry` argument. For visual reference, the script plots the strategy.position_size value in a separate pane:
+By default, strategies close a market position using the _First In, First Out (FIFO)_ method. If a strategy uses this behavior, any exit order closes or reduces the position starting with the _first_ open trade, even if the exit command specifies the entry ID of a _different_ open trade. To override this default behavior, include `close_entries_rule = "ANY"` in the strategy() declaration statement.
+The following example script places “Buy1” and “Buy2” entry orders sequentially, starting 100 bars before the latest chart bar. When the position size is 0, it calls the strategy.entry() command to place the “Buy1” order for five units. After the strategy’s position size matches the size of that order, the second strategy.entry() call places the “Buy2” order for ten units. The strategy then creates “bracket” exit orders for both entries using a single strategy.exit() call without a `from_entry` argument. For visual reference, the script also plots the strategy.position_size value in a separate pane:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exit Demo", pyramiding = 2)  
+strategy("Exit demo", pyramiding = 2)  
   
 float positionSize = strategy.position_size  
   
@@ -25786,18 +25729,18 @@ else if positionSize == 5
 else if positionSize == 15  
     strategy.exit("bracket", loss = 10, profit = 10)  
   
-plot(positionSize == 0 ? na : positionSize, "Position Size", color.lime, 4, plot.style_histogram)  
+plot(positionSize, "Position size", color.lime, 4, plot.style_histogram)  
 `
 Note that:
-  * We included `pyramiding = 2` in the strategy() declaration statement, allowing two successive entries from strategy.entry() per position.
+  * We included `pyramiding = 2` in the strategy() declaration statement, allowing two successive entries from strategy.entry() calls per position.
 
 
 Each time the market price triggers an exit order, the above script exits from the open position, starting with the _oldest_ open trade. This FIFO behavior applies even if we explicitly specify an exit from “Buy2” before “Buy1” in the code.
-The script version below calls strategy.close() with “Buy2” as its `id` argument, and it includes “Buy1” as the `from_entry` argument in the strategy.exit() call. The market order from strategy.close() executes on the next available tick, meaning the broker emulator fills it _before_ the take-profit and stop-loss orders from strategy.exit():
+The script version below calls the strategy.close() command with “Buy2” as the `id` argument, and it includes “Buy1” as the `from_entry` argument in the strategy.exit() call. The market order from the strategy.close() call executes on the next available tick. Therefore, the broker emulator fills it _before_ the take-profit and stop-loss orders from the strategy.exit() call:
 Pine Script®
 Copied
 `//@version=6  
-strategy("Exit Demo", pyramiding = 2)  
+strategy("Exit demo", pyramiding = 2)  
   
 float positionSize = strategy.position_size  
   
@@ -25809,19 +25752,19 @@ else if positionSize == 15
     strategy.close("Buy2")  
     strategy.exit("bracket", "Buy1", loss = 10, profit = 10)  
   
-plot(positionSize == 0 ? na : positionSize, "Position Size", color.lime, 4, plot.style_histogram)  
+plot(positionSize, "Position size", color.lime, 4, plot.style_histogram)  
 `
-The market order from the script’s strategy.close() call is for 10 units because it links to the open trade with the “Buy2” entry ID. A user might expect this strategy to close that trade completely when the order executes. However, the “List of Trades” tab shows that five units of the order go toward closing the “Buy1” trade _first_ because it is the oldest, and the remaining five units close _half_ of the “Buy2” trade. After that, the “bracket” orders from the strategy.exit() call close the rest of the position:
+The market order from the script’s strategy.close() call is for 10 units because it links to the open trade with the “Buy2” entry ID. A user might expect this strategy to close that trade completely when the order executes. However, the “Trades” tab in the strategy report shows that _five_ units of the order close the “Buy1” trade _first_ because it is the oldest, and the remaining five units close _half_ of the “Buy2” trade. Then, the “bracket” orders from the strategy.exit() call close the rest of the position later:
 !image
 Note that:
-  * If we included `close_entries_rule = "ANY"` in the strategy() declaration statement, the market order from strategy.close() would close the open trade with the “Buy2” entry ID _first_ , and then the “bracket” orders from strategy.exit() would close the trade with the “Buy1” entry ID.
+  * If we included `close_entries_rule = "ANY"` in the strategy() declaration statement, the market order from the strategy.close() call would close the open trade with the “Buy2” entry ID _first_ , and then the “bracket” orders from the strategy.exit() call would close the trade with the “Buy1” entry ID.
 
 ## OCA groups
 _One-Cancels-All (OCA)_ groups allow a strategy to fully or partially _cancel_ specific orders when the broker emulator executes another order from the same group. To assign an order to an OCA group, include an `oca_name` argument in the call to the order placement command. The strategy.entry() and strategy.order() commands also allow programmers to specify an _OCA type_ , which defines whether a strategy cancels, reduces, or does not modify the order after executing other orders.
-NoteAll order placement commands that issue orders for the same OCA group must specify the same group name **and** OCA type. If two commands have the same `oca_name` but _different_ `oca_type` values, the strategy considers them to be from **two distinct groups**. In other words, an OCA group **cannot** mix the strategy.oca.cancel, strategy.oca.reduce, and strategy.oca.none OCA types.
+NoteAll order placement commands that issue orders for the same OCA group must specify the same group name **and** OCA type. If two commands have the same `oca_name` value but _different_ `oca_type` values, the strategy considers them to be from **two distinct groups**. In other words, an OCA group **cannot** mix the strategy.oca.cancel, strategy.oca.reduce, and strategy.oca.none OCA types.
 ### ​`strategy.oca.cancel`​
-When an order placement command uses strategy.oca.cancel as its `oca_type` argument, the strategy completely _cancels_ the resulting order if another order from the same OCA group executes first.
-To demonstrate how this OCA type impacts a strategy’s orders, consider the following script, which places orders when the `ma1` value crosses the `ma2` value. If the strategy.position_size is 0 when the cross occurs, the strategy places two stop orders with strategy.order() calls. The first is a long order at the bar’s high, and the second is a short order at the bar’s low. If the strategy already has an open position during the cross, it calls strategy.close_all() to close the position with a market order:
+If an order placement command uses strategy.oca.cancel as its `oca_type` argument, the strategy completely _cancels_ the resulting order if another order from the same OCA group executes first.
+To understand how this OCA type impacts a strategy’s orders, consider the following script, which places orders when the `ma1` value crosses the `ma2` value. If the strategy.position_size value is 0 when the cross occurs, the strategy places two stop orders using strategy.order() calls. The first is a long order at the bar’s high, and the second is a short order at the bar’s low. If the strategy already has an open position during the cross, it calls the strategy.close_all() command to close the position with a market order:
 Pine Script®
 Copied
 `//@version=6  
@@ -25840,9 +25783,9 @@ if ta.cross(ma1, ma2)
 plot(ma1, "Fast MA", color.aqua)  
 plot(ma2, "Slow MA", color.orange)  
 `
-Depending on the price action, the strategy might fill _both_ stop orders before creating the closing market order. In that case, the strategy exits the position without evaluating strategy.close_all() because both orders have the same size. We see this behavior in the chart below, where the strategy alternated between executing “Long” and “Short” orders a few times without executing an order from strategy.close_all():
+Depending on the price action, the strategy might fill _both_ stop orders before creating the closing market order. In that case, the strategy exits the position without executing the strategy.close_all() call because both orders have the same size. We see this behavior in the chart below, where the strategy alternated between filling the “Long” and “Short” orders a few times without executing an order from the strategy.close_all() command:
 !image
-To eliminate scenarios where the strategy fills the “Long” and “Short” orders before evaluating the strategy.close_all() call, we can instruct it to _cancel_ one of the orders after it executes the other. Below, we included “Entry” as the `oca_name` argument and strategy.oca.cancel as the `oca_type` argument in both strategy.order() calls. Now, after the strategy executes either the “Long” or “Short” order, it cancels the other order and waits for strategy.close_all() to close the position:
+To eliminate cases in which the strategy fills the “Long” and “Short” orders before evaluating the strategy.close_all() call, we can instruct it to _cancel_ one of the orders after the broker emulator fills the other. Below, we included “Entry” as the `oca_name` argument and strategy.oca.cancel as the `oca_type` argument in both strategy.order() calls. Now, after the either the “Long” or “Short” order fills, the strategy cancels the other order and waits for the market order from the strategy.close_all() command to close the position:
 !image
 Pine Script®
 Copied
@@ -25863,12 +25806,12 @@ plot(ma1, "Fast MA", color.aqua)
 plot(ma2, "Slow MA", color.orange)  
 `
 ### ​`strategy.oca.reduce`​
-When an order placement command uses strategy.oca.reduce as its OCA type, the strategy _does not_ cancel the resulting order entirely if another order with the same OCA name executes first. Instead, it _reduces_ the order’s size by the filled number of contracts/shares/lots/units, which is particularly useful for custom exit strategies.
-The following example demonstrates a _long-only_ strategy that generates a single stop-loss order and two take-profit orders for each new entry. When a faster moving average crosses over a slower one, the script calls strategy.entry() with `qty = 6` to create an entry order, and then it uses three strategy.order() calls to create a stop order at the `stop` price and two limit orders at the `limit1` and `limit2` prices. The strategy.order() call for the “Stop” order uses `qty = 6`, and the two calls for the “Limit 1” and “Limit 2” orders both use `qty = 3`:
+If an order placement command uses strategy.oca.reduce as its OCA type, the strategy _does not_ cancel the resulting order entirely if another order with the same OCA name executes first. Instead, it _reduces_ the order’s size by the filled number of contracts/shares/lots/units. This behavior is particularly useful for custom exit strategies.
+The following example demonstrates a _long-only_ strategy that generates a single stop-loss order and two take-profit orders for each new entry. When a faster moving average crosses over a slower one, the script calls the strategy.entry() command with the argument `qty = 6` to create an entry order. Then, it uses three strategy.order() calls to create a stop order at the `stop` value and two limit orders at the `limit1` and `limit2` values. The strategy.order() call for the “Stop” order uses the argument `qty = 6`, and the two calls for the “Limit 1” and “Limit 2” orders both use `qty = 3`:
 Pine Script®
 Copied
 `//@version=6  
-strategy("Multiple TP Demo", overlay = true)  
+strategy("Multiple limits without reduction demo", overlay = true, behind_chart = false)  
   
 var float stop   = na  
 var float limit1 = na  
@@ -25889,15 +25832,15 @@ plot(showPlot ? stop   : na, "Stop",    color.red,   style = plo
 plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.style_linebr)  
 plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
 `
-After adding this strategy to the chart, we see it does not work as initially intended. The problem with this script is that the orders from strategy.order() **do not** belong to an OCA group by default (unlike strategy.exit(), whose orders automatically belong to a strategy.oca.reduce OCA group). Since the strategy does not assign the strategy.order() calls to any OCA group, it does not reduce any unfilled stop or limit orders after executing an order. Consequently, if the broker emulator fills the stop order and at least one of the limit orders, the traded quantity **exceeds** the open long position, resulting in an open _short_ position:
+After adding this strategy to the chart, we see that it does not work as initially intended. The problem with this script is that the orders from the strategy.order() command **do not** belong to an OCA group by default (unlike strategy.exit(), whose orders automatically belong to a strategy.oca.reduce OCA group). Because the strategy does not assign the strategy.order() calls to any OCA group, it cannot reduce any unfilled stop or limit orders after a pending order executes. Consequently, if the broker emulator fills the stop order and at least one of the limit orders, the traded quantity **exceeds** the open long position, resulting in an open _short_ position:
 !image
 For our long-only strategy to work as we intended, we must instruct it to _reduce_ the sizes of the unfilled stop/limit orders after one of them executes to prevent selling a larger quantity than the open long position.
-Below, we specified “Bracket” as the `oca_name` and strategy.oca.reduce as the `oca_type` in all the script’s strategy.order() calls. These changes tell the strategy to reduce the sizes of the orders in the “Bracket” group each time the broker emulator fills one of them. This version of the strategy never simulates a short position because the total size of its filled stop and limit orders never _exceeds_ the long position’s size:
+Below, we specified “Bracket” as the `oca_name` argument and strategy.oca.reduce as the `oca_type` argument in all the script’s strategy.order() calls. These changes tell the strategy to reduce the sizes of the orders in the “Bracket” group each time the broker emulator fills one of them. This version of the strategy never simulates a short position, because the total size of its filled stop and limit orders never _exceeds_ the long position’s size:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Multiple TP Demo", overlay = true)  
+strategy("Multiple limits with reduction demo", overlay = true, behind_chart = false)  
   
 var float stop   = na  
 var float limit1 = na  
@@ -25919,22 +25862,19 @@ plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.styl
 plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
 `
 Note that:
-  * We also changed the `qty` value of the “Limit 2” order to 6 instead of 3 because the strategy reduces its amount by three units when it executes the “Limit 1” order. Keeping the `qty` value of 3 would cause the second limit order’s size to drop to 0 after the strategy fills the first limit order, meaning it would never execute.
+  * We also changed the `qty` value of the “Limit 2” order to 6 instead of 3 because the strategy reduces that order’s amount by three units after it executes the “Limit 1” order. Keeping the `qty` value of 3 would cause the second limit order’s size to decrease to 0 after the strategy fills the first limit order, resulting in no effect on the position.
 
 
 ### ​`strategy.oca.none`​
-When an order placement command uses strategy.oca.none as its `oca_type` value, all orders from that command execute _independently_ of any OCA group. This value is the default `oca_type` for the strategy.order() and strategy.entry() commands.
+If an order placement command uses strategy.oca.none as its `oca_type` value, all orders from that command execute _independently_ of any OCA group. This value is the default `oca_type` argument for the strategy.order() and strategy.entry() commands.
 
 ## Currency
-Pine Script strategies can use different currencies in their calculations than the instruments they simulate trades on. Programmers can specify a strategy’s account currency by including a `currency.*` variable as the `currency` argument in the strategy() declaration statement. The default value is currency.NONE, meaning the strategy uses the same currency as the current chart (syminfo.currency). Script users can change the account currency using the “Base currency” input in the script’s “Settings/Properties” tab.
-When a strategy script uses an account currency that differs from the chart’s currency, it uses the _previous daily value_ of a corresponding currency pair from the most popular exchange to determine the conversion rate. If no exchange provides the rate directly, it derives the rate using a spread symbol. The strategy multiplies all monetary values, including simulated profits/losses, by the determined cross rate to express them in the account currency. To retrieve the rate that a strategy uses to convert monetary values, call request.currency_rate() with syminfo.currency as the `from` argument and strategy.account_currency as the `to` argument.
-Note that:
-  * Programmers can directly convert values expressed in a strategy’s account currency to the chart’s currency and vice versa via the strategy.convert_to_symbol() and strategy.convert_to_account() functions.
-
-
-The following example demonstrates how currency conversion affects a strategy’s monetary values and how a strategy’s cross-rate calculations match those that `request.*()` functions use.
-On each of the latest 500 bars, the strategy places an entry order with strategy.entry(), and it places a take-profit and stop-loss order one tick away from the entry price with strategy.exit(). The size of each entry order is `1.0 / syminfo.mintick`, rounded to the nearest tick, which means that the profit/loss of each closed trade is equal to _one point_ in the chart’s _quote currency_. We specified currency.EUR as the account currency in the strategy() declaration statement, meaning the strategy multiplies all monetary values by a cross rate to express them in Euros.
-The script calculates the absolute change in the ratio of the strategy’s net profit (strategy.netprofit) to the symbol’s point value (syminfo.pointvalue) to determine the value of _one unit_ of the chart’s currency in Euros. It plots this value alongside the result from a request.currency_rate() call that uses syminfo.currency and strategy.account_currency as the `from` and `to` arguments. As we see below, both plots align, confirming that strategies and `request.*()` functions use the _same_ daily cross-rate calculations:
+Pine Script strategies can simulate trades using different account currencies in their calculations. To set the default account currency for a strategy, include one of the `currency*` variables as the `currency` argument in the strategy() declaration statement. The default argument is currency.NONE, which specifies that the strategy uses the quoted currency on the chart by default (the currency indicated by the syminfo.currency variable). Users can change the strategy’s account currency via the “Initial capital” inputs in the “Settings/Properties” tab and at the top of the strategy report.
+If a strategy script uses an account currency that differs from the chart’s currency, it uses the _previous daily value_ of a corresponding currency pair from the most popular exchange to determine the conversion rate for all necessary calculations. If no available exchange provides the conversion rate directly, the strategy uses a spread to calculate the rate. The strategy multiplies all monetary values, such as simulated profits and losses, by the retrieved rate to express them in the account currency. Likewise, it inverts the rate to convert values in the account currency to prices in the quoted currency. To retrieve the rate that the strategy uses for currency conversion, call the request.currency_rate() function with syminfo.currency as the `from` argument and strategy.account_currency as the `to` argument.
+TipProgrammers can also directly convert values expressed in a strategy’s account currency to the chart’s currency, and vice versa, by using the strategy.convert_to_symbol() and strategy.convert_to_account() functions.
+The following example demonstrates how currency conversion affects a strategy’s monetary values, and how conversion rate calculations in a strategy match the calculations used by the `request.*()` functions.
+On each of the latest 500 bars, the strategy below places an entry market order with the strategy.entry() command, then places a take-profit and stop-loss order _one tick_ away from the entry price using the strategy.exit() command. Each entry order uses the size `1.0 / syminfo.mintick`. Therefore, the resulting profit or loss from each trade is syminfo.pointvalue units of chart currency per tick. We included currency.EUR as the `currency` argument in the strategy() declaration statement, causing the strategy to convert necessary values to _Euros_ by default.
+The script calculates the absolute one-bar change in the ratio of the strategy’s net profit to the symbol’s point value to derive the value of _one unit_ of the chart’s currency in Euros. It plots the result alongside the value returned by a request.currency_rate() call that uses syminfo.currency and strategy.account_currency as the `from` and `to` arguments. As shown on the chart below, both plots show the same values, confirming that the strategy and the data request use the same daily conversion rate in their calculations:
 !image
 Pine Script®
 Copied
@@ -25957,140 +25897,336 @@ plot(
 plot(request.currency_rate(syminfo.currency, strategy.account_currency), "Requested conversion rate", color.lime)  
 `
 Note that:
-  * When a strategy executes on a chart with a timeframe higher than “1D”, it uses the data from _one day before_ each _historical_ bar’s closing time for its cross-rate calculations. For example, on a “1W” chart, the strategy bases its cross rate on the previous Thursday’s closing values. However, it still uses the latest confirmed daily rate on _realtime_ bars.
+  * If a strategy executes on a chart with a timeframe higher than “1D”, it uses the data from _one day before_ each _historical_ bar’s closing time in currency conversions. For example, on a weekly chart, the strategy performs currency conversions using the confirmed rate from the previous Thursday’s close. However, it still uses the latest confirmed daily rate on _realtime_ bars.
 
 ## Altering calculation behavior
-Strategy scripts execute across all available historical chart bars and continue to execute on realtime bars as new data comes in. However, by default, strategies only recalculate their values after a bar _closes_ , even on realtime bars, and the earliest point that the broker emulator fills the orders a strategy places on the close one bar is at the _open_ of the following bar.
-Users can change these behaviors with the `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters of the strategy() declaration statement or the corresponding inputs in the “Recalculate” and “Fill orders” sections of the script’s “Settings/Properties” tab. The sections below explain how these settings affect a strategy’s calculations.
+Similar to an indicator, a strategy script executes across all historical chart bars in order, then continues to execute across realtime bars that become available after updates from the data feed. However, while indicators always executes _once per bar_ on historical bars and _once per tick_ on realtime bars, a strategy script can execute _differently_ on historical bars, realtime bars, or both, depending on the selected strategy properties.
+TipUnderstanding how these settings impact a strategy requires some knowledge of Pine’s Execution model. Therefore, we recommend reviewing the basics of the model before exploring the information below.
+Unless otherwise specified, a strategy script executes strictly _once per closed bar_ , regardless of whether a bar is part of the historical dataset or a new bar from the realtime data feed. If the current bar is open, the strategy _waits_ until the bar closes before updating calculations or placing new orders. Additionally, each new order in the strategy’s simulation has a _one-tick delay_ by default. Therefore, when using these default behaviors, a strategy places orders on a bar only when it reaches the bar’s close, and the earliest point at which the broker emulator can fill those orders is at the _open_ of the following bar.
+Users can configure a strategy to perform _more than one_ execution per historical or realtime bar, allowing for more granular calculations and order fills, by selecting the checkboxes in the strategy’s Script execution settings. Users can also change the strategy’s order delay on closed bars to zero ticks by selecting the “None” option from the “Order execution delay” input in the “Settings/Properties” tab. Programmers can set the default script execution and order delay behaviors by including arguments for the `calc_on_every_tick`, `calc_on_order_fills`, `calc_on_every_history_tick`, and `process_orders_on_close` parameters in the strategy() declaration statement.
+The sections below explain how each of these parameters affects a strategy’s default calculation behaviors.
+NoticeModifying a strategy’s “Script execution” settings can cause repainting in the strategy’s calculations and results, because they define different behaviors for historical and realtime bars, and both types of bars often have different levels of intrabar detail. Such differences can affect the behavior of order placement commands, Pine Logs, alerts, and any variables or fields that use the `varip` declaration mode. Therefore, when modifying these settings, we recommend inspecting a strategy’s logic carefully to ensure that it behaves as intended.
 ### ​`calc_on_every_tick`​
-The `calc_on_every_tick` parameter of the strategy() function determines the frequency of a strategy’s calculations on _realtime bars_. When this parameter’s value is `true`, the script recalculates on each _new tick_ in the realtime data feed. Its default value is `false`, meaning the script only executes on a realtime bar after it closes. Users can also toggle this recalculation behavior with the “On every tick” input in the script’s “Settings/Properties” tab.
-Enabling this setting can be useful in forward testing because it allows a strategy to use realtime price updates in its calculations. However, it _does not_ affect the calculations on historical bars because historical data feeds _do not_ contain complete tick data: the broker emulator considers each historical bar to have only four ticks (open, high, low, and close). Therefore, users should exercise caution and understand the limitations of this setting. If enabling calculation on every tick causes a strategy to behave _differently_ on historical and realtime bars, the strategy will **repaint** after the user reloads it.
-The following example demonstrates how recalculation on every tick can cause strategy repainting. The script uses strategy.entry() calls to place a long entry order each time the close reaches its `highest` value and a short entry order each time the close reaches its `lowest` value. The strategy() declaration statement includes `calc_on_every_tick = true`, meaning that on realtime bars, it can recalculate and place orders on new price updates _before_ a bar closes:
+The `calc_on_every_tick` parameter of the strategy() declaration statement specifies the default behavior of the strategy’s executions on _realtime bars_. If the value is `true`, the script executes to update its calculations on _every new tick_ in an open realtime bar, similar to an indicator. The default value is `false`. Script users can override the specified default by selecting the _“On realtime bar tick”_ checkbox from the Script execution settings in the “Settings/Properties” tab and at the top of the strategy report.
+Configuring a strategy to execute on each realtime tick is sometimes useful when _forward testing_ or updating _visuals_ on live data, because it allows the strategy to perform more granular calculations using the latest price and volume updates for an open bar. However, depending on the strategy’s logic, using this setting can also cause the strategy to behave _differently_ across historical and realtime bars, leading to repainting in the strategy’s orders and performance results. After a script reloads, all _elapsed_ realtime bars from the previous run become _historical_ bars in the new run, and the new historical bars **do not** preserve intrabar data from previous realtime ticks. Consequently, if a strategy places orders on the ticks within an open bar, it might not be able to reproduce the same orders after reloading.
+The following example demonstrates how executing a strategy’s logic on each new tick can significantly change the behavior of orders on realtime bars. If the current value of the close variable is the highest value in the series over a specified length, the script below calls the strategy.entry() command to place a long entry order. Otherwise, if the close value is the lowest over the same length, the script uses a separate strategy.entry() call to place a short entry order. We included `calc_on_every_tick = true` in the script’s strategy() declaration statement to allow a new execution on each realtime tick by default:
 Pine Script®
 Copied
 `//@version=6  
-strategy("Donchian Channel Break", overlay = true, calc_on_every_tick = true, pyramiding = 20)  
+strategy(  
+    "Executions on realtime ticks demo", overlay = true, behind_chart = false,   
+    pyramiding = 20, calc_on_every_tick = true  
+)  
   
-int length = input.int(15, "Length")  
+//@variable The number of bars in the highest and lowest calculations.  
+int lengthInput = input.int(15, "Length", minval = 1)  
   
-float highest = ta.highest(close, length)  
-float lowest  = ta.lowest(close, length)  
+// Calculate the highest and lowest `close` values over the input length.  
+float highest = ta.highest(close, lengthInput)  
+float lowest  = ta.lowest(close, lengthInput)  
   
+// Place a long market order if the `close` value equals the `highest` value.  
 if close == highest  
     strategy.entry("Buy", strategy.long)  
+// Otherwise, place a short market order if the `close` value equals the `lowest` value.  
 if close == lowest  
     strategy.entry("Sell", strategy.short)  
   
 // Highlight the background of realtime bars.  
-bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na)  
+bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = "Realtime bar highlight")  
   
-plot(highest, "Highest", color = color.lime)  
-plot(lowest, "Lowest", color = color.red)  
+// Plot the `highest` and `lowest` series.  
+plot(highest, "Highest close", color = color.lime)  
+plot(lowest,  "Lowest close",  color = color.red)  
 `
 Note that:
-  * The script uses a pyramiding value of 20, allowing it to simulate up to 20 entries per position with the strategy.entry() command.
-  * The script highlights the chart’s background orange when barstate.isrealtime is `true` to indicate realtime bars.
+  * The script uses a pyramiding value of 20, which allows to 20 entries per position using calls to the strategy.entry() command.
+  * The script indicates realtime bars by highlighting the chart’s background in orange when the barstate.isrealtime value is `true`.
 
 
-After applying the script to our chart and letting it run on several realtime bars, we see the following output:
+Because this strategy allows executions on every realtime tick, it updates its calculations and can place new orders after _each new update_ from the data feed. Below, we applied the script to a chart and let it run on several realtime bars. On the chart’s historical bars, the script places up to _one_ market order per bar, and the broker emulator fills each order at the _open_ of the following bar. By contrast, on realtime bars (the bars with an orange background), the script places _multiple_ orders per bar — one for every _tick_ on which the latest available close value equals the highest or lowest value over the specified length. Additionally, the broker emulator fills most of the orders on each highlighted bar _before_ the next bar opens, because every update to a realtime bar is a _valid tick_ for filling orders:
 !image
-The script placed a “Buy” order on _each tick_ where the close was at the `highest` value, which happened _more than once_ on each realtime bar. Additionally, the broker emulator filled each market order at the current realtime price rather than strictly at the open of the following chart bar.
-After we reload the chart, we see that the strategy _changed_ its behavior and _repainted_ its results on those bars. This time, the strategy placed only _one_ “Buy” order for each _closed bar_ where the condition was valid, and the broker emulator filled each order at the open of the following bar. It did not generate multiple entries per bar because what were previously realtime bars became _historical_ bars, which **do not** hold complete tick data:
+After we refresh our chart and run the script on the same bars again, the _elapsed_ realtime bars from the previous script run become _historical_ bars in the new run, and the script’s behavior _changes_ on those bars. Rather than placing multiple orders per bar on the former realtime bars, the script places only _one_ order on each closed bar whose _final_ price equals the highest or lowest value, and the broker emulator fills that order at the _open_ of the following bar:
 !image
+Note that:
+  * This strategy also behaves differently if we enable executions after _each order fill_ or on _each historical tick_ , because both settings allow _additional_ executions and fill prices for orders on _historical bars_. See the `calc_on_order_fills` and `calc_on_every_history_tick` sections below to learn more.
+
+
+TipWhen using the “On realtime bar tick” setting, users can help align script behaviors on historical and realtime bars by enabling the “On history bar tick” setting. When active, the script executes on each available tick across _historical_ bars to _approximate_ how the strategy would behave when executing on those bars as they formed. Allowing executions on historical ticks does not _eliminate_ repainting. However, it can help reduce significant differences between the script’s behaviors on historical and realtime bars for more realistic results. See the `calc_on_every_history_tick` section for more information.
 ### ​`calc_on_order_fills`​
-The `calc_on_order_fills` parameter of the strategy() function enables a strategy to recalculate immediately after an _order fills_ , allowing it to use more granular information and place additional orders without waiting for a bar to close. Its default value is `false`, meaning the strategy does not allow recalculation immediately after every order fill. Users can also toggle this behavior with the “After order is filled” input in the script’s “Settings/Properties” tab.
-Enabling this setting can provide a strategy script with additional data that would otherwise not be available until after a bar closes, such as the current average price of a simulated position on an open bar.
-The example below shows a simple strategy that creates a “Buy” order with strategy.entry() whenever the strategy.position_size is 0. The script uses strategy.position_avg_price to calculate price levels for the strategy.exit() call’s stop-loss and take-profit orders that close the position.
-We’ve included `calc_on_order_fills = true` in the strategy() declaration statement, meaning that the strategy recalculates each time the broker emulator fills a “Buy” or “Exit” order. Each time an “Exit” order fills, the strategy.position_size reverts to 0, triggering a new “Buy” order. The broker emulator fills the “Buy” order on the next tick at one of the bar’s OHLC values, and then the strategy uses the recalculated strategy.position_avg_price value to determine new “Exit” order prices:
+The `calc_on_order_fills` parameter of the strategy() declaration statement affects the default behavior of the strategy’s executions on both historical bars _and_ realtime bars. If the value is `true`, the script performs an additional execution on _each tick_ where the broker emulator _fills_ an order. The default value is `false`. Script users can override the specified default behavior by selecting the _“On order fill”_ checkbox from the Script execution settings in the “Settings/Properties” tab and at the top of the strategy report.
+When using this setting, a strategy updates its calculations and can place new orders _immediately_ after an order fills, without waiting for a bar’s closing tick. Those extra calculations update the `strategy.*` built-ins with more granular information that is otherwise not available until the closing tick, such as the current size or the average price of a new or modified position. This behavior is sometimes useful when backtesting or forward testing strategies that enter and exit trades mid-bar.
+The example script below uses the strategy.entry() command to place a “Buy” entry order on any bar where the value of the strategy.position_size variable is 0. It also calls the strategy.exit() command on each bar to place “Exit” bracket orders to close any active “Buy” trade. The script calculates the stop-loss and take-profit prices for the exit orders based on the value of the strategy.position_avg_price variable.
+The strategy() declaration statement includes the argument `calc_on_order_fills = true`. Therefore, in addition to updating calculations on each bar’s close, the strategy performs new calculations on each tick where the broker emulator fills a “Buy” or “Exit” order by default. Each time an “Exit” order fills, the strategy’s position size reverts to 0, triggering a new “Buy” order. The emulator then fills the “Buy” order on the next available tick, and the strategy.position_avg_price value automatically updates on that tick to store the average price of the new position. The strategy then uses the updated price to set the prices of new “Exit” orders. This cycle of intrabar entries and exits repeats across the bars in the dataset:
 !image
 Pine Script®
 Copied
 `//@version=6  
-strategy("Intrabar exit", overlay = true, calc_on_order_fills = true)  
+strategy("Executions after order fills demo", overlay = true, calc_on_order_fills = true)  
   
 float stopSize   = input.float(5.0, "SL %", minval = 0.0) / 100.0  
 float profitSize = input.float(5.0, "TP %", minval = 0.0) / 100.0  
   
+// The condition that triggers the entry order is `true` after each tick where an "Exit"  
+// order fills.  
 if strategy.position_size == 0.0  
     strategy.entry("Buy", strategy.long)  
   
+// After each order fill, the values of these variables update immediately rather   
+// than only at the bar's closing tick.  
 float stopLoss   = strategy.position_avg_price * (1.0 - stopSize)  
 float takeProfit = strategy.position_avg_price * (1.0 + profitSize)  
   
 strategy.exit("Exit", stop = stopLoss, limit = takeProfit)  
 `
 Note that:
-  * Without enabling recalculation on order fills, this strategy would not place new orders _before_ a bar closes. After an exit, the strategy would wait for the bar to close before placing a new “Buy” order, which the broker emulator would fill on the _next tick_ after that, i.e., the open of the following bar.
+  * This strategy can repaint after running on realtime bars. As the strategy runs on historical bars, the broker emulator uses the chart’s OHLC prices or the prices from a lower timeframe to determine the ticks available for filling orders, depending on the selected level of historical bar detail. By contrast, _each new update_ to a realtime bar is a valid tick on which an order can fill. Consequently, when _elapsed_ realtime bars become _historical_ bars after the script reloads, the strategy may place or fill orders on those bars at _different_ prices or times.
+  * If we deactivate executions after order fills, the strategy would _not_ place new orders _before_ a bar closes. Instead, it would wait for a bar’s closing tick before placing any “Buy” order. The broker emulator would then fill the order at the open of the following bar, and the strategy.position_avg_price variable would return a usable value for calculating the “Exit” order prices on that bar.
 
 
-It’s important to note that enabling `calc_on_order_fills` can produce unrealistic strategy results in some cases because the broker emulator may assume order-fill prices that are _not_ obtainable in real-world trading. Therefore, users should exercise caution and carefully examine their strategy logic when allowing recalculation on order fills.
-For example, the following script places a “Buy” order after each new order fill and bar close over the most recent 25 historical bars. The strategy simulates _four_ entries per bar because the broker emulator considers each historical bar to have _four ticks_ (open, high, low, and close). This behavior is unrealistic because it is not typically possible to fill an order at a bar’s _exact_ high or low price:
-!image
-Pine Script®
-Copied
-`//@version=6  
-strategy("buy on every fill", overlay = true, calc_on_order_fills = true, pyramiding = 100)  
-  
-if last_bar_index - bar_index <= 25  
-    strategy.entry("Buy", strategy.long)  
-`
-### ​`process_orders_on_close`​
-By default, strategies simulate orders at the close of each bar, meaning that the earliest opportunity to fill the orders and execute strategy calculations and alerts is on the opening of the following bar. Programmers can change this behavior to process orders on the _closing tick_ of each bar by setting `process_orders_on_close` to `true` in the strategy() declaration statement. Users can set this behavior by changing the “Fill Orders/On Bar Close” setting in the “Settings/Properties” tab.
-This behavior is most useful when backtesting manual strategies in which traders exit from a position before a bar closes, or in scenarios where algorithmic traders in non-24x7 markets set up after-hours trading capability so that alerts sent after close still have hope of filling before the following day.
-Note that:
-  * Using strategies with `process_orders_on_close` enabled to send alerts to a third-party service might cause unintended results. Alerts on the close of a bar still occur after the market closes, and real-world orders based on such alerts might not fill until after the market opens again.
-  * The strategy.close() and strategy.close_all() commands feature an `immediately` parameter that, if `true`, allows the resulting market order to fill on the same tick where the strategy created it. This parameter provides an alternative way for programmers to selectively apply `process_orders_on_close` behavior to closing market orders without affecting the behavior of other order placement commands.
-
-## Simulating trading costs
-Strategy performance reports are more relevant and meaningful when they include potential real-world trading costs. Without modeling the potential costs associated with their trades, traders may overestimate a strategy’s historical profitability, potentially leading to suboptimal decisions in live trading. Pine Script strategies include inputs and parameters for simulating trading costs in performance results.
-###  Commission
-Commission is the fee a broker/exchange charges when executing trades. Commission can be a flat fee per trade or contract/share/lot/unit, or a percentage of the total transaction value. Users can set the commission properties of their strategies by including `commission_type` and `commission_value` arguments in the strategy() function, or by setting the “Commission” inputs in the “Properties” tab of the strategy settings.
-The following script is a simple strategy that simulates a “Long” position of 2% of equity when `close` equals the `highest` value over the `length`, and closes the trade when it equals the `lowest` value:
-!image
-Pine Script®
-Copied
-`//@version=6  
-strategy("Commission Demo", overlay=true, default_qty_value = 2, default_qty_type = strategy.percent_of_equity)  
-  
-length = input.int(10, "Length")  
-  
-float highest = ta.highest(close, length)  
-float lowest  = ta.lowest(close, length)  
-  
-switch close  
-    highest => strategy.entry("Long", strategy.long)  
-    lowest  => strategy.close("Long")  
-  
-plot(highest, color = color.new(color.lime, 50))  
-plot(lowest, color = color.new(color.red, 50))  
-`
-The results in the Strategy Tester show that the strategy had a positive equity growth of 17.61% over the testing range. However, the backtest results do not account for fees the broker/exchange may charge. Let’s see what happens to these results when we include a small commission on every trade in the strategy simulation. In this example, we’ve included `commission_type = strategy.commission.percent` and `commission_value = 1` in the strategy() declaration, meaning it will simulate a commission of 1% on all executed orders:
+It’s crucial to note that enabling some strategies to execute after order fills can cause lookahead bias on historical bars. As a strategy executes across a dataset’s history while using this setting, built-in variables that store price and volume data for the current bar — including high, low, close, and volume — consistently hold the bar’s **final values**. Consequently, if the strategy uses these built-ins to control order logic on the ticks _within_ a historical bar, it may produce **misleading** backtest results, as the logic relies on data that would **not** be available in live trading until the market reaches the bar’s closing tick. Furthermore, the strategy’s apparent future awareness on historical bars is _impossible_ to reproduce on _realtime bars_. The bottom of the strategy report typically displays a _warning banner_ when the “On order fill” execution setting is active to inform users about this behavior.
+The following example demonstrates a simple strategy that produces lookahead bias when using the “On order fill” execution setting. The script calls the strategy.entry() command to place a long market order, then calls the strategy.exit() command to place a take-profit order at the current bar’s high value. By default, the script places the entry order at the current bar’s closing tick, and the broker emulator fills that order at the open of the following bar. The order fill on that bar triggers an additional execution, causing the strategy.exit() call to set the exit level to that bar’s high price. As shown below, on most historical bars where the script enters a new long trade, it then exits the trade at the bar’s _exact high_. This behavior is **misleading** , because knowing the exact high of a bar on the opening tick — let alone numerous consecutive times — is _impossible_ to achieve in real-world trading:
 !image
 Pine Script®
 Copied
 `//@version=6  
 strategy(  
-     "Commission Demo", overlay=true, default_qty_value = 2, default_qty_type = strategy.percent_of_equity,  
-     commission_type = strategy.commission.percent, commission_value = 1  
- )  
+    "Lookahead bias in orders demo", calc_on_order_fills = true,   
+    default_qty_type = strategy.percent_of_equity, default_qty_value = 2  
+)  
   
-length = input.int(10, "Length")  
+//@variable A persistent variable that updates to hold the current bar's opening time.  
+//          The script uses this variable to limit the executions of the order placement   
+/           commands.  
+varip int openTime = 0  
   
-float highest = ta.highest(close, length)  
-float lowest  = ta.lowest(close, length)  
+//@variable Holds a string to append to each order's ID to indicate the trade number.  
+string num = str.tostring(strategy.closedtrades)  
+  
+if openTime != time  
+    strategy.entry("Buy" + num, strategy.long)  
+  
+    // Create a take-profit order to exit the open trade at the current `high` value.  
+    // When an entry order fills on a historical bar's opening tick, the call below  
+    // typically places the take-profit order at that bar's **final** high price.  
+    // This behavior is extremely **misleading**, and not reproducible on realtime bars,   
+    // because it is impossible to know the final high of a bar before the bar closes.   
+    strategy.exit("Exit" + num, limit = high)  
+  
+openTime := time  
+`
+Note that:
+  * This script declares the `openTime` variable using the varip keyword. If a variable declaration uses this keyword, the variable persists across all executions without resetting to a previous state. The script uses this variable in the if structure to limit the placement of new orders to the current bar’s first tick — where the variable’s value does not yet match the current bar’s opening time. To learn more about the behavior of this keyword, refer to the `varip` section of the Variable declarations page.
+  * This script behaves very differently on _realtime bars_. Rather than exiting trades at a bar’s exact high, the strategy exits each trade at the bar’s _developing_ high as of the next tick or the current tick, because the final high price on a realtime bar is _unknown_ until after the bar closes.
+
+
+TipTo enable script executions on historical intrabar ticks _without_ causing this form of lookahead bias, use the _“On history bar tick”_ execution setting rather than “On order fill”. See the `calc_on_every_history_tick` section below to learn more.
+### ​`calc_on_every_history_tick`​
+The `calc_on_every_history_tick` parameter of the strategy() declaration statement specifies the default behavior of the strategy’s executions on _historical bars_. This parameter requires a _named argument_ , which includes the parameter’s name and the assigned value (e.g., `calc_on_every_history_tick = true`). If the value is `true`, the script executes to update its calculations on _every available tick_ in each historical bar. The default value is `false`. Script users can override the specified default by selecting the _“On history bar tick”_ checkbox from the Script execution settings in the “Settings/Properties” tab and at the top of the strategy report.
+NoteThe “On history bar tick” feature is available only to users who have a Premium or Ultimate plan. Additionally, the feature requires a _standard_ chart type. If the setting is enabled by default, the strategy raises a runtime error if it is not compatible with the user’s plan or the current chart.
+A strategy that uses the “On history bar tick” setting treats historical bars similarly to _realtime bars_. As the script executes on the available ticks of each historical bar, multiple built-in variables that hold price and volume data for the bar, including high, low, close, and volume, _update on every tick_ to approximate the progression of values that would have been visible to the strategy when the bar was still open. This behavior helps reduce the risk of lookahead bias while executing on historical ticks, as the strategy cannot access the _final_ price or volume data for a historical bar before reaching the bar’s closing tick.
+NoteThis setting does not affect the behavior of variables that track bar states. For example, the value of the barstate.isconfirmed variable is always `true` on historical bars. It never changes to `false` during the executions across a historical bar’s intrabar ticks while the “On history bar tick” setting is active.
+The visibility of values within each historical bar depends on the selected level of historical bar detail. If the strategy uses high historical detail, it determines the high, low, close, and volume values available on each tick by requesting data from a _lower timeframe_. Otherwise, if the strategy uses the default level of detail, the values available on each tick depend on the broker emulator’s assumptions about the price action within the historical bar. The following tables describe the values stored by the high, low, close, and volume variables on each tick in a historical bar when using the default level of detail, based on the assumed order of price action within the bar:
+**Open → High → Low → Close**  
+| Tick  | `high`  | `low`  | `close`  | `volume`  |  
+| --- | --- | --- | --- | --- |  
+| 1  | Open  | Open  | Open  | Total volume * 0.25  |  
+| 2  | High  | Open  | High  | Total volume * 0.5  |  
+| 3  | High  | Low  | Low  | Total volume * 0.75  |  
+| 4  | High  | Low  | Close  | Total volume  |  
+**Open → Low → High → Close**  
+| Tick  | `high`  | `low`  | `close`  | `volume`  |  
+| --- | --- | --- | --- | --- |  
+| 1  | Open  | Open  | Open  | Total volume * 0.25  |  
+| 2  | Open  | Low  | Low  | Total volume * 0.5  |  
+| 3  | High  | Low  | High  | Total volume * 0.75  |  
+| 4  | High  | Low  | Close  | Total volume  |  
+Note that:
+  * Variables that store values calculated from the chart’s OHLCV data also update on each tick based on these assumptions. For example, if the _second_ tick of the current historical bar is at the _high_ , the value of the ohlc4 variable equals `(open + open + high + high) / 4`. However, the value still equals `(open + high + low + close) / 4` on the bar’s final tick.
+
+
+The following example demonstrates a strategy that enters trades on the ticks within historical bars when using the “On history bar tick” execution setting. The script declares two persistent variables named `openTime` and `firstPrice` to track time and price information from the first tick on which it executes in each historical bar. On each tick where the `openTime` value does not match the bar’s opening time, the script reassigns that variable to store the current timestamp, then reassigns the `firstPrice` variable to hold the close value (i.e., the current price) for that tick.
+The script uses the `firstPrice` value and the 10-bar highest and lowest prices to control order placement commands. On each tick where the current price is less than the `firstPrice` value and not equal to the current highest or lowest price, the script calls the strategy.entry command to place a long market order, then calls the strategy.exit() command to place take-profit and stop-loss orders at the highest and lowest values:
+!image
+Pine Script®
+Copied
+`//@version=6  
+strategy(  
+    "Executions on all historical ticks demo", overlay = true, behind_chart = false,  
+    default_qty_type = strategy.percent_of_equity, default_qty_value = 2,  
+    calc_on_every_history_tick = true  
+)  
+  
+//@variable A persistent variable that tracks the current bar's opening time.  
+varip int openTime = 0  
+//@variable A persistent variable that tracks the `close` value on each bar's *first* tick (i.e., the opening price).  
+varip float firstPrice = na  
+  
+// The local scope of this structure executes only on the first tick of each bar, because the `time` variable's   
+// value changes only once per bar.  
+if time != openTime  
+    // Update the `openTime` variable, preventing subsequent executions of the scope on the same bar.  
+    openTime   := time  
+    // Update the `firstPrice` variable to store the current `close` value.  
+    // When using the "On history bar tick" setting, the value is the price as of the historical bar's *first tick*.  
+    // When not using the setting, the value consistently equals the historical bar's *final* closing price.   
+    firstPrice := close  
+  
+// Calculate the highest high and lowest low over the latest 10 bars.  
+float highest = ta.highest(high, 10)  
+float lowest  = ta.lowest(low, 10)  
+  
+// When using the "On history bar tick" setting, this variable's value is `true` for each tick historical tick   
+// where the *current* price is less than the price on the bar's first tick and not equal to the current highest high   
+// or lowest low.   
+// Without this setting enabled, the condition is *never* `true` on historical bars, because `close` and `firstPrice`   
+// both refer to the *same value*.  
+bool entryCondition = close < firstPrice and close != highest and close != lowest  
+   
+if entryCondition  
+    // Place a long entry order on the current tick.  
+    strategy.entry("Entry", strategy.long)  
+    // Place take-profit and stop-loss orders at the current tick's `highest` and `lowest` values, respectively.  
+    strategy.exit("Exit", "Entry", limit = highest, stop = lowest)  
+  
+// Plot the `highest` and `lowest` series for visual reference.  
+plot(highest, "10-bar high", color.green)  
+plot(lowest, "10-bar low", color.red)  
+`
+Note that:
+  * This script simulates historical trades only while using the “On history bar tick” setting. Without the setting enabled, the value of the close variable on historical bars always represents the _final_ closing price rather than the intrabar price on each tick. Therefore, when the script reassigns the `firstPrice` variable on any historical bar, that variable also stores the bar’s final price, and the `close < firstPrice` condition consistently evaluates to `false`, resulting in _no trades_.
+  * By default, this script does not simulate trades on _realtime bars_ , because it executes only _once_ at each bar’s close on that part of the dataset. To enable trades on realtime bars, select the “On realtime bar tick” checkbox in the “Script execution” settings or add `calc_on_every_tick = true` to the strategy() declaration statement.
+  * By default, the broker emulator fills the strategy’s orders based on the _chart prices_ of each historical bar, because the script uses the default level of historical bar detail. Users can simulate the trades using more granular prices by selecting the “High” option in the script’s Bar detalization settings or including `use_bar_magnifier = true` in the declaration statement.
+
+
+### ​`process_orders_on_close`​
+The `process_orders_on_close` parameter of the strategy() declaration statement specifies the default behavior of orders created on a bar’s _closing tick_. If the value is `true`, the broker emulator can fill orders created on a bar’s close immediately, on the _same tick_ , rather than waiting for the next available tick. If the value is `false` (the default), the earliest point at which the emulator can fill orders created on a bar’s closing tick is on the _next_ tick, at the _open_ of the following bar. Script users can override the specified default behavior via the “Order execution delay” dropdown menu in the “Settings/Properties” tab.
+Strategies apply a one-tick delay to order fills by default because creating and filling an order on the same tick is typically _unrealistic_ in real-world trading. However, simulating order fills at a bar’s close can be useful in some scenarios, such as when backtesting manual strategies in which traders exit a position immediately before the market closes, or when using order fill alerts to potentially trigger real-world orders before the start of the next trading session.
+Note
+Sending alerts to a third-party service for filling orders when using this setting might not work as a trader intends, especially in non-continuous markets, because the alerts still occur _after_ the session closes. Depending on the external service and the type of market, real-world orders based on such alerts might not fill until after the market opens again.
+  
+
+This setting _does not_ affect the execution of orders that a strategy places _before_ a bar’s closing tick. If a strategy places orders on the ticks within a bar, the broker emulator fills those orders on the next available tick.
+The following example demonstrates how removing the execution delay in orders at a bar’s close changes the timing of trades. The initial script below uses the strategy.entry() command to place alternating long and short market orders across the dataset. The script places an order only at the close of each bar, then highlights the chart’s background in blue or red to indicate the order direction. The strategy() declaration statement does not include a `process_orders_on_close` argument. Therefore, the broker emulator applies a one-tick delay to all orders placed on a bar’s close by default. As shown by the trade markers on the chart’s bars, after the strategy creates an order, the broker emulator fills the order at the open of the following bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+strategy("Default delay demo", overlay = true)  
+  
+//@variable A translucent blue or red on each bar where a `strategy.entry()` call executes.  
+color entryColor = na  
+  
+if bar_index % 10 == 0  
+    // Place a long entry order and assign a blue color to `entryColor` if a short position or no position is open.  
+    if strategy.position_size <= 0  
+        strategy.entry("Buy", strategy.long)  
+        entryColor := color.new(color.blue, 80)  
+    // Otherwise, place a short entry order and assign a red color to `entryColor`.  
+    else  
+        strategy.entry("Sell", strategy.short)  
+        entryColor := color.new(color.red, 80)  
+  
+// Highlight the chart's background to indicate when the entry orders occur.  
+bgcolor(entryColor, title = "Entry order highlight")  
+`
+If we add `process_orders_on_close = true` to the strategy() declaration statement, broker emulator fills each market order on the same closing tick where the script creates it by default. After applying this change to the script above, the trade markers on the chart now align with the displayed background colors, indicating that each order fills immediately rather than at the next bar’s opening tick:
+!image
+Pine Script®
+Copied
+`//@version=6  
+strategy("No delay for orders on close demo", overlay = true, process_orders_on_close = true)  
+  
+//@variable A translucent blue or red on each bar where a `strategy.entry()` call executes.  
+color entryColor = na  
+  
+if bar_index % 10 == 0  
+    // Place a long entry order and assign a blue color to `entryColor` if a short position or no position is open.  
+    if strategy.position_size <= 0  
+        strategy.entry("Buy", strategy.long)  
+        entryColor := color.new(color.blue, 80)  
+    // Otherwise, place a short entry order and assign a red color to `entryColor`.  
+    else  
+        strategy.entry("Sell", strategy.short)  
+        entryColor := color.new(color.red, 80)  
+  
+// Highlight the chart's background to indicate when the entry orders occur.  
+bgcolor(entryColor, title = "Entry order highlight")  
+`
+TipThe strategy.close() and strategy.close_all() commands feature an `immediately` parameter, which enables programmers to remove the delay for closing market orders _without_ affecting the behavior of other order placement commands. If the value is `true`, the broker emulator fills the resulting market order on the same tick where the strategy calls the command. If `false` (the default), the behavior of the order depends on the strategy’s “Order execution delay” setting.
+
+## Simulating trading costs
+Strategy performance reports are more relevant and meaningful when they include potential real-world trading costs. Without modeling the potential costs associated with their trades, traders may overestimate a strategy’s historical profitability, potentially leading to suboptimal decisions in live trading. Pine Script strategies include inputs and parameters for simulating trading costs in performance results.
+###  Commission
+Commission is the fee that a broker/exchange charges when executing orders. The commission can be a flat fee per order, a fee per contract/share/lot/unit, or a percentage of the total transaction value. Programmers can specify the default commission settings for their strategies by including `commission_type` and `commission_value` arguments in the strategy() declaration statement. If not specified, the strategy applies no commission to filled orders. Users can override the specified defaults by adjusting the “Commision” inputs in the strategy’s “Settings/Properties” tab.
+The following script is a simple strategy that enters a long position using 2% of its available equity when the current close value is the highest value over a user-specified length, and closes the trade when the close value is the lowest across that same number of bars. Because the declaration statement does not specify any `commission_*` arguments, the strategy simulates transactions without any commission by default:
+!image
+Pine Script®
+Copied
+`//@version=6  
+// This declaration statement's `default_qty_*` arguments specify that `strategy.entry()` calls create orders  
+// with 2% of the available equity by default.  
+// It does not specify `commission_*` arguments, so this strategy applies no commission by default.   
+strategy(  
+    "Commission demo", overlay = true, default_qty_value = 2, default_qty_type = strategy.percent_of_equity  
+)  
+  
+//@variable The number of bars for the `ta.highest()` and `ta.lowest()` calculations.  
+int lengthInput = input.int(10, "Length", minval = 1)  
+  
+// Determine the highest and lowest `close` values over `lengthInput` bars.  
+float highest = ta.highest(close, lengthInput)  
+float lowest  = ta.lowest(close, lengthInput)  
   
 switch close  
+// Place a long market order if the current `close` value is equal to the `highest` value.  
     highest => strategy.entry("Long", strategy.long)  
+// Place an order to close the position if the `close` value is equal to the `lowest` value.  
     lowest  => strategy.close("Long")  
   
-plot(highest, color = color.new(color.lime, 50))  
-plot(lowest, color = color.new(color.red, 50))  
+// Plot the calculated `highest` and `lowest` series across the bars for reference.  
+plot(highest, "Highest close", color.new(color.lime, 50), 2)  
+plot(lowest,  "Lowest close",  color.new(color.red, 50),  2)  
 `
-As we can see in the example above, after applying a 1% commission to the backtest, the strategy simulated a significantly reduced net profit of only 1.42% and a more volatile equity curve with an elevated max drawdown. These results highlight the impact that commission can have on a strategy’s hypothetical performance.
+Note that:
+  * The `default_qty_type` and `default_qty_value` arguments in the strategy() statement set the strategy’s default order type and size. This default order size applies only to orders from strategy.entry() and strategy.order() calls that do _not_ include a `qty` argument. See the Position sizing section above for more information.
+
+
+For our daily “NASDAQ:AAPL” chart above, the results in the strategy report show that the strategy had a positive equity growth of 18.67% over the testing range. However, these backtesting results do not account for any fees that the broker/exchange may charge.
+Let’s see what happens to these results when we add commission to every trade in the strategy simulation. In the example below, we modified the previous script to include the arguments `commission_type = strategy.commission.percent` and `commission_value = 1` in the strategy() declaration statement. With this change, the broker emulator now applies a commission of 1% of the transaction size to each filled order by default.
+As shown below, after applying 1% commission to the strategy’s orders on the same dataset, the strategy report shows a significantly reduced net profit, as well as increased volatility in the strategy’s cumulative returns and an elevated maximum drawdown. These results highlight the impact that commission can have on a strategy’s simulated performance:
+!image
+Pine Script®
+Copied
+`//@version=6  
+// This declaration statement's `default_qty_*` arguments specify that `strategy.entry()` calls create orders  
+// with 2% of the available equity by default.  
+// The `commission_*` arguments specify that the strategy simulates a commission of 1% of each transaction's value.  
+strategy(  
+    "Commission demo", overlay = true, default_qty_value = 2, default_qty_type = strategy.percent_of_equity,  
+    commission_type = strategy.commission.percent, commission_value = 1  
+)  
+  
+//@variable The number of bars for the `ta.highest()` and `ta.lowest()` calculations.  
+lengthInput = input.int(10, "Length", minval = 1)  
+  
+// Determine the highest and lowest `close` values over `lengthInput` bars.  
+float highest = ta.highest(close, lengthInput)  
+float lowest  = ta.lowest(close, lengthInput)  
+  
+switch close  
+    // Place a long market order if the current `close` value is equal to the `highest` value.  
+    highest => strategy.entry("Long", strategy.long)  
+    // Place an order to close the position if the `close` value is equal to the `lowest` value.  
+    lowest  => strategy.close("Long")  
+  
+// Plot the calculated `highest` and `lowest` series across the bars for reference.  
+plot(highest, "Highest close", color.new(color.lime, 50), 2)  
+plot(lowest,  "Lowest close",  color.new(color.red, 50),  2)  
+`
 ### Slippage and unfilled limits
-In real-life trading, a broker/exchange may fill orders at slightly different prices than a trader intended, due to volatility, liquidity, order size, and other market factors, which can profoundly impact a strategy’s performance. The disparity between expected prices and the actual prices at which the broker/exchange executes trades is what we refer to as _slippage_. Slippage is dynamic and unpredictable, making it impossible to simulate precisely. However, factoring in a small amount of slippage on each trade during a backtest or forward test might help the results better align with reality. Users can model slippage in their strategy results, sized as a fixed number of _ticks_ , by including a `slippage` argument in the strategy() declaration statement or by setting the “Slippage” input in the “Settings/Properties” tab.
-The following example demonstrates how simulating slippage affects the fill prices of market orders in a strategy test. The script below places a “Buy” market order of 2% equity when the market price is above a rising EMA and closes the position when the price dips below the EMA while it’s falling. We’ve included `slippage = 20` in the strategy() function, which declares that the price of each simulated order will slip 20 ticks in the direction of the trade.
-The script uses strategy.opentrades.entry_bar_index() and strategy.closedtrades.exit_bar_index() to get the `entryIndex` and `exitIndex`, which it uses to obtain the `fillPrice` of the order. When the bar index is at the `entryIndex`, the `fillPrice` is the first strategy.opentrades.entry_price() value. At the `exitIndex`, `fillPrice` is the strategy.closedtrades.exit_price() value from the last closed trade. The script plots the expected fill price along with the simulated fill price after slippage to visually compare the difference:
+In real-world trading, orders may execute at prices that differ from what the trader intended, due to volatility, liquidity, order size, and other market factors. Such differences can profoundly impact a strategy’s performance. The disparity between the expected fill price of an order and the actual fill price is known as _slippage_. Slippage is dynamic and unpredictable, making it impossible to simulate precisely. However, applying a small, fixed amount of slippage to every order in a backtest or forward test can help overall performance results align more closely with reality. Programmers can specify a strategy’s default slippage amount, as a fixed number of _ticks_ , by including a `slippage` argument in the strategy() declaration statement. The default argument is 0. Script users can override the specified default by adjusting the “Slippage” input in the strategy’s “Settings/Properties” tab.
+The following example demonstrates how simulating slippage impacts the fill prices of market orders in a strategy test. The script below places a “Buy” market order of 2% equity when the market price is above a rising EMA, then closes the position with another market order when the price dips below the EMA while it’s falling. The strategy() declaration statement includes the argument `slippage = 20`. Therefore, by default, each order fills 20 ticks beyond the intended price in the _unfavorable_ direction (higher for long orders, and lower for short orders). The script plots the each order’s expected fill price along with the simulated fill price after slippage to visually compare the difference:
 !image
 Pine Script®
 Copied
@@ -26145,11 +26281,12 @@ plotchar(not na(fillPrice) ? open : na, "Expected fill price", "—", 
 plotchar(fillPrice, "Fill price after slippage", "—", location.absolute, filledColor)  
 `
 Note that:
-  * Since the strategy applies constant slippage to all order fills, some orders can fill _outside_ the candle range in the simulation. Exercise caution with this setting, as adding excessive simulated slippage can produce unrealistically worse testing results.
+  * Because the strategy applies constant slippage to _all_ order fills, some orders can fill _outside_ the candle range in the simulation. Therefore, we recommend exercising caution with this setting, as adding excessive simulated slippage can produce unrealistically _worse_ testing results.
 
 
-Some traders might assume that they can avoid the adverse effects of slippage by using limit orders, as unlike market orders, they cannot execute at a worse price than the specified value. However, even if the market price reaches an order’s price, there’s a chance that a limit order might not fill, depending on the state of the real-life market, because limit orders can only fill if a security has sufficient liquidity and price action around their values. To account for the possibility of _unfilled_ orders in a backtest, users can specify the `backtest_fill_limits_assumption` value in the declaration statement or use the “Verify price for limit orders” input in the “Settings/Properties” tab. This setting instructs the strategy to fill limit orders only after the market price moves a defined number of ticks past the order prices.
-The following example places a limit order of 2% equity at a bar’s hlcc4 price when the high is the `highest` value over the past `length` bars and there are no pending entries. The strategy closes the market position and cancels all orders after the low is the `lowest` value. Each time the strategy triggers an order, it draws a horizontal line at the `limitPrice`, which it updates on each bar until closing the position or canceling the order:
+Some traders might assume that they can avoid the adverse effects of slippage by using limit orders. While market orders execute as soon as possible, irrespective of the price, limit orders execute at the specified price or a better value. They cannot execute at a _worse_ price. However, in real-world trading, some limit orders _might not fill_ when the market price reaches the specified value, due to insufficient liquidity or price action. Programmers can simulate the possibility of _unfilled_ limit orders in their scripts by using the `backtest_fill_limits_assumption` parameter in the strategy() declaration statement. The parameter specifies the number of ticks that the price must move _beyond_ each limit order’s level to trigger an order fill at that level. The default argument is 0, meaning that the broker emulator fills any limit order immediately if the price reaches the order’s level.
+NoteThe “Limit order execution” input in a strategy’s “Settings/Properties” tab overrides the default assumption for filling limit orders. This input includes the options to fill each limit order when either the market price reaches the specified level or it moves _one tick_ beyond that level. If the `backtest_fill_limits_assumption` argument is greater than 1, users can restore the default assumption specified in the declaration statement after using this input by selecting “Reset settings” from the “Defaults” dropdown menu at the bottom of the “Properties” tab.
+The following example script places a limit order for 2% of the strategy’s equity at a bar’s hlcc4 price if the current high value is the highest price over a specified number of bars and no pending entry orders are active. The strategy closes the market position and cancels all pending orders if the current low value is the lowest price over the same length. Each time that the strategy triggers an order, it draws a horizontal line at the `limitPrice` value. It then updates the line on each bar until it closes the position or cancels the order:
 !image
 Pine Script®
 Copied
@@ -26187,29 +26324,33 @@ if not na(limitLine)
 plot(highest, "Highest High", color = color.new(color.green, 50))  
 plot(lowest, "Lowest Low", color = color.new(color.red, 50))  
 `
-By default, the script assumes that all limit orders are guaranteed to fill when the market price reaches their values, which is often not the case in real-life trading. Let’s add price verification to our limit orders to account for potentially unfilled ones. In this example, we’ve included `backtest_fill_limits_assumption = 3` in the strategy() function call. As we can see, using limit verification omits some simulated order fills and changes the times of others, because the entry orders can now only fill after the price exceeds the limit price by _three ticks_ :
+By default, the broker emulator assumes that all limit orders are guaranteed to fill when the market price reaches their values. However, that may not be the case in a real-world market. Let’s add price verification to our script’s limit orders to account for potentially unfilled ones. In the example below, we added `backtest_fill_limits_assumption = 3` to the strategy() statement. With this change, the broker emulator assumes that there is sufficient liquidity to fill a limit order only if the price moves _three ticks_ beyond the order’s level. As shown below, using this fill assumption prevents the execution of some orders and changes the _times_ of others:
 !image
-NoticeLimit verification can change the _times_ of some order fills. However, strategies still execute verified limit orders at the same _prices_. This “time-warping” effect is a compromise that preserves the prices of limit orders, but it can cause a strategy to fill the orders at times that wouldn’t necessarily be possible in the real world. Therefore, users should exercise caution with this setting and understand its limitations when analyzing strategy results.
+NoticeUsing a nonzero `backtest_fill_limits_assumption` argument can affect the _times_ at which limit orders execute, as shown above. However, regardless of the fill time, the broker emulator still executes verified limit orders at their specified _prices_. This behavior is a necessary compromise to preserve the intended fill prices of limit orders without causing _lookahead bias_ , but it can also cause the orders to execute at times that may _not_ be possible in real-word trading, especially if the argument is a large value. Therefore, we recommend that users exercise caution and understand this price-time limitation when applying price verification to limit orders.
 
 ## Risk management
-Designing a strategy that performs well, especially in a broad class of markets, is a challenging task. Most strategies are designed for specific market patterns/conditions and can produce uncontrolled losses when applied to other data. Therefore, a strategy’s risk management behavior can be critical to its performance. Programmers can set risk management criteria in their strategy scripts using the `strategy.risk.*()` commands.
-Strategies can incorporate any number of risk management criteria in any combination. All risk management commands execute _on every tick and order execution event_ , regardless of any changes to the strategy’s calculation behavior. There is no way to deactivate any of these commands on specific script executions. Irrespective of a risk management command’s location, it _always_ applies to the strategy unless the programmer removes the call from the code.
+Designing a strategy that performs well, especially across a broad range of markets, is a challenging task. Most strategies are designed for specific market patterns or conditions and can produce uncontrolled losses when applied to other datasets. Therefore, a strategy’s risk management behavior can be critical to its performance. Programmers can specify risk management criteria in their strategy scripts by using the `strategy.risk.*()` commands.
+Strategies can incorporate any number of risk management criteria in any combination. All risk management commands execute _on every tick and order execution event_ , regardless of any changes to the strategy’s calculation behavior. There is no way to deactivate any of these commands on specific script executions. Irrespective of a risk management command’s location, the command _always_ applies to the strategy unless the programmer removes the call from the code. Below, we list the available risk management commands and the behaviors they define:
 strategy.risk.allow_entry_in()
-This command overrides the market direction allowed for all strategy.entry() commands in the script. When a user specifies the trade direction with the strategy.risk.allow_entry_in() function (e.g., strategy.direction.long), the strategy enters trades only in that direction. If a script calls an entry command in the opposite direction while there’s an open market position, the strategy simulates a market order to _close_ the position.
+This command overrides the market direction allowed for all calls to the strategy.entry() command. If a user specifies the trade direction with the strategy.risk.allow_entry_in() function (e.g., strategy.direction.long), the strategy enters trades only in that direction. If the script calls an entry command in the opposite direction of an open market position, the strategy generates a market order to _close_ the position without entering a new trade in that direction.
 strategy.risk.max_cons_loss_days()
 This command cancels all pending orders, closes any open market position, and stops all additional trade actions after the strategy simulates a defined number of trading days with consecutive losses.
 strategy.risk.max_drawdown()
 This command cancels all pending orders, closes any open market position, and stops all additional trade actions after the strategy’s drawdown reaches the amount specified in the function call.
 strategy.risk.max_intraday_filled_orders()
-This command specifies the maximum number of filled orders per trading day (or per chart bar if the timeframe is higher than daily). If the strategy creates more orders than the maximum, the command cancels all pending orders, closes any open market position, and halts trading activity until the end of the current session.
+This command specifies the maximum number of filled orders per trading day (or per chart bar if the chart’s timeframe is higher than “1D”). If the strategy fills more orders than the specified limit, the command cancels all pending orders, closes any open market position, and halts trading activity until the end of the current session.
 strategy.risk.max_intraday_loss()
-This command controls the maximum loss the strategy tolerates per trading day (or per chart bar if the timeframe is higher than daily). When the strategy’s losses reach this threshold, it cancels all pending orders, closes the open market position, and stops all trading activity until the end of the current session.
+This command controls the maximum allowed loss per trading day (or per chart bar if the chart’s timeframe is higher than “1D”). If the strategy’s losses reach the specified threshold, the command cancels all pending orders, closes the open market position, and stops all trading activity until the end of the current session.
 strategy.risk.max_position_size()
-This command specifies the maximum possible position size when using strategy.entry() commands. If the quantity of an entry command results in a market position that exceeds this threshold, the strategy reduces the order quantity so that the resulting position does not exceed the limit.
+This command specifies the maximum possible position size when calling the strategy.entry() command. If the size of an entry order results in a market position that exceeds the specified threshold, the strategy reduces the order quantity so that the resulting position does not exceed the limit.
 
-## Margin
-_Margin_ is the minimum percentage of a market position that a trader must hold in their account as collateral to receive and sustain a loan from their broker to achieve their desired _leverage_. The `margin_long` and `margin_short` parameters of the strategy() declaration statement and the “Margin for long/short positions” inputs in the “Properties” tab of the script settings specify margin percentages for long and short positions. For example, if a trader sets the margin for long positions to 25%, they must have enough funds to cover 25% of an open long position. This margin percentage also means the trader can potentially spend up to 400% of their equity on their trades.
-If a strategy’s simulated funds cannot cover the losses from a margin trade, the broker emulator triggers a _margin call_ , which forcibly liquidates all or part of the open position. The exact number of contracts/shares/lots/units that the emulator liquidates is _four times_ the amount required to cover the loss, which helps prevent constant margin calls on subsequent bars. The emulator determines liquidated quantity using the following algorithm:
+## Margin and leverage
+_Margin_ is the minimum percentage of a market position that a trader must hold in their account as collateral to open and maintain that position. With a margin of 100%, the trader must cover the entire position using their account’s available funds. With a margin of 25%, the trader must cover only _one-fourth_ of each position using their account’s funds to maintain a _loan_ for the other three-fourths from the broker. Most brokers define a trader’s margin requirements based on a specified _leverage_ amount, where leverage is the _inverse_ of margin. For example, a leverage ratio of 4:1 is equivalent to 25% margin. A trader can open a position for up to _four times_ their available funds when using this amount of leverage, because they must maintain only a fourth of each position’s size as collateral. In other words, the trader has four times the purchasing power that they would otherwise have when trading using only their account’s funds.
+The `margin_long` and `margin_short` parameters of the strategy() declaration statement define the default required _margin percentages_ for long and short trades, respectively. The strategy _converts_ the specified percentages to leverage ratios and uses those ratios as the default values for the “Long leverage” and “Short leverage” inputs in the “Settings/Properties” tab. The default argument for both parameters is 100, which is equivalent to a leverage ratio of 1:1 .
+NoticeA margin requirement of less than 0.2% (i.e., leverage greater than 500
+) is typically _unrealistic_ in a real-world market. Using unrealistic levels of margin in a strategy can cause very _misleading_ backtest results. Furthermore, using a margin of 0% is _extremely_ misleading because it is equivalent to _infinite_ leverage, which is impossible to achieve in any live trading environment. Therefore, when setting a strategy’s margin via the `margin_*` parameters, or adjusting leverage using the “Leverage *” inputs, we recommend specifying realistic values that align with current market conditions.
+Trading with less than 100% margin can significantly increase a trader’s potential profits and their potential **losses**. In real-world trading, if the loss from a position causes the trader’s available margin to fall below the required margin, the broker issues a _margin call_ , which is a demand for the trader to immediately deposit additional funds to cover the loss. If the trader fails to meet the demand, or if the losses reach beyond the broker’s limits, the broker forcibly _liquidates_ all or part of the position to prevent further losses that the trader cannot cover.
+To simulate this process in strategies, the broker emulator generates _margin call events_ if a strategy’s available funds fall below the required margin percentage. Each time that a margin call event occurs, the emulator immediately liquidates _four times_ the number of contracts/shares/lots/units required to cover the loss to help prevent continuous margin calls across subsequent bars. The emulator uses the following algorithm to determine the liquidated quantity for each event:
   1. Calculate the amount of capital spent on the position: `Money Spent = Quantity * Entry Price`
   2. Calculate the Market Value of Security (MVS): `MVS = Position Size * Current Price`
   3. Calculate the Open Profit as the difference between `MVS` and `Money Spent`. If the position is short, multiply this value by -1.
@@ -26218,13 +26359,14 @@ If a strategy’s simulated funds cannot cover the losses from a margin trade, t
   6. Calculate the margin value, which is the cash required to cover the hypothetical account’s portion of the position: `Margin = MVS * Margin Ratio`
   7. Calculate the strategy’s available funds: `Available Funds = Equity - Margin`
   8. Calculate the total amount of money lost: `Loss = Available Funds / Margin Ratio`
-  9. Calculate the number of contracts/shares/lots/units the account must liquidate to cover the loss, truncated to the same decimal precision as the minimum position size for the current symbol: `Cover Amount = TRUNCATE(Loss / Current Price).`
+  9. Calculate the number of contracts/shares/lots/units the account must liquidate to cover the loss, truncated to the same decimal precision as the minimum position size for the current instrument: `Cover Amount = TRUNCATE(Loss / Current Price).`
   10. Multiply the quantity required to cover the loss by four to determine the margin call size: `Margin Call Size = Cover Amount * 4`
 
 
-To examine this calculation in detail, let’s add the built-in Supertrend Strategy to the NASDAQ:TSLA chart on the “1D” timeframe and set the “Order size” to 300% of equity and the “Margin for long positions” to 25% in the “Properties” tab of the strategy settings:
+NoteA short trade typically entails _borrowing_ shares from a broker to sell them at the current market price, then buying the shares back at a different price and returning them to the lender. The trade thus produces a profit if the trader purchases the shares at a _lower_ price, or a loss if they purchase the shares at a _higher_ price. Consequently, unlike long trades, short trades carry the risk of _uncapped losses_ , because there is no definite limit on how far an instrument’s price can rise. Therefore, short trades in a strategy that uses _any_ nonzero margin are subject to forced liquidation from margin call events, even if the `margin_short` argument is 100 or the “Short leverage” input value is 1.
+To examine the above calculations in detail, the following example applies the Supertrend Strategy built-in script to a daily “NASDAQ:TSLA” chart. In the strategy’s properties, we set the order size to 300% of equity, and we set the strategy’s long leverage to 4. On the chart below, the strategy opens a long trade, then the broker emulator triggers margin call event a few bars later:
 !image
-The first entry happened at the bar’s opening price on 16 Sep 2010. The strategy bought 682,438 shares (Position Size) at 4.43 USD (Entry Price). Then, on 23 Sep 2010, when the price dipped to 3.9 (Current Price), the emulator forcibly liquidated 111,052 shares with a margin call. The calculations below show how the broker emulator determined this amount for the margin call event:
+In the above image, the script enters the long position at the bar’s opening price on 16 Sep 2010. The strategy purchases 682,438 shares (Position Size) at 4.43 USD (Entry Price) using 25% margin. Then, on 23 Sep 2010, when the price drops to 3.9 USD (Current Price), the emulator triggers the margin call event and forcibly liquidates _111,052 shares_. The calculations below explain how the broker emulator determines the liquidation quantity for this event:
 
 ```
 
@@ -26259,20 +26401,19 @@ Margin Call Size: -27763 * 4 = - 111052
 
 ```
 
-Note that:
-  * The strategy.margin_liquidation_price variable’s value represents the price level that will cause a margin call if the market price reaches it. For more information about how margin works and the formula for calculating a position’s margin call price, see this page in our Help Center.
+TipProgrammers can use the strategy.margin_liquidation_price variable to retrieve the current _price level_ at which the broker emulator will trigger a margin call event and forcibly liquidate part or all of an open position if the market price reaches it. For more information about how margin and leverage work in strategies, as well as details on how to calculate the liquidation price, refer to the How to simulate trading with leverage in Pine Script article in our Help Center.
 
 ## Using strategy information in scripts
-Numerous built-ins within the `strategy.*` namespace and its _sub-namespaces_ provide convenient solutions for programmers to use a strategy’s trade and performance information, including data shown in the Strategy Tester, directly within their code’s logic and calculations.
-Several `strategy.*` variables hold fundamental information about a strategy, including its starting capital, equity, profits and losses, run-up and drawdown, and open position:
+Numerous built-ins within the `strategy.*` namespace and its _sub-namespaces_ provide convenient solutions for programmers to use a strategy’s trade and performance information, including data shown in the strategy report, directly within their code’s logic and calculations.
+Several `strategy.*` variables store essential information about a strategy, including its starting capital, equity, profits and losses, run-up and drawdown, and open position:
                         
 
-Additionally, the namespace features multiple variables that hold general trade information, such as the number of open and closed trades, the number of winning and losing trades, average trade profits, and maximum trade sizes:
+Additionally, the namespace features multiple variables that store general trade information, such as the number of open and closed trades, the number of winning and losing trades, average trade profits, and maximum trade sizes:
                       
 
 Programmers can use these variables to display relevant strategy information on their charts, create customized trading logic based on strategy data, calculate custom performance metrics, and more.
-The following example demonstrates a few simple use cases for these `strategy.*` variables. The script uses them in its order placement and display calculations. When the calculated `rank` crosses above 10 and the strategy.opentrades value is 0, the script calls strategy.entry() to place a “Buy” market order. On the following bar, where that order fills, it calls strategy.exit() to create a stop-loss order at a user-specified percentage below the strategy.position_avg_price value. If the `rank` crosses above 80 during the open trade, the script uses strategy.close() to exit the position on the next bar.
-The script creates a table to display formatted strings representing information from several of the above `strategy.*` variables on the main chart pane. The text in the table shows the strategy’s net profit and net profit percentage, the account currency, the number of winning trades and the win percentage, the ratio of the average winning trade to the average losing trade, and the profit factor (the ratio of the gross profit to the gross loss). The script also plots the strategy.equity series in a separate pane and highlights the pane’s background based on the value of strategy.openprofit:
+The following example demonstrates a few simple use cases for these `strategy.*` variables. The script uses them in its order placement and display calculations. When the calculated `rank` value crosses above 10 and the strategy.opentrades value is 0, the script calls the strategy.entry() command to place a “Buy” market order. On the following bar, where that order fills, the script calls strategy.exit() to create a stop-loss order at a user-specified percentage below the strategy.position_avg_price value. If the `rank` crosses above 80 during the open trade, the script calls strategy.close() to exit the position on the next bar.
+The script creates a table to display formatted strings representing information from several of the above `strategy.*` variables on the main chart pane. The text in the table shows the strategy’s net profit and net profit percentage, the account currency, the number of winning trades and the win percentage, the ratio of the average winning trade to the average losing trade, and the profit factor (the ratio of the gross profit to the gross loss). The script also plots the strategy.equity series in a separate pane and highlights the pane’s background based on the strategy.openprofit value:
 !image
 Pine Script®
 Copied
@@ -26341,7 +26482,7 @@ bgcolor(
 `
 Note that:
   * This script creates a stop-loss order one bar after the entry order because it uses strategy.position_avg_price to determine the price level. This variable has a non-na value only when the strategy has an _open position_.
-  * The script draws the table only on the last historical bar and all realtime bars because the historical states of tables are **never visible**. See the Reducing drawing updates section of the Profiling and optimization page for more information.
+  * The script draws the table only on the last historical bar and all realtime bars because the _historical_ states of tables are **never visible**. See the Reducing drawing updates section of the Profiling and optimization page for more information.
   * The table.new() call includes `force_overlay = true` to display the table on the main chart pane.
 
 
@@ -26351,7 +26492,7 @@ Both sub-namespaces contain several similar functions that return information ab
                                     
 
 Note that:
-  * Most built-ins within these namespaces are _functions_. However, the `strategy.opentrades.*` namespace also features a unique _variable_ : strategy.opentrades.capital_held. Its value represents the amount of capital reserved by _all_ open trades.
+  * Most built-ins within these namespaces are _functions_. However, the `strategy.opentrades.*` namespace also features a unique _variable_ : strategy.opentrades.capital_held. Its value represents the amount of capital _reserved_ by _all_ open trades.
   * Only the `strategy.closedtrades.*` namespace has `.exit_*()` functions that return information about _exit orders_.
 
 
@@ -26423,21 +26564,21 @@ plot(median, "Median close", force_overlay = true)
 plot(lowest, "Lowest close", force_overlay = true)  
 `
 Note that:
-  * This strategy can open up to five long trades per position because we included `pyramiding = 5` in the strategy() declaration statement. See the pyramiding section for more information.
-  * The strategy.exit() instance in this script persists and generates exit orders for every entry in the open position because we did not specify a `from_entry` ID. See the Exits for multiple entries section to learn more about this behavior.
+  * This strategy can open up to five long trades per position by default because we included `pyramiding = 5` in the strategy() declaration statement. See the pyramiding section for more information.
+  * The strategy.exit() call in this script persists and generates exit orders for every entry in the open position because it does not include a `from_entry` argument. See the Exits for multiple entries section to learn more about this behavior.
 
 ## Strategy alerts
-Pine Script indicators (not strategies) have two different mechanisms to set up custom alert conditions: the alertcondition() function, which tracks one specific condition per function call, and the alert() function, which tracks all its calls simultaneously, but provides greater flexibility in the number of calls, alert messages, etc.
+Pine Script indicators (not strategies) have two different mechanisms to set up custom alert conditions: the alertcondition() function, which defines a separate alert trigger per function call, and the alert() function, which defines a single alert trigger based on all calls in the code, but provides greater flexibility in the number of calls, alert messages, etc.
 Pine Script strategies cannot create alert triggers using the alertcondition() function, but they can create triggers with the alert() function. Additionally, each order placement command comes with its own built-in alert functionality that does not require any additional code to implement. As such, any strategy that uses an order placement command can issue alerts upon order execution. The precise mechanics of such built-in strategy alerts are described in the Order Fill events section of the Alerts page.
-When a strategy uses both the alert() function and functions that create orders in the same script, the “Create Alert” dialog box provides a choice between the conditions to use as a trigger: alert() events, order fill events, or both.
-For many trading strategies, the delay between a triggered alert and a live trade can be a critical performance factor. By default, strategy scripts can only execute alert() function calls on the close of realtime bars, as if they used alert.freq_once_per_bar_close, regardless of the `freq` argument in the call. Users can change the alert frequency by including `calc_on_every_tick = true` in the strategy() call or selecting the “Recalculate/On every tick” option in the “Settings/Properties” tab before creating the alert. However, depending on the script, this setting can adversely impact the strategy’s behavior. See the `calc_on_every_tick` section for more information.
-Order fill alert triggers do not suffer the same limitations as the triggers from alert() calls, which makes them more suitable for sending alerts to third parties for automation. Alerts from order fill events execute _immediately_ , unaffected by a script’s `calc_on_every_tick` setting. Users can set the default message for order fill alerts via the `//@strategy_alert_message` compiler annotation. The text provided with this annotation populates the “Message” field in the “Create Alert” dialog box.
-The following script shows a simple example of a default order fill alert message. Above the strategy() declaration statement, the script includes `@strategy_alert_message` with _placeholders_ for the trade action, current position size, ticker name, and fill price values in the message text:
+If a strategy uses both the alert() function and functions that create orders in the same script, the “Create Alert” dialog box provides a choice between the conditions to use as a trigger: alert() events, order fill events, or both.
+For many trading strategies, the delay between a triggered alert and a live trade can be a critical performance factor. By default, strategy scripts execute alert() function calls only on the close of realtime bars, as if they used the alert.freq_once_per_bar_close frequency, regardless of the `freq` argument in the call. Users can change the allowed alert frequency by enabling the “On realtime bar tick” or “On order fill” Script execution setting. See the Altering calculation behavior section above to learn more about these settings.
+Order fill alert triggers do not suffer the same limitations as the triggers from alert() calls. Alerts from order fill events execute _immediately_ , regardless of the script’s execution settings. Therefore, they are often more suitable for sending alerts to third parties for automation. Users can specify the default message for order fill alerts by using the `//@strategy_alert_message` compiler annotation. The text included in the annotation populates the “Message” field in the “Create alert” dialog box.
+The following script shows a simple example of a default order fill alert message. Above the strategy() declaration statement, the script includes the `//@strategy_alert_message` annotation with placeholders for the trade action, current position size, ticker name, and fill price values in the message text:
 Pine Script®
 Copied
 `//@version=6  
 //@strategy_alert_message {{strategy.order.action}} {{strategy.position_size}} {{ticker}} @ {{strategy.order.price}}  
-strategy("Alert Message Demo", overlay = true)  
+strategy("Alert Message demo", overlay = true)  
 float fastMa = ta.sma(close, 5)  
 float slowMa = ta.sma(close, 10)  
   
@@ -26450,47 +26591,52 @@ if ta.crossunder(fastMa, slowMa)
 plot(fastMa, "Fast MA", color.aqua)  
 plot(slowMa, "Slow MA", color.orange)  
 `
-This script populates the “Create Alert” dialog box with its default message when the user selects its name from the “Condition” dropdown tab:
+This script populates the “Create alert” dialog box with its default message when the user selects its name from the “Condition” section:
 !image
-When the alert fires, the strategy populates the placeholders in the alert message with their corresponding values. For example:
+Each time the alert occurs, the strategy _replaces_ the placeholders in the alert message with their corresponding values. For example:
 !image
 
 ## Notes on testing strategies
-Testing and tuning strategies in historical and live market conditions can provide insight into a strategy’s characteristics, potential weaknesses, and _possibly_ its future potential. However, traders should always be aware of the biases and limitations of simulated strategy results, especially when using the results to support live trading decisions. This section outlines some caveats associated with strategy validation and tuning and possible solutions to mitigate their effects.
-NoticeAlthough testing strategies on existing data might give traders helpful information about a strategy’s qualities, it’s important to note that neither the past nor the present guarantees the future. Financial markets can change rapidly and unpredictably, which can cause a strategy to sustain uncontrollable losses. Additionally, simulated results may not fully account for other real-world factors that can impact trading performance. Therefore, we recommend that traders thoroughly understand the limitations and risks of backtests and forward tests and consider them “parts of the whole” in their validation processes rather than basing decisions solely on the results.
+Testing and tuning strategies in historical and live market conditions can provide insight into a strategy’s characteristics, potential weaknesses, and _possibly_ its future potential. However, traders should always be cautious of the biases and limitations of simulated strategy results, especially when using the results to support live trading decisions. This section outlines some caveats associated with strategy validation and tuning, and lists possible solutions to mitigate their effects.
+NoticeAlthough testing strategies on existing data might provide traders useful information about a strategy’s qualities, it’s crucial to understand that neither the past nor the present guarantees the _future_. Financial markets can change rapidly and unpredictably, leading to uncontrollable, unforeseen losses. Additionally, simulated results may not fully account multiple real-world factors that can impact trading performance. Therefore, we recommend that traders thoroughly understand the limitations of strategy simulations, and consider them only “parts of the whole” in their validation processes rather than basing decisions solely on the results.
 ### Backtesting and forward testing
-_Backtesting_ is a technique to evaluate the historical performance of a trading strategy or model by simulating and analyzing its past results on historical market data. This technique assumes that a strategy’s results on past data can provide insight into its strengths and weaknesses. When backtesting, many traders adjust the parameters of a strategy in an attempt to optimize its results. Analysis and optimization of historical results can help traders to gain a deeper understanding of a strategy. However, traders should always understand the risks and limitations when basing their decisions on optimized backtest results.
-It is prudent to also use realtime analysis as a tool for evaluating a trading system on a forward-looking basis. _Forward testing_ aims to gauge the performance of a strategy in live market conditions, where factors such as trading costs, slippage, and liquidity can meaningfully affect its performance. While forward testing has the distinct advantage of not being affected by certain types of biases (e.g., lookahead bias or “future data leakage”), it does carry the disadvantage of being limited in the quantity of data to test. Therefore, although it can provide helpful insights into a strategy’s performance in current market conditions, forward testing is not typically used on its own.
+_Backtesting_ is a technique to evaluate the past performance of a trading strategy or model by simulating and analyzing its results on historical market data. This technique assumes that a strategy’s results on past data can provide insight into its strengths and weaknesses. When backtesting, many traders adjust the parameters of a strategy in an attempt to optimize its results. Analysis and optimization of historical results can help traders to gain a deeper understanding of a strategy’s characteristics. However, traders should always understand the risks and limitations when basing their live trading decisions on optimized backtest results.
+It is prudent to also use realtime analysis as a tool for evaluating a trading system on a forward-looking basis. _Forward testing_ aims to gauge the performance of a strategy in live market conditions, where factors such as trading costs, slippage, and liquidity can meaningfully affect overall trading performance. While forward testing has the distinct advantage of not being affected by some types of biases (e.g., lookahead bias or “future data leakage”), it does carry the disadvantage of being limited in the quantity of data to test. Therefore, although it can provide helpful insights into a strategy’s performance in current market conditions, forward testing is not typically used on its own.
 ### Lookahead bias
-One typical issue in backtesting strategies that request alternate timeframe data, use repainting variables such as timenow, or alter calculation behavior for intrabar order fills, is the leakage of future data into the past during evaluation, which is known as _lookahead bias_. Not only is this bias a common cause of unrealistic strategy results, since the future is never actually knowable beforehand, but it is also one of the typical causes of strategy repainting.
-Traders can often confirm whether a strategy has lookahead bias by forward testing it on realtime data, where no known data exists beyond the latest bar. Since there is no future data to leak into the past on realtime bars, the strategy will behave differently on historical and realtime bars if its results have lookahead bias.
+One typical issue in backtesting strategies that request alternate timeframe data, use repainting variables such as timenow, or alter calculation behavior for intrabar order fills, is the leakage of _future_ data into the _past_ during evaluation. We refer to this behavior as _lookahead bias_. Not only is lookahead bias a common cause of unrealistic strategy results, because the future is always unknown, but it is also one of the common causes of strategy repainting.
+Traders can often confirm whether a strategy has lookahead bias by forward testing it on realtime data, where no known data exists beyond the latest bar. Because there is no _future_ data to leak into the past on realtime bars, the strategy will behave _differently_ on historical and realtime bars if it is affected by lookahead bias.
 To eliminate lookahead bias in a strategy:
-  * Do not use repainting variables that leak future values into the past in the order placement or cancellation logic.
-  * Do not include barmerge.lookahead_on in `request.*()` calls without offsetting the data series, as described in this section of the Repainting page.
-  * Use realistic strategy calculation behavior.
+  * Do not use repainting variables that leak future values into the past in the strategy’s order placement or cancellation logic.
+  * Do not include barmerge.lookahead_on in `request.*()` calls without offsetting the data series with the history-referencing operator, especially when requesting data from a higher timeframe. See the `lookahead` section of the Other timeframes and data page for more information.
+  * When using the “On order fill” Script execution setting, avoid using the _current_ values of built-in variables that hold price or volume data for each bar. During the script’s historical executions, the current value of a variable such as close always refers to the _final value_ as of the bar’s _closing tick_ , even while the script executes on the bar’s _first_ tick. See the `calc_on_order_fills` section above to learn more about this behavior.
 
 
 ### Selection bias
-Selection bias occurs when a trader analyzes only results on specific instruments or timeframes while ignoring others. This bias can distort the perspective of the strategy’s robustness, which can impact trading decisions and performance optimizations. Traders can reduce the effects of selection bias by evaluating their strategies on multiple, ideally diverse, symbols and timeframes, and ensuring not to ignore poor performance results or “cherry-pick” testing ranges.
+Selection bias occurs when a trader analyzes performance results for a set of specific instruments, timeframes, or testing ranges while ignoring others. This bias can distort the trader’s perspective of the strategy’s robustness, thus impacting trading decisions and performance optimizations. Traders can reduce the effects of selection bias by evaluating their strategies on multiple, ideally _diverse_ datasets, and avoiding ignoring poor performance results or “cherry-picking” testing ranges.
 ###  Overfitting
-A common problem when optimizing a strategy based on backtest results is overfitting (“curve fitting”), which means tailoring the strategy for specific data. An overfitted strategy often fails to generalize well on new, unseen data. One widely-used approach to help reduce the potential for overfitting and promote better generalization is to split an instrument’s data into two or more parts to test the strategy outside the sample used for optimization, otherwise known as “in-sample” (IS) and “out-of-sample” (OOS) backtesting.
-In this approach, traders optimize strategy parameters on the IS data, and they test the optimized configuration on the OOS data without additional fine-tuning. Although this and other, more robust approaches might provide a glimpse into how a strategy might fare after optimization, traders should still exercise caution. No trading strategy can guarantee future performance, regardless of the data used for optimization and testing, because the future is inherently unknowable.
-### Order limit
-Outside of Deep Backtesting, a strategy can keep track of up to 9000 orders. If a strategy creates more than 9000 orders, the earliest orders are _trimmed_ so that the strategy stores the information for only the most recent orders.
-Trimmed orders do **not** appear in the Strategy Tester. Referencing the trimmed order IDs using `strategy.closedtrades.*` functions returns na.
-The strategy.closedtrades.first_index variable holds the index of the oldest _untrimmed_ trade, which corresponds to the first trade listed in the List of Trades. If the strategy creates less than 9000 orders, there are no trimmed orders, and this variable’s value is 0.
+A common problem when optimizing a strategy based on backtest results is _overfitting_ (“curve fitting”), which refers to tailoring the strategy for improved performance on specific datasets. A strategy that suffers from overfitting often fails to perform well on new, _unseen_ data. One widely-used approach to help reduce overfitting and promote better generalization is to split an instrument’s data into two or more parts to test the strategy outside the sample used for optimization. This process is often known as “in-sample” (IS) and “out-of-sample” (OOS) backtesting.
+When using this approach, traders optimize strategy parameters on the IS data. Then, they test the optimized configuration on the OOS data without additional fine-tuning. Although this technique and other, more robust approaches might provide a glimpse into how a strategy might fare after optimization, traders should still exercise caution. No trading strategy can _guarantee_ future performance, regardless of the data used for optimization and testing, because the future is inherently _unknown_.
+### Trade limit
+By default, strategies preserve information for up to the latest _9000 trades_. If a strategy simulates _more_ than 9000 trades, it _trims_ the information for the oldest closed trades and maintains data for only the most recent trades. Information for trimmed trades or their orders are **not** visible in the strategy report interface or any downloaded XLSX or CSV files. Likewise, the `strategy.closedtrades.*()` functions return na for all trimmed trades. However, if the strategy uses Deep Backtesting mode, it maintains information for _every_ closed trade and does not trim any orders from the report.
+Programmers can retrieve the index of the oldest _untrimmed_ trade, which corresponds to the oldest trade listed in the strategy report’s “Trades” tab, by using the strategy.closedtrades.first_index variable. Scripts can use the index in `strategy.closedtrades.*()` calls to retrieve information for the oldest available closed trade. If the strategy simulates fewer than 9000 trades or runs in Deep Backtesting mode, the variable’s value is 0, representing the actual first trade in the simulation.
+NoteDeep Backtesting mode only affects the testing range of results displayed in the _strategy report_. When using this mode, the strategy’s trade markers, plots, alerts, and Pine Logs are calculated using only the available chart data, regardless of the specified testing range.
+To learn more about retrieving trade data using the `strategy.closedtrades.*()` built-ins, refer to the Individual trade information section above.
  Previous Sessions    Next Strings
 
 ## * Introduction
 * A simple strategy example
   * Applying a strategy to a chart
-  * Strategy Tester
-  * Overview
-  * Performance Summary
-  * List of Trades
-  * Properties
+  * Strategy report
+  * ​“Metrics” tab
+  * Key stats
+  * Return details
+  * Trades analysis
+  * Equity run-ups and drawdowns
+  * Capital efficiency
+  * ​“Trades” tab
+  * ​“Properties” tab
   * Broker emulator
-  * Bar magnifier
+  * Adjusting historical bar detail
   * Orders and trades
   * Order types
   * Market orders
@@ -26518,12 +26664,13 @@ The strategy.closedtrades.first_index variable holds the index of the oldest _un
   * Altering calculation behavior
   * `calc_on_every_tick`
   * `calc_on_order_fills`
+  * `calc_on_every_history_tick`
   * `process_orders_on_close`
   * Simulating trading costs
   * Commission
   * Slippage and unfilled limits
   * Risk management
-  * Margin
+  * Margin and leverage
   * Using strategy information in scripts
   * Individual trade information
   * Strategy alerts
@@ -26532,7 +26679,7 @@ The strategy.closedtrades.first_index variable holds the index of the oldest _un
   * Lookahead bias
   * Selection bias
   * Overfitting
-  * Order limit
+  * Trade limit
 
 
 ## Code Examples
@@ -26573,7 +26720,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260728_051304
+# processed_43_strings_20260731_053433
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -28286,7 +28433,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260728_051304
+# processed_44_time_20260731_053433
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -28623,7 +28770,7 @@ bgcolor(barstate.islast ? #f3de22cb : na, title = "Realtime bar highlig
 Note that:
   * A confirmed realtime bar is **not** the same as a historical bar. Pine’s execution model uses separate data feeds for realtime and historical data. The closing time of a confirmed realtime bar is committed to the _realtime_ feed, until the script re-executes on the chart. Only then will this bar’s closing time load _historically_ along with all the other closed bars.
   * The barstate.islast value is `true` for all realtime bars in the dataset. Therefore, the elapsed realtime bar and the latest realtime bar both display a purple label and highlighted background. See the Bar states page to learn more about the different `barstate.*` variables in Pine Script.
-  * The time_close() function can similarly retrieve the previous bar’s closing time on price-based charts using a `bar_back = 1` argument.
+  * The time_close() function can similarly retrieve the previous bar’s closing time on price-based charts using a `bars_back = 1` argument.
 
 
 ### ​`time_tradingday`​
@@ -29816,7 +29963,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260728_051304
+# processed_45_timeframes_20260731_053433
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -29864,7 +30011,7 @@ Note that:
 
 
 
-# processed_46_style-guide_20260728_051304
+# processed_46_style-guide_20260731_053433
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -30242,7 +30389,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260728_051304
+# processed_47_debugging_20260731_053433
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -31976,7 +32123,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260728_051304
+# processed_48_profiling-and-optimization_20260731_053433
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -33604,7 +33751,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260728_051304
+# processed_49_publishing_20260731_053433
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -33619,7 +33766,7 @@ The script widget is a _preview_ of the publication that appears in all relevant
 !image
 Clicking on the widget opens the script page. The top of the page shows information about the script’s visibility, its title, and an enlarged view of the published chart:
 !image
-For published strategies, the script page also includes the option for users to view the Strategy Tester report below the title.
+For published strategies, the script page also includes the option for users to view the strategy report results below the publication’s title.
 Below the chart or strategy report are the publication’s complete description, release notes from script updates, additional information, and user comments.
 
 ## Privacy types
@@ -33696,15 +33843,15 @@ When preparing a chart for a script publication:
 
 
 ### Strategy report
-Strategies simulate trades based on programmed rules, displaying their hypothetical performance results and properties inside the Strategy Tester. When an author publishes a strategy script, the script page uses the Strategy Tester’s information to populate its _“Strategy report”_ display.
-Because traders often use a strategy script’s performance information to determine the potential viability of a trading system, programmers must verify that their scripts have _realistic_ properties and results. Before publishing a strategy script, check its information in the “Strategy Tester” tab to validate that everything appears as intended.
+Strategies simulate trades based on programmed rules, displaying their hypothetical performance results in a dedicated strategy report in the chart’s bottom panel. When an author publishes a strategy script, the script page uses that report’s results along with the strategy’s properties and chart’s configuration details to populate the publication’s _“Strategy report”_ display.
+Because traders often use a strategy script’s performance information to determine the potential viability of a trading system, programmers must verify that their scripts have _realistic_ properties and results. Before publishing a strategy script, check the strategy report in the chart’s bottom panel to validate that everything appears as intended.
 To maintain realism when publishing strategies, follow these guidelines based on our Script Publishing Rules:
   * In the strategy() declaration statement, choose an `initial_capital` argument representing realistic starting capital for the average trader in the market. Do not use an excessive value to exaggerate hypothetical returns.
   * Specify `commission_*` and `slippage` arguments that approximate real-world commission and slippage amounts. We also recommend using `margin_*` arguments that reflect realistic margin/leverage levels for the chart symbol’s exchange.
   * Set the strategy’s order placement logic to risk _sustainable_ capital in the simulated trades. In most real-world settings, risking more than 10% of equity on a single trade is _not_ typically considered sustainable.
   * Choose a dataset and default strategy configuration that produces a reasonable number of simulated trades, ideally _100 or more_. A strategy report with significantly fewer trades, especially over a short duration, does not typically provide enough information to help traders gauge a strategy’s hypothetical performance.
   * Ensure the strategy uses the default properties set in the strategy() declaration statement, and explain these defaults in the description.
-  * Resolve any warnings shown in the Strategy Tester before publishing the script.
+  * Resolve any warnings shown in the strategy report before publishing the script.
 
 
 ### Title and description
@@ -33838,7 +33985,7 @@ For examples of compliant script descriptions, refer to the publications feature
 
 
 
-# processed_50_limitations_20260728_051304
+# processed_50_limitations_20260731_053433
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -34206,7 +34353,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260728_051304
+# processed_51_overview_20260731_053433
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -34233,7 +34380,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260728_051304
+# processed_52_CE10101_20260731_053433
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -34326,7 +34473,7 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260728_051304
+# processed_53_CW10003_20260731_053433
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -34465,7 +34612,7 @@ If the use of a function call in a local block does not cause a compiler warning
 
 
 
-# processed_54_RE10139_20260728_051304
+# processed_54_RE10139_20260731_053433
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -34716,7 +34863,7 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_55_RE10143_20260728_051304
+# processed_55_RE10143_20260731_053433
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -34822,7 +34969,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260728_051304
+# processed_56_general_20260731_053433
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -35024,7 +35171,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260728_051304
+# processed_57_alerts_20260731_053433
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -35584,7 +35731,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260728_051304
+# processed_58_data-structures_20260731_053433
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -36466,7 +36613,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260728_051304
+# processed_59_functions_20260731_053433
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -36726,7 +36873,7 @@ Copied
 
 
 
-# processed_60_indicators_20260728_051304
+# processed_60_indicators_20260731_053433
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -36834,7 +36981,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260728_051304
+# processed_61_other-data-and-timeframes_20260731_053433
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -37083,7 +37230,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260728_051304
+# processed_62_programming_20260731_053433
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -37220,7 +37367,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260728_051304
+# processed_63_strategies_20260731_053433
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -37341,55 +37488,46 @@ The following example script restricts trading if a bar falls within a defined `
 Pine Script®
 Copied
 `//@version=6  
-strategy("Date/time filtering demo", "", true)  
+strategy("Move stop to breakeven", overlay = true)  
   
-// Timezone setting for date and time calculations. Adjust to the chart timezone.  
-string TZ = "GMT+0"  
+float stopSizeInput   = input.float(5.0, "SL %", minval = 0.0) / 100.0  
+float profitSizeInput = input.float(5.0, "TP %", minval = 0.0) / 100.0  
+float breakEvenInput  = input.float(50,  "BE %", minval = 0.0, maxval = 100) / 100.0  
   
-// Define the date window, an intraday time session to exclude, and the filtering to apply.  
-bool   useDateFilterInput = input.bool(true, "Allow trades only between the following dates (" + TZ + ")")   
-int    startTimeInput     = input.time(timestamp("01 Jan 2000 00:00 " + TZ), "  Start date", confirm = true)       
-int    endTimeInput       = input.time(timestamp("01 Jan 2099 00:00 " + TZ), "  End date", confirm = true)  
-bool   useTimeFilterInput = input.bool(false, "Restrict trades during the following times (" + TZ + ")")   
-string sessionStringInput = input.session("0000-0300", "")            
+//@variable Is `true` on every 100th bar.  
+bool buyCondition = bar_index % 100 == 0  
   
-// @function                Determines whether the current bar falls within a specified date and time range.  
-// @param startTime         (int) A timestamp marking the start of the time window.  
-// @param endTime           (int) A timestamp marking the end of the time window.  
-// @param useDateFilter     (bool) Whether to filter between `startTime` and `endTime`. Optional.  
-// @param useTimeFilter     (bool) Whether to restrict trades in the time session. Optional.  
-// @param timeSession       (string) Session time range in 'HHMM-HHMM' format, used if `useTimeFilter` is true.  
-// @param timeZone          (string) Timezone for the session time, used if `useTimeFilter` is true.  
-// @returns                 (bool) `true` if the current bar is within the specified date and time range.  
-timeWithinAllowedRange(  
-     int    startTime, int endTime,  
-     bool   useDateFilter = true,  
-     bool   useTimeFilter = false,  
-     string timeSession   = "0000-0000",  
-     string timeZone      = "GMT-0"  
-     ) =>  
-    bool isOutsideTime = na(time(timeframe.period, timeSession, timeZone))  
-    bool timeIsAllowed = useTimeFilter and isOutsideTime or not useTimeFilter  
-    bool dateIsAllowed = time >= startTime and time <= endTime or not useDateFilter  
-    bool result        = timeIsAllowed and dateIsAllowed  
+//@variable Stop-loss price for exit commands.  
+var float stopLoss   = na  
+//@variable Take-profit price for exit commands.  
+var float takeProfit = na  
+//@variable Price that, if breached, sets the stop to breakeven.  
+var float breakEvenThreshold = na  
   
-// Determine if each bar falls within the date window or outside the ignored time session.  
-bool isWithinTime = timeWithinAllowedRange(  
- startTimeInput, endTimeInput, useDateFilterInput, useTimeFilterInput, sessionStringInput, TZ  
- )  
+// Place orders when `buyCondition` is true and we are not in a position.  
+if buyCondition and strategy.position_size == 0.0  
+    stopLoss           := close * (1.0 - stopSizeInput)  
+    takeProfit         := close * (1.0 + profitSizeInput)  // Set the breakeven threshold.  
+    breakEvenThreshold := close * (1.0 + profitSizeInput * breakEvenInput)  
+    strategy.entry("buy", strategy.long)  
   
-// Calculate RSI for simple trading signals.  
-float rsi = ta.rsi(close,  14)  
-// Generate trading signals based on RSI conditions, provided they occur within the permissible date/time range.  
-bool enterLong  = ta.crossover(rsi,  50) and isWithinTime  
-bool enterShort = ta.crossunder(rsi, 50) and isWithinTime  
-// Simulate trades only if they meet the filtering criteria.  
-if enterLong  
-    strategy.entry("Long", strategy.long)  
-if enterShort  
-    strategy.entry("Short", strategy.short)  
-// Color the background red for bars falling outside the specified date/time range.  
-bgcolor(isWithinTime ? na : color.new(color.red, 80), title = "Exempt times")  
+// If the breakeven threshold is exceeded while in a position, set the stop to the entry price.  
+if high >= breakEvenThreshold and strategy.position_size != 0  
+    stopLoss := strategy.position_avg_price  
+  
+//@variable Is `true` on the bar on which a trade exits.  
+bool isExitBar = strategy.closedtrades.exit_bar_index(strategy.closedtrades - 1) == bar_index  
+//@variable Condition to determine when plots are displayed.  
+bool showPlots = strategy.position_size != 0 or buyCondition or isExitBar  
+// Plot the entry price, stop loss, take-profit, and the breakeven threshold.  
+plot(strategy.position_avg_price,         "BE", chart.fg_color, style = plot.style_linebr)  
+plot(showPlots ? stopLoss           : na, "SL", color.red,                 style = plot.style_linebr)  
+plot(showPlots ? takeProfit         : na, "TP", color.green,               style = plot.style_linebr)  
+plot(showPlots ? breakEvenThreshold : na, "TG", color.blue,                style = plot.style_circles)  
+  
+// Place a bracket order using the `stopLoss` and `takeProfit` values.  
+// We call it on every bar so that the stop level is updated when the breakeven threshold is exceeded.  
+strategy.exit("exit", "buy", stop = stopLoss, limit = takeProfit)  
 `
 Note that:
   * We use the time() function to calculate whether bars are outside the user-defined session times. For additional details on integrating session data in Pine Script, refer to the Sessions section in the User Manual.
@@ -37406,12 +37544,12 @@ Copied
 `//@version=6  
 strategy("My Strategy", process_orders_on_close = true, ...)  
 `
-An alternative method is to specify the `immediately` parameter as `true` in a strategy.close() or strategy.close_all function call. This setting causes the broker emulator to close a position on the same tick that the strategy creates the close order — meaning, when bar closes instead of the beginning of the next one. The process_orders_on_close parameter affects all closing orders in the strategy, whereas the `immediately` parameter affects only the close order in which it is used.
+An alternative method is to specify the `immediately` parameter as `true` in a strategy.close() or strategy.close_all() function call. This setting causes the broker emulator to close a position on the same tick that the strategy creates the close order — meaning, when bar closes instead of the beginning of the next one. The `process_orders_on_close` parameter affects all closing orders in the strategy, whereas the `immediately` parameter affects only the close order in which it is used.
 However, processing orders on close might not give accurate results. For instance, if an alert occurs at the close of the session’s last bar, the actual order can be executed only on the next trading day, since the bar is already closed. In contrast, the emulator would simulate the order being filled at the previous day’s close. This discrepancy can lead to repainting, where the behavior of the strategy’s simulation on historical bars differs from that seen in live trading.
 ### How can I use multiple take-profit levels to close a position?
 Setting up a strategy with multiple take profit levels enables traders to scale out of trades in segments to secure profits incrementally.
 There are two main methods for scaling out at varying levels:
-  * Multiple strategy.exit calls. This method is most suitable when each take-profit level has a corresponding stop loss.
+  * Multiple strategy.exit() calls. This method is most suitable when each take-profit level has a corresponding stop loss.
   * An OCA reduce group. This method is ideal for a different number of take-profit levels and stop losses.
 
 
@@ -37539,7 +37677,7 @@ plot(stopLoss,   "SL", color.red,   style = plot.style_linebr)
 plot(takeProfit, "TP", color.green, style = plot.style_linebr)  
 `
 ### How can I exit a trade in the same bar as it opens?
-Sometimes, strategy testers want to be able to exit a trade in the same bar as the entry. By default, if an exit condition occurs during the same bar that a trade is opened, the broker emulator closes the trade at the open of the _next_ bar. To learn why this happens, refer to this FAQ entry.
+Sometimes, traders want to enter and exit trades on the same bar. By default, if an exit condition occurs during the same bar that a trade is opened, the broker emulator closes the trade at the open of the _next_ bar. To learn why this happens, refer to this FAQ entry.
 To override this default behavior, either specify exit prices, or exit with a market order at the bar close.
 #### Specifying exit prices
 If the entry command also sets stop-loss or take-profit orders to trigger an exit when certain price levels are reached, then the trade can exit during the same bar that it opens.
@@ -38015,9 +38153,9 @@ Note that:
 Strategy results can vary over time depending on where the historical data starts. The starting point of the data set aligns with the start of the nearest day, week, month or year, depending on the chart timeframe. Additionally, different TradingView plans provide access to varying amounts of historical bars. Refer to the User Manual entry on starting points for a discussion of these factors.
 For strategies, this means the historical results seen today might change as the dataset’s starting point moves. This can lead to a natural repainting of strategy results over time. To reduce the effect of these changes on backtesting, follow these tips:
 **Export strategy results**
-Regularly exporting strategy results to file maintains a record of performance over time despite changes in historical data. Use the “Export Data” option in the top of the Strategy Tester to export data.
+Regularly exporting strategy results to a file maintains a record of performance over time despite changes in historical data. Use the “Download data as XLSX” option from the context menu in the strategy report to export all the available report data. Alternatively, use the “Download” button in the upper-right corner of the panel’s “Trades” tab to export only the list of trades data as a comma-separated values (CSV) file.
 **Use Deep Backtesting**
-Users with Premium and higher plans have access to the Deep Backtesting feature, which provides results from the entire available dataset of a symbol. Deep Backtesting results are displayed in the Strategy Tester but are not visible on the chart.
+Users with Premium and higher plans have access to the Deep Backtesting feature, which provides results from the entire available dataset of a symbol. Deep Backtesting results are displayed in the strategy report but are not visible on the chart.
 **Use Bar Replay**
 Use the Bar Replay feature on the first chart bar to extend the dataset backward, allowing a strategy to run on an additional full dataset prior to the current range. This process can be repeated a few times to analyze multiple datasets.
 ### Why is backtesting on Heikin Ashi and other non-standard charts not recommended?
@@ -38025,39 +38163,19 @@ Non-standard charts like Heikin Ashi, Renko, Line Break, Kagi, Point & Figure, a
 Renko, Line Break, Kagi, Point & Figure, and Range Charts simplify price action, losing some price detail. Heikin Ashi charts calculate synthetic prices for each bar’s open, high, low, and close (OHLC) values based on averages.
 Further, all non-standard chart types with the exception of Heikin Ashi charts form new price units based on price movement only and omit the element of time.
 Both the distortion of price data and the omission of time in non-standard charts lead to unrealistic and potentially misleading backtesting results.
-Programmers can specify the `fill_orders_on_standard_ohlc` parameter of the strategy declaration, which causes the strategy to calculate on standard chart data even if the current view is of Heikin Ashi candles. The user can do the same thing by by enabling the “Fill orders on standard OHLC” option in the strategy’s properties. This option has no effect on other non-standard chart types, because they use non-standard time as well as price.
+Programmers can specify the `fill_orders_on_standard_ohlc` parameter of the strategy() declaration, which causes the strategy to calculate on standard chart data even if the current view is of Heikin Ashi candles. The user can do the same thing by by enabling the “Fill orders on standard OHLC” option in the strategy’s properties. This option has no effect on other non-standard chart types, because they use non-standard time as well as price.
 For a more detailed analysis of how non-standard chart types affect strategy results, refer to this script from the PineCoders account.
 ### How can I backtest deeper into history?
 Different TradingView plans give access to different amounts of historical information. To conduct more comprehensive backtesting in Pine Script, exploring further into an asset’s historical data, use Bar Replay or Deep Backtesting.
 **Bar Replay**
 Starting the Bar Replay from the first chart bar in history effectively rolls back the dataset to an earlier point in time. Each iteration of the bar replay extends the dataset further back, offering analysis of multiple historical datasets. However, there is a limit to the number of times this process can be repeated. This method has the added benefit of visualizing the strategy’s performance directly on the chart, which can be insightful for understanding trade entries, exits, and behavior during specific historical market conditions.
 **Deep Backtesting**
-For TradingView users with Premium and higher plans, the Deep Backtesting feature calculates the strategy on _all_ historical data available for the selected symbol. The results are displayed in the Strategy Tester but are not visible on the chart. The results from Deep Backtesting might be different from results from the Strategy Tester in regular mode, as explained in this Help Center article.
+For TradingView users with Premium and higher plans, the Deep Backtesting mode can execute the strategy across _all_ historical data available for the selected symbol. The results from Deep Backtesting mode are displayed only in the strategy report, and the trade markers from using this mode are not visible on the chart; the trades shown on the chart are always calculated without Deep Backtesting. The strategy report results from Deep Backtesting mode might be different from the results in regular mode for the same chart and strategy, as explained in this Help Center article.
 ### How can I backtest multiple symbols?
-Each Pine Script strategy runs on one symbol at a time. To evaluate a strategy across various markets or instruments:
+Each Pine Script strategy runs on one dataset at a time. To evaluate a strategy across various markets or instruments:
   * Apply the strategy to the chart and then switch the chart to the desired symbol.
   * Use TradingView’s watchlist feature to organize and quickly access different symbols.
-  * Export the results from the Strategy Tester and use external tools such as spreadsheet software to compare the performance of a strategy on different symbols.
-
-
-### What does Bar Magnifier do?
-The Bar Magnifier feature, available for TradingView Premium and Ultimate account holders, significantly enhances the accuracy of order fills in strategy backtests. This tool uses data from lower timeframes to obtain more detailed price movement within a bar, which can result in more precise order fills. When selected, Bar Magnifier mode replaces the assumptions that the broker emulator must make about price movement using only a single set of OHLC values for each historical bar.
-The Bar Magnifier chooses the lower timeframe based on the chart timeframe:  
-| Chart Timeframe  | Intrabar Timeframe  |  
-| --- | --- |  
-| 1S  | 1S  |  
-| 30S  | 5S  |  
-| 1  | 10S  |  
-| 5  | 30S  |  
-| 10  | 1  |  
-| 15  | 2  |  
-| 30  | 5  |  
-| 60  | 10  |  
-| 240  | 30  |  
-| 1D  | 60  |  
-| 3D  | 240  |  
-| 1W  | 1D  |  
-To fully appreciate the effectiveness of Bar Magnifier, refer to the script demonstrations in the section about Bar Magnifier in the User Manual.
+  * Export the results from the strategy report and use external tools such as spreadsheet software to compare the performance of a strategy on different symbols.
 
 ## Advanced features and integration
 ### Can my strategy script place orders with TradingView brokers?
@@ -38138,8 +38256,8 @@ Strategies cannot evaluate delays when the market is closed, because there are n
 **Delay duration on different timeframes**
 If the delay value is not divisible by the duration of a chart bar, each delay lasts at least one additional chart bar. For instance, setting a delay of 100 seconds on a 1-minute chart effectively means a minimum of two bars before the delay is exceeded.
 ### How can I calculate custom statistics in a strategy?
-To track metrics other than the default metrics that the Strategy Tester tracks, strategies can calculate custom statistics. These calculations might need to detect order executions, track closed trades, monitor entries into trades, and assess whether a trade is active. Changes in built-in variables such as strategy.opentrades and strategy.closedtrades can track the execution of orders.
-The following example script uses a moving average crossover strategy to generate orders. It calculates custom metrics, including the price risk at entry, average position size, and the average percentage of bars involved in trades across the dataset, and plots the custom metrics and some built-in variables to the Data Window. Users can view the history of values plotted in the Data Window by moving the cursor over any bar. In contrast, the Strategy Tester summarizes data over the entire testing period.
+To track metrics other than the default metrics that the strategy report tracks, strategies can calculate custom statistics. These calculations might need to detect order executions, track closed trades, monitor entries into trades, and assess whether a trade is active. Changes in built-in variables such as strategy.opentrades and strategy.closedtrades can track the execution of orders.
+The following example script uses a moving average crossover strategy to generate orders. It calculates custom metrics, including the price risk at entry, average position size, and the average percentage of bars involved in trades across the dataset, and plots the custom metrics and some built-in variables to the Data Window. Users can view the history of values plotted in the Data Window by moving the cursor over any bar. In contrast, the strategy report summarizes data over the entire testing period.
 !image
 Pine Script®
 Copied
@@ -38199,8 +38317,8 @@ plot(tradeRiskPct,           "Trade Risk Value",         �
 `
 Note that:
   * The strategy incorporates trading costs. Failing to account for these costs can lead to an unrealistic perception of strategy performance and diminish the credibility of test results.
-  * We round the open, high, low and close (OHLC) built-in variables to the symbol’s precision. This rounding ensures that any statistics the script calculates align within the Strategy Tester and with strategy order-related built-in variables.
-  * The script creates global variables for the changes in built-in variables for open and closed trades so that the ta.change function is called on every bar for consistency.
+  * We round the open, high, low and close (OHLC) built-in variables to the symbol’s precision. This rounding ensures that any statistics the script calculates align within the strategy report and with strategy order-related built-in variables.
+  * The script creates global variables `changeInOpenTrades` and `changeInClosedTrades` for the changes in built-in variables for open and closed trades so that it calls the ta.change() function on every bar for consistency. See the Storing and using data from previous bars section of the Execution model page to learn more.
 
 
 ### How do I incorporate leverage into my strategy?
@@ -38220,38 +38338,39 @@ The main ways to hedge an open position are:
 
 Strategies cannot use these methods, because Pine strategies can only have positions open in one direction at a time, either long or short. Pine strategies run on only the chart asset and cannot open positions in different assets.
 ### Can I connect my strategies to my paper trading account?
-Pine Script does not support placing orders using the brokers integrated via the Trading Panel, or using TradingView’s built-in paper trading account. The Strategy Tester closely mimics a paper trading account by simulating orders and tracking theoretical positions and capital in a risk-free environment.
+Pine Script does not support placing orders using the brokers integrated via the Trading Panel, or using TradingView’s built-in paper trading account. The strategy report closely mimics a paper trading account by simulating orders and tracking theoretical positions and capital in a risk-free environment.
 Strategies can customize order fill alerts to include detailed results and performance metrics in the alert strings, providing a record of the strategy’s theoretical fills and overall performance in realtime.
 TipWhen configuring alerts for forward testing, it is often helpful to restrict the strategy’s logic to remove the effects of historical trades by using a date filter set to today’s date.
 
 ## Troubleshooting and specific issues
 ### Why are no trades executed after I add the strategy to the chart?
-If a strategy that is running on the chart does not place any orders, the Strategy Tester’s “Overview” tab displays the message, “This strategy did not generate any orders throughout the testing range.” By contrast, while no strategy is loaded and visible on the chart, the Strategy Tester displays a different message: “To test a strategy, apply it to the chart.”
+The strategy report, which displays a strategy’s simulated trading results, becomes available when at least one strategy script is _active_ (loaded and visible) on the chart. If a strategy that is running on the chart does not place any orders, the panel displays a message to inform the user that no trade data is available.
 If a valid script that uses the strategy() declaration statement is running but is not placing any orders, consider the following potential problems and their solutions:
 **Lack of order placement commands**
-The strategy must use either the strategy.order() or strategy.entry() order placement commands to place orders. Add log.info messages and review the Pine Logs to check whether the conditions to run the commands are met.
+The strategy must use either the strategy.order() or strategy.entry() order placement commands to place orders. Add log.info() messages and review the Pine Logs to check whether the conditions to run those commands are met.
 **Insufficient capital**
-Verify that the strategy has enough initial capital to cover the position sizes it attempts to open. Remember, the cost of entering a futures contract position is the chart price multiplied by the syminfo.pointvalue, which can be significantly greater than the chart price. For a quick fix, increase the initial capital to a very high value in the _Properties_ tab.
+Verify that the strategy has enough initial capital to cover the position sizes it attempts to open. Remember, the cost of entering a futures contract position is the chart price multiplied by the syminfo.pointvalue, which can be significantly greater than the chart price. For a quick fix, increase the initial capital to a very high value in the strategy’s “Settings/Properties” tab.
 **Runtime errors**
 Check for runtime errors indicated by a red exclamation mark on the chart pane next to the script’s title. Resolve any issues by correcting the script as necessary.
-For more detailed guidance and troubleshooting tips, refer to the dedicated article on this topic in the Help Center.
+By contrast, if a strategy produces too few trades, or executes over too short a duration, there might not be enough information to populate the full strategy report. In that case, the strategy report panel can generate a portion of its results, but some report sections might display no results for certain metrics or show the message “Not enough data to display” in place of certain visuals. To address this problem, adjust the chosen dataset, testing range, and strategy configuration to ensure that the strategy produces a reasonable number of simulated trades to assess its hypothetical performance (ideally 100 trades or more).
+For more detailed guidance on this topic and troubleshooting tips, refer to the Help Center article I’ve successfully added a strategy to my chart, but it doesn’t generate orders.
 ### Why does my strategy not place any orders on recent bars?
-If a strategy places one or more orders early in the testing range but then stops placing orders, check the following issues.
+If a strategy places one or more orders early in the testing range but then stops placing orders, check the following issues:
 **Total account loss**
 Check whether the simulated account balance experienced a total loss of equity earlier in the available history. As a result, the account might lack sufficient capital to continue trading the symbol and fail to show trades only in the chart’s recent history.
 **No exit condition**
-Some programmers define entry conditions that rely on having no positions currently open. Make sure to explicitly close trades by specifying corresponding exit conditions for all trades. Without explicit instructions to close an open position using strategy.close() or strategy.exit() commands, the strategy might display only a single entry order early in the chart’s history and in the _List of Trades_ tab. If trades are not closed, they do not generate results in the _Overview_.
+Some programmers define entry conditions that rely on having no positions currently open. Make sure to explicitly close trades by specifying corresponding exit conditions for all trades. Without explicit instructions to close an open position using strategy.close() or strategy.exit() commands, the strategy might display only a single entry order early in the chart’s history and in the strategy report’s “Trades” tab. If trades are not closed, they do not generate results in the report’s “Metrics” tab.
 ### Why is my strategy repainting?
 Pine scripts _repaint_ if they behave differently on historical and realtime bars. If strategies repaint, their backtesting results are not reliable because they do not accurately represent the strategy’s behavior in realtime.
 Some strategy properties cause repainting:
-  * The calc_on_every_tick setting causes a strategy to recalculate with every price update, which may cause orders and alerts to trigger during the formation of a bar in realtime. By contrast, on historical bars, calculations are performed at the close of the bar.
-  * The calc_on_order_fills setting causes a strategy to recalculate immediately after simulating an order fill. For example, this feature is particularly useful for strategies that rely on entry prices to set exit prices on the entry bar, rather than waiting for the bar to close, such as the first example script in the FAQ entry How can I set stop-loss and take-profit levels as a percentage from my entry point using `calc_on_order_fills`? However, using this setting can introduce _lookahead bias_ into the strategy, leading to potentially unrealistic outcomes. For instance, if a strategy’s entry conditions are met within a bar that also triggers an exit, the strategy would execute an entry order within the same bar on the next tick. On historical bars, such entries could occur at any of the bar’s open, high, low, or close (OHLC) prices, resulting in entry prices that are unrealistically favorable.
-  * Since strategies and their alerts execute at the close of a historical bar, the next possible moment for an entry order to be filled is the beginning of the next bar. However, the process_orders_on_close setting causes the strategy to use the close price of the bar where the condition is met for its order prices instead. See the FAQ entry Why are my orders executed on the bar following my triggers? for more information.
+  * The `calc_on_every_tick` setting causes a strategy to recalculate with every price update, which may cause orders and alerts to trigger during the formation of a bar in realtime. By contrast, on historical bars, calculations are performed at the close of the bar.
+  * The `calc_on_order_fills` setting causes a strategy to recalculate immediately after simulating an order fill. For example, this feature is particularly useful for strategies that rely on entry prices to set exit prices on the entry bar, rather than waiting for the bar to close, such as the first example script in the FAQ entry How can I set stop-loss and take-profit levels as a percentage from my entry point using `calc_on_order_fills`? However, using this setting can introduce _lookahead bias_ into the strategy, leading to potentially unrealistic outcomes. For instance, if a strategy’s entry conditions are met within a bar that also triggers an exit, the strategy would execute an entry order within the same bar on the next tick. On historical bars, such entries could occur at any of the bar’s open, high, low, or close (OHLC) prices, resulting in entry prices that are unrealistically favorable.
+  * Since strategies and their alerts execute at the close of a historical bar, the next possible moment for an entry order to be filled is the beginning of the next bar. However, the `process_orders_on_close` setting causes the strategy to use the close price of the bar where the condition is met for its order prices instead. See the FAQ entry Why are my orders executed on the bar following my triggers? for more information.
 
 
-To avoid repainting, set the calc_on_every_tick, calc_on_order_fills, and process_orders_on_close parameters to `false` in the strategy() declaration statement.
-Additionally, using unfixed data from a higher timeframe can cause repainting. If the data from the higher timeframe changes during the higher timeframe bar, this can change the script’s oputput for historical bars. Ensure that strategies use only fixed values from a higher timeframe, as described in Avoiding repainting.
-Although these are the most common causes of repainting in strategies, they are not the only causes. For additional information, refer to the section on repainting in the User Manual.
+To avoid repainting, set the `calc_on_every_tick`, `calc_on_order_fills`, and `process_orders_on_close` parameters to `false` in the strategy() declaration statement.
+Additionally, using unfixed data from a higher timeframe can cause repainting. If the data from the higher timeframe changes during the higher timeframe bar, this can change the script’s oputput for historical bars. Ensure that strategies use only fixed values from a higher timeframe, as described in the Avoiding repainting section of the Other timeframes and data page.
+Although these are the most common causes of repainting in strategies, they are not the only causes. For additional information, refer to the Repainting page in the User Manual.
 ### How do I turn off alerts for stop loss and take profit orders?
 In automated trading strategies, it is common practice to set stop-loss and take-profit orders at the same time as an entry order, using the alert from the entry order as a trigger. In this case, sending alerts for the stop-loss and take-profit order fills can be unnecessary or even problematic. To disable alerts for a specific order placement command, set the `disable_alert` parameter to `true`. The broker emulator still simulates the fills for these orders, but sends no alerts for them.
 Here is an example of an order fill command with this parameter set:
@@ -38295,7 +38414,6 @@ Copied
   * Why is backtesting on Heikin Ashi and other non-standard charts not recommended?
   * How can I backtest deeper into history?
   * How can I backtest multiple symbols?
-  * What does Bar Magnifier do?
   * Advanced features and integration
   * Can my strategy script place orders with TradingView brokers?
   * How can I add a time delay between orders?
@@ -38311,16 +38429,6 @@ Copied
 
 
 ## Function Documentation
-
-
-@function                Determines whether the current bar falls within a specified date and time range.  
-// @param startTime         (int) A timestamp marking the start of the time window.  
-// @param endTime           (int) A timestamp marking the end of the time window.  
-// @param useDateFilter     (bool) Whether to filter between `startTime` and `endTime`. Optional.  
-// @param useTimeFilter     (bool) Whether to restrict trades in the time session. Optional.  
-// @param timeSession       (string) Session time range in 'HHMM-HHMM' format, used if `useTimeFilter` is true.  
-// @param timeZone          (string) Timezone for the session time, used if `useTimeFilter` is true.  
-// @returns                 (bool) `true` if the current bar is within the specified date and time range.  
 
 
 @function                Calculates a dynamic trailing stop by adjusting the highest  
@@ -38345,7 +38453,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260728_051304
+# processed_64_strings-and-formatting_20260731_053433
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -38565,7 +38673,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260728_051304
+# processed_65_techniques_20260731_053433
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -38830,7 +38938,7 @@ bgcolor(timeframe.change(periodInput) ? color.new(color.gray, 80) : na)
 `
 ### Using ​`timeframe`​
 Instead of writing custom logic to retrieve or calculate prices for a particular timeframe, programmers can run the entire script in that timeframe.
-If scripts include the `timeframe` parameter in the indicator declaration, the user can choose the timeframe in which the script runs. The script can set a default timeframe.
+If scripts include the `timeframe` parameter in the indicator() declaration, the user can choose the timeframe in which the script runs. The script can set a default timeframe.
 By default, the following script plots the current and previous day’s opening prices, similar to the previous examples. It is much simpler, but behaves quite differently. For historical bars, the script returns values when the day closes, effectively one day “late”. For realtime and elapsed realtime bars, the script returns live values, if the option “Wait for timeframe closes” is not selected in the script settings.
 Pine Script®
 Copied
@@ -38842,13 +38950,13 @@ plot(open,    "Today's Open",     color.green, 2, plot.style_line)
 `
 Note that:
   * Only simple scripts that do not use drawings can use the `timeframe` parameter.
-  * Scripts that use the `timeframe` parameter can plot values quite differently depending on which settings are chosen. For an explanation, see this Help Center article.
+  * Scripts that use the `timeframe` parameter can plot values quite differently depending on which settings are chosen. For an explanation, see the Leveraging multi-timeframe analysis article in our Help Center.
 
 ## How can I count the occurrences of a condition in the last x bars?
 One obvious method is to use a for loop to retrospectively review each of the last x bars and check for the condition. However, this method is inefficient, because it examines all bars in range _again_ on every bar, even though it already examined all but the last bar.
 In general, using unnecessary, large, or nested for loops can result in slower processing and longer chart loading times.
 The simplest and most efficient method is to use the built-in math.sum() function, and pass it a conditional series to count. This function maintains a running total of the count as each bar is processed, and can take a simple or series length.
-The following example script uses both of these calculation methods. It also uses a series length that adjusts for the first part of the chart, where the number of bars available is less than the length. This way, the functions do not return na values.
+The following example script uses both of these calculation methods. It also uses a “series” length that adjusts for the first part of the chart, where the number of bars available is less than the length. This way, the functions do not return `na` values.
 !image
 Pine Script®
 Copied
@@ -39411,10 +39519,10 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260728_051304
+# processed_66_times-dates-and-sessions_20260731_053433
 
 ## How can I get the time of the first bar in the dataset?
-The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
+The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in variable, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
 Pine Script®
 Copied
 `//@version=6  
@@ -39529,8 +39637,8 @@ bgcolor(isToday() ? color.new(color.red, 90) : na)
 Some symbols trade overnight, which means that today’s trading day actually started yesterday, or even several days ago. Many futures and Forex pairs trade overnight. Trading hours are defined by the exchange. On timeframes of one day and above, the chart visually adjusts the dates of these bars to ensure the date corresponds to the bar’s trading day; on intraday timeframes the date and time are shown as they are.
 In Pine Script, the opening time of a bar is represented by the variable time, which also returns the date and time without adjustment. Variables that return date-related values, like dayofmonth, weekofyear, etc., are calculated based on this opening time, which can lead to unexpected behavior on overnight symbols.
 The example script below outputs the value of the built-in dayofmonth variable onto a chart as a label. The following screenshot shows the output of this script on two symbols: one stock and one Forex. We added a vertical line on the chart using the drawing tools to highlight the bar that represents May 22nd.
-The stock symbol “NASDAQ:AAPL ” displays on the upper chart. Its trading hours open and close within a single day with no overnight session. Therefore, the label displays the same day as the vertical line.
-In contrast, on the lower chart, which displays the “FX:EURUSD ” symbol, the label shows `21` on the bar marked May 22nd. This is because the trading for May 22 actually starts on May 21, at 17:00 in the exchange’s time zone, and the dayofmonth variable uses this time to determine the day of the month for this bar.
+The stock symbol “NASDAQ:AAPL” displays on the upper chart. Its trading hours open and close within a single day with no overnight session. Therefore, the label displays the same day as the vertical line.
+In contrast, on the lower chart, which displays the “FX:EURUSD” symbol, the label shows `21` on the bar marked May 22nd. This is because the trading for May 22 actually starts on May 21, at 17:00 in the exchange’s time zone, and the dayofmonth variable uses this time to determine the day of the month for this bar.
 !image
 Pine Script®
 Copied
@@ -40216,7 +40324,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260728_051304
+# processed_67_variables-and-operators_20260731_053433
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -40437,7 +40545,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260728_051304
+# processed_68_visuals_20260731_053433
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -41005,7 +41113,7 @@ The two most robust and scalable ways to keep only the last _n_ number of drawin
 NoteThe arguments of `max_labels_count` and the other `max_*_count` parameters in the indicator() and strategy() declaration statements represent _approximate_ values. To maintain a _precise_ number of active drawings, use one of the two methods explained below.
 ### Using a ​`*.all`​ array
 The quickest and easiest method to limit the number of drawings displayed is to use the built-in `*.all` array for the drawing type. These arrays automatically contain all drawings of that type that currently display on the chart.
-The `*.all` arrays are _read-only_. Scripts cannot change the arrays directly by pushing or shifting elements, but they can _update_ or _delete_ elements in the arrays. The following example script keeps a maximum of 10 labels on the chart. It gets the first label’s ID via the array.first() function and then deletes that label with the label.delete function.
+The `*.all` arrays are _read-only_. Scripts cannot change the arrays directly by pushing or shifting elements, but they can _update_ or _delete_ elements in the arrays. The following example script keeps a maximum of 10 labels on the chart. It gets the first label’s ID via the array.first() function and then deletes that label with the label.delete() function.
 Pine Script®
 Copied
 `//@version=6  
@@ -41251,9 +41359,36 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260728_051304
+# processed_69_release-notes_20260731_053433
 
 ## 2026
+### July 2026
+#### Strategy improvements
+We’ve added a parameter to the strategy() declaration statement for defining a new calculation behavior: `calc_on_every_history_tick`. An argument for this parameter must include the parameter’s name (e.g., `calc_on_every_history_tick = true`). If the value is `true`, the script executes once for _each available tick_ in _every historical bar_. As the script executes on a historical bar, the values of built-in price and volume variables, such as high, low, close, and volume, _update_ on each tick to approximate the data that was available when the bar was still developing. This behavior allows for more granular calculations and order fills across a chart’s history, while also reducing the risk of lookahead bias in the simulation. This new feature is available on _standard charts_ for users with Premium and Ultimate plans. See the Altering calculation behavior section of the Strategies page to learn more.
+We’ve also made multiple changes to the “Settings/Properties” tab and the strategy report interface (formerly known as the _Strategy Tester_), including the following:
+  * The strategy report and the “Properties” tab now include a Script execution menu, where users can customize the strategy’s allowed executions. The `calc_on_every_tick`, `calc_on_every_history_tick`, and `calc_on_order_fills` parameters of the strategy() statement define the default settings enabled in this menu.
+  * The former “Using bar magnifier” checkbox has been changed to a new Bar detalization menu, which is available in the “Properties” tab and at the top of the strategy report. This menu replaces the _Bar Magnifier_ feature; it controls the level of intrabar detail available for filling orders and updating calculations on historical bars. The `use_bar_magnifier` parameter defines the strategy’s default “Bar detalization” setting. See the Adjusting historical bar detail section of the Strategies page to learn more. 
+  * The former “Fill orders using standard OHLC” checkbox for specifying whether a strategy uses real prices on Heikin Ashi charts has been replaced by a _“Heikin Ashi mode”_ dropdown input. The input appears in the “Properties” tab only while the strategy runs on a Heikin Ashi chart. The `fill_orders_on_standard_ohlc` parameter defines the default state of this input.
+  * The former “Verify price for limit orders” input in the “Properties” tab has been replaced by a _“Limit order execution”_ dropdown input, with a fixed set of options for defining assumptions about unfilled limit orders. Programmers can still specify an alternative default assumption by including a `backtest_fill_limits_assumption` argument in the declaration statement.
+  * The checkbox for filling orders immediately after creating them on a bar’s closing tick has been replaced by an _“Order execution delay”_ input. The default state of the input is still defined by the declaration statement’s `process_orders_on_close` parameter.
+  * The “Margin for long positions” and “Margin for short positions” inputs in the “Properties” tab have been replaced by _“Long leverage”_ and _“Short leverage”_ inputs, allowing users to define a specific level of _leverage_ for the strategy rather than calculating margin percentages. However, for backward compatibility, the strategy() function still includes `margin_long` and `margin_short` parameters, which define the strategy’s default margin percentages directly. The strategy converts the arguments to leverage quantities and displays the converted values in these new inputs. See the Margin and leverage section of the Strategies page for more information.
+
+
+Refer to the Strategies page to learn more about the current features of strategy scripts and the updated user interface.
+#### Automatic parentheses
+We’ve improved line wrapping functionality in the Pine Editor. When a programmer presses the `Enter` key to break part of a single-line expression and wrap it across lines, the editor now _automatically_ encloses the expression in a pair of parentheses. This improvement reduces the need to insert indentation or parentheses manually when wrapping a single-line expression after writing it. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Auto parentheses demo")  
+  
+// Press `Enter` to break any part of the expression following the `=` operator.  
+// The Pine Editor automatically encloses the entire expression in a pair of parentheses.  
+// Programmers no longer need to add indentation or parentheses manually for the code to compile.  
+float someValue = time > chart.left_visible_bar_time and last_bar_time <= chart.right_visible_bar_time ? close > open ? high : low : na  
+  
+plot(someValue)  
+`
 ### April 2026
 #### Multiline strings
 We’ve added support for multiline strings. A multiline string is a literal “string” value enclosed by _three_ pairs of quotation marks (e.g., `"""..."""`) or apostrophes (e.g., `'''...'''`). Unlike single-line string syntax (e.g., `"..."`), which typically defines a literal string on a single line of code, the multiline syntax can define a literal string across _multiple_ visible code lines.
@@ -41553,7 +41688,7 @@ The plot() function can now draw dotted and dashed lines via the new `linestyle`
 We’ve updated the maximum length for strings. Previously, a “string” value could not exceed 4,096 characters. Now, strings can contain up to 40,960 encoded characters.
 #### Pine Editor changes
 The Pine Editor is moving from the bottom panel to the _side panel_. This change will happen in phases over the following weeks.
-By default, the new editor view overlays on the right side of the screen. For wider screens, a _split-view_ mode is available, which automatically adjusts the chart’s width to keep it visible alongside the editor. With this new vertical orientation, users can easily edit code and view other tabs such as the Strategy Tester or Replay Trading at the same time.
+By default, the new editor view overlays on the right side of the screen. For wider screens, a _split-view_ mode is available, which automatically adjusts the chart’s width to keep it visible alongside the editor. With this new vertical orientation, users can easily edit code and view other tabs such as the “Strategy Tester” or “Replay Trading” tabs at the same time.
 !image
 The vertical editor view includes a _word wrap_ feature, which enables users to read or modify long lines of code without scrolling horizontally. Note that word wrapping is only a _visual_ feature; it does _not_ change the source code’s structure or line numbering. Users can activate or deactivate word wrapping with the `Alt + Z`/`Option + Z` hotkey.
 ### July 2025
@@ -42502,8 +42637,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
     * Added percentage values to the absolute currency values.
     * Added Buy & Hold Return to display the final value of Buy & Hold Equity based on last price.
     * Added Sharpe Ratio — it shows the relative effectiveness of the investment portfolio (security), a measure that indicates the average return minus the risk-free return divided by the standard deviation of return on an investment.
-    * Slippage lets you simulate a situation when orders are filled at a worse price than expected. It can be set through the Properties dialog or through the slippage argument in the `strategy()` function.
-    * Commission allows yot to add commission for placed orders in percent of order value, fixed price or per contract. The amount of commission paid is shown in the Commission Paid field. The commission size and its type can be set through the Properties dialog or through the commission_type and commission_value arguments in the `strategy()` function.
+    * Slippage lets you simulate a situation when orders are filled at a worse price than expected. It can be set through the Properties dialog or through the `slippage` argument in the `strategy()` function.
+    * Commission allows yot to add commission for placed orders in percent of order value, fixed price or per contract. The amount of commission paid is shown in the Commission Paid field. The commission size and its type can be set through the Properties dialog or through the `commission_type` and `commission_value` arguments in the `strategy()` function.
 
 ## 2016
 ### December 2016
@@ -42605,6 +42740,9 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ## * Overview
 * 2026
+  * July 2026
+  * Strategy improvements
+  * Automatic parentheses
   * April 2026
   * Multiline strings
   * Updated editor settings
@@ -42750,7 +42888,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260728_051304
+# processed_70_overview_20260731_053433
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -42762,7 +42900,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260728_051304
+# processed_71_to-pine-version-6_20260731_053433
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -43189,13 +43327,18 @@ For example, this strategy script places several orders on each bar in the datas
 Pine Script®
 Copied
 `//@version=5  
-indicator("Transparency demo v5")  
+strategy("Strategy order limit demo", overlay=true, pyramiding=5)  
   
-color myColor = close > open ? color.green : color.red  
-plot(close, color = myColor, transp = 80)  
+// Place several long orders on every even bar. This reaches the maximum orders limit in v5 and raises a runtime error.  
+if bar_index % 2 == 0  
+    for i = 1 to 5  
+        strategy.entry("Entry " + str.tostring(i), strategy.long, qty = 5)  
+// Place short orders on every odd bar.  
+else  
+    strategy.entry("Short", strategy.short, qty = 25)  
 `
 In v6, when the total number of orders exceeds 9000, the strategy does _not_ halt. Instead, the orders are _trimmed_ from the beginning until the limit is reached, meaning that the strategy only stores the information for the most recent orders.
-Trimmed orders no longer show in the Strategy Tester, and referencing them using the `strategy.closedtrades.*` functions returns na. Use strategy.closedtrades.first_index to get the index of the first _non-trimmed_ trade:
+Trimmed orders no longer show in the strategy report, and referencing them using the `strategy.closedtrades.*` functions returns na. Use strategy.closedtrades.first_index to get the index of the first _non-trimmed_ trade:
 !image
 Pine Script®
 Copied
@@ -43747,7 +43890,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260728_051304
+# processed_72_to-pine-version-5_20260731_053433
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -44024,7 +44167,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `time(resolution)`  | `time(timeframe)`  |  
 | `time_close(resolution)`  | `time_close(timeframe)`  |  
 | `nz(x, y)`  | `nz(source, replacement)`  |  
-#### ”ta” namespace for technical analysis functions and variables
+#### ​“ta” namespace for technical analysis functions and variables
 ##### Indicator functions and variables  
 | v4  | v5  |  
 | --- | --- |  
@@ -44096,7 +44239,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `stdev()`  | `ta.stdev()`  |  
 | `valuewhen()`  | `ta.valuewhen()`  |  
 | `variance()`  | `ta.variance()`  |  
-#### ”math” namespace for math-related functions and variables  
+#### ​“math” namespace for math-related functions and variables  
 | v4  | v5  |  
 | --- | --- |  
 | `abs(x)`  | `math.abs(number)`  |  
@@ -44123,7 +44266,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `tan(x)`  | `math.tan(angle)`  |  
 | `todegrees()`  | `math.todegrees()`  |  
 | `toradians()`  | `math.toradians()`  |  
-#### ”request” namespace for functions that request external data  
+#### ​“request” namespace for functions that request external data  
 | v4  | v5  |  
 | --- | --- |  
 | `financial()`  | `request.financial()`  |  
@@ -44132,7 +44275,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `splits()`  | `request.splits()`  |  
 | `dividends()`  | `request.dividends()`  |  
 | `earnings()`  | `request.earnings()`  |  
-#### ”ticker” namespace for functions that help create tickers  
+#### ​“ticker” namespace for functions that help create tickers  
 | v4  | v5  |  
 | --- | --- |  
 | `heikinashi()`  | `ticker.heikinashi()`  |  
@@ -44141,7 +44284,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 | `pointfigure()`  | `ticker.pointfigure()`  |  
 | `renko()`  | `ticker.renko()`  |  
 | `tickerid()`  | `ticker.new()`  |  
-#### ”str” namespace for functions that manipulate strings  
+#### ​“str” namespace for functions that manipulate strings  
 | v4  | v5  |  
 | --- | --- |  
 | `tostring(x, y)`  | `str.tostring(value, format)`  |  
@@ -44169,17 +44312,17 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
   * Removed functions and variables
   * Renamed functions and parameters
   * No namespace change
-  * ”ta” namespace for technical analysis functions and variables
-  * ”math” namespace for math-related functions and variables
-  * ”request” namespace for functions that request external data
-  * ”ticker” namespace for functions that help create tickers
-  * ”str” namespace for functions that manipulate strings
+  * ​“ta” namespace for technical analysis functions and variables
+  * ​“math” namespace for math-related functions and variables
+  * ​“request” namespace for functions that request external data
+  * ​“ticker” namespace for functions that help create tickers
+  * ​“str” namespace for functions that manipulate strings
 
 ---
 
 
 
-# processed_73_to-pine-version-4_20260728_051304
+# processed_73_to-pine-version-4_20260731_053433
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -44224,7 +44367,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260728_051304
+# processed_74_to-pine-version-3_20260731_053433
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -44345,9 +44488,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260728_051304
+# processed_75_to-pine-version-2_20260731_053433
 
-## 75_to-pine-version-2_20260728_051304
+## 75_to-pine-version-2_20260731_053433
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -44404,7 +44547,7 @@ plot(sma(src, length))
 
 
 
-# processed_76_where-can-i-get-more-information_20260728_051304
+# processed_76_where-can-i-get-more-information_20260731_053433
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.

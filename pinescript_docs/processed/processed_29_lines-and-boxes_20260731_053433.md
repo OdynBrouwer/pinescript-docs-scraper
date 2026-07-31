@@ -128,7 +128,7 @@ The `line.*` namespace contains multiple _setter_ functions that modify the prop
                   
 
 All setter functions directly modify the `id` line passed into the call and do not return any value. Each setter function accepts “series” arguments, as a script can change a line’s properties throughout its execution.
-The following example draws lines connecting the opening price of a `timeframe` to its closing price. The script uses the var keyword to declare `periodLine` and the variables that reference chart.point objects (`openPoint` and `closePoint`) only on the _first_ chart bar, and it assigns new references to these variables over its execution. After detecting a new bar on the specified timeframe with timeframe.change, the script uses line.set_color() to set the `color` property of the current line referenced by `periodLine`, creates new chart points for `openPoint` and `closePoint` using chart.point.now(), calls line.new() to create another line anchored to those points, then assigns the new line’s reference to `periodLine`.
+The following example draws lines connecting the opening price of a `timeframe` to its closing price. The script uses the var keyword to declare `periodLine` and the variables that reference chart.point objects (`openPoint` and `closePoint`) only on the _first_ chart bar, and it assigns new references to these variables over its execution. After detecting a new bar on the specified timeframe with timeframe.change(), the script uses line.set_color() to set the `color` property of the current line referenced by `periodLine`, creates new chart points for `openPoint` and `closePoint` using chart.point.now(), calls line.new() to create another line anchored to those points, then assigns the new line’s reference to `periodLine`.
 On other bars where the `periodLine` reference is not na, the script assigns a new chart.point reference to the `closePoint` variable, then uses line.set_second_point() and line.set_color() as methods to update the end coordinate and color of the latest line:
 !image
 Pine Script®
@@ -201,7 +201,7 @@ Note that:
 The `line.*` namespace includes _getter_ functions, which allow a script to retrieve values from a line object for further use:
       
 
-The script below draws a new line upon the onset of a rising or falling price pattern forming over `length` bars. It uses the var keyword to declare the `directionLine` variable on the first chart bar. The line reference assigned to `directionLine` persists over subsequent bars until the `newDirection` condition occurs, in which case the script assigns a creates a new line with line.new and assigns that line’s reference to the variable.
+The script below draws a new line upon the onset of a rising or falling price pattern forming over `length` bars. It uses the var keyword to declare the `directionLine` variable on the first chart bar. The line reference assigned to `directionLine` persists over subsequent bars until the `newDirection` condition occurs, in which case the script assigns a creates a new line with line.new() and assigns that line’s reference to the variable.
 On every bar, the script calls the line.get_y2(), line.get_y1(), line.get_x2(), and line.get_x1() getters as methods to retrieve values from the current line referenced by `directionLine` and calculate its slope, then uses the result to determine the color of each drawing and plot. The script retrieves an extended value of the current line from _beyond_ its second point using line.get_price() and plots the returned value on the chart:
 !image
 Pine Script®
@@ -738,7 +738,7 @@ Specifies the style of the polyline, which can be any of the available options i
 Specifies the width of the polyline, in pixels. The default value is 1.
 `force_overlay`
 If `true`, the drawing will display on the main chart pane, even when the script occupies a separate pane. Optional. The default is `false`.
-This script demonstrates a simple example of drawing a polyline on the chart. It uses array.push to push the reference of a new chart.point object with an alternating `price` value into a `points` array and colors the background with bgcolor() once every `length` bars.
+This script demonstrates a simple example of drawing a polyline on the chart. It uses array.push() to push the reference of a new chart.point object with an alternating `price` value into a `points` array and colors the background with bgcolor() once every `length` bars.
 On the last confirmed historical bar, where barstate.islastconfirmedhistory is `true`, the script creates a new polyline with polyline.new(). The polyline drawing passes through the coordinates of each chart point in the `points` array in order, starting from the first point:
 !image
 Pine Script®

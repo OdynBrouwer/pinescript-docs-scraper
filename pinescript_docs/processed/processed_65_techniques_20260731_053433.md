@@ -261,7 +261,7 @@ bgcolor(timeframe.change(periodInput) ? color.new(color.gray, 80) : na)
 `
 ### Using ​`timeframe`​
 Instead of writing custom logic to retrieve or calculate prices for a particular timeframe, programmers can run the entire script in that timeframe.
-If scripts include the `timeframe` parameter in the indicator declaration, the user can choose the timeframe in which the script runs. The script can set a default timeframe.
+If scripts include the `timeframe` parameter in the indicator() declaration, the user can choose the timeframe in which the script runs. The script can set a default timeframe.
 By default, the following script plots the current and previous day’s opening prices, similar to the previous examples. It is much simpler, but behaves quite differently. For historical bars, the script returns values when the day closes, effectively one day “late”. For realtime and elapsed realtime bars, the script returns live values, if the option “Wait for timeframe closes” is not selected in the script settings.
 Pine Script®
 Copied
@@ -273,13 +273,13 @@ plot(open,    "Today's Open",     color.green, 2, plot.style_line)
 `
 Note that:
   * Only simple scripts that do not use drawings can use the `timeframe` parameter.
-  * Scripts that use the `timeframe` parameter can plot values quite differently depending on which settings are chosen. For an explanation, see this Help Center article.
+  * Scripts that use the `timeframe` parameter can plot values quite differently depending on which settings are chosen. For an explanation, see the Leveraging multi-timeframe analysis article in our Help Center.
 
 ## How can I count the occurrences of a condition in the last x bars?
 One obvious method is to use a for loop to retrospectively review each of the last x bars and check for the condition. However, this method is inefficient, because it examines all bars in range _again_ on every bar, even though it already examined all but the last bar.
 In general, using unnecessary, large, or nested for loops can result in slower processing and longer chart loading times.
 The simplest and most efficient method is to use the built-in math.sum() function, and pass it a conditional series to count. This function maintains a running total of the count as each bar is processed, and can take a simple or series length.
-The following example script uses both of these calculation methods. It also uses a series length that adjusts for the first part of the chart, where the number of bars available is less than the length. This way, the functions do not return na values.
+The following example script uses both of these calculation methods. It also uses a “series” length that adjusts for the first part of the chart, where the number of bars available is less than the length. This way, the functions do not return `na` values.
 !image
 Pine Script®
 Copied

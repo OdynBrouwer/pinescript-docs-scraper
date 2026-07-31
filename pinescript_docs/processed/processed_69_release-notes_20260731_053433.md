@@ -1,4 +1,31 @@
 ## 2026
+### July 2026
+#### Strategy improvements
+We’ve added a parameter to the strategy() declaration statement for defining a new calculation behavior: `calc_on_every_history_tick`. An argument for this parameter must include the parameter’s name (e.g., `calc_on_every_history_tick = true`). If the value is `true`, the script executes once for _each available tick_ in _every historical bar_. As the script executes on a historical bar, the values of built-in price and volume variables, such as high, low, close, and volume, _update_ on each tick to approximate the data that was available when the bar was still developing. This behavior allows for more granular calculations and order fills across a chart’s history, while also reducing the risk of lookahead bias in the simulation. This new feature is available on _standard charts_ for users with Premium and Ultimate plans. See the Altering calculation behavior section of the Strategies page to learn more.
+We’ve also made multiple changes to the “Settings/Properties” tab and the strategy report interface (formerly known as the _Strategy Tester_), including the following:
+  * The strategy report and the “Properties” tab now include a Script execution menu, where users can customize the strategy’s allowed executions. The `calc_on_every_tick`, `calc_on_every_history_tick`, and `calc_on_order_fills` parameters of the strategy() statement define the default settings enabled in this menu.
+  * The former “Using bar magnifier” checkbox has been changed to a new Bar detalization menu, which is available in the “Properties” tab and at the top of the strategy report. This menu replaces the _Bar Magnifier_ feature; it controls the level of intrabar detail available for filling orders and updating calculations on historical bars. The `use_bar_magnifier` parameter defines the strategy’s default “Bar detalization” setting. See the Adjusting historical bar detail section of the Strategies page to learn more. 
+  * The former “Fill orders using standard OHLC” checkbox for specifying whether a strategy uses real prices on Heikin Ashi charts has been replaced by a _“Heikin Ashi mode”_ dropdown input. The input appears in the “Properties” tab only while the strategy runs on a Heikin Ashi chart. The `fill_orders_on_standard_ohlc` parameter defines the default state of this input.
+  * The former “Verify price for limit orders” input in the “Properties” tab has been replaced by a _“Limit order execution”_ dropdown input, with a fixed set of options for defining assumptions about unfilled limit orders. Programmers can still specify an alternative default assumption by including a `backtest_fill_limits_assumption` argument in the declaration statement.
+  * The checkbox for filling orders immediately after creating them on a bar’s closing tick has been replaced by an _“Order execution delay”_ input. The default state of the input is still defined by the declaration statement’s `process_orders_on_close` parameter.
+  * The “Margin for long positions” and “Margin for short positions” inputs in the “Properties” tab have been replaced by _“Long leverage”_ and _“Short leverage”_ inputs, allowing users to define a specific level of _leverage_ for the strategy rather than calculating margin percentages. However, for backward compatibility, the strategy() function still includes `margin_long` and `margin_short` parameters, which define the strategy’s default margin percentages directly. The strategy converts the arguments to leverage quantities and displays the converted values in these new inputs. See the Margin and leverage section of the Strategies page for more information.
+
+
+Refer to the Strategies page to learn more about the current features of strategy scripts and the updated user interface.
+#### Automatic parentheses
+We’ve improved line wrapping functionality in the Pine Editor. When a programmer presses the `Enter` key to break part of a single-line expression and wrap it across lines, the editor now _automatically_ encloses the expression in a pair of parentheses. This improvement reduces the need to insert indentation or parentheses manually when wrapping a single-line expression after writing it. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Auto parentheses demo")  
+  
+// Press `Enter` to break any part of the expression following the `=` operator.  
+// The Pine Editor automatically encloses the entire expression in a pair of parentheses.  
+// Programmers no longer need to add indentation or parentheses manually for the code to compile.  
+float someValue = time > chart.left_visible_bar_time and last_bar_time <= chart.right_visible_bar_time ? close > open ? high : low : na  
+  
+plot(someValue)  
+`
 ### April 2026
 #### Multiline strings
 We’ve added support for multiline strings. A multiline string is a literal “string” value enclosed by _three_ pairs of quotation marks (e.g., `"""..."""`) or apostrophes (e.g., `'''...'''`). Unlike single-line string syntax (e.g., `"..."`), which typically defines a literal string on a single line of code, the multiline syntax can define a literal string across _multiple_ visible code lines.
@@ -298,7 +325,7 @@ The plot() function can now draw dotted and dashed lines via the new `linestyle`
 We’ve updated the maximum length for strings. Previously, a “string” value could not exceed 4,096 characters. Now, strings can contain up to 40,960 encoded characters.
 #### Pine Editor changes
 The Pine Editor is moving from the bottom panel to the _side panel_. This change will happen in phases over the following weeks.
-By default, the new editor view overlays on the right side of the screen. For wider screens, a _split-view_ mode is available, which automatically adjusts the chart’s width to keep it visible alongside the editor. With this new vertical orientation, users can easily edit code and view other tabs such as the Strategy Tester or Replay Trading at the same time.
+By default, the new editor view overlays on the right side of the screen. For wider screens, a _split-view_ mode is available, which automatically adjusts the chart’s width to keep it visible alongside the editor. With this new vertical orientation, users can easily edit code and view other tabs such as the “Strategy Tester” or “Replay Trading” tabs at the same time.
 !image
 The vertical editor view includes a _word wrap_ feature, which enables users to read or modify long lines of code without scrolling horizontally. Note that word wrapping is only a _visual_ feature; it does _not_ change the source code’s structure or line numbering. Users can activate or deactivate word wrapping with the `Alt + Z`/`Option + Z` hotkey.
 ### July 2025
@@ -1247,8 +1274,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
     * Added percentage values to the absolute currency values.
     * Added Buy & Hold Return to display the final value of Buy & Hold Equity based on last price.
     * Added Sharpe Ratio — it shows the relative effectiveness of the investment portfolio (security), a measure that indicates the average return minus the risk-free return divided by the standard deviation of return on an investment.
-    * Slippage lets you simulate a situation when orders are filled at a worse price than expected. It can be set through the Properties dialog or through the slippage argument in the `strategy()` function.
-    * Commission allows yot to add commission for placed orders in percent of order value, fixed price or per contract. The amount of commission paid is shown in the Commission Paid field. The commission size and its type can be set through the Properties dialog or through the commission_type and commission_value arguments in the `strategy()` function.
+    * Slippage lets you simulate a situation when orders are filled at a worse price than expected. It can be set through the Properties dialog or through the `slippage` argument in the `strategy()` function.
+    * Commission allows yot to add commission for placed orders in percent of order value, fixed price or per contract. The amount of commission paid is shown in the Commission Paid field. The commission size and its type can be set through the Properties dialog or through the `commission_type` and `commission_value` arguments in the `strategy()` function.
 
 ## 2016
 ### December 2016
@@ -1350,6 +1377,9 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ## * Overview
 * 2026
+  * July 2026
+  * Strategy improvements
+  * Automatic parentheses
   * April 2026
   * Multiline strings
   * Updated editor settings

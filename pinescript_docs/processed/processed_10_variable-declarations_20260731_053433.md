@@ -1132,7 +1132,7 @@ Note that:
 
 
 NoteIn contrast to objects of _built-in_ reference types, objects of user-defined types **do not** automatically apply varip behaviors to their _fields_ when referenced by variables declared using the varip keyword. To enable these behaviors for the fields of a UDT, prefix the identifier of each field with the varip keyword in the UDT declaration. See the Objects page for an example.
-It’s crucial to note that strategies execute _differently_ from indicators. By default, a strategy executes strictly _once per bar_ , even on realtime bars. Therefore, varip variables in a strategy behave the same as var variables by default. However, users can change a strategy’s calculation behavior to enable additional executions on each new tick or after order fills. These settings can cause a strategy’s varip variables to behave differently on both realtime and historical bars.
+It’s crucial to note that strategies execute _differently_ from indicators. By default, a strategy executes strictly _once per bar_ , even on realtime bars. Therefore, varip variables in a strategy behave the same as var variables by default. However, users can change a strategy’s calculation behavior to enable additional executions on each realtime tick, each historical tick, or after order fills. These settings can cause a strategy’s varip variables to behave differently on both realtime and historical bars.
 For example, the simple strategy below alternates between creating a long and short market order on each execution. It also declares two persistent variables named `counter1` and `counter2` and increments their values by one with the += operator. The first declaration uses var, and the second uses varip. The script also colors the background of all realtime bars for visual reference:
 Pine Script®
 Copied
@@ -1169,9 +1169,9 @@ bgcolor(barstate.isrealtime ? color.new(color.orange, 80) : na, title = 
 `
 If we run the script with the default calculation behavior, the strategy executes only once on every closed bar. On realtime bars, it waits for each bar to close before performing a new execution. As such, the values of both variables consistently increment by the same amount across all bars and do not diverge:
 !image
-If we select the “On every tick” checkbox in the strategy’s “Properties” tab, the script executes on _each new tick_ in a realtime bar, similar to an indicator. With this change, the plot for the `counter2` variable diverges from that of the `counter1` variable on realtime bars:
+If we select the “On realtime bar tick” checkbox in the strategy’s Script execution settings, the script executes on _each new tick_ in a realtime bar, similar to an indicator. With this change, the plot for the `counter2` variable diverges from that of the `counter1` variable on realtime bars:
 !image
-If we select the “After an order is filled” checkbox, the script executes again on _any_ bar where the broker emulator fills an order. By default, the emulator assumes that the open, high, low, and close of historical bars are all valid ticks for filling orders, and our script creates a new order on every available tick. With this change, in addition to incrementing by the number of ticks on each realtime bar, the value of the `counter2` variable increments by _four_ instead of one on each _historical bar_ after the first:
+If we select the “On order fill” checkbox, the script executes again on _any_ bar where the broker emulator fills an order. By default, the emulator assumes that the open, high, low, and close of historical bars are all valid ticks for filling orders, and our script creates a new order on every available tick. With this change, in addition to incrementing by the number of ticks on each realtime bar, the value of the `counter2` variable increments by _four_ instead of one on each _historical bar_ after the first:
 !image
 For more detailed information about this historical behavior, see the Executions on historical bars section of the Execution model page.
 Notice
