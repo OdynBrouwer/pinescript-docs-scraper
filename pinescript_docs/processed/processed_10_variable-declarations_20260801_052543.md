@@ -740,37 +740,20 @@ We can align the script’s visuals and resolve the compiler warning by replacin
 Pine Script®
 Copied
 `//@version=6  
-indicator("Avoiding shadowing demo", overlay = true, max_labels_count = 500)  
+indicator("Using past values of a variable demo")  
   
-// Declare "input" variables specifying allowed directions, and whether only strong patterns appear in the result.  
-bool bullInput       = input.bool(true,  "Include bullish patterns")  
-bool bearInput       = input.bool(false, "Include bearish patterns")  
-bool showStrongInput = input.bool(true,  "Show strong patterns only")  
+// This declaration does not use `var` or `varip`.  
+// Therefore, the script reinitializes the variable to 0 on every execution.  
+int count = 0  
   
-// Declare variables to store candle body information for pattern detection.  
-float bodyLow   = math.min(close, open)  
-float bodyHigh  = math.max(close, open)  
-float bodyDir   = math.sign(close - open)  
-float bodyRange = bodyHigh - bodyLow  
+// Retrieve the value of the `count` variable from the previous bar, or 0 if it is not available, add 1 to that value,  
+// then reassign the result to the `count` variable on the current bar. The script accesses this result with  
+// the `count[1]` operation while executing on the next bar.  
+// Therefore, the current value of the variable is always one greater than the value on the previous bar.  
+count := nz(count[1]) + 1  
   
-//@variable Holds a "bool" value indicating whether an engulfing pattern is detected on the current bar.  
-bool isEngulf = (  
-    bodyDir != bodyDir[1] and bodyLow <= bodyLow[1] and bodyHigh >= bodyHigh[1] and bodyRange > bodyRange[1]  
-)  
-  
-if isEngulf  
-    // This statement uses the `:=` operator instead of the `=` operator. Now, the script directly modifies the  
-    // global variable from line 16 instead of creating a new variable that shadows it.  
-    isEngulf := switch bodyDir  
-        1  => bullInput and (showStrongInput ? bodyHigh >= high[1] : true)  
-        -1 => bearInput and (showStrongInput ? bodyLow  <= low[1] : true)  
-    // `isEngulf` in this nested statement now refers to the global variable.  
-    if isEngulf  
-        label.new(bar_index, bodyDir == 1 ? low : high, style = label.style_diamond, size = size.small)  
-  
-// Now that the `if` structure modifies the global `isEngulf` variable, this call colors the same recent bars where  
-// a label drawing occurs.  
-barcolor(isEngulf ? (bodyDir == 1 ? color.yellow : color.orange) : na, title = "Engulfing bar color")  
+// Plot the variable's final value.  
+plot(count, "Bar counter", color.blue, 3)  
 `
 It is also possible for custom variables in a script to shadow some built-in variables. If a script declares a variable with the same identifier as a built-in variable, the identifier refers exclusively to that variable for the remainder of the scope. As with custom variables, shadowing a built-in variable causes a compiler warning.
 For example, the script below declares a variable named `close` and assigns it the value of the built-in open variable, then plots the values associated with the two identifiers. Both plots show the _same_ values, because the variable declaration makes the built-in close variable _inaccessible_ to the script:

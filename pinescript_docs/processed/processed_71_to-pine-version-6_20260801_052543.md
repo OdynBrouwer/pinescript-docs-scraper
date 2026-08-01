@@ -254,32 +254,15 @@ plot(100, "100-line", color.orange, 4, style = hundredLineStyle)
 Pine Script®
 Copied
 `//@version=6  
-indicator("`na` and unique types demo v6")  
+indicator("History-referencing on literals demo")  
   
-//@variable User-selected "string" to determine type of plot used for `plot()` function's `style` argument.  
-string inputStyle = input.string("Area", "Plot style", options = ["Area", "Columns", "Histogram", "Stepline-diamond"])  
-  
-// Initialize an `input plot_style` type variable based on user's selected `inputStyle`.  
-selectedPlotStyle = switch inputStyle  
-    "Area"             => plot.style_area  
-    "Columns"          => plot.style_columns  
-    "Histogram"        => plot.style_histogram  
-    "Stepline-diamond" => plot.style_stepline_diamond  
-    // A default block must be included in v6.  
-    =>  plot.style_line  
-  
-plot(close, "Source plot", color.blue, 2, style = selectedPlotStyle)  
-  
-//@variable Toggle for the style of the line plotted at price "100".  
-inputHundredStyle = input.bool(true, " Use crosses style for '100-line'")  
-  
-hundredLineStyle = if inputHundredStyle  
-    plot.style_cross  
-else    //`else` block must be included in v6. Sets "line" style if `inputHundredStyle` is `false`.  
-    plot.style_line  
-  
-// Plot the "100-line" using the `hundredLineStyle` style constant.  
-plot(100, "100-line", color.orange, 4, style = hundredLineStyle)  
+// We no longer use history-referencing on literals in v6.   
+plot(6, "6", linewidth = 3)  
+bgcolor(true ? color.orange : na)  
+if barstate.islastconfirmedhistory  
+    labelText = "string literal"  
+    label.new(bar_index - 3, 3, labelText + ", more text", textcolor = color.white, size = size.large)  
+    // Label output shows "string literal, more text" in v6, since `labelText` is defined without history-referencing anymore.  
 `
 
 ## Constants
