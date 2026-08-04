@@ -601,34 +601,26 @@ The following example creates exit bracket (take-profit and stop-loss) orders wi
 Pine Script®
 Copied
 `//@version=6  
-strategy("Take-profit and stop-loss demo", overlay = true)  
+strategy("Multiple limits with reduction demo", overlay = true, behind_chart = false)  
   
-//@variable Is `true` on every 100th bar, and `false` otherwise.  
-bool buyCondition = bar_index % 100 == 0  
+var float stop   = na  
+var float limit1 = na  
+var float limit2 = na  
   
-//@variable Stores the current take-profit order price.   
-var float takeProfit = na  
-//@variable Stores the current stop-loss order price.  
-var float stopLoss = na  
+bool longCondition = ta.crossover(ta.sma(close, 5), ta.sma(close, 9))  
+if longCondition and strategy.position_size == 0  
+    stop   := close * 0.99  
+    limit1 := close * 1.01  
+    limit2 := close * 1.02  
+    strategy.entry("Long",  strategy.long, 6)  
+    strategy.order("Stop",  strategy.short, stop = stop, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
+    strategy.order("Limit 1", strategy.short, limit = limit1, qty = 3, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
+    strategy.order("Limit 2", strategy.short, limit = limit2, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
   
-if buyCondition  
-    // Update the `takeProfit` and `stopLoss` values.  
-    if strategy.opentrades == 0  
-        takeProfit := close * 1.01  
-        stopLoss   := close * 0.99  
-    // Place a long market order.   
-    strategy.entry("buy", strategy.long)  
-    // Place a take-profit order at the `takeProfit` value and a stop-loss order at the `stopLoss` value.  
-    strategy.exit("exit", "buy", limit = takeProfit, stop = stopLoss)  
-  
-// Set the `takeProfit` and `stopLoss` values to `na` when the position closes.  
-if ta.change(strategy.closedtrades) > 0  
-    takeProfit := na  
-    stopLoss   := na  
-  
-// Plot the `takeProfit` and `stopLoss` series to visualize the exit levels.  
-plot(takeProfit, "TP", color.green, style = plot.style_circles)  
-plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
+bool showPlot = strategy.position_size != 0  
+plot(showPlot ? stop   : na, "Stop",    color.red,   style = plot.style_linebr)  
+plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.style_linebr)  
+plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
 `
 Note that:
   * We did not specify a `qty` or `qty_percent` argument in the strategy.exit() call, meaning it creates orders to exit 100% of the “buy” order’s size.
