@@ -1,5 +1,5 @@
 ## Introduction
-Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
+Pine Script® strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
 When a script uses the strategy() function as its declaration statement, it gains access to the `strategy.*` namespace, which features numerous functions and variables for simulating orders and retrieving essential strategy information. Additionally, the script generates a detailed strategy report in a dedicated tab below the chart.
 
 ## A simple strategy example
@@ -35,11 +35,11 @@ Note that:
 ## Applying a strategy to a chart
 To test a strategy, add it to the chart. Select a built-in, published, or personal strategy from the “Indicators, metrics, and strategies” menu, or write a custom strategy in the Pine Editor and select the “Add to chart” button from the editor’s options:
 !image
-The script plots trade markers on the bars in the main chart pane and displays detailed _strategy report_ within a separate tab in the chart’s bottom panel:
+The script plots trade markers on the bars in the main chart pane and displays a detailed _strategy report_ within a separate tab in the chart’s bottom panel:
 !image
 See the Strategy report section below to learn how to read and interpret the performance data displayed by this tab.
 Notice
-The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, line break, Kagi, point & figure, and range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not typically represent real-world market prices. Consequently, running a strategy on a non-standard chart typically produces **unrealistic** results.
+The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, line break, Kagi, point & figure, and range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not represent real-world market prices. Consequently, running a strategy on a non-standard chart typically produces **unrealistic** results.
   
 
 Therefore, we strongly recommend using **standard** chart types when testing strategies. Alternatively, on Heikin Ashi charts, users can simulate order fills using actual prices by selecting the “Standard bars” option from the “Heikin Ashi mode” input in the script’s “Settings/Properties” tab. Programmers can specify that a strategy uses this behavior by default by including `fill_orders_on_standard_ohlc = true` in the strategy() declaration statement.
@@ -181,9 +181,7 @@ The following image labels the OHLC values of a few historical bars using number
 ### Adjusting historical bar detail
 Users with Premium and Ultimate plans can override the broker emulator’s chart-based assumptions and increase the level of intrabar detail on historical bars, allowing for more precise order fills in the strategy’s backtest. To enable high historical bar detail, select the “High” option from the strategy’s Bar detalization settings, which are available in the “Settings/Properties” tab and at the top of the strategy report below the chart. Programmers can also configure a strategy to use high historical detail by default by including `use_bar_magnifier = true` in the strategy() declaration statement.
 If a strategy enables high historical detail, the broker emulator retrieves open, high, low, and close prices from the bars on a suitable _lower timeframe_ , when possible, to increase the number of ticks available for estimating price action and filling orders on historical bars. This setting also allows the script to perform multiple _additional executions_ on each historical bar, depending on the selected Script execution settings. See the Altering calculation behavior section below to learn more.
-The following example illustrates how changing the level of historical bar detail can enhance the behavior of limit orders. The script below creates entry and exit limit orders, named “Buy” and “Exit”, on the first bar whose opening time equals or exceeds an input timestamp. For visual reference, the script highlights the chart’s background in orange when it places the orders, and it draws two horizontal lines at the order prices. The strategy() statement does not include `use_bar_magnifier = true`. Therefore, the broker emulator uses only chart data to determine when it can fill both orders by default.
-When we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
-!image
+The following example illustrates how changing the level of historical bar detail can enhance the behavior of limit orders. The script below creates entry and exit limit orders, named “Buy” and “Exit”, on the first bar whose opening time equals or exceeds an input timestamp. For visual reference, the script highlights the chart’s background in orange when it places the orders, and it draws two horizontal lines at the order prices. The strategy() statement does not include `use_bar_magnifier = true`. Therefore, the broker emulator uses only chart data to determine when it can fill both orders by default:
 Pine Script®
 Copied
 `//@version=6  
@@ -224,7 +222,9 @@ if ta.change(strategy.closedtrades) > 0
 // Highlight the chart's background on the order bar.   
 bgcolor(orderColor)  
 `
-If we include `use_bar_magnifier = true` in the strategy() statement, the strategy enables high historical detail by default. When this setting is active on a weekly chart, the broker emulator retrieves open, high, low, and close prices from the _daily timeframe_. The bars on the daily timeframe show that, contrary to the broker emulator’s default assumption, the market price _did_ move to the “Exit” order’s price after opening the trade in the same week. Therefore, the emulator can fill both orders on the _same weekly bar_ in this case. Below, we show the strategy’s result on the weekly chart after enabling high historical detail, alongside the bars on the daily chart with the entry and exit points annotated:
+If we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
+!image
+If we include `use_bar_magnifier = true` in the strategy() statement, the strategy enables high historical detail by default. When this setting is active on a weekly chart, the broker emulator retrieves open, high, low, and close prices from the _daily timeframe_. The bars on the daily timeframe show that, contrary to the broker emulator’s default assumption, the market price _did_ move to the “Exit” order’s price after triggering the “Entry” order in the same week. Therefore, the emulator can fill both orders on the _same weekly bar_ in this case. Below, we show the strategy’s result on the weekly chart after enabling high historical detail, alongside the bars on the daily chart with the entry and exit points annotated:
 !image
 Pine Script®
 Copied
@@ -601,26 +601,34 @@ The following example creates exit bracket (take-profit and stop-loss) orders wi
 Pine Script®
 Copied
 `//@version=6  
-strategy("Multiple limits with reduction demo", overlay = true, behind_chart = false)  
+strategy("Take-profit and stop-loss demo", overlay = true)  
   
-var float stop   = na  
-var float limit1 = na  
-var float limit2 = na  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
+bool buyCondition = bar_index % 100 == 0  
   
-bool longCondition = ta.crossover(ta.sma(close, 5), ta.sma(close, 9))  
-if longCondition and strategy.position_size == 0  
-    stop   := close * 0.99  
-    limit1 := close * 1.01  
-    limit2 := close * 1.02  
-    strategy.entry("Long",  strategy.long, 6)  
-    strategy.order("Stop",  strategy.short, stop = stop, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
-    strategy.order("Limit 1", strategy.short, limit = limit1, qty = 3, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
-    strategy.order("Limit 2", strategy.short, limit = limit2, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
+//@variable Stores the current take-profit order price.   
+var float takeProfit = na  
+//@variable Stores the current stop-loss order price.  
+var float stopLoss = na  
   
-bool showPlot = strategy.position_size != 0  
-plot(showPlot ? stop   : na, "Stop",    color.red,   style = plot.style_linebr)  
-plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.style_linebr)  
-plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
+if buyCondition  
+    // Update the `takeProfit` and `stopLoss` values.  
+    if strategy.opentrades == 0  
+        takeProfit := close * 1.01  
+        stopLoss   := close * 0.99  
+    // Place a long market order.   
+    strategy.entry("buy", strategy.long)  
+    // Place a take-profit order at the `takeProfit` value and a stop-loss order at the `stopLoss` value.  
+    strategy.exit("exit", "buy", limit = takeProfit, stop = stopLoss)  
+  
+// Set the `takeProfit` and `stopLoss` values to `na` when the position closes.  
+if ta.change(strategy.closedtrades) > 0  
+    takeProfit := na  
+    stopLoss   := na  
+  
+// Plot the `takeProfit` and `stopLoss` series to visualize the exit levels.  
+plot(takeProfit, "TP", color.green, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
 Note that:
   * We did not specify a `qty` or `qty_percent` argument in the strategy.exit() call, meaning it creates orders to exit 100% of the “buy” order’s size.

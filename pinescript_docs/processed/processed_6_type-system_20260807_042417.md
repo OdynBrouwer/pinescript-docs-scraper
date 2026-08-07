@@ -408,29 +408,9 @@ Copied
 Quotation marks and apostrophes are functionally similar when used as the enclosing delimiters of literal strings. A string enclosed in quotation marks can contain any number of apostrophes. Likewise, a string enclosed in apostrophes can contain any number of quotation marks. For example:
 Pine Script®
 Copied
-`//@version=6  
-indicator("Cannot modify global variables in functions demo")  
+`"It's an example"  
   
-//@variable The number of conditions that occur before the counter value resets.  
-int cycleSizeInput = input.int(10, "Cycle size", 1)  
-  
-//@variable A persistent global variable for counting occurrences of a condition in cycles.   
-var int counter = 0  
-  
-//@function Attempts to increment and cyclically reset the `counter` variable based on a pseudorandom condition.  
-//          This function *does not* compile, because modifying global variables in function scopes is *not allowed*.  
-updateCounter() =>  
-    if math.random() < 0.5  
-        // Attempting to increment `counter` causes a compilation error.  
-        // The variable's value *cannot change* during the execution of an `updateCounter()` call.   
-        counter += 1  
-        if counter > cycleSizeInput  
-            // Reassigning the `counter` variable causes the same error.   
-            counter := 1  
-  
-updateCounter() // This call does not work.   
-  
-plot(counter, "Counter value")  
+'The "Star" indicator'  
 `
 A literal string can prefix some characters with the backslash character (`\`) to _change_ their meaning. For example, applying a backslash to a quotation mark or apostrophe adds that character directly into a literal string’s sequence instead of treating the character as the _end_ of the string:
 Pine Script®

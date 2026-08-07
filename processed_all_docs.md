@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260804_051323
+# processed_1_welcome_20260807_042417
 
-## 1_welcome_20260804_051323
+## 1_welcome_20260807_042417
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260804_051323
+# processed_2_first-steps_20260807_042417
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260804_051323
+# processed_3_first-indicator_20260807_042417
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -235,7 +235,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260804_051323
+# processed_4_next-steps_20260807_042417
 
 ## ​“indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to the broker emulator, which can then simulate their execution. Strategies display trade markers on the chart and simulated backtest results in a strategy report within the chart’s bottom panel.
@@ -294,7 +294,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260804_051323
+# processed_5_execution-model_20260807_042417
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1124,7 +1124,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260804_051323
+# processed_6_type-system_20260807_042417
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -1536,29 +1536,9 @@ Copied
 Quotation marks and apostrophes are functionally similar when used as the enclosing delimiters of literal strings. A string enclosed in quotation marks can contain any number of apostrophes. Likewise, a string enclosed in apostrophes can contain any number of quotation marks. For example:
 Pine Script®
 Copied
-`//@version=6  
-indicator("Cannot modify global variables in functions demo")  
+`"It's an example"  
   
-//@variable The number of conditions that occur before the counter value resets.  
-int cycleSizeInput = input.int(10, "Cycle size", 1)  
-  
-//@variable A persistent global variable for counting occurrences of a condition in cycles.   
-var int counter = 0  
-  
-//@function Attempts to increment and cyclically reset the `counter` variable based on a pseudorandom condition.  
-//          This function *does not* compile, because modifying global variables in function scopes is *not allowed*.  
-updateCounter() =>  
-    if math.random() < 0.5  
-        // Attempting to increment `counter` causes a compilation error.  
-        // The variable's value *cannot change* during the execution of an `updateCounter()` call.   
-        counter += 1  
-        if counter > cycleSizeInput  
-            // Reassigning the `counter` variable causes the same error.   
-            counter := 1  
-  
-updateCounter() // This call does not work.   
-  
-plot(counter, "Counter value")  
+'The "Star" indicator'  
 `
 A literal string can prefix some characters with the backslash character (`\`) to _change_ their meaning. For example, applying a backslash to a quotation mark or apostrophe adds that character directly into a literal string’s sequence instead of treating the character as the _end_ of the string:
 Pine Script®
@@ -2527,7 +2507,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260804_051323
+# processed_7_script-structure_20260807_042417
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2810,9 +2790,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260804_051323
+# processed_8_identifiers_20260807_042417
 
-## 8_identifiers_20260804_051323
+## 8_identifiers_20260807_042417
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2878,7 +2858,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_declaration-statements_20260804_051323
+# processed_9_declaration-statements_20260807_042417
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -3566,7 +3546,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260804_051323
+# processed_10_variable-declarations_20260807_042417
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4770,7 +4750,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260804_051323
+# processed_11_operators_20260807_042417
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -5026,7 +5006,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260804_051323
+# processed_12_conditional-structures_20260807_042417
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5411,7 +5391,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260804_051323
+# processed_13_loops_20260807_042417
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6381,7 +6361,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260804_051323
+# processed_14_built-ins_20260807_042417
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6495,7 +6475,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260804_051323
+# processed_15_user-defined-functions_20260807_042417
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8330,7 +8310,7 @@ Copied
 
 
 
-# processed_16_objects_20260804_051323
+# processed_16_objects_20260807_042417
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8368,7 +8348,7 @@ Copied
 Or the equivalent:
 Pine Script®
 Copied
-`foundPoint = pivotPoint.new(x = time, y = high)  
+`pivotHighArray = array.new<pivotPoint>()  
 `
 At this point, the `foundPoint` object’s `x` field will contain the value of the time built-in when it is created, `y` will contain the value of high and the `xloc` field will contain its default value of xloc.bar_time because no value was defined for it when creating the object.
 Object placeholders can also be created by declaring na object names using the following:
@@ -8637,7 +8617,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260804_051323
+# processed_17_enums_20260807_042417
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8955,7 +8935,7 @@ enum ta
 
 
 
-# processed_18_methods_20260804_051323
+# processed_18_methods_20260807_042417
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9603,7 +9583,7 @@ Copied
 
 
 
-# processed_19_arrays_20260804_051323
+# processed_19_arrays_20260807_042417
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -11510,7 +11490,7 @@ indicator("Deep copies demo")
 
 
 
-# processed_20_matrices_20260804_051323
+# processed_20_matrices_20260807_042417
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -14106,7 +14086,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260804_051323
+# processed_21_maps_20260807_042417
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -15152,7 +15132,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260804_051323
+# processed_22_overview_20260807_042417
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -15593,9 +15573,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260804_051323
+# processed_23_backgrounds_20260807_042417
 
-## 23_backgrounds_20260804_051323
+## 23_backgrounds_20260807_042417
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -15738,9 +15718,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260804_051323
+# processed_24_bar-coloring_20260807_042417
 
-## 24_bar-coloring_20260804_051323
+## 24_bar-coloring_20260807_042417
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -15815,7 +15795,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260804_051323
+# processed_25_bar-plotting_20260807_042417
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -15928,7 +15908,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260804_051323
+# processed_26_colors_20260807_042417
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -16313,7 +16293,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_27_fills_20260804_051323
+# processed_27_fills_20260807_042417
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -16527,7 +16507,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260804_051323
+# processed_28_levels_20260807_042417
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -16617,7 +16597,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260804_051323
+# processed_29_lines-and-boxes_20260807_042417
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -17827,7 +17807,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260804_051323
+# processed_30_plots_20260807_042417
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -18189,7 +18169,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260804_051323
+# processed_31_tables_20260807_042417
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -18408,7 +18388,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260804_051323
+# processed_32_text-and-shapes_20260807_042417
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -18957,7 +18937,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260804_051323
+# processed_33_alerts_20260807_042417
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -19312,7 +19292,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260804_051323
+# processed_34_bar-states_20260807_042417
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -19448,98 +19428,360 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_35_chart-information_20260804_051323
+# processed_35_chart-information_20260807_042417
 
 ## Introduction
-The way scripts can obtain information about the chart and symbol they are currently running on is through a subset of Pine Script®‘s built-in variables. The ones we cover here allow scripts to access information relating to:
-  * The chart’s prices and volume
-  * The chart’s symbol
+Scripts can retrieve multiple types of information about the current chart and its dataset by using a subset of built-in variables. The chart data that scripts can access using these variables includes the following:
+  * The available prices and volume
   * The chart’s timeframe
-  * The session (or time period) the symbol trades on
+  * The dataset’s session information
+      * The chart’s type and color
+
+
+The following sections on this page list the variables that can access chart information, along with examples demonstrating how to use them. To learn more about all the built-in variables available in Pine Script®, refer to the Built-ins page in this manual and the “Variables” section of our Reference Manual. 
+NoteSeveral variables described on this page behave differently in _data requests_. For most of these variables, if a script uses them in the `expression` arguments of `request.*()` calls, or if the script is an indicator that includes a `timeframe` argument in its declaration statement, they represent information from the _requested dataset_ rather than the current chart. For example, if a request.security() call includes `"NASDAQ:AAPL"` as its `symbol` argument, the value of the syminfo.prefix variable is `"NASDAQ"` inside that request’s context, regardless of the symbol used by the current chart. Likewise, the close value inside the request refers to the share price for NASDAQ:AAPL stock. See the Other timeframes and data page to learn more.
 
 ## Prices and volume
-The built-in variables for OHLCV values are:
+Most chart datasets include _OHLCV_ (open, high, low, close, and volume) values for each available bar. The chart displays the _final_ values for each _closed_ bar, and the _developing_ values for an _open realtime bar_. See the section The basics in the Execution model page to learn more about this behavior.
+The variables that store final or developing OHLCV data for the current bar are as follows:
           
 
-Other values are available through:
-      
+Pine Script also includes multiple variables that store values _derived_ from available OHLC data, including the following:
+        
 
-On historical bars, the values of the above variables do not vary during the bar because only OHLCV information is available on them. When running on historical bars, scripts execute on the bar’s close, when all the bar’s information is known and cannot change during the script’s execution on the bar.
-Realtime bars are another story altogether. When indicators (or strategies using `calc_on_every_tick = true`) run in realtime, the values of the above variables (except open) will vary between successive iterations of the script on the realtime bar, because they represent their **current** value at one point in time during the progress of the realtime bar. This may lead to one form of repainting. See the page on Pine Script’s execution model for more details.
-The [[]] history-referencing operator can be used to refer to past values of the built-in variables, e.g., `close[1]` refers to the value of close on the previous bar, relative to the particular bar the script is executing on.
+Note
+If a bar contains only a _single_ price rather than complete OHLC prices, each of these price-based variables stores that value. If no volume data is available for a bar, the value of the volume variable is na.
+  
 
-## Symbol information
-Built-in variables in the `syminfo` namespace provide scripts with information on the symbol of the chart the script is running on. This information changes every time a script user changes the chart’s symbol. The script then re-executes on all the chart’s bars using the new values of the built-in variables:
-                            
+Some chart types do not _display_ OHLC prices, but their datasets still _contain_ those prices. For example, a line chart displays only one price per bar. However, the variables that access bar prices still use the available OHLC values from the underlying dataset.
+  
 
-This script displays these built-in variables and their values for the current symbol in a table on the chart:
+On _non-standard_ charts, such as Heikin Ashi or Renko, variables that access price data store the chart’s _synthetic_ prices, not the instrument’s _actual_ prices. Therefore, logic that uses these variables can yield different results on these charts.
+On tick charts that use the “1T” timeframe, scripts can also use the bid and ask variables to access the current _bid and ask_ prices. The _bid_ is the _highest_ price that an active buyer is willing to pay for the instrument at its current value, and the _ask_ is the _lowest_ price that an active seller is willing to accept at the current value. On timeframes higher than “1T”, the value of these variables is na.
+All of these price and volume variables are of the “series float” qualified type, because they store floating-point values that can vary from bar to bar. Scripts can use the [`[]` history-referencing operator] to retrieve the past values of these variables from previous bars. For example, the expression `close[1]` retrieves the _previous bar’s_ closing price. Multiple built-in functions also access past values internally. For instance, the expression `ta.change(ohlc4, 20)` is equivalent to `ohlc4 - ohlc4[20]`; both expressions calculate the difference between the current ohlc4 value and the value from _20 bars back_.
+The following example uses the prices and volume of current and previous bars on the chart to calculate a condition for a dynamic background color. The script colors the chart’s background green only if the current values of the volume and close variables are greater than the previous values, and the current close value is greater than its 10-bar moving average. The script also plots the moving average for visual reference:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("`syminfo.*` built-ins demo", overlay = true)  
+indicator("Price and volume variables demo", overlay = true, behind_chart = false)  
   
-//@variable The `syminfo.*` built-ins, displayed in the left column of the table.  
-string txtLeft =  
-  "syminfo.basecurrency: "  + "\n" +  
-  "syminfo.currency: "      + "\n" +  
-  "syminfo.description: "   + "\n" +  
-  "syminfo.main_tickerid: " + "\n" +  
-  "syminfo.mincontract: "   + "\n" +  
-  "syminfo.mintick: "       + "\n" +  
-  "syminfo.pointvalue: "    + "\n" +  
-  "syminfo.prefix: "        + "\n" +  
-  "syminfo.root: "          + "\n" +  
-  "syminfo.session: "       + "\n" +  
-  "syminfo.ticker: "        + "\n" +  
-  "syminfo.tickerid: "      + "\n" +  
-  "syminfo.timezone: "      + "\n" +  
-  "syminfo.type: "  
+//@variable The 10-bar moving average of the `close` series.  
+float ma = ta.sma(close, 10)  
   
-//@variable The values of the `syminfo.*` built-ins, displayed in the right column of the table.  
-string txtRight =  
-  syminfo.basecurrency              + "\n" +  
-  syminfo.currency                  + "\n" +  
-  syminfo.description               + "\n" +  
-  syminfo.main_tickerid             + "\n" +  
-  str.tostring(syminfo.mincontract) + "\n" +  
-  str.tostring(syminfo.mintick)     + "\n" +  
-  str.tostring(syminfo.pointvalue)  + "\n" +  
-  syminfo.prefix                    + "\n" +  
-  syminfo.root                      + "\n" +  
-  syminfo.session                   + "\n" +  
-  syminfo.ticker                    + "\n" +  
-  syminfo.tickerid                  + "\n" +  
-  syminfo.timezone                  + "\n" +  
-  syminfo.type  
+//@variable Is `true` if the current volume is greater than the previous bar's volume, and `false` otherwise.   
+bool risingVolume = volume > volume[1]  
+//@variable Is `true` if the current price is greater than the closing price of the previous bar, and `false` otherwise.   
+bool risingPrice = close > close[1]  
+//@variable Is `true` if the current price is above the current `ma` value, and `false` otherwise.   
+bool closeAboveMA = close > ma  
   
-if barstate.islast  
-    var table t = table.new(position.middle_right, 2, 1)  
-    table.cell(t, 0, 0, txtLeft, bgcolor = color.yellow, text_halign = text.align_right)  
-    table.cell(t, 1, 0, txtRight, bgcolor = color.yellow, text_halign = text.align_left)  
+// Plot the `ma` series on the chart.   
+plot(ma, "10-bar MA", linewidth = 3)  
+// Highlight the background in green when all three conditions are true.  
+bgcolor(risingVolume and risingPrice and closeAboveMA ? #4caf5080 : na, title = "Condition highlight")  
 `
 
 ## Chart timeframe
-A script can obtain information on the type of timeframe used on the chart using these built-ins, which all return a “simple bool” result:
-              
+Scripts can retrieve the _timeframe_ of the current chart by using the timeframe.period or timeframe.main_period variable. Both variables hold a “simple string” value representing the analyzed timeframe:
+  * The value of the timeframe.period variable represents the timeframe of a specific context. If used outside the `expression` argument of a `request.*()` call, the value represents the _chart’s timeframe_ , or the script’s _main timeframe_ if the script is an indicator whose declaration statement includes a `timeframe` argument. When used in the `expression` argument of a `request.*()` call, the value represents the timeframe of the _requested dataset_.
+  * The value of the timeframe.main_period variable _always_ represents the chart’s timeframe or the script’s main timeframe, even if the script uses it inside a `request.*()` call. This behavior is often useful for nested requests that require information from the chart’s timeframe in their logic.
 
-Additional built-ins return more specific timeframe information:
-      
 
-See the page on Timeframes for more information.
+The timeframe strings stored by these variables contain a number representing a _quantity (multiplier)_ followed by a single letter representing the _time unit_. For all intraday timeframes that Pine expresses in _minutes_ , the timeframe string contains a multiplier _without_ a unit postfix. For example, `"1D"` represents the one-day timeframe, `"5"` represents the five-minute timeframe, `"60"` represents the one-hour (60-minute) timeframe, and `"3M"` represents the three-month timeframe. See the Timeframe string specifications section of the Timeframes page to learn more.
+Multiple built-in functions feature a `timeframe` parameter that accepts a valid timeframe string. Scripts can pass the timeframe.period or timeframe.main_period variable to this parameter to use the chart’s timeframe in the calculations.
+For example, the following script uses the timeframe.period variable in calls to the `time()` and `time_close()` functions to retrieve the UNIX timestamps of the current bar’s opening time and the previous bar’s closing time, then measures the difference between the two timestamps to identify time gaps in the chart’s bars. It also uses the variable in a call to timeframe.in_seconds() to retrieve the typical number of seconds represented by the timeframe, then uses the result to express the time difference as an approximate number of bars. Each time that the script detects a gap, it displays formatted text containing the gap’s size in minutes and bars, the timeframe.period value, and the number of bars elapsed since the previous gap in a label at the current bar’s high:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`timeframe.period` demo", overlay = true, behind_chart = false)  
+  
+//@variable The previous bar's closing UNIX timestamp.  
+int prevCloseTime = time_close(timeframe = timeframe.period, timeframe_bars_back = 1)  
+//@variable The current bar's opening UNIX timestamp.  
+int currOpenTime = time(timeframe = timeframe.period)  
+  
+//@variable The number of seconds elapsed between the `prevCloseTime` and `currOpenTime` timestamps.  
+int timeDiff = (currOpenTime - prevCloseTime) / 1000  
+//@variable The approximate span of the time difference in bars.  
+int gapBarLength = int(timeDiff / timeframe.in_seconds(timeframe.period))  
+//@variable Is `true` if the difference is greater than zero.  
+bool hasGap = timeDiff > 0  
+//@variable The number of bars since the `hasGap` value was last `true`.   
+int barsSinceLastGap = ta.barssince(hasGap)  
+  
+// If a time gap occurs, display the gap in minutes, the current timeframe, and the bars since the previous gap  
+// in a label at the current bar's high.  
+if hasGap  
+    label.new(  
+        bar_index, high,   
+        text = str.format(  
+            "{0}-minute gap (~{1} bars) on ''{2}'' timeframe\nBars since previous gap: {3}",   
+            timeDiff / 60, gapBarLength, timeframe.period, barsSinceLastGap[1] + 1  
+        )  
+    )  
+`
+Note that:
+  * Programmers can also use an _empty string_ (`""`) as a `timeframe` argument to specify the same timeframe as timeframe.period. For instance, our example script yields the same results if we use `""` instead of the variable in the time(), time_close(), and timeframe.in_seconds() calls.
+
+
+Scripts can use the timeframe.multiplier variable to retrieve a “simple int” value representing the _multiplier_ of the timeframe referenced by timeframe.period. For example, if the timeframe is “2D”, the timeframe.multiplier value is `2`. If the timeframe is “30S”, the variable’s value is `30`.
+The following `timeframe.*` variables store “simple bool” values to indicate the _unit_ of the timeframe referenced by timeframe.period:
+                
+
+The example below uses these variables to construct a custom representation of the chart’s timeframe. On the first bar, the script uses multiple `timeframe.is*` variables in a switch statement to retrieve a string representing the chart timeframe’s unit, then creates a formatted string using the result and the value of timeframe.multiplier. It displays the final text in a single-cell table in the chart’s top-right corner:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Timeframe multiplier and unit variables demo", overlay = true, behind_chart = false)  
+  
+//@variable References a single-cell `table` object that displays the chart's timeframe in the top-right corner.  
+var table displayTable = table.new(position.top_right, 1, 1, color.blue)  
+  
+if barstate.isfirst  
+    //@variable A string that describes the unit of the chart's timeframe.  
+    string unitsStr = switch  
+        timeframe.isticks   => "tick"  
+        timeframe.isseconds => "second"  
+        timeframe.isminutes => "minute"  
+        timeframe.isdaily   => "day"  
+        timeframe.isweekly  => "week"  
+        => "month"  
+    //@variable A formatted string that contains the timeframe's multiplier and unit descriptor.  
+    string displayStr = str.format(  
+        "Chart timeframe: {0,number,#} {1}{2}",   
+        timeframe.multiplier, unitsStr, timeframe.multiplier > 1 ? "s" : ""  
+    )  
+    // Initialize the table's cell to display the text from the `displayStr` value.   
+    displayTable.cell(0, 0, displayStr, text_color = color.white, text_size = 24)  
+`
+Refer to the Timeframes page to learn more about the `timeframe.*` built-ins and how to use them.
 
 ## Session information
-Session information is available in different forms:
-  * The syminfo.session built-in variable returns a value that is either session.regular or session.extended. It reflects the session setting on the chart for that symbol. If the “Chart settings/Symbol/Session” field is set to “Extended”, it will only return “extended” if the symbol and the user’s feed allow for extended sessions. It is used when a session type is expected, for example as the argument for the `session` parameter in ticker.new().
-  
+Pine Script includes multiple built-in variables that can retrieve information about an intraday dataset’s _session_ , which refers to the days and the times of day in which trading data is available. These variables represent session information for the current chart’s dataset, or for a requested dataset if the script uses them in the `expression` argument of a `request.*()` function call.
+Scripts can access the named session for the current chart’s dataset by using the syminfo.session variable. The variable holds a “simple string” value representing the session’s name. In most cases, the string matches the value of either of the following `session.*` constants by default:
+    
 
+The syminfo.session variable can also hold _other_ unique strings for specific subsessions defined by the exchange or data provider. For instance, the value is `"us_regular"` on a CME futures chart that uses the RTH session, and `"24h"` on an equities chart that includes _overnight (24-hour)_ sessions. Refer to the Retrieving named sessions section of the Sessions page to learn more about named session strings.
+Programmers can use the string from this variable to create session-specific logic in their scripts, or pass the string to the `session` parameter of the ticker.new() or ticker.modify() functions to create ticker identifiers for requesting data using the same session as the chart. See the Custom contexts section of the Other timeframes and data page for more information about these `ticker.*()` functions.
+Additional variables in the `session` namespace hold “series bool” values that indicate the current market state or track the first and last bars in named sessions:
+              
+
+The following example demonstrates the behavior of these variables. The script below calculates and plots the total volume for each subsession on an intraday chart that includes extended or overnight sessions. The script declares four persistent variables to store the total volume for regular, pre-market, post-market, and overnight hours. Then, inside the if structure, it uses session.ismarket, session.ispremarket, and session.ispostmarket as conditions for resetting or incrementing the value of each variable based on the current session state. The script also uses one of the `session.isfirstbar*` or `session.islastbar*` variables, depending on the selected inputs, as a condition to color the background of specific session bars. Additionally, the script checks the value of the syminfo.session variable to confirm that these calculations are compatible with the chart. It raises a custom _runtime error_ if the value is not `"extended"` or `"24h"`, indicating that the chart is day-based or does not use the “Extended” or “24 hour” session setting:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`syminfo.session` and `session.*` demo", format = format.volume)  
+  
+// Create inputs for highlighting the first or last bar in a given session type.  
+string firstLastInput  = input.string("First", "Highlight", ["First", "Last"], inline = "0")  
+string regularExtendInput = input.string(  
+    "Regular Session", "Bar In ", ["Regular Session", "Extended/Overnight Hours"], inline = "0"  
+)  
+  
+// Raise an error if the current chart does not use an "Extended" or "24 hour" session.  
+if not (syminfo.session == session.extended or syminfo.session == "24h")  
+    runtime.error("Open an intraday chart with an 'Extended' or '24 hour' session to use this script.")  
+  
+// Declare persistent variables to store the total volume for regular, pre-market, post-market, and overnight hours.  
+var float regularTotal    = 0.0  
+var float premarketTotal  = 0.0  
+var float postmarketTotal = 0.0  
+var float overnightTotal  = 0.0  
+  
+// For each session, accumulate the current session's total and reset the previous session's total to 0.  
+if session.ismarket  
+    regularTotal += volume  
+    premarketTotal := 0.0  
+else if session.ispremarket  
+    premarketTotal += volume  
+    postmarketTotal := 0.0  
+    overnightTotal := 0.0  
+else if session.ispostmarket  
+    postmarketTotal += volume  
+    regularTotal := 0.0  
+else  
+    overnightTotal += volume  
+    postmarketTotal := 0.0  
+  
+//@variable Is `true` for the first or last bar in the specified session type, and `false` for all others.   
+bool highlightBar = if firstLastInput == "First"  
+    regularExtendInput == "Regular Session" ? session.isfirstbar_regular : session.isfirstbar  
+else  
+    regularExtendInput == "Regular Session" ? session.islastbar_regular : session.islastbar  
+  
+// Plot the total volume for each session.   
+plot(regularTotal    == 0 ? na : regularTotal,    "Regular total volume",     #ff623b, style = plot.style_areabr)  
+plot(premarketTotal  == 0 ? na : premarketTotal,  "Pre-market total volume",  #ff9800, style = plot.style_areabr)  
+plot(postmarketTotal == 0 ? na : postmarketTotal, "Post-market total volume", #2962ff, style = plot.style_areabr)  
+plot(overnightTotal  == 0 ? na : overnightTotal,  "Overnight total volume",   #d500f9, style = plot.style_areabr)  
+  
+// Highlight the background of the specified first/last bar in gray.  
+bgcolor(highlightBar ? #787b8680 : na, title = "First/Last bar highlight")  
+`
+Refer to the Sessions page to learn more about market sessions and the session-related built-ins.
+
+## Symbol information
+The built-in variables in the `syminfo` namespace hold essential information about the chart’s symbol and the underlying instrument. Most of these variables, excluding syminfo.main_tickerid, can also represent information relating to a requested dataset if a script uses them as the `expression` argument in a `request.*()` function call. Most `syminfo.*` variables have the “simple” type qualifier, because their values do not change after the first bar. However, the variables relating to analyst recommendations and targets have the “series” qualifier, because they store dynamic data that can change over time.
+The available `syminfo.*` variables include the following:
+                                                                                
+
+The example script below displays a table containing a simple summary of symbol and instrument information from the chart. On the first bar, the script creates two “string” arrays using the array.from function. The first array contains titles for the table’s first column. The second array contains corresponding strings from multiple `syminfo.*` variables for the second column. The script iterates through the arrays and populates the cells on each table row within a for loop:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`syminfo.*` variables demo", overlay = true, behind_chart = false)  
+  
+if barstate.isfirst  
+    //@variable References a `table` object that displays symbol and instrument information on the chart.  
+    table displayTable = table.new(position.middle_right, 2, 9, border_color = chart.fg_color, border_width = 1)  
+    //@variable References an array of "string" titles for the table's first column.  
+    array<string> titles = array.from(  
+        "Ticker ID", "Symbol", "Prefix", "Type", "Description", "ISIN",   
+        "Currency", "Tick size", "Point value"  
+    )  
+    //@variable References an array of "string" representations of `syminfo.*` values for the second column.  
+    array<string> values = array.from(  
+        syminfo.tickerid, syminfo.ticker, syminfo.prefix, syminfo.type, syminfo.description, syminfo.isin,   
+        syminfo.currency, str.tostring(syminfo.mintick), str.tostring(syminfo.pointvalue)  
+    )  
+    // Loop through the arrays and populate the rows with the corresponding `titles` and `values` elements.   
+    for i = 0 to 8  
+        displayTable.cell(0, i, titles.get(i), text_color = chart.fg_color)  
+        displayTable.cell(1, i, values.get(i), text_color = chart.fg_color)  
+`
+Note that:
+  * The script initializes and populates the table only on the _first_ bar because the values of the `syminfo.*` variables used in the code do not change from bar to bar. After the script creates the table and sets its cells on the first bar, the table’s output persists on the right side of the chart.
+  * The script uses the chart.fg_color variable to set the color of the table’s borders and text. The variable’s value changes based on the color of the chart’s _background_. See the Chart type and color section below for more information.
+
+## Time series information
+Two built-in variables store information about the _bar indices_ in the time series for the current chart, or for a requested dataset if used in the `expression` argument of a `request.*()` function call:
+    
+
+Several variables in the `barstate` namespace hold “series bool” values to indicate the _states_ of each bar in the chart’s dataset or a requested dataset. These variables include the following:
+              
+
+Refer to the Bar states page to learn more about these variables and how they work. For detailed information about how scripts execute across historical and realtime bars, and how they manage data in the time series based on bar states, refer to the Execution model page.
+The following example calculates a volume-weighted average price (VWAP) over periods spanning a specified number of bars. The script resets the VWAP calculation on each bar whose bar_index value is divisible by the specified period. For instance, with the default input value of 100, the calculation resets on bar 0, 100, 200, and so on. The script plots the VWAP series and highlights the background of each bar on which the reset occurs. Additionally, the script uses the bar_index, last_bar_index, and barstate.ishistory variables to calculate the total number of historical bars, realtime bars, and completed periods, then displays the results in a single-cell table on the last bar:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`*bar_index` and `barstate.*` demo", overlay = true, behind_chart = false)  
+  
+//@variable The total number of bars in each VWAP calculation.  
+int periodInput = input.int(100, "VWAP period", 2)  
+  
+//@variable Is `true` once every `periodInput` bars, starting from bar 0, and `false` otherwise.   
+bool resetVWAP = bar_index % periodInput == 0  
+//@variable The VWAP for the current period. The calculation resets each time the specified number of bars elapses.  
+float vwap = ta.vwap(hlc3, resetVWAP)  
+  
+// This `if` structure's scope executes on the last bar.  
+// The condition `bar_index == last_bar_index` is equivalent to `barstate.islast`.  
+if bar_index == last_bar_index  
+    //@variable References a single-cell table that displays bar and period information in the top-right corner.  
+    var table infoTable = table.new(position.top_right, 1, 1)  
+    //@variable The initial total bars if the last bar is historical, and one less than the total otherwise.  
+    var int historicalBars = barstate.ishistory ? bar_index + 1 : bar_index  
+    //@variable A formatted string containing bar and VWAP period information.  
+    string displayText = str.format(  
+        "Historical bars: {0}\nRealtime bars: {1}\nVWAP period: {2} bars\nComplete periods on chart: {3}",   
+        historicalBars, bar_index + 1 - historicalBars, periodInput, int(bar_index / periodInput)  
+    )  
+    // Display the text from the `displayText` string in the table's cell.  
+    infoTable.cell(0, 0, displayText, text_color = #000000, bgcolor = #2196f3)  
+  
+// Plot the `vwap` series and highlight the background on each calculation reset.  
+plot(vwap, "Periodic VWAP", linewidth = 3)  
+bgcolor(resetVWAP ? #ff98004d : na, title = "VWAP reset highlight")  
+`
+Note that:
+  * On the first bar where the bar_index and last_bar_index values are equal, the script checks the value of the barstate.ishistory variable to determine whether that bar is historical. If the value is `true`, the total number of historical bars is one greater than the bar index on that bar. Otherwise, the number of historical bars equals the bar index. As new bars become available, the script counts the number of realtime bars by subtracting the historical total from the value of `bar_index + 1`.
+  * The script counts the total number of completed VWAP periods by dividing the latest bar_index value by the input period, then rounding the result down to the nearest integer.
+
+
+Pine Script also features several built-in variables that access _time_ information for the bars on the chart or a requested dataset:
+  * The time and time_close variables hold UNIX timestamps representing the current bar’s opening and closing times, respectively.
+  * The last_bar_time variable stores a UNIX timestamp representing the opening time of the last available bar.
+  * The time_tradingday variable holds a UNIX timestamp representing the starting time of the trading day to which the current bar belongs.
+  * The timenow variable stores the UNIX timestamp of the script’s latest execution.
+  * The year, month, weekofyear, dayofmonth, dayofweek, hour, minute, and second variables store calendar-based values derived from the current bar’s opening time. The values are expressed in the exchange time zone.
+  * The chart.left_visible_bar_time and chart.right_visible_bar_time variables store UNIX timestamps representing the opening times of the leftmost and rightmost visible chart bars.
+
+
+Refer to the Time page for detailed information about these variables and examples of how they work.
+
+## Chart type and color
+Multiple built-in variables in the `chart` namespace hold “simple bool” values to indicate the type of chart on which the script runs. These variables can also indicate a requested chart dataset’s type when used in the `expression` argument of a `request.*()` function call:
+              
+
+These `chart.is_*` variables are typically useful when a script’s logic must respond differently on non-standard charts. For example, the following script demonstrates a simple strategy that places market orders to enter trades based on the crossing of two moving averages. On a non-standard chart, these orders can generate _misleading_ results, because Pine’s broker emulator fills them at the chart’s _calculated_ prices rather than using the instrument’s actual prices. To prevent such results, the script allows orders only on standard chart types by using chart.is_standard in the conditions that control the strategy.entry() commands. As shown below, if the script runs on a non-standard chart, it does not generate any orders or display performance data in the strategy report:
+!image
+Pine Script®
+Copied
+`//@version=6  
+strategy("`chart.is_standard` demo", overlay = true, behind_chart = false)  
+  
+// Calculate two moving averages for the cross signal.  
+float ma1 = ta.sma(close, 10)  
+float ma2 = ta.sma(close, 20)  
+  
+if chart.is_standard  
+    // This logic executes only on standard charts, preventing misleading trade data on non-standard charts.   
+  
+    // Close any short position and open a new long position if the first MA crosses over the second MA.  
+    if ta.crossover(ma1, ma2)  
+        strategy.entry("Buy", strategy.long)  
+    // Close any long position and open a new short position if the first MA crosses under the second MA.  
+    if ta.crossunder(ma1, ma2)  
+        strategy.entry("Sell", strategy.short)  
+  
+// Plot the moving averages on the chart.  
+plot(ma1, "Fast MA", color.orange, 2)  
+plot(ma2, "Slow MA", color.blue, 3)  
+  
+// Color the background translucent red if the chart is not a standard type.  
+bgcolor(not chart.is_standard ? color.new(color.red, 60) : na, title = "Non-standard chart highlight")  
+`
+Note that:
+  * An alternative way to avoid misleading trade prices on _Heikin Ashi_ charts is to include `fill_orders_on_standard_ohlc = true` in the strategy() declaration statement. This argument configures the broker emulator to fill orders using _standard_ chart prices by default. See the Strategies page to learn more about strategy scripts.
+
+
+The `chart` namespace also features the following variables that store “input color” values based on the background color defined in the chart’s settings:
+    
+
+The following script creates a single-cell table to indicate whether the chart’s background is light or dark, based on the value of chart.fg_color. If the value is `#0f0f0f`, the table’s text states that the background is considered light. Otherwise, it states that the background is considered dark. The script colors the table’s background using the foreground color, and it sets the text color using the value of chart.bg_color. The script also sets the table’s frame color using the middle value of a gradient from the background color to the foreground color:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("`chart.bg_color` and `chart.fg_color` demo")  
+  
+if barstate.isfirst  
+    //@variable The color from the midpoint of a gradient using the chart's background and foreground colors.  
+    color middleColor = color.from_gradient(0.5, 0, 1, chart.bg_color, chart.fg_color)  
+    //@variable References a table with `chart.fg_color` as the background color and `middleColor` as the frame color.  
+    table displayTable = table.new(position.middle_center, 1, 1, chart.fg_color, middleColor, 2)  
+  
+    //@variable Is `true` if the chart's foreground color is `#0f0f0f`, indicating a light background.  
+    bool isLight = chart.fg_color == #0f0f0f  
+    //@variable A string indicating whether the chart's background is considered light or dark.  
+    string displayText = "The chart's background is considered " + (isLight ? "light." : "dark.")  
+    // Initialize the table's cell to display the string's text colored using the chart's background color.   
+    displayTable.cell(0, 0, displayText, text_color = chart.bg_color, text_size = 30)  
+`
  Previous Bar states    Next Inputs
 
 ---
 
 
 
-# processed_36_inputs_20260804_051323
+# processed_36_inputs_20260807_042417
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -20170,7 +20412,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260804_051323
+# processed_37_libraries_20260807_042417
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -20552,7 +20794,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260804_051323
+# processed_38_non-standard-charts-data_20260807_042417
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -20662,7 +20904,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_39_other-timeframes-and-data_20260804_051323
+# processed_39_other-timeframes-and-data_20260807_042417
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -23842,7 +24084,7 @@ library("DynamicRequests")
 
 
 
-# processed_40_repainting_20260804_051323
+# processed_40_repainting_20260807_042417
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -24110,7 +24352,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260804_051323
+# processed_41_sessions_20260807_042417
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -24462,10 +24704,10 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260804_051323
+# processed_42_strategies_20260807_042417
 
 ## Introduction
-Pine Script® Strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
+Pine Script® strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
 When a script uses the strategy() function as its declaration statement, it gains access to the `strategy.*` namespace, which features numerous functions and variables for simulating orders and retrieving essential strategy information. Additionally, the script generates a detailed strategy report in a dedicated tab below the chart.
 
 ## A simple strategy example
@@ -24501,11 +24743,11 @@ Note that:
 ## Applying a strategy to a chart
 To test a strategy, add it to the chart. Select a built-in, published, or personal strategy from the “Indicators, metrics, and strategies” menu, or write a custom strategy in the Pine Editor and select the “Add to chart” button from the editor’s options:
 !image
-The script plots trade markers on the bars in the main chart pane and displays detailed _strategy report_ within a separate tab in the chart’s bottom panel:
+The script plots trade markers on the bars in the main chart pane and displays a detailed _strategy report_ within a separate tab in the chart’s bottom panel:
 !image
 See the Strategy report section below to learn how to read and interpret the performance data displayed by this tab.
 Notice
-The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, line break, Kagi, point & figure, and range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not typically represent real-world market prices. Consequently, running a strategy on a non-standard chart typically produces **unrealistic** results.
+The performance results from a strategy applied to _non-standard charts_ (Heikin Ashi, Renko, line break, Kagi, point & figure, and range) **do not** reflect actual market conditions by default. The strategy simulates trades using the chart’s **synthetic** prices, which do not represent real-world market prices. Consequently, running a strategy on a non-standard chart typically produces **unrealistic** results.
   
 
 Therefore, we strongly recommend using **standard** chart types when testing strategies. Alternatively, on Heikin Ashi charts, users can simulate order fills using actual prices by selecting the “Standard bars” option from the “Heikin Ashi mode” input in the script’s “Settings/Properties” tab. Programmers can specify that a strategy uses this behavior by default by including `fill_orders_on_standard_ohlc = true` in the strategy() declaration statement.
@@ -24647,9 +24889,7 @@ The following image labels the OHLC values of a few historical bars using number
 ### Adjusting historical bar detail
 Users with Premium and Ultimate plans can override the broker emulator’s chart-based assumptions and increase the level of intrabar detail on historical bars, allowing for more precise order fills in the strategy’s backtest. To enable high historical bar detail, select the “High” option from the strategy’s Bar detalization settings, which are available in the “Settings/Properties” tab and at the top of the strategy report below the chart. Programmers can also configure a strategy to use high historical detail by default by including `use_bar_magnifier = true` in the strategy() declaration statement.
 If a strategy enables high historical detail, the broker emulator retrieves open, high, low, and close prices from the bars on a suitable _lower timeframe_ , when possible, to increase the number of ticks available for estimating price action and filling orders on historical bars. This setting also allows the script to perform multiple _additional executions_ on each historical bar, depending on the selected Script execution settings. See the Altering calculation behavior section below to learn more.
-The following example illustrates how changing the level of historical bar detail can enhance the behavior of limit orders. The script below creates entry and exit limit orders, named “Buy” and “Exit”, on the first bar whose opening time equals or exceeds an input timestamp. For visual reference, the script highlights the chart’s background in orange when it places the orders, and it draws two horizontal lines at the order prices. The strategy() statement does not include `use_bar_magnifier = true`. Therefore, the broker emulator uses only chart data to determine when it can fill both orders by default.
-When we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
-!image
+The following example illustrates how changing the level of historical bar detail can enhance the behavior of limit orders. The script below creates entry and exit limit orders, named “Buy” and “Exit”, on the first bar whose opening time equals or exceeds an input timestamp. For visual reference, the script highlights the chart’s background in orange when it places the orders, and it draws two horizontal lines at the order prices. The strategy() statement does not include `use_bar_magnifier = true`. Therefore, the broker emulator uses only chart data to determine when it can fill both orders by default:
 Pine Script®
 Copied
 `//@version=6  
@@ -24690,7 +24930,9 @@ if ta.change(strategy.closedtrades) > 0
 // Highlight the chart's background on the order bar.   
 bgcolor(orderColor)  
 `
-If we include `use_bar_magnifier = true` in the strategy() statement, the strategy enables high historical detail by default. When this setting is active on a weekly chart, the broker emulator retrieves open, high, low, and close prices from the _daily timeframe_. The bars on the daily timeframe show that, contrary to the broker emulator’s default assumption, the market price _did_ move to the “Exit” order’s price after opening the trade in the same week. Therefore, the emulator can fill both orders on the _same weekly bar_ in this case. Below, we show the strategy’s result on the weekly chart after enabling high historical detail, alongside the bars on the daily chart with the entry and exit points annotated:
+If we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
+!image
+If we include `use_bar_magnifier = true` in the strategy() statement, the strategy enables high historical detail by default. When this setting is active on a weekly chart, the broker emulator retrieves open, high, low, and close prices from the _daily timeframe_. The bars on the daily timeframe show that, contrary to the broker emulator’s default assumption, the market price _did_ move to the “Exit” order’s price after triggering the “Entry” order in the same week. Therefore, the emulator can fill both orders on the _same weekly bar_ in this case. Below, we show the strategy’s result on the weekly chart after enabling high historical detail, alongside the bars on the daily chart with the entry and exit points annotated:
 !image
 Pine Script®
 Copied
@@ -25067,26 +25309,34 @@ The following example creates exit bracket (take-profit and stop-loss) orders wi
 Pine Script®
 Copied
 `//@version=6  
-strategy("Multiple limits with reduction demo", overlay = true, behind_chart = false)  
+strategy("Take-profit and stop-loss demo", overlay = true)  
   
-var float stop   = na  
-var float limit1 = na  
-var float limit2 = na  
+//@variable Is `true` on every 100th bar, and `false` otherwise.  
+bool buyCondition = bar_index % 100 == 0  
   
-bool longCondition = ta.crossover(ta.sma(close, 5), ta.sma(close, 9))  
-if longCondition and strategy.position_size == 0  
-    stop   := close * 0.99  
-    limit1 := close * 1.01  
-    limit2 := close * 1.02  
-    strategy.entry("Long",  strategy.long, 6)  
-    strategy.order("Stop",  strategy.short, stop = stop, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
-    strategy.order("Limit 1", strategy.short, limit = limit1, qty = 3, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
-    strategy.order("Limit 2", strategy.short, limit = limit2, qty = 6, oca_name = "Bracket", oca_type = strategy.oca.reduce)  
+//@variable Stores the current take-profit order price.   
+var float takeProfit = na  
+//@variable Stores the current stop-loss order price.  
+var float stopLoss = na  
   
-bool showPlot = strategy.position_size != 0  
-plot(showPlot ? stop   : na, "Stop",    color.red,   style = plot.style_linebr)  
-plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.style_linebr)  
-plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
+if buyCondition  
+    // Update the `takeProfit` and `stopLoss` values.  
+    if strategy.opentrades == 0  
+        takeProfit := close * 1.01  
+        stopLoss   := close * 0.99  
+    // Place a long market order.   
+    strategy.entry("buy", strategy.long)  
+    // Place a take-profit order at the `takeProfit` value and a stop-loss order at the `stopLoss` value.  
+    strategy.exit("exit", "buy", limit = takeProfit, stop = stopLoss)  
+  
+// Set the `takeProfit` and `stopLoss` values to `na` when the position closes.  
+if ta.change(strategy.closedtrades) > 0  
+    takeProfit := na  
+    stopLoss   := na  
+  
+// Plot the `takeProfit` and `stopLoss` series to visualize the exit levels.  
+plot(takeProfit, "TP", color.green, style = plot.style_circles)  
+plot(stopLoss,   "SL", color.red,   style = plot.style_circles)  
 `
 Note that:
   * We did not specify a `qty` or `qty_percent` argument in the strategy.exit() call, meaning it creates orders to exit 100% of the “buy” order’s size.
@@ -26732,7 +26982,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260804_051323
+# processed_43_strings_20260807_042417
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -28445,7 +28695,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260804_051323
+# processed_44_time_20260807_042417
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -29975,7 +30225,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260804_051323
+# processed_45_timeframes_20260807_042417
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -30023,7 +30273,7 @@ Note that:
 
 
 
-# processed_46_style-guide_20260804_051323
+# processed_46_style-guide_20260807_042417
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -30401,7 +30651,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260804_051323
+# processed_47_debugging_20260807_042417
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -32135,7 +32385,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260804_051323
+# processed_48_profiling-and-optimization_20260807_042417
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -33763,7 +34013,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260804_051323
+# processed_49_publishing_20260807_042417
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -33997,7 +34247,7 @@ For examples of compliant script descriptions, refer to the publications feature
 
 
 
-# processed_50_limitations_20260804_051323
+# processed_50_limitations_20260807_042417
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -34365,7 +34615,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260804_051323
+# processed_51_overview_20260807_042417
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -34392,7 +34642,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260804_051323
+# processed_52_CE10101_20260807_042417
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -34485,7 +34735,7 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260804_051323
+# processed_53_CW10003_20260807_042417
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -34624,7 +34874,7 @@ If the use of a function call in a local block does not cause a compiler warning
 
 
 
-# processed_54_RE10139_20260804_051323
+# processed_54_RE10139_20260807_042417
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -34875,7 +35125,7 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_55_RE10143_20260804_051323
+# processed_55_RE10143_20260807_042417
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -34981,7 +35231,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260804_051323
+# processed_56_general_20260807_042417
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -35183,7 +35433,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260804_051323
+# processed_57_alerts_20260807_042417
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -35743,7 +35993,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260804_051323
+# processed_58_data-structures_20260807_042417
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -36625,7 +36875,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260804_051323
+# processed_59_functions_20260807_042417
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -36885,7 +37135,7 @@ Copied
 
 
 
-# processed_60_indicators_20260804_051323
+# processed_60_indicators_20260807_042417
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -36993,7 +37243,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260804_051323
+# processed_61_other-data-and-timeframes_20260807_042417
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -37242,7 +37492,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260804_051323
+# processed_62_programming_20260807_042417
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -37379,7 +37629,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260804_051323
+# processed_63_strategies_20260807_042417
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -38484,7 +38734,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260804_051323
+# processed_64_strings-and-formatting_20260807_042417
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -38704,7 +38954,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260804_051323
+# processed_65_techniques_20260807_042417
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -39550,7 +39800,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260804_051323
+# processed_66_times-dates-and-sessions_20260807_042417
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in variable, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -40355,7 +40605,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260804_051323
+# processed_67_variables-and-operators_20260807_042417
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -40576,7 +40826,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260804_051323
+# processed_68_visuals_20260807_042417
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -41148,27 +41398,14 @@ The `*.all` arrays are _read-only_. Scripts cannot change the arrays directly by
 Pine Script®
 Copied
 `//@version=6  
-indicator("Limit drawings using arrays", overlay = true)  
-int drawingQtyInput      = input.int(5, "Quantity of drawings to show", minval = 0, maxval = 50)  
-int drawingIntervalInput = input.int(4, "Draw every n bars",            minval = 1, maxval = 10)  
+indicator("Limit labels using *.all", overlay = true)  
   
-// Create a label array sized according to the user-selected quantity.  
-var array<label> labelsArray = array.new<label>(drawingQtyInput)  
-if bar_index % drawingIntervalInput == 0  // Every n bars  
-    // Draw a label and add it to the *end* of the array  
-    labelsArray.push(label.new(bar_index, high, str.tostring(high), style = label.style_label_down,  
-      color = color.new(chart.fg_color, 30), textcolor = chart.bg_color))  
-    // Remove the oldest label and delete it.  
-    label.delete(labelsArray.shift())  
+const int LABEL_LIMIT = 10  
   
-// Create an *empty* line array.  
-var array<line> linesArray = array.new<line>()  
-// Every n bars (offset -1 from the labels), draw a vertical line and add it to the *end* of the array.  
-if (bar_index + 1) % drawingIntervalInput == 0    
-    linesArray.push(line.new(bar_index, high, bar_index, low, color = chart.fg_color, extend = extend.both, width = 3))  
-// If the array is larger than the number of drawings to display, remove the oldest line and delete it.  
-if linesArray.size() > drawingQtyInput  
-    line.delete(linesArray.shift())  
+label.new(bar_index, high, str.tostring(high))  
+  
+if label.all.size() > LABEL_LIMIT  
+    label.all.first().delete()  
 `
 Note that:
   * The items in the array are in the order that they were drawn, so if a script displays drawings in a different order than it creates them, using a `*.all` array gives unpredictable results.
@@ -41403,7 +41640,7 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260804_051323
+# processed_69_release-notes_20260807_042417
 
 ## 2026
 ### July 2026
@@ -42932,7 +43169,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260804_051323
+# processed_70_overview_20260807_042417
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -42944,7 +43181,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260804_051323
+# processed_71_to-pine-version-6_20260807_042417
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -43934,7 +44171,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260804_051323
+# processed_72_to-pine-version-5_20260807_042417
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -44366,7 +44603,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 
 
 
-# processed_73_to-pine-version-4_20260804_051323
+# processed_73_to-pine-version-4_20260807_042417
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -44411,7 +44648,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260804_051323
+# processed_74_to-pine-version-3_20260807_042417
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -44532,9 +44769,9 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260804_051323
+# processed_75_to-pine-version-2_20260807_042417
 
-## 75_to-pine-version-2_20260804_051323
+## 75_to-pine-version-2_20260807_042417
 # 75_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -44591,7 +44828,7 @@ plot(sma(src, length))
 
 
 
-# processed_76_where-can-i-get-more-information_20260804_051323
+# processed_76_where-can-i-get-more-information_20260807_042417
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.
