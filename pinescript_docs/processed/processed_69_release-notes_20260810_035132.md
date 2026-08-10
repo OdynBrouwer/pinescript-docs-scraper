@@ -1,4 +1,7 @@
 ## 2026
+### August 2026
+#### Binary search in UDT arrays
+The array.binary_search(), array.binary_search_leftmost(), and array.binary_search_rightmost() functions can now search arrays that store IDs of user-defined types (UDTs). Like the sorting functions for UDT collections, these functions include a `sort_field` parameter, which specifies the object field that a call compares while searching. The parameter accepts a “const int” _field index_ (0 by default, referring to the first field in the type declaration) or a “const string” _field name_. Note that the array must be _sorted_ by the same field, in ascending order, for the search to return correct results.
 ### July 2026
 #### Strategy improvements
 We’ve added a parameter to the strategy() declaration statement for defining a new calculation behavior: `calc_on_every_history_tick`. An argument for this parameter must include the parameter’s name (e.g., `calc_on_every_history_tick = true`). If the value is `true`, the script executes once for _each available tick_ in _every historical bar_. As the script executes on a historical bar, the values of built-in price and volume variables, such as high, low, close, and volume, _update_ on each tick to approximate the data that was available when the bar was still developing. This behavior allows for more granular calculations and order fills across a chart’s history, while also reducing the risk of lookahead bias in the simulation. This new feature is available on _standard charts_ for users with Premium and Ultimate plans. See the Altering calculation behavior section of the Strategies page to learn more.
@@ -1377,6 +1380,8 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 ## * Overview
 * 2026
+  * August 2026
+  * Binary search in UDT arrays
   * July 2026
   * Strategy improvements
   * Automatic parentheses
