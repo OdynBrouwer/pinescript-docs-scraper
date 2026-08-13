@@ -349,18 +349,12 @@ Additionally, the default text color for label.new() is now `color.white` in v6 
 !image
 Pine Script®
 Copied
-`//@version=6  
-indicator("Default colors v6")  
+`// Reference history of object, then retrieve field of historic object.  
+[fieldType] historicFieldValue = (myObject[10]).field  
   
-color defaultColor = switch  
-    bar_index == last_bar_index     => color.yellow  
-    bar_index == last_bar_index - 1 => color.green  
-    bar_index == last_bar_index - 2 => color.red  
-    => na  
-bgcolor(defaultColor)  
-  
-if barstate.islastconfirmedhistory  
-    label.new(bar_index + 2, 0, "Default text color")  
+// Alternative: Assign field to variable, then reference history of variable to get historic field value.  
+[fieldType] newVariable = myObject.field  
+[fieldType] historicFieldValue = newVariable[10]  
 `
 
 ## Strategies

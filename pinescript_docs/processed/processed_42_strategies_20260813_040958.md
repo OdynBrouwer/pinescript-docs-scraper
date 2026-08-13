@@ -283,20 +283,22 @@ Let’s take a closer look at how strategy orders work and how they become trade
 Pine Script®
 Copied
 `//@version=6  
-strategy("OCA Cancel Demo", overlay=true)  
+strategy("Order execution demo", overlay = true, behind_chart = false)  
   
-float ma1 = ta.sma(close, 5)  
-float ma2 = ta.sma(close, 9)  
+//@variable Is `true` on every 20th bar, and `false` otherwise.  
+bool longCondition = bar_index % 20 == 0  
   
-if ta.cross(ma1, ma2)  
-    if strategy.position_size == 0  
-        strategy.order("Long",  strategy.long, stop = high, oca_name = "Entry", oca_type = strategy.oca.cancel)  
-        strategy.order("Short", strategy.short, stop = low, oca_name = "Entry", oca_type = strategy.oca.cancel)  
-    else  
-        strategy.close_all()  
+// Place a long market order and draw a label when the `longCondition` value is `true`.  
+if longCondition  
+    strategy.entry("My Long Entry ID", direction = strategy.long)  
+    label.new(  
+        bar_index, high, text = "Long entry order created",   
+        color = color.lime, style = label.style_label_lower_right,   
+        textcolor = color.black, size = size.large  
+    )  
   
-plot(ma1, "Fast MA", color.aqua)  
-plot(ma2, "Slow MA", color.orange)  
+// Place a market order to close any open position.  
+strategy.close_all()  
 `
 Note that:
   * Although the script calls strategy.close_all() on every bar, the function creates a new exit order only if the strategy has an _open position_. If there is no open position, the function call has no effect.
