@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260816_025723
+# processed_1_welcome_20260819_030233
 
-## 1_welcome_20260816_025723
+## 1_welcome_20260819_030233
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -14,7 +14,7 @@ Source: https://www.tradingview.com/pine-script-docs/welcome
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -29,7 +29,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -45,7 +45,7 @@ Because each script uses computational resources in the cloud, we must impose li
 
 
 
-# processed_2_first-steps_20260816_025723
+# processed_2_first-steps_20260819_030233
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -131,7 +131,7 @@ The next step we recommend is to write your first indicator.
 
 
 
-# processed_3_first-indicator_20260816_025723
+# processed_3_first-indicator_20260819_030233
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -235,7 +235,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260816_025723
+# processed_4_next-steps_20260819_030233
 
 ## ​“indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to the broker emulator, which can then simulate their execution. Strategies display trade markers on the chart and simulated backtest results in a strategy report within the chart’s bottom panel.
@@ -294,7 +294,7 @@ We wish you a successful journey with Pine Script… and trading!
 
 
 
-# processed_5_execution-model_20260816_025723
+# processed_5_execution-model_20260819_030233
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1124,7 +1124,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260816_025723
+# processed_6_type-system_20260819_030233
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -1969,24 +1969,15 @@ For example, the script below declares a `LENGTH` variable of the “const float
 Pine Script®
 Copied
 `//@version=6  
-indicator("Modifying global variables in conditional structures demo")  
+indicator("Invalid type demo", overlay = true)  
   
-//@variable The number of conditions that occur before the counter value resets.  
-int cycleSizeInput = input.int(10, "Cycle size", 1)  
+//@variable Holds a "const float" value intended for use in the `length` argument of `ta.sma()`.  
+float LENGTH = 10.0  
   
-//@variable A persistent global variable for counting occurrences of a condition in cycles.   
-var int counter = 0  
+// This line causes an error, because the `length` parameter has the expected type "series int".  
+float sma = ta.sma(close, length = LENGTH)  
   
-// Logic to update `counter` based on a pseudorandom condition.  
-if math.random() < 0.5  
-    // Increase the `counter` value by one when the condition occurs.  
-    counter += 1  
-    // Reset the `counter` value to 1 if it exceeds the value of `cycleSizeInput`.   
-    if counter > cycleSizeInput  
-        counter := 1  
-  
-// Plot the `counter` value.  
-plot(counter, "Counter value")  
+plot(sma)  
 `
 The above code causes the following compilation error:
 
@@ -2516,7 +2507,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260816_025723
+# processed_7_script-structure_20260819_030233
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2799,9 +2790,9 @@ if barstate.islastconfirmedhistory
 
 
 
-# processed_8_identifiers_20260816_025723
+# processed_8_identifiers_20260819_030233
 
-## 8_identifiers_20260816_025723
+## 8_identifiers_20260819_030233
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2813,7 +2804,7 @@ Source: https://www.tradingview.com/pine-script-docs/language/identifiers
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -2828,7 +2819,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -2867,7 +2858,7 @@ zeroOne(boolValue) => boolValue ? 1 : 0
 
 
 
-# processed_9_declaration-statements_20260816_025723
+# processed_9_declaration-statements_20260819_030233
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -3555,7 +3546,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260816_025723
+# processed_10_variable-declarations_20260819_030233
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4759,7 +4750,7 @@ For advanced details about this behavior, as well as the events that cause a scr
 
 
 
-# processed_11_operators_20260816_025723
+# processed_11_operators_20260819_030233
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -5015,7 +5006,7 @@ The `+=` operator also acts as a concatenation operator when both operands are s
 
 
 
-# processed_12_conditional-structures_20260816_025723
+# processed_12_conditional-structures_20260819_030233
 
 ## Introduction
 The conditional structures in Pine Script® are if and switch. They can be used:
@@ -5400,7 +5391,7 @@ if <expression>
 
 
 
-# processed_13_loops_20260816_025723
+# processed_13_loops_20260819_030233
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6370,7 +6361,7 @@ To correctly modify a map’s size within a loop, programmers can do any of the 
 
 
 
-# processed_14_built-ins_20260816_025723
+# processed_14_built-ins_20260819_030233
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6484,7 +6475,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260816_025723
+# processed_15_user-defined-functions_20260819_030233
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8319,7 +8310,7 @@ Copied
 
 
 
-# processed_16_objects_20260816_025723
+# processed_16_objects_20260819_030233
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8626,7 +8617,7 @@ However, scripts cannot use the following keywords for fundamental types as name
 
 
 
-# processed_17_enums_20260816_025723
+# processed_17_enums_20260819_030233
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script’s logic.
@@ -8944,7 +8935,7 @@ enum ta
 
 
 
-# processed_18_methods_20260816_025723
+# processed_18_methods_20260819_030233
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9592,7 +9583,7 @@ Copied
 
 
 
-# processed_19_arrays_20260816_025723
+# processed_19_arrays_20260819_030233
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, …).
@@ -10086,34 +10077,37 @@ The following script demonstrates the array.join() function’s behaviors. It re
 Pine Script®
 Copied
 `//@version=6  
-indicator("Joining demo")  
+indicator("Getting sorted indices demo")  
   
-//@function Returns a tuple containing the ticker ID ("string"), bar index ("int"), and closing price ("float").   
-dataRequest() =>  
-    [syminfo.tickerid, bar_index, close]  
+//@variable References a persistent array that stores the last 10 `close` values.  
+var array<float> prices = array.new<float>(10)  
+// Push a new value to the end of the array, and remove the oldest (first) element.  
+prices.push(close)  
+prices.shift()  
   
-if barstate.islast  
-    //@variable A single-cell table displaying the results of `array.join()` calls.  
-    var table displayTable = table.new(position.middle_center, 1, 1, color.blue)  
-    // Request data for three symbols.   
-    [ticker1, index1, price1] = request.security("SPY", "", dataRequest())  
-    [ticker2, index2, price2] = request.security("GLD", "", dataRequest())  
-    [ticker3, index3, price3] = request.security("TLT", "", dataRequest())  
+if barstate.islastconfirmedhistory  
+    //@variable References an "int" array containing the `prices` array indices in ascending order by element value.   
+    //          The `array.sort_indices()` call maps sorted positions in the array without modifying it.  
+    array<int> indices = prices.sort_indices()  
+    //@variable A formatted string to display in a label.  
+    string displayStr = str.format("Prices: {0}\n\nSorted indices: {1}\n\nSort results:", prices, indices)  
   
-    // Create separate "string", "int", and "float" arrays to hold the requested data.  
-    array<string> tickerArray = array.from(ticker1, ticker2, ticker3)  
-    array<int> indexArray = array.from(index1, index2, index3)  
-    array<float> priceArray = array.from(price1, price2, price3)  
-  
-    // Convert each array's data to strings and join them with different separators.   
-    string joined1 = array.join(tickerArray, ", ")  
-    string joined2 = indexArray.join("|")  
-    string joined3 = priceArray.join("\n")  
-  
-    //@variable A joined "string" containing the `joined1`, `joined2`, and `joined3` values.   
-    string displayText = array.from(joined1, joined2, joined3).join("\n---\n")  
-    // Initialize a cell to show the `displayText`.  
-    displayTable.cell(0, 0, displayText, text_color = color.white, text_size = 36)  
+    // Loop through the `indices` array.  
+    // The `i` variable stores the current index of the `indices` array's element.  
+    // The `index` variable stores that element's value (the index for one of the `prices` array's elements).  
+    // Using `index` to retrieve `prices` array's elements accesses those elements in ascending order.  
+    for [i, index] in indices  
+        // Concatenate the `displayStr` value with a string representing the sorted `prices` array element,   
+        // the original position (index) of the element, and the sorted position of that element.   
+        displayStr += str.format(  
+            "\nPrice: {0,number,0.000}, Original position: {1} -> Sorted position: {2}",   
+            prices.get(index), index, i  
+        )  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 20,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
 `
 Note that:
   * Each array.join() call inserts the specified separator only between each element string. It does _not_ include the separator at the start or end of the returned value.
@@ -10997,34 +10991,37 @@ The following script demonstrates the array.join() function’s behaviors. It re
 Pine Script®
 Copied
 `//@version=6  
-indicator("Joining demo")  
+indicator("Getting sorted indices demo")  
   
-//@function Returns a tuple containing the ticker ID ("string"), bar index ("int"), and closing price ("float").   
-dataRequest() =>  
-    [syminfo.tickerid, bar_index, close]  
+//@variable References a persistent array that stores the last 10 `close` values.  
+var array<float> prices = array.new<float>(10)  
+// Push a new value to the end of the array, and remove the oldest (first) element.  
+prices.push(close)  
+prices.shift()  
   
-if barstate.islast  
-    //@variable A single-cell table displaying the results of `array.join()` calls.  
-    var table displayTable = table.new(position.middle_center, 1, 1, color.blue)  
-    // Request data for three symbols.   
-    [ticker1, index1, price1] = request.security("SPY", "", dataRequest())  
-    [ticker2, index2, price2] = request.security("GLD", "", dataRequest())  
-    [ticker3, index3, price3] = request.security("TLT", "", dataRequest())  
+if barstate.islastconfirmedhistory  
+    //@variable References an "int" array containing the `prices` array indices in ascending order by element value.   
+    //          The `array.sort_indices()` call maps sorted positions in the array without modifying it.  
+    array<int> indices = prices.sort_indices()  
+    //@variable A formatted string to display in a label.  
+    string displayStr = str.format("Prices: {0}\n\nSorted indices: {1}\n\nSort results:", prices, indices)  
   
-    // Create separate "string", "int", and "float" arrays to hold the requested data.  
-    array<string> tickerArray = array.from(ticker1, ticker2, ticker3)  
-    array<int> indexArray = array.from(index1, index2, index3)  
-    array<float> priceArray = array.from(price1, price2, price3)  
-  
-    // Convert each array's data to strings and join them with different separators.   
-    string joined1 = array.join(tickerArray, ", ")  
-    string joined2 = indexArray.join("|")  
-    string joined3 = priceArray.join("\n")  
-  
-    //@variable A joined "string" containing the `joined1`, `joined2`, and `joined3` values.   
-    string displayText = array.from(joined1, joined2, joined3).join("\n---\n")  
-    // Initialize a cell to show the `displayText`.  
-    displayTable.cell(0, 0, displayText, text_color = color.white, text_size = 36)  
+    // Loop through the `indices` array.  
+    // The `i` variable stores the current index of the `indices` array's element.  
+    // The `index` variable stores that element's value (the index for one of the `prices` array's elements).  
+    // Using `index` to retrieve `prices` array's elements accesses those elements in ascending order.  
+    for [i, index] in indices  
+        // Concatenate the `displayStr` value with a string representing the sorted `prices` array element,   
+        // the original position (index) of the element, and the sorted position of that element.   
+        displayStr += str.format(  
+            "\nPrice: {0,number,0.000}, Original position: {1} -> Sorted position: {2}",   
+            prices.get(index), index, i  
+        )  
+    // Display the final string's text in a label.  
+    label.new(  
+        bar_index, 0, displayStr, style = label.style_label_center, size = 20,   
+        textalign = text.align_left, text_font_family = font.family_monospace  
+    )  
 `
 Note that:
   * Each array.join() call inserts the specified separator only between each element string. It does _not_ include the separator at the start or end of the returned value.
@@ -11499,7 +11496,7 @@ indicator("Deep copies demo")
 
 
 
-# processed_20_matrices_20260816_025723
+# processed_20_matrices_20260819_030233
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -14095,7 +14092,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260816_025723
+# processed_21_maps_20260819_030233
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -15141,7 +15138,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260816_025723
+# processed_22_overview_20260819_030233
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -15582,9 +15579,9 @@ Lastly, a table’s organized format and fixed pane positions also makes it usef
 
 
 
-# processed_23_backgrounds_20260816_025723
+# processed_23_backgrounds_20260819_030233
 
-## 23_backgrounds_20260816_025723
+## 23_backgrounds_20260819_030233
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -15596,7 +15593,7 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -15611,7 +15608,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -15727,9 +15724,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260816_025723
+# processed_24_bar-coloring_20260819_030233
 
-## 24_bar-coloring_20260816_025723
+## 24_bar-coloring_20260819_030233
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -15741,7 +15738,7 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -15756,7 +15753,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -15804,7 +15801,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260816_025723
+# processed_25_bar-plotting_20260819_030233
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -15917,7 +15914,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260816_025723
+# processed_26_colors_20260819_030233
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -16302,7 +16299,7 @@ When building gradients, adapt them to the visuals they apply to. If you are usi
 
 
 
-# processed_27_fills_20260816_025723
+# processed_27_fills_20260819_030233
 
 ## Introduction
 Some of Pine Script’s visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -16516,7 +16513,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260816_025723
+# processed_28_levels_20260819_030233
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won’t do what you need.
@@ -16606,7 +16603,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260816_025723
+# processed_29_lines-and-boxes_20260819_030233
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -17816,7 +17813,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260816_025723
+# processed_30_plots_20260819_030233
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -18178,7 +18175,7 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260816_025723
+# processed_31_tables_20260819_030233
 
 ## Introduction
 Tables are objects that can be used to position information in specific and fixed locations in a script’s visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script’s space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
@@ -18397,7 +18394,7 @@ Note that:
 
 
 
-# processed_32_text-and-shapes_20260816_025723
+# processed_32_text-and-shapes_20260819_030233
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -18946,7 +18943,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260816_025723
+# processed_33_alerts_20260819_030233
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center’s About TradingView alerts page.
@@ -19301,7 +19298,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260816_025723
+# processed_34_bar-states_20260819_030233
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -19437,7 +19434,7 @@ This last example shows how the realtime bar’s label will turn yellow after th
 
 
 
-# processed_35_chart-information_20260816_025723
+# processed_35_chart-information_20260819_030233
 
 ## Introduction
 Scripts can retrieve multiple types of information about the current chart and its dataset by using a subset of built-in variables. The chart data that scripts can access using these variables includes the following:
@@ -19790,7 +19787,7 @@ if barstate.isfirst
 
 
 
-# processed_36_inputs_20260816_025723
+# processed_36_inputs_20260819_030233
 
 ## Introduction
 Inputs receive values that users can change from a script’s “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -20421,7 +20418,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260816_025723
+# processed_37_libraries_20260819_030233
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -20803,7 +20800,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260816_025723
+# processed_38_non-standard-charts-data_20260819_030233
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -20913,7 +20910,7 @@ plot(pnfC, "PnF Close", color.red, 4, plot.style_linebr)
 
 
 
-# processed_39_other-timeframes-and-data_20260816_025723
+# processed_39_other-timeframes-and-data_20260819_030233
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -24093,7 +24090,7 @@ library("DynamicRequests")
 
 
 
-# processed_40_repainting_20260816_025723
+# processed_40_repainting_20260819_030233
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -24361,7 +24358,7 @@ Historical data may also be revised for other reasons, e.g., for stock splits.
 
 
 
-# processed_41_sessions_20260816_025723
+# processed_41_sessions_20260819_030233
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -24713,7 +24710,7 @@ Scripts can use the following “string” variables to work with named sessions
 
 
 
-# processed_42_strategies_20260816_025723
+# processed_42_strategies_20260819_030233
 
 ## Introduction
 Pine Script® strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -26991,7 +26988,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260816_025723
+# processed_43_strings_20260819_030233
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -28704,7 +28701,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260816_025723
+# processed_44_time_20260819_030233
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -30234,7 +30231,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260816_025723
+# processed_45_timeframes_20260819_030233
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -30282,7 +30279,7 @@ Note that:
 
 
 
-# processed_46_style-guide_20260816_025723
+# processed_46_style-guide_20260819_030233
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -30660,7 +30657,7 @@ Including the type of variables when declaring them is not required. However, it
 
 
 
-# processed_47_debugging_20260816_025723
+# processed_47_debugging_20260819_030233
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -32394,7 +32391,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260816_025723
+# processed_48_profiling-and-optimization_20260819_030233
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual’s Execution model page.
@@ -33456,34 +33453,7 @@ In this script version, we placed the loop that updates the table cells within a
 !image
 Pine Script®
 Copied
-`//@version=6  
-indicator("Reducing drawing updates demo")  
-  
-//@variable The first offset shown in the paginated table.  
-int offsetInput = input.int(0, "Page", 0, 249) * 20  
-  
-//@variable A table that shows the history of RSI values.  
-var table infoTable = table.new(position.top_right, 2, 21, border_color = chart.fg_color, border_width = 1)  
-// Initialize the table's cells on the first bar.  
-if barstate.isfirst  
-    table.cell(infoTable, 0, 0, "Offset", text_color = chart.fg_color)  
-    table.cell(infoTable, 1, 0, "RSI", text_color = chart.fg_color)  
-    for i = 0 to 19  
-        table.cell(infoTable, 0, i + 1, str.tostring(offsetInput + i))  
-        table.cell(infoTable, 1, i + 1)  
-  
-float rsi = ta.rsi(close, 14)  
-  
-// Update the history shown in the `infoTable` on the last available bar.  
-if barstate.islast  
-    for i = 0 to 19  
-        float historicalRSI = rsi[offsetInput + i]  
-        table.cell_set_text(infoTable, 1, i + 1, str.tostring(historicalRSI))  
-        table.cell_set_bgcolor(  
-             infoTable, 1, i + 1, color.from_gradient(historicalRSI, 30, 70, color.red, color.green)  
-         )  
-  
-plot(rsi, "RSI")  
+`source * length - source[1] - source[2] - ... - source[length]  
 `
 Note that:
   * The script will still update the cells when new **realtime** updates come in, as users can observe those changes on the chart, unlike the changes that the script used to execute across historical bars.
@@ -34022,7 +33992,7 @@ TipThis process might require trial and error, because identifying the number of
 
 
 
-# processed_49_publishing_20260816_025723
+# processed_49_publishing_20260819_030233
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -34256,7 +34226,7 @@ For examples of compliant script descriptions, refer to the publications feature
 
 
 
-# processed_50_limitations_20260816_025723
+# processed_50_limitations_20260819_030233
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -34503,11 +34473,11 @@ Note that:
 
 ## Script size and memory
 ### Compiled tokens
-Before the execution of a script, the compiler translates it into a tokenized _Intermediate Language_ (IL). Using an IL allows Pine Script to accommodate larger scripts by applying various memory and performance optimizations. The compiler determines the size of a script based on the _number of tokens_ in its IL form, **not** the number of characters or lines in the code viewable in the Pine Editor.
-The compiled form of each indicator, strategy, and library script is limited to 100,000 tokens. If a script imports libraries, the total number of tokens from all imported libraries cannot exceed 1 million. There is no way to inspect a script’s compiled form, nor its IL token count. As such, you will only know your script exceeds the size limit when the compiler reaches it.
-In most cases, a script’s compiled size will likely not reach the limit. However, if a compiled script does reach the token limit, the most effective ways to decrease compiled tokens are to reduce repetitive code, encapsulate redundant calls within functions, and utilize libraries when possible.
-It’s important to note that the compilation process omits any _unused_ variables, functions, types, etc. from the final IL form, where “unused” refers to anything that _does not_ affect the script’s outputs. This optimization prevents superfluous elements in the code from contributing to the script’s IL token count.
-For example, the script below declares a user-defined type and a user-defined method and defines a sequence of calls using them:
+Pine Script is a compiled language optimized for efficient, repeated script execution. When a user saves a script or applies it to a dataset, the compiler translates the Pine Script code into a tokenized _intermediate language (IL)_ , then generates the final compiled code from the script’s IL form. Using an IL representation enables the compiler to perform multiple transformations to optimize the script’s structure. The compiler measures the size of a script based on the _number of tokens_ in the script’s _IL form_ after transformations. It **does not** measure size as the number of characters or lines in the written source code.
+The IL form of each indicator, strategy, and library script can contain a maximum of _100,256 tokens_. Libraries are compiled separately from the scripts that import them. In other words, code imported from a library does _not_ directly affect a script’s compiled size. However, the total size of all libraries that a script imports cannot exceed _1 million tokens_. There is no direct way to inspect a script’s IL form or its size if the script compiles successfully. The only time that a script’s size is visible is when it exeeds the size limit.
+In most cases, the compiled size of a script will likely not reach the token limit. However, if it does, there are several techniques that can help reduce the size, including reducing _embedded data_ , shortening or removing large constant strings, replacing repetitive statements with loops or concise function calls, splitting logic into multiple scripts, and moving code into separate libraries.
+It’s important to note that, due to the compiler’s automatic optimizations, several types of manual code changes have _little to no effect_ on a compiled script’s size. For instance, the compiler automatically _discards_ any _unused_ code that does not affect the script’s plots, drawings, or other _outputs_. Manually removing unused code thus has zero impact on the tokens in a script’s IL form. Refer to the Compiled script contains too many tokens error page to learn more about how code changes affect a script’s compiled size, as well as how to reduce the size if it reaches the token limits.
+The following example demonstrates how the compiler omits _unused_ code, and why removing such code manually does not affect a script’s size. The script below declares a user-defined type and a user-defined method, then creates a simple sequence of calculations:
 Pine Script®
 Copied
 `//@version=6  
@@ -34524,7 +34494,7 @@ var arr = array.new<myType>()
 arr.push(myType.new(25))  
 arr.m(myType.new())  
 `
-Despite the inclusion of `array.new<myType>()`, `myType.new()`, and `arr.m()` calls in the script, the only thing actually **output** by the script is `plot(close)`. The rest of the code does not affect the output. Therefore, the compiled form of this script will have the _same_ number of tokens as:
+Although the above script contains multiple pieces of code, most of it _does not_ contribute to the script’s outputs. The _only_ part of the script that produces an output is the `plot(close)` call. The compiler recognizes that the rest of the code is unused and _excludes_ it from the script’s IL translation. Therefore, the compiled form of the script is _identical_ to that of the script below:
 Pine Script®
 Copied
 `//@version=6  
@@ -34624,7 +34594,7 @@ When using Deep Backtesting, the order limit is 1,000,000.
 
 
 
-# processed_51_overview_20260816_025723
+# processed_51_overview_20260819_030233
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -34642,6 +34612,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 | Error/warning code  | Message  | Solution  |  
 | --- | --- | --- |  
 | CE10101  | The condition of the “X” statement must evaluate to a “bool” value.  | Use only expressions that return values of the “bool” type as the conditions in if and switch statements.  |  
+| CE10117  | Compiled code contains too many tokens  | This error occurs if the compiled form of the script is _too large_. Typical fixes include reducing embedded data, shortening or removing constant strings, replacing repetitive code with loops or concise function calls, distributing logic across separate scripts, or moving code into libraries.  |  
 | CW10003  | The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.  | The function call might cause _unintended results_ when executing inside a conditional structure or loop because it relies on data from _past bars_. Move the call to the _global scope_ , and outside conditional expressions, to ensure consistent history-based calculations.  |  
 | RE10139  | Memory limits exceeded.  | There are multiple possible causes and solutions. A common cause is using `request.*()` calls to request large collections of data across bars. The usual solution for that case is to optimize the requests to return collection IDs only when **necessary**. Consult the error page to learn more.  |  
 | RE10143  | The requested historical offset (X) is beyond the historical buffer’s limit (Y).  | This error occurs if a script references the history of a variable or expression from _too many_ bars back. A typical solution is to use the max_bars_back() function to specify how many past bars of data to include in the historical buffer for the referenced series.  |  
@@ -34651,7 +34622,7 @@ NoteThis list is not exhaustive. New pages for other common errors and warnings 
 
 
 
-# processed_52_CE10101_20260816_025723
+# processed_52_CE10101_20260819_030233
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -34734,7 +34705,7 @@ pivot = ta.pivothigh(10, 10)
 if not na(pivot)  
     label.new(bar_index[10], pivot, "Pivot High")  
 `
- Previous Overview    Next CW10003
+ Previous Overview    Next CE10117
 
 ## * The condition of the “X” statement must evaluate to a “bool” value
 * Using numeric conditions
@@ -34744,7 +34715,845 @@ if not na(pivot)
 
 
 
-# processed_53_CW10003_20260816_025723
+# processed_53_CE10117_20260819_030233
+
+## Compiled code contains too many tokens
+This compilation error indicates that a script’s compiled code is _too large_ for the runtime system to execute.
+Before a script executes on a dataset, it is compiled by the Pine Script compiler. During this process, the compiler translates the written source code into a tokenized _intermediate language (IL)_ , then generates the final compiled code from the script’s IL form. Translating a script into an IL representation enables the compiler to perform various internal transformations to optimize the script’s structure.
+Pine Script limits the maximum size of each indicator, strategy, and library for resource efficiency. This limit applies to the total size of the script’s _IL_ translation _after_ optimization. It does **not** apply to the number of characters or code lines in the original written code. This behavior explains why one script might fail with the “too many tokens” error during compilation, while another with the same number of characters or lines compiles and runs successfully. It also explains why some kinds of manual code changes, such as removing comments or shortening variable names, _do not_ affect the size of a compiled script.
+NoteThere is no direct way to inspect the size of a script’s IL form if the script compiles successfully. The only time that the size is visible is when the “too many tokens” error occurs.
+The maximum possible size of a script’s IL translation is 100,256 tokens. There are several ways to reduce a translated script’s size if it exceeds this limit, depending on the original script’s structure and the kinds of code it contains.
+The sections on this page explain some of the typical optimizations that the compiler performs before measuring a translated script’s size, various types of manual code changes that have little to no effect on a script’s translation, and the most common techniques that can help reduce script size and resolve this error.
+
+## Ineffective code changes
+Before the compiler measures the size of a translated script, it performs several code transformations to eliminate unnecessary tokens and optimize the script’s structure. Because of these transformations, several types of source code changes a programmer might consider to resolve the “too many tokens” error have _little to no impact_ on the size of the compiled code. Common types of ineffective code changes include the following:
+            
+
+The following sections explain why these common source code changes do not help resolve this error. To learn about code changes that can meaningfully reduce the size of a translated script, refer to the Effective techniques to reduce script size section below.
+### Revising or removing comments
+Programmers might assume that reducing the length of the comments in their scripts or removing them altogether reduces the size of the compiled code. However, the compiler _discards_ all comments during translation, because their main purpose is to provide extra information in the source code for script readers. Therefore, reducing or removing comments has _no effect_ on the compiled code.
+For example, the simple script below contains multiple comments that document what each part of the code does:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing comments demo")  
+  
+// Define the input length factor for the RSI and RMA calculations.  
+int lengthInput = input.int(14, "Length", minval = 2)  
+  
+// Calculate the RSI.   
+float rsi = ta.rsi(close, lengthInput)  
+// Calculate the RMA of the RSI using the same length.  
+float ma = ta.rma(rsi, lengthInput)  
+// Add the RMA of the difference between the MA and the RSI for the final smoothed output.  
+float smoothed = ma + ta.rma(rsi - ma, lengthInput)  
+  
+// Plot the RSI and the smoothed RSI in a separate pane.   
+plot(rsi, "RSI", color.blue)  
+plot(smoothed, "Smoothed RSI", color.orange)  
+`
+If we remove all the comments from the script, the source code becomes visibly shorter. However, because the compiler excludes comments automatically, the version of the code below translates to the _same_ compiled result as the previous code:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing comments demo")  
+  
+int lengthInput = input.int(14, "Length", minval = 2)  
+  
+float rsi = ta.rsi(close, lengthInput)  
+float ma = ta.rma(rsi, lengthInput)  
+float smoothed = ma + ta.rma(rsi - ma, lengthInput)  
+  
+plot(rsi, "RSI", color.blue)  
+plot(smoothed, "Smoothed RSI", color.orange)  
+`
+NoteThe same principle applies to compiler annotations. Although annotations are special comments that can specify extra information for a script, the compiler does not include annotation text directly in a script’s IL translation. The information from annotations is processed separately. Therefore, it does not contribute to a script’s compiled size.
+### Removing whitespaces and merging code lines
+Pine Script code uses whitespace characters, including standard spaces and line terminators, to separate expressions and statements, organize code on multiple text lines, and visually delimit code blocks. However, the IL translation of a script uses a _compact format_ , without most whitespace delimiters, to represent the script’s structure. Therefore, removing spaces between items in the source code _does not_ affect the script’s compiled size. Likewise, the size is not affected by merging multiple statements onto a single code line and separating them with commas.
+For example, the following script lists statements across multiple lines of code. The source code includes space separators, line-wrapped expressions, and multiple blank lines:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing whitespaces and merging code lines demo", overlay = true)  
+  
+  
+int lengthInput1 = input.int(  
+    14, "Fast MA length", minval = 2  
+)  
+  
+int lengthInput2 = input.int(  
+    28, "Slow MA length", minval = 2  
+)  
+  
+float ma1 = ta.sma(close, lengthInput1)  
+  
+float ma2 = ta.sma(close, lengthInput2)  
+  
+  
+bool condition = (  
+        ma1 > ma2  
+    and ma1 > ma1[1]  
+    and ma2 > ma2[1]  
+)  
+  
+  
+plot(ma1, "Fast MA", color.orange)  
+plot(ma2, "Slow MA", color.purple)  
+  
+bgcolor(  
+    condition ? color.new(color.green, 80) : na,   
+    title = "Condition highlight"  
+)  
+`
+The modified script version below removes multiple space separators and blank lines, eliminates line wrapping, and groups the statements onto fewer lines. Although the code is visually shorter and more compact, its IL form is _identical_ to that of the previous version, because the compiler already discards the spaces and line terminators automatically while translating the code:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing whitespaces and merging code lines demo",overlay=true)  
+int lengthInput1=input.int(14,"Fast MA length",minval=2),int lengthInput2=input.int(28,"Slow MA length",minval=2)  
+float ma1=ta.sma(close,lengthInput1),float ma2=ta.sma(close,lengthInput2)   
+bool condition=ma1>ma2 and ma1>ma1[1] and ma2>ma2[1],plot(ma1,"Fast MA",color.orange),plot(ma2,"Slow MA",color.purple)  
+bgcolor(condition?color.new(color.green,80):na,title="Condition highlight")  
+`
+Note that:
+  * Automatic whitespace removal does _not_ apply to literal strings, because each character in a string is part of the saved value. The values of literal strings and other “string” constants are _embedded_ directly into a script’s IL translation and _do_ affect the total size. See the Shortening or removing constant strings section below to learn more.
+
+
+### Changing code identifiers
+When the compiler translates a script to an IL form, it automatically _replaces_ the identifiers (names) of declared variables, user-defined functions, function parameters, user-defined types, and type fields with compact _internal_ identifiers based on the code’s structure. These identifiers do not vary with the variable, function, and type names specified by the programmer in the source code. Therefore, changing identifiers in a script does _not_ affect the script’s compiled size.
+Similarly, _named_ arguments in function calls (e.g., `f(x = 1)`) are automatically converted to _positional_ arguments (e.g., `f(1)`) when possible. Therefore, manually converting named arguments to positional arguments typically has little to no effect on the compiled code’s size.
+The following example script contains a user-defined function with multiple verbose identifiers in its signature and body. The script calls this function and the plot() function using named arguments. It also declares multiple variables with lengthy identifiers:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Changing code identifiers demo")  
+  
+calculateExponentialMovingAverage(float sourceSeries, int lengthFactor) =>  
+    float smoothingFactor = 2.0 / (lengthFactor + 1.0)  
+    float exponentialMovingAverage = na  
+    exponentialMovingAverage := (  
+        nz(exponentialMovingAverage[1], sourceSeries) * (1 - smoothingFactor) + sourceSeries * smoothingFactor  
+    )  
+  
+float fastExponentialMovingAverage = calculateExponentialMovingAverage(sourceSeries = close, lengthFactor = 12)  
+float slowExponentialMovingAverage = calculateExponentialMovingAverage(sourceSeries = close, lengthFactor = 26)  
+  
+float movingAverageConvergenceDivergence = fastExponentialMovingAverage - slowExponentialMovingAverage  
+float signalMovingAverage = calculateExponentialMovingAverage(movingAverageConvergenceDivergence, lengthFactor = 9)  
+float histogramLineValue = movingAverageConvergenceDivergence - signalMovingAverage  
+  
+plot(series = movingAverageConvergenceDivergence, title = "MACD", color = color.blue)  
+plot(series = signalMovingAverage, title = "Signal", color = color.orange)  
+plot(  
+    series = histogramLineValue, title = "Histogram",   
+    color = histogramLineValue > 0 ? color.green : color.red, style = plot.style_columns  
+)  
+`
+The script version below reduces the verbosity of all the script’s identifiers and changes the function calls to use positional arguments instead of named arguments. Although the code is now visibly more compact, it still translates to the _same IL form_ as the previous version:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Changing code identifiers demo")  
+  
+ema(src, len) =>  
+    sf = 2.0 / (len + 1.0)  
+    float ma = na  
+    ma := nz(ma[1], src) * (1 - sf) + src * sf  
+  
+maFast = ema(src = close, len = 12)  
+maSlow = ema(src = close, len = 26)  
+  
+macd = maFast - maSlow  
+sig = ema(macd, len = 9)  
+hist = macd - sig  
+  
+plot(macd, "MACD", color.blue)  
+plot(sig, "Signal", color.orange)  
+plot(hist, "Histogram", hist > 0 ? color.green : color.red, style = plot.style_columns)  
+`
+Note that:
+  * We also removed type keywords from most of the variable and parameter declarations. If a declaration does not include a type keyword, the compiler automatically infers the appropriate type based on how the script uses the variable or parameter. Therefore, omitting type keywords typically does not affect the size of the IL translation.
+
+
+NoteUnlike most user-defined identifiers, the names of enum members _can_ impact the size of a compiled script. If an enum member does not have an assigned _title_ , the member’s title is the “const string” representation of its _name_ , and that value is embedded directly into the script’s IL form if the script uses it. See the Shortening or removing constant strings section for more information.
+### Swapping constant expressions and values
+When possible, the compiler automatically evaluates expressions that return _constant_ values during translation. Rather than including tokens to represent each part of a constant expression in the script’s IL form, the compiler embeds the expression’s _final value_ into the translated code. This optimization prevents the script from repeatedly recalculating the result at runtime. Therefore, replacing a constant expression with a literal value in the source code typically does not affect the size of the compiled script.
+Similarly, if an if or switch structure or a conditional expression relies on a constant `true` or `false` condition, the compiler often simplifies the logic by replacing it with tokens for only the calculations that the script consistently executes. Therefore, manually simplifying such logic has little to no effect on the compiled script’s size.
+The following example script assigns an expression that returns a “const int” value to a variable. It then checks the expression `fixedValue == 6` in an if structure and adds 10 to the variable’s value if the expression evaluates to `true`:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Constant expressions demo")  
+  
+int fixedValue = (1 + 2) * 10 / 5  
+  
+if fixedValue == 6  
+    fixedValue += 10  
+else  
+    fixedValue := 0  
+  
+plot(fixedValue, "16")  
+`
+The above script plots a constant value of 16. The `fixedValue` variable is initially assigned a value of 6, so the `fixedValue == 6` condition _always_ evaluates to `true`, thus causing the variable’s final value to change to 16 on each bar. The compiler recognizes this pattern in the code and simplifies the logic to `fixedValue = 16`. Therefore, the script has the _same_ IL translation as the script below:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Constant expressions demo")  
+  
+int fixedValue = 16  
+  
+plot(fixedValue, "16")  
+`
+### Reducing identical expressions and functions
+If the compiler detects that multiple expressions are structurally _identical_ and consistently evaluate to the _same_ value, it automatically _reduces_ the duplicate expressions to avoid repetitive calculations when possible. Rather than including tokens for each repetition, the compiler assigns the translated expression to an internal variable, then uses that variable in all code that requires the expression’s result. This optimization helps conserve compiled tokens and potentially reduce the script’s runtime.
+Therefore, manually reducing the repetition of expressions that the compiler can automatically replace has little to no effect on the size of a compiled script.
+NoteThis optimization does not apply to _all_ expressions that might appear identical in the source code. For example, it does not affect repeated expressions that rely on reference types, math.random() calls, or most imported library functions. Likewise, it does not typically affect equivalent expressions that list operations, values, or variables in _different_ orders. Therefore, manually reducing such expressions _can_ help reduce the compiled size.
+The following script shows a scenario in which removing repeated expressions does not affect the size of the compiled code. The script defines a `posPercent()` function, which calculates the percentage of positive values in a series over a specified length. The script plots the results of seven calls to the function, each using identical arguments:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Identical expressions demo")  
+  
+//@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    float result = 100 * posSum / length  
+  
+// Plot the result of the same `posPercent()` call seven times.   
+plot(posPercent((close - open) / (high - low), 10), color = color.red,    linewidth = 7)  
+plot(posPercent((close - open) / (high - low), 10), color = color.orange, linewidth = 6)  
+plot(posPercent((close - open) / (high - low), 10), color = color.yellow, linewidth = 5)  
+plot(posPercent((close - open) / (high - low), 10), color = color.green,  linewidth = 4)  
+plot(posPercent((close - open) / (high - low), 10), color = color.teal,   linewidth = 3)  
+plot(posPercent((close - open) / (high - low), 10), color = color.blue,   linewidth = 2)  
+plot(posPercent((close - open) / (high - low), 10), color = color.purple, linewidth = 1)  
+`
+As the compiler translates the script, it verifies that all seven `posPercent()` expressions use identical value-type arguments, perform operations in the _same order_ , and return the same result. It then restructures the script to execute only _one_ call to the function and _reuse_ the result in all the plot() calls. Therefore, the script has the _same_ IL translation as the following script, which assigns one `posPercent()` call to a single variable and plots the variable’s value seven times:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Identical expressions demo")  
+  
+//@function Calculates the percentage of `source` values that are positive over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    float result = 100 * posSum / length  
+  
+//@variable The percentage of positive body-to-wick ratios over 10 bars.  
+float percentPositive = posPercent((close - open) / (high - low), 10)  
+  
+// Plot the `percentPositive` value seven times.  
+plot(percentPositive, color = color.red,    linewidth = 7)  
+plot(percentPositive, color = color.orange, linewidth = 6)  
+plot(percentPositive, color = color.yellow, linewidth = 5)  
+plot(percentPositive, color = color.green,  linewidth = 4)  
+plot(percentPositive, color = color.teal,   linewidth = 3)  
+plot(percentPositive, color = color.blue,   linewidth = 2)  
+plot(percentPositive, color = color.purple, linewidth = 1)  
+`
+Similar to the above, if the compiler identifies user-defined functions or methods that are structurally identical, have the same parameter types, and consistently return matching results when passed the same arguments, it automatically _removes_ the duplicate function definitions from the translated code rather than including tokens for each one, when possible. The compiled script then treats each call to a duplicate function as an _alias_ for a call to the _first_ function. Therefore, manually removing such duplicate functions from the code does not typically affect the compiled script’s size.
+NoteThis optimization applies only to _non-exported_ functions that can be verified as identical at compile time. It does not affect equivalent definitions that use rearranged calculations, reference types, or code that produces varying results. _Exported_ functions and methods _always_ add tokens to a compiled library, even if two or more of the functions are structurally identical. Programmers can often check whether a duplicate function is removed during compilation by profiling the script. See the Insignificant, unused, and redundant code section of the Profiling and optimization page to learn more. If two or more functions are structurally different but produce equivalent results, programmers can remove the redundant functions manually to reduce the compiled size.
+To illustrate this behavior, the following script includes the `posPercent()` function from our previous example, along with a separate function named `f()` that follows the _same_ structure and differs only in its _identifiers_. The script executes one `posPercent()` call and one `f()` call, then plots the results:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing identical functions demo")  
+  
+//@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    log.info(str.tostring(posSum))  
+    float result = 100 * posSum / length  
+  
+//@function A copy of `posPercent()`. Follows an identical structure, but uses different identifiers.  
+f(float s, int l) =>  
+    float ps = math.sum(s > 0 ? 1 : 0, l)  
+    log.info(str.tostring(ps))  
+    float r  = 100 * ps / l  
+  
+//@variable The ratio of the bar's body range to its wick range.   
+float barRatio = (close - open) / (high - low)  
+  
+// Plot the results from calls to both functions.   
+plot(posPercent(barRatio, 10))  
+plot(f(barRatio, 20)) // The compiled script treats this `f()` call as a call to `posPercent()`.  
+`
+Aside from differences in identifiers, both functions in the script are _identical_. They have the same required parameters, rely on the same value types, perform calculations in the same order, and return matching values when passed the same arguments. The compiler recognizes this pattern and includes tokens for only the _first_ function definition in the IL translation. After this transformation, the `f()` call is treated as a call to `posPercent()`. Therefore, the above script has the **same** compiled form as the script below:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing identical functions demo")  
+  
+//@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    log.info(str.tostring(posSum))  
+    float result = 100 * posSum / length  
+  
+//@variable The ratio of the bar's body range to its wick range.   
+float barRatio = (close - open) / (high - low)  
+  
+// Plot the results from two calls to the function.  
+plot(posPercent(barRatio, 10))  
+plot(posPercent(barRatio, 20))  
+`
+Note that:
+  * If we profile the previous script that contains an `f()` call, the Pine Profiler does _not_ display any performance data next to the lines in that function’s definition. Instead, it shows combined performance results for _both_ function calls next to the `posPercent()` definition, confirming that the duplicate function is _removed_ during translation.
+
+
+### Removing unused code
+As the compiler translates a script, it verifies which parts of the code affect the script’s _outputs_ , such as plots, drawings, strategy orders, alerts, and Pine Logs. If the script contains code that does not affect any outputs, the compiler recognizes that the code is _unused_ and automatically _discards_ tokens for it in the IL translation. Therefore, manually removing unused code _does not_ reduce a script’s compiled size.
+NoteThis optimization also applies to unused inputs. However, some of the data from `input.*()` function calls is processed separately from a script’s IL translation. Therefore, if an input is unused, it still _appears_ in the script’s “Settings/Inputs” tab, but it does _not_ affect the script’s IL token count.
+The following example script contains a user-defined function that creates an array of simple moving averages over a range of specified lengths. It calls the function to create an array containing averages of close values over 2 to 50 bars, then uses the results to calculate a custom oscillator. However, the script _does not use_ this code in any outputs; the only output from this script is a single `plot(close)` call:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing unused code demo")  
+  
+//#region  
+// None of the code in this region contributes to any script output, such as a plot, drawing, or log.   
+// Therefore, the compiler automatically *discards* it while translating the script.   
+  
+//@function         Calculates simple moving averages of a `source` series over a range of lengths.  
+//@param source     The series of values to process.  
+//@param minLength  The length of the shortest SMA.  
+//@param maxLength  The length of the longest SMA.  
+//@returns          The ID of an array containing each calculated SMA, from shortest to longest.   
+calcSMAs(float source, float minLength, float maxLength) =>  
+    var array<float> result = array.new<float>()  
+    float total = ta.cum(source)  
+    result.clear()  
+    for length = minLength to maxLength  
+        float sum = total - total[length]  
+        float sma = sum / length  
+        result.push(sma)  
+    result  
+  
+//@variable References an array of SMAs over 2 to 50 bars.   
+array<float> smas = calcSMAs(close, 2, 50)  
+  
+//@variable The average of all SMA values in the array.   
+float avgSMA = smas.avg()  
+//@variable The standard deviation of all values in the array.  
+float dev = smas.stdev()  
+//@variable The distance from the shortest SMA to the average SMA, relative to the standard deviation.  
+float osc = (smas.first() - avgSMA) / dev  
+//#endregion  
+  
+// This `plot()` call is the *only* code that generates an output, and it does not depend on the code above.  
+plot(close)  
+`
+The compiler recognizes that the user-defined function and all related calculations are unused by the script’s outputs, so it excludes tokens for that code in the IL translation. Consequently, after this transformation, the script above has the _same_ compiled result as the following script:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing unused code demo")  
+plot(close)  
+`
+
+## Effective techniques to reduce script size
+The following sections list some of the most common types of code changes that can help meaningfully reduce the size of a compiled script. These techniques are effective because they involve code revisions that the compiler _cannot_ perform automatically during translation. The techniques covered below include the following:
+            
+
+### Shrinking or removing embedded data
+One of the most common causes of the “too many tokens” error is a large quantity of _embedded data_ in the translated code. A typical cause of large embedded data is the use of numerous _constant_ values in calls to functions that support arbitrary numbers of arguments, such as array.from().
+The Pine Script compiler embeds every literal “int”, “float”, “bool”, and “string” value used in a source code into the script’s IL translation. Likewise, it automatically evaluates constant expressions of these types, then embeds their results in the translated code to prevent recalculation at runtime. Additionally, if a script uses constant variables or expressions in function or method calls, the compiler _inlines_ their values directly into each call site.
+Therefore, hard-coding numerous constants into a script can significantly increase its compiled size, especially if the script uses them as arguments in function calls. For instance, a single array.from() call with thousands of constant arguments can consume the entire size budget on its own, depending on the saved values.
+To reduce the amount of embedded data in a compiled script:
+  * Swap large constants with concise expressions that compute the same values at _runtime_ where possible.
+  * Replace function calls and other expressions that use long lists of constants with logic that yields equivalent results at runtime. For instance, rather than defining an array.from() call with numerous constant arguments, create a loop that iteratively _calculates_ the elements and _inserts_ them into the array using functions such as array.set() or array.push().
+  * If using a lengthy function call or other expression with many hard-coded values is _unavoidable_ , consider moving the call into a user-defined function and _exporting_ that function from a separate library. See the Splitting the script into parts section to learn more.
+
+
+The following example script calculates a weighted moving average with custom precomputed weights. The script uses a single array.from() call with multiple literal “float” arguments to create an array of weights. It populates a single-row matrix with the array’s elements, calls the matrix.mult() method to calculate a weighted sum, then divides the result by the sum of the weights to compute the moving average. The array.from() call in this script significantly increases the size of the compiled code, because each literal value used as an argument is embedded directly into the IL translation. Adding multiple similar calls to this script can easily cause the “too many tokens” error:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Shrinking embedded data demo", overlay = true)  
+   
+//@variable References an array of precomputed weights. Each weight is a square number.  
+//          Every literal value defined in this `array.from()` call is *embedded* into the compiled code.  
+var array<float> fixedWeights = array.from(  
+    1.0, 4.0, 9.0, 16.0, 25.0, 36.0, 49.0, 64.0, 81.0, 100.0, 121.0, 144.0, 169.0, 196.0, 225.0, 256.0, 289.0, 324.0,   
+    361.0, 400.0, 441.0, 484.0, 529.0, 576.0, 625.0, 676.0, 729.0, 784.0, 841.0, 900.0, 961.0, 1024.0, 1089.0, 1156.0,   
+    1225.0, 1296.0, 1369.0, 1444.0, 1521.0, 1600.0, 1681.0, 1764.0, 1849.0, 1936.0, 2025.0, 2116.0, 2209.0, 2304.0,   
+    2401.0, 2500.0, 2601.0, 2704.0, 2809.0, 2916.0, 3025.0, 3136.0, 3249.0, 3364.0, 3481.0, 3600.0, 3721.0, 3844.0,   
+    3969.0, 4096.0, 4225.0, 4356.0, 4489.0, 4624.0, 4761.0, 4900.0, 5041.0, 5184.0, 5329.0, 5476.0, 5625.0, 5776.0,   
+    5929.0, 6084.0, 6241.0, 6400.0, 6561.0, 6724.0, 6889.0, 7056.0, 7225.0, 7396.0, 7569.0, 7744.0, 7921.0, 8100.0,   
+    8281.0, 8464.0, 8649.0, 8836.0, 9025.0, 9216.0, 9409.0, 9604.0, 9801.0, 10000.0, 10201.0, 10404.0, 10609.0, 10816.0,  
+    11025.0, 11236.0, 11449.0, 11664.0, 11881.0, 12100.0, 12321.0, 12544.0, 12769.0, 12996.0, 13225.0, 13456.0, 13689.0,   
+    13924.0, 14161.0, 14400.0, 14641.0, 14884.0, 15129.0, 15376.0, 15625.0, 15876.0, 16129.0, 16384.0, 16641.0, 16900.0,   
+    17161.0, 17424.0, 17689.0, 17956.0, 18225.0, 18496.0, 18769.0, 19044.0, 19321.0, 19600.0, 19881.0, 20164.0, 20449.0,   
+    20736.0, 21025.0, 21316.0, 21609.0, 21904.0, 22201.0, 22500.0, 22801.0, 23104.0, 23409.0, 23716.0, 24025.0, 24336.0,   
+    24649.0, 24964.0, 25281.0, 25600.0, 25921.0, 26244.0, 26569.0, 26896.0, 27225.0, 27556.0, 27889.0, 28224.0, 28561.0,   
+    28900.0, 29241.0, 29584.0, 29929.0, 30276.0, 30625.0, 30976.0, 31329.0, 31684.0, 32041.0, 32400.0, 32761.0, 33124.0,   
+    33489.0, 33856.0, 34225.0, 34596.0, 34969.0, 35344.0, 35721.0, 36100.0, 36481.0, 36864.0, 37249.0, 37636.0, 38025.0,   
+    38416.0, 38809.0, 39204.0, 39601.0, 40000.0, 40401.0, 40804.0, 41209.0, 41616.0, 42025.0, 42436.0, 42849.0, 43264.0,   
+    43681.0, 44100.0, 44521.0, 44944.0, 45369.0, 45796.0, 46225.0, 46656.0, 47089.0, 47524.0, 47961.0, 48400.0, 48841.0,   
+    49284.0, 49729.0, 50176.0, 50625.0, 51076.0, 51529.0, 51984.0, 52441.0, 52900.0, 53361.0, 53824.0, 54289.0, 54756.0,   
+    55225.0, 55696.0, 56169.0, 56644.0, 57121.0, 57600.0, 58081.0, 58564.0, 59049.0, 59536.0, 60025.0, 60516.0, 61009.0,   
+    61504.0, 62001.0, 62500.0, 63001.0, 63504.0, 64009.0, 64516.0, 65025.0, 65536.0, 66049.0, 66564.0, 67081.0, 67600.0,   
+    68121.0, 68644.0, 69169.0, 69696.0, 70225.0, 70756.0, 71289.0, 71824.0, 72361.0, 72900.0, 73441.0, 73984.0, 74529.0,   
+    75076.0, 75625.0, 76176.0, 76729.0, 77284.0, 77841.0, 78400.0, 78961.0, 79524.0, 80089.0, 80656.0, 81225.0, 81796.0,   
+    82369.0, 82944.0, 83521.0, 84100.0, 84681.0, 85264.0, 85849.0, 86436.0, 87025.0, 87616.0, 88209.0, 88804.0, 89401.0,   
+    90000.0, 90601.0, 91204.0, 91809.0, 92416.0, 93025.0, 93636.0, 94249.0, 94864.0, 95481.0, 96100.0, 96721.0, 97344.0,   
+    97969.0, 98596.0, 99225.0, 99856.0, 100489.0, 101124.0, 101761.0, 102400.0, 103041.0, 103684.0, 104329.0, 104976.0,   
+    105625.0, 106276.0, 106929.0, 107584.0, 108241.0, 108900.0, 109561.0, 110224.0, 110889.0, 111556.0, 112225.0,   
+    112896.0, 113569.0, 114244.0, 114921.0, 115600.0, 116281.0, 116964.0, 117649.0, 118336.0, 119025.0, 119716.0,   
+    120409.0, 121104.0, 121801.0, 122500.0, 123201.0, 123904.0, 124609.0, 125316.0, 126025.0, 126736.0, 127449.0,   
+    128164.0, 128881.0, 129600.0, 130321.0, 131044.0, 131769.0, 132496.0, 133225.0, 133956.0, 134689.0, 135424.0,   
+    136161.0, 136900.0, 137641.0, 138384.0, 139129.0, 139876.0, 140625.0, 141376.0, 142129.0, 142884.0, 143641.0,   
+    144400.0, 145161.0, 145924.0, 146689.0, 147456.0, 148225.0, 148996.0, 149769.0, 150544.0, 151321.0, 152100.0,   
+    152881.0, 153664.0, 154449.0, 155236.0, 156025.0, 156816.0, 157609.0, 158404.0, 159201.0, 160000.0, 160801.0,   
+    161604.0, 162409.0, 163216.0, 164025.0, 164836.0, 165649.0, 166464.0, 167281.0, 168100.0, 168921.0, 169744.0,   
+    170569.0, 171396.0, 172225.0, 173056.0, 173889.0, 174724.0, 175561.0, 176400.0, 177241.0, 178084.0, 178929.0,   
+    179776.0, 180625.0, 181476.0, 182329.0, 183184.0, 184041.0, 184900.0, 185761.0, 186624.0, 187489.0, 188356.0,   
+    189225.0, 190096.0, 190969.0, 191844.0, 192721.0, 193600.0, 194481.0, 195364.0, 196249.0, 197136.0, 198025.0,   
+    198916.0, 199809.0, 200704.0, 201601.0, 202500.0, 203401.0, 204304.0, 205209.0, 206116.0, 207025.0, 207936.0,   
+    208849.0, 209764.0, 210681.0, 211600.0, 212521.0, 213444.0, 214369.0, 215296.0, 216225.0, 217156.0, 218089.0,   
+    219024.0, 219961.0, 220900.0, 221841.0, 222784.0, 223729.0, 224676.0, 225625.0, 226576.0, 227529.0, 228484.0,   
+    229441.0, 230400.0, 231361.0, 232324.0, 233289.0, 234256.0, 235225.0, 236196.0, 237169.0, 238144.0, 239121.0,   
+    240100.0, 241081.0, 242064.0, 243049.0, 244036.0, 245025.0, 246016.0, 247009.0, 248004.0, 249001.0, 250000.0,   
+    251001.0, 252004.0, 253009.0, 254016.0, 255025.0, 256036.0, 257049.0, 258064.0, 259081.0, 260100.0, 261121.0,   
+    262144.0, 263169.0, 264196.0, 265225.0, 266256.0, 267289.0, 268324.0, 269361.0, 270400.0, 271441.0, 272484.0,   
+    273529.0, 274576.0, 275625.0, 276676.0, 277729.0, 278784.0, 279841.0, 280900.0, 281961.0, 283024.0, 284089.0,   
+    285156.0, 286225.0, 287296.0, 288369.0, 289444.0, 290521.0, 291600.0, 292681.0, 293764.0, 294849.0, 295936.0,   
+    297025.0, 298116.0, 299209.0, 300304.0, 301401.0, 302500.0, 303601.0, 304704.0, 305809.0, 306916.0, 308025.0,   
+    309136.0, 310249.0, 311364.0, 312481.0, 313600.0, 314721.0, 315844.0, 316969.0, 318096.0, 319225.0, 320356.0,   
+    321489.0, 322624.0, 323761.0, 324900.0, 326041.0, 327184.0, 328329.0, 329476.0, 330625.0, 331776.0, 332929.0,   
+    334084.0, 335241.0, 336400.0, 337561.0, 338724.0, 339889.0, 341056.0, 342225.0, 343396.0, 344569.0, 345744.0,   
+    346921.0, 348100.0, 349281.0, 350464.0, 351649.0, 352836.0, 354025.0, 355216.0, 356409.0, 357604.0, 358801.0,   
+    360000.0, 361201.0, 362404.0, 363609.0, 364816.0, 366025.0, 367236.0, 368449.0, 369664.0, 370881.0, 372100.0,   
+    373321.0, 374544.0, 375769.0, 376996.0, 378225.0, 379456.0, 380689.0, 381924.0, 383161.0, 384400.0, 385641.0,   
+    386884.0, 388129.0, 389376.0, 390625.0, 391876.0, 393129.0, 394384.0, 395641.0, 396900.0, 398161.0, 399424.0,   
+    400689.0, 401956.0, 403225.0, 404496.0, 405769.0, 407044.0, 408321.0, 409600.0, 410881.0, 412164.0, 413449.0,   
+    414736.0, 416025.0, 417316.0, 418609.0, 419904.0, 421201.0, 422500.0, 423801.0, 425104.0, 426409.0, 427716.0,   
+    429025.0, 430336.0, 431649.0, 432964.0, 434281.0, 435600.0, 436921.0, 438244.0, 439569.0, 440896.0, 442225.0,   
+    443556.0, 444889.0, 446224.0, 447561.0, 448900.0, 450241.0, 451584.0, 452929.0, 454276.0, 455625.0, 456976.0,   
+    458329.0, 459684.0, 461041.0, 462400.0, 463761.0, 465124.0, 466489.0, 467856.0, 469225.0, 470596.0, 471969.0,   
+    473344.0, 474721.0, 476100.0, 477481.0, 478864.0, 480249.0, 481636.0, 483025.0, 484416.0, 485809.0, 487204.0,   
+    488601.0, 490000.0, 491401.0, 492804.0, 494209.0, 495616.0, 497025.0, 498436.0, 499849.0, 501264.0, 502681.0,   
+    504100.0, 505521.0, 506944.0, 508369.0, 509796.0, 511225.0, 512656.0, 514089.0, 515524.0, 516961.0, 518400.0,   
+    519841.0, 521284.0, 522729.0, 524176.0, 525625.0, 527076.0, 528529.0, 529984.0, 531441.0, 532900.0, 534361.0,   
+    535824.0, 537289.0, 538756.0, 540225.0, 541696.0, 543169.0, 544644.0, 546121.0, 547600.0, 549081.0, 550564.0,   
+    552049.0, 553536.0, 555025.0, 556516.0, 558009.0, 559504.0, 561001.0, 562500.0, 564001.0, 565504.0, 567009.0,   
+    568516.0, 570025.0, 571536.0, 573049.0, 574564.0, 576081.0, 577600.0, 579121.0, 580644.0, 582169.0, 583696.0,   
+    585225.0, 586756.0, 588289.0, 589824.0, 591361.0, 592900.0, 594441.0, 595984.0, 597529.0, 599076.0, 600625.0,   
+    602176.0, 603729.0, 605284.0, 606841.0, 608400.0, 609961.0, 611524.0, 613089.0, 614656.0, 616225.0, 617796.0,   
+    619369.0, 620944.0, 622521.0, 624100.0, 625681.0, 627264.0, 628849.0, 630436.0, 632025.0, 633616.0, 635209.0,   
+    636804.0, 638401.0, 640000.0  
+)  
+  
+//@variable References a single-row matrix containing the elements of the `fixedWeights` array.  
+//          The script uses this matrix to calculate the dot product for the average's numerator.  
+var matrix<float> weightMatrix = matrix.new<float>()  
+  
+// Add the `fixedWeights` array's elements to the matrix on the first bar.  
+if barstate.isfirst  
+    weightMatrix.add_row(0, fixedWeights)  
+  
+//@variable References an array of consecutive `close` values.   
+var array<float> prices = array.new<float>(fixedWeights.size())  
+// Queue the current `close` value into the `prices` array on each bar.   
+prices.push(close)  
+prices.shift()  
+  
+// Calculate and plot the weighted average.  
+float weightedAvg = weightMatrix.mult(prices).first() / fixedWeights.sum()  
+plot(weightedAvg, "Weighted average")  
+`
+The array in this example contains a series of _square numbers_ , where the first element is 1 (`1 * 1`), the second is 4 (`2 * 2`), and so on. In other words, each element is the square of `i + 1`, where `i` refers to the element’s index. Therefore, we can reduce our script’s size by calculating the array’s values within a _loop_ rather than defining them directly in the code.
+The script version below creates a persistent array using an `array.new<float>()` call, then uses a loop to populate it on the first bar. On each iteration, the script calculates a square value, then calls the array.push() function to push the value into the array. This version calculates the same results as the previous script, but its compiled size is substantially smaller because we avoided defining a long list of literal values. Additionally, this source code is visibly shorter and simpler to maintain:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Shrinking embedded data demo", overlay = true)  
+   
+//@variable References an array of weights calculated on the first bar. Each weight is a square number.  
+var array<float> fixedWeights = array.new<float>()  
+//@variable References a single-row matrix containing the elements of the `fixedWeights` array.  
+//          The script uses this matrix to calculate the dot product for the average's numerator.  
+var matrix<float> weightMatrix = matrix.new<float>()  
+  
+// Populate the weight array and matrix on the first bar.   
+if barstate.isfirst  
+    // Although this loop executes over a fixed range and uses consistent operations,   
+    // the compiler does not embed all the calculated values into the translated code.   
+    // It includes only necessary tokens for the loop's logic, so the compiled size is much smaller.    
+    for i = 1 to 800  
+        float weight = i * i  
+        fixedWeights.push(weight)  
+    weightMatrix.add_row(0, fixedWeights)  
+  
+//@variable References an array of consecutive `close` values.   
+var array<float> prices = array.new<float>(fixedWeights.size())  
+// Queue the current `close` value into the `prices` array on each bar.   
+prices.push(close)  
+prices.shift()  
+  
+// Calculate and plot the weighted average.  
+float weightedAvg = weightMatrix.mult(prices).first() / fixedWeights.sum()  
+plot(weightedAvg, "Weighted average")  
+`
+NoteWhen modifying code to reduce its compiled size, it’s also important to consider the impact that such changes have on a script’s _runtime_. For instance, populating an array using a loop requires more runtime resources than initializing an array from a list of constants. However, in our example above, we ensure that the script initializes and populates the array on the _first bar_ only, thus minimizing the runtime impact. See the Profiling and optimization page to learn more about writing performant code.
+### Shortening or removing constant strings
+As explained in the section Shrinking or removing embedded data above, the compiler embeds constant values, including strings, into a script’s IL translation where possible. Consequently, using lengthy constant strings in a script can significantly increase the size of the compiled code, especially if the script passes the strings as multiple arguments in function calls.
+If a script with lengthy or multiple constant strings causes the “too many tokens” error, try any of the following to reduce the script’s compiled size:
+  * Remove all lengthy constant strings that the script’s logic does not absolutely require, and try to reduce the length of all others.
+  * Avoid using a long constant string for multiple arguments in function calls. Each instance of the argument’s value is _inlined_ at the call site when possible. Therefore, using the value for multiple arguments can _multiply_ its effect on the compiled code’s size.
+  * Check for repetitive expressions that use the same constant string. If possible, replace the repeated expressions with a single expression that executes in a loop. For instance, if the script contains multiple str.format() calls with the same formatting string, replace them with a loop that executes a _single_ str.format() call multiple times.
+  * Shorten the titles of enum members used by the script’s logic. The titles of enum members are embedded into parts of the code that require their values. By default, the title of each member is the “const string” representation of its _name_. Therefore, if an enum member does not have a specified title, shorten the member’s name or assign it a short title.
+  * If the script requires a specific lengthy string, but does not require it to be a constant, create a user-defined function that returns a “simple” or “series” version of the value, or the ID of a collection that contains the value, then _export_ the function from a separate library. See the Splitting the script into parts section to learn more.
+
+
+### Replacing unrolled statements with loops
+Loop unrolling is a common technique in which the programmer writes a set of repetitive statements and expressions to perform a sequence of calculations without a loop. This technique can marginally improve a script’s runtime in some cases. However, each instance of repeated code that the compiler cannot reduce _adds tokens_ to the script’s IL translation. Consequently, writing several pieces of unrolled code can impact the size of a compiled script.
+Therefore, if a script contains multiple unrolled statements or expressions, defining an equivalent, concise loop to execute the necessary calculations can help reduce the script’s compiled size.
+For example, the following script calculates the number of close values that are greater than the current value over the past 50 bars. The script calculates the value using 50 written statements that perform the same operations using different values. All of the statements are unique and cannot be reduced by the compiler. Therefore, each one adds tokens to the script’s IL translation:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing unrolled code with loops demo")  
+  
+//@variable The number of past `close` values, over the latest 50 bars, that are greater than the current `close` value.   
+int higherCloses = 0  
+  
+// Add 1 to the `higherCloses` value for each past `close` value that is greater than the current value.   
+// All of these statements add separate tokens to the translated code.   
+higherCloses += close[1]  > close ? 1 : 0  
+higherCloses += close[2]  > close ? 1 : 0  
+higherCloses += close[3]  > close ? 1 : 0  
+higherCloses += close[4]  > close ? 1 : 0  
+higherCloses += close[5]  > close ? 1 : 0  
+higherCloses += close[6]  > close ? 1 : 0  
+higherCloses += close[7]  > close ? 1 : 0  
+higherCloses += close[8]  > close ? 1 : 0  
+higherCloses += close[9]  > close ? 1 : 0  
+higherCloses += close[10] > close ? 1 : 0  
+higherCloses += close[21] > close ? 1 : 0  
+higherCloses += close[22] > close ? 1 : 0  
+higherCloses += close[23] > close ? 1 : 0  
+higherCloses += close[24] > close ? 1 : 0  
+higherCloses += close[25] > close ? 1 : 0  
+higherCloses += close[26] > close ? 1 : 0  
+higherCloses += close[27] > close ? 1 : 0  
+higherCloses += close[28] > close ? 1 : 0  
+higherCloses += close[29] > close ? 1 : 0  
+higherCloses += close[30] > close ? 1 : 0  
+higherCloses += close[31] > close ? 1 : 0  
+higherCloses += close[32] > close ? 1 : 0  
+higherCloses += close[33] > close ? 1 : 0  
+higherCloses += close[34] > close ? 1 : 0  
+higherCloses += close[35] > close ? 1 : 0  
+higherCloses += close[36] > close ? 1 : 0  
+higherCloses += close[37] > close ? 1 : 0  
+higherCloses += close[38] > close ? 1 : 0  
+higherCloses += close[39] > close ? 1 : 0  
+higherCloses += close[40] > close ? 1 : 0  
+higherCloses += close[41] > close ? 1 : 0  
+higherCloses += close[42] > close ? 1 : 0  
+higherCloses += close[43] > close ? 1 : 0  
+higherCloses += close[44] > close ? 1 : 0  
+higherCloses += close[45] > close ? 1 : 0  
+higherCloses += close[46] > close ? 1 : 0  
+higherCloses += close[47] > close ? 1 : 0  
+higherCloses += close[48] > close ? 1 : 0  
+higherCloses += close[49] > close ? 1 : 0  
+higherCloses += close[50] > close ? 1 : 0  
+  
+plot(higherCloses)  
+`
+We can reduce our script’s token count by replacing all the repetitive statements with a single loop that executes the required logic iteratively. The script version below uses a for loop that increments its counter variable (`i`) from 1 to 50. The single statement in the loop’s local block increments the `higherCloses` value on each iteration where the value of `close[i]` is greater than the close value on the current bar. This version of the script achieves the same result as the previous version, but its compiled size is significantly smaller:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing unrolled code with loops demo")  
+  
+//@variable The number of past `close` values, over the latest 50 bars, that are greater than the current `close` value.   
+int higherCloses = 0  
+  
+// Add 1 to the `higherCloses` value for each past `close` value that is greater than the current value.   
+// This loop consumes fewer tokens than an equivalent set of unrolled statements, and it is easier to maintain.  
+for i = 1 to 50  
+    higherCloses += close[i] > close ? 1 : 0  
+  
+plot(higherCloses)  
+`
+Note
+If a set of unrolled statements depend on past values of variables or expressions defined within a _local block_ or a _function call scope_ , keeping them _out_ of a loop is typically necessary for correct results. For example, a statement containing a call to the ta.rsi() function causes compiler warning CW10003 when used inside a loop, because the function call references past values from its scope internally.
+  
+
+If lengthy unrolled statements cannot be condensed into a loop without affecting their results, try encapsulating the logic in a _function_ and replacing the statements with concise function calls. See the Encapsulating code in functions section below to learn more.
+### Encapsulating code in functions
+Function calls in Pine Script are _not inlined_ , meaning the compiler does not replace each function call with a copy of the function’s body during translation, unlike the compilers for some other languages. However, the compiler does typically include tokens for _each argument_ in a function call, including the function’s _default_ arguments. Therefore, the size that each function call contributes to a compiled script often varies with the number of _parameters_.
+Calls to functions with few parameters typically have low impact on the size of the compiled code, unless the arguments are lengthy constant strings. By contrast, calls to functions with many parameters, or to functions that support an arbitrary number of arguments, can significantly impact a compiled script’s size in some cases. See the Shrinking or removing embedded data section above for an example.
+If a script contains multiple large, repetitive statements or expressions, or calls to functions with many parameters, encapsulating that code in a separate user-defined function containing as few parameters as possible can help reduce the size of a compiled script.
+Tip _Exporting_ an encapsulating function from a library can help further reduce a script’s compiled size. Libraries are compiled _separately_ from the scripts that import them, and Pine Script applies _separate limits_ to imported code. See the Splitting the script into parts section to learn more.
+The following example script calculates an average Efficiency Ratio across several periods that are powers of two. The script declares a variable with an initial value of 0, then uses nine addition assignment operations that use the same expressions but different length values. It then divides the value by 9 and plots the result. Each of the repetitive statements in this script contributes multiple tokens to the script’s IL translation. We cannot simplify the script by replacing the statements with a loop, because the ta.change() and math.sum() calls require _one_ execution on _every bar_ for correct results:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Encapsulating code in functions demo")  
+  
+//@variable The average Efficiency Ratio measured across multiple periods that are powers of 2.  
+float avgEfficiency = 0.0  
+  
+// Calculate each period's value as the ratio of absolute change to the total bar-by-bar change over the period,  
+// and add it to the total. Each repetitive expression here contributes to the script's compiled size.  
+avgEfficiency += math.abs(ta.change(close, 8)) / math.sum(math.abs(close - close[1]), 8)  
+avgEfficiency += math.abs(ta.change(close, 16)) / math.sum(math.abs(close - close[1]), 16)  
+avgEfficiency += math.abs(ta.change(close, 32)) / math.sum(math.abs(close - close[1]), 32)  
+avgEfficiency += math.abs(ta.change(close, 64)) / math.sum(math.abs(close - close[1]), 64)  
+avgEfficiency += math.abs(ta.change(close, 128)) / math.sum(math.abs(close - close[1]), 128)  
+avgEfficiency += math.abs(ta.change(close, 256)) / math.sum(math.abs(close - close[1]), 256)  
+avgEfficiency += math.abs(ta.change(close, 512)) / math.sum(math.abs(close - close[1]), 512)  
+avgEfficiency += math.abs(ta.change(close, 1024)) / math.sum(math.abs(close - close[1]), 1024)  
+avgEfficiency += math.abs(ta.change(close, 2048)) / math.sum(math.abs(close - close[1]), 2048)  
+  
+// Divide the result by 9 to calculate the average.   
+avgEfficiency /= 9  
+  
+plot(avgEfficiency, "Average ER")  
+`
+We can reduce our script’s size by encapsulating the structure of the repetitive expressions within a user-defined function, then replacing each expression with a concise function call. The script version below defines a `calcER()` function, which calculates the Efficiency Ratio of close values over a specified length. It then uses a call to this function instead of the repeated expressions in each addition assignment operation. Each `calcER()` call is not inlined; the compiler adds tokens only for the function’s reference and its single argument. Therefore, in addition to being visibly more compact, this version has a smaller compiled size:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Encapsulating code in functions demo")  
+  
+//@function Calculates the Kaufman's Efficiency Ratio for `close` values over a specified length.   
+//          The compiler does not inline this function's body into each function call. The calculations in the   
+//          function's body are defined only once in the compiled code.   
+calcER(int length) =>   
+    math.abs(ta.change(close, length)) / math.sum(math.abs(close - close[1]), length)  
+  
+  
+//@variable The average Efficiency Ratio measured across multiple periods that are powers of 2.  
+float avgEfficiency = 0.0  
+  
+// Calculate each period's value as the ratio of absolute change to the total bar-by-bar change over the period,  
+// and add it to the total.  
+// The concise `calcER()` calls below add tokens only for the function's reference and each "int" argument.  
+// Therefore, each repetitive statement here has a lower impact on the compiled size.   
+avgEfficiency += calcER(8)  
+avgEfficiency += calcER(16)  
+avgEfficiency += calcER(32)  
+avgEfficiency += calcER(64)  
+avgEfficiency += calcER(128)  
+avgEfficiency += calcER(256)  
+avgEfficiency += calcER(512)  
+avgEfficiency += calcER(1024)  
+avgEfficiency += calcER(2048)  
+  
+// Divide the result by 9 to calculate the average.   
+avgEfficiency /= 9  
+  
+plot(avgEfficiency, "Average ER")  
+`
+### Replacing custom code with built-ins
+Pine Script features many built-in functions and variables that help simplify code and streamline script creation. Each written call to a built-in function produces compiled tokens for only the function’s reference and the call’s arguments. Similarly, many built-in variables produce minimal tokens for referencing data calculated outside the script.
+Sometimes, programmers create custom code that mirrors built-ins or yields equivalent results. Custom code implementations provide extra freedom to modify calculations as needed. However, they also typically contribute _more tokens_ to a script’s IL translation. Therefore, if a script performs calculations that can be done with built-ins, replacing those calculations with built-ins can often help reduce a script’s compiled size.
+TipIn many cases, using built-ins instead of custom code can also help improve a script’s _runtime_ performance. See the Using built-ins section of the Profiling and optimization page to learn more.
+The following example script computes a weighted moving average of hlc3 values over an input length, and it calculates the daily volume-weighted average price. The script uses custom functions to compute both values rather than using equivalent built-ins. All the code defined within those functions adds tokens to the script’s IL translation, thus increasing its size:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing custom code with built-ins demo", overlay = true)  
+  
+//@variable The number of bars in the weighted moving average.   
+int lengthInput = input.int(20, "WMA length", 2)  
+  
+//@function A custom function that calculates the weighted moving average of a series over a fixed length.  
+//          This function is equivalent to using `ta.wma()` with a consistent `length` argument.   
+wma(float source, simple int length) =>  
+    var float sum = 0.0  
+    var float numerator = 0.0  
+    var float denominator = 0.5 * length * (length + 1)  
+    sum += source - nz(source[length])  
+    numerator += length * source - nz(sum[1])  
+    bar_index < length ? na : numerator / denominator  
+  
+//@function A custom function that calculates the daily volume-weighted average price.  
+//          This function produces the same result stored by the `ta.vwap` variable.     
+calcDailyVWAP() =>  
+    var float numerator = 0.0  
+    var float denominator = 0.0  
+    if timeframe.change("1D")  
+        numerator := 0.0  
+        denominator := 0.0  
+    numerator += hlc3 * volume  
+    denominator += volume  
+    numerator / denominator  
+      
+//@variable The 20-bar weighted average of `hlc3` values.  
+float wmaSeries = wma(hlc3, 20)  
+//@variable The daily VWAP.  
+float vwapSeries = calcDailyVWAP()  
+  
+// Plot both series on the chart.  
+plot(wmaSeries, "WMA", wmaSeries > vwapSeries ? color.green : color.red, 3)  
+plot(vwapSeries, "VWAP", color.orange)  
+`
+Implementing custom functions for our script’s calculations is _unnecessary_. We can use the built-in ta.wma() function to calculate the weighted moving average, and use the ta.vwap variable to retrieve the daily volume-weighted average price. The script version below implements these changes. This version computes the same results, is visibly shorter, and has a smaller compiled size:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Replacing custom code with built-ins demo", overlay = true)  
+  
+//@variable The number of bars in the weighted moving average.   
+int lengthInput = input.int(20, "WMA length", 2)  
+      
+//@variable The 20-bar weighted average of `hlc3` values.  
+float wmaSeries = ta.wma(hlc3, 20)  
+//@variable The daily VWAP.  
+float vwapSeries = ta.vwap  
+  
+// Plot both series on the chart.  
+plot(wmaSeries, "WMA", wmaSeries > vwapSeries ? color.green : color.red, 3)  
+plot(vwapSeries, "VWAP", color.orange)  
+`
+### Splitting the script into parts
+If a script causes the “too many tokens” error, and no manual source code revisions resolve it without compromising the script’s logic, the typical solution is to split the code into two or more smaller scripts or offload reusable code components into libraries. Distributing a script’s logic across multiple scripts directly reduces the compiled tokens from a single source code.
+Programmers can try any of the following to split a large script’s logic, depending on the types of code it uses and the tasks that it performs:
+  * If the script contains multiple large function or method definitions, consider exporting them from a separate library, and importing that library into the script. Likewise, if the script contains several lengthy statements, consider defining exported library functions to encapsulate those statements, if possible. Moving functions to libraries often fixes the problem, because libraries are compiled _independently_ and their code does _not_ directly affect the compiled size of the scripts that import them. A single script can import multiple libraries, provided their _combined_ size does not exceed _1 million_ tokens. Refer to the Libraries page to learn more about library scripts and how to use them.
+  * If the script performs multiple independent tasks, create _independent scripts_ for each task instead. For example, if a script calculates multiple complex indicators for no reason other than to consolidate them into a single source code, move each indicator’s logic into a separate script to keep compiled sizes low.
+  * If the script performs a lengthy set of related calculations, consider creating separate indicators for _intermediate stages_ of those calculations, then use plots and source inputs to pass data between them. To learn more about connecting scripts to other scripts, refer to the How to apply an indicator or strategy to another indicator article in our Help Center. Note that charts allow up to _24_ total indicator-on-indicator connections, and a maximum of _11_ indicators connected _sequentially_ (i.e., `indicator_1 -> indicator_2 -> ... indicator_11`). See this related article in our Help Center for more information.
+
+
+ Previous CE10101    Next CW10003
+
+## * Compiled code contains too many tokens
+* Ineffective code changes
+  * Revising or removing comments
+  * Removing whitespaces and merging code lines
+  * Changing code identifiers
+  * Swapping constant expressions and values
+  * Reducing identical expressions and functions
+  * Removing unused code
+  * Effective techniques to reduce script size
+  * Shrinking or removing embedded data
+  * Shortening or removing constant strings
+  * Replacing unrolled statements with loops
+  * Encapsulating code in functions
+  * Replacing custom code with built-ins
+  * Splitting the script into parts
+
+
+## Function Documentation
+
+
+@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    float result = 100 * posSum / length  
+  
+// Plot the result of the same `posPercent()` call seven times.   
+plot(posPercent((close - open) / (high - low), 10), color = color.red,    linewidth = 7)  
+plot(posPercent((close - open) / (high - low), 10), color = color.orange, linewidth = 6)  
+plot(posPercent((close - open) / (high - low), 10), color = color.yellow, linewidth = 5)  
+plot(posPercent((close - open) / (high - low), 10), color = color.green,  linewidth = 4)  
+plot(posPercent((close - open) / (high - low), 10), color = color.teal,   linewidth = 3)  
+plot(posPercent((close - open) / (high - low), 10), color = color.blue,   linewidth = 2)  
+plot(posPercent((close - open) / (high - low), 10), color = color.purple, linewidth = 1)  
+`
+As the compiler translates the script, it verifies that all seven `posPercent()` expressions use identical value-type arguments, perform operations in the _same order_ , and return the same result. It then restructures the script to execute only _one_ call to the function and _reuse_ the result in all the plot() calls. Therefore, the script has the _same_ IL translation as the following script, which assigns one `posPercent()` call to a single variable and plots the variable’s value seven times:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Identical expressions demo")  
+  
+//@function Calculates the percentage of `source` values that are positive over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    float result = 100 * posSum / length  
+  
+//@variable The percentage of positive body-to-wick ratios over 10 bars.  
+float percentPositive = posPercent((close - open) / (high - low), 10)  
+  
+// Plot the `percentPositive` value seven times.  
+plot(percentPositive, color = color.red,    linewidth = 7)  
+plot(percentPositive, color = color.orange, linewidth = 6)  
+plot(percentPositive, color = color.yellow, linewidth = 5)  
+plot(percentPositive, color = color.green,  linewidth = 4)  
+plot(percentPositive, color = color.teal,   linewidth = 3)  
+plot(percentPositive, color = color.blue,   linewidth = 2)  
+plot(percentPositive, color = color.purple, linewidth = 1)  
+`
+Similar to the above, if the compiler identifies user-defined functions or methods that are structurally identical, have the same parameter types, and consistently return matching results when passed the same arguments, it automatically _removes_ the duplicate function definitions from the translated code rather than including tokens for each one, when possible. The compiled script then treats each call to a duplicate function as an _alias_ for a call to the _first_ function. Therefore, manually removing such duplicate functions from the code does not typically affect the compiled script’s size.
+NoteThis optimization applies only to _non-exported_ functions that can be verified as identical at compile time. It does not affect equivalent definitions that use rearranged calculations, reference types, or code that produces varying results. _Exported_ functions and methods _always_ add tokens to a compiled library, even if two or more of the functions are structurally identical. Programmers can often check whether a duplicate function is removed during compilation by profiling the script. See the Insignificant, unused, and redundant code section of the Profiling and optimization page to learn more. If two or more functions are structurally different but produce equivalent results, programmers can remove the redundant functions manually to reduce the compiled size.
+To illustrate this behavior, the following script includes the `posPercent()` function from our previous example, along with a separate function named `f()` that follows the _same_ structure and differs only in its _identifiers_. The script executes one `posPercent()` call and one `f()` call, then plots the results:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing identical functions demo")  
+  
+//@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    log.info(str.tostring(posSum))  
+    float result = 100 * posSum / length  
+  
+//@function A copy of `posPercent()`. Follows an identical structure, but uses different identifiers.  
+f(float s, int l) =>  
+    float ps = math.sum(s > 0 ? 1 : 0, l)  
+    log.info(str.tostring(ps))  
+    float r  = 100 * ps / l  
+  
+//@variable The ratio of the bar's body range to its wick range.   
+float barRatio = (close - open) / (high - low)  
+  
+// Plot the results from calls to both functions.   
+plot(posPercent(barRatio, 10))  
+plot(f(barRatio, 20)) // The compiled script treats this `f()` call as a call to `posPercent()`.  
+`
+Aside from differences in identifiers, both functions in the script are _identical_. They have the same required parameters, rely on the same value types, perform calculations in the same order, and return matching values when passed the same arguments. The compiler recognizes this pattern and includes tokens for only the _first_ function definition in the IL translation. After this transformation, the `f()` call is treated as a call to `posPercent()`. Therefore, the above script has the **same** compiled form as the script below:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing identical functions demo")  
+  
+//@function Calculates the percentage of positive values in the `source` series over a specified length.  
+posPercent(float source, int length) =>  
+    float posSum = math.sum(source > 0 ? 1 : 0, length)  
+    log.info(str.tostring(posSum))  
+    float result = 100 * posSum / length  
+  
+//@variable The ratio of the bar's body range to its wick range.   
+float barRatio = (close - open) / (high - low)  
+  
+// Plot the results from two calls to the function.  
+plot(posPercent(barRatio, 10))  
+plot(posPercent(barRatio, 20))  
+`
+Note that:
+  * If we profile the previous script that contains an `f()` call, the Pine Profiler does _not_ display any performance data next to the lines in that function’s definition. Instead, it shows combined performance results for _both_ function calls next to the `posPercent()` definition, confirming that the duplicate function is _removed_ during translation.
+
+
+### Removing unused code
+As the compiler translates a script, it verifies which parts of the code affect the script’s _outputs_ , such as plots, drawings, strategy orders, alerts, and Pine Logs. If the script contains code that does not affect any outputs, the compiler recognizes that the code is _unused_ and automatically _discards_ tokens for it in the IL translation. Therefore, manually removing unused code _does not_ reduce a script’s compiled size.
+NoteThis optimization also applies to unused inputs. However, some of the data from `input.*()` function calls is processed separately from a script’s IL translation. Therefore, if an input is unused, it still _appears_ in the script’s “Settings/Inputs” tab, but it does _not_ affect the script’s IL token count.
+The following example script contains a user-defined function that creates an array of simple moving averages over a range of specified lengths. It calls the function to create an array containing averages of close values over 2 to 50 bars, then uses the results to calculate a custom oscillator. However, the script _does not use_ this code in any outputs; the only output from this script is a single `plot(close)` call:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Removing unused code demo")  
+  
+//#region  
+// None of the code in this region contributes to any script output, such as a plot, drawing, or log.   
+// Therefore, the compiler automatically *discards* it while translating the script.   
+  
+//@function         Calculates simple moving averages of a `source` series over a range of lengths.  
+//@param source     The series of values to process.  
+//@param minLength  The length of the shortest SMA.  
+//@param maxLength  The length of the longest SMA.  
+//@returns          The ID of an array containing each calculated SMA, from shortest to longest.   
+
+
+---
+
+
+
+# processed_54_CW10003_20260819_030233
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -34877,13 +35686,13 @@ For example, forcing calls to the label.new() function inside an if structure to
 ###  Exceptions
 Not all functions use previous values from their scopes in their calculations. Calls to such functions _do not_ require execution on every bar for correct results. For example, the built-in math.max() function returns the maximum value from its specified arguments. It does not use past values from its scope in its calculations. Therefore, calling the function conditionally or iteratively does _not_ affect the function’s behavior.
 If the use of a function call in a local block does not cause a compiler warning, it is typically safe to use the call in that block without affecting the call’s calculations. However, if the warning occurs, move the function call to the global scope and outside ternary or and/or operations to ensure consistency. If you choose to keep a function call within a local block or a conditional expression despite encountering a warning, debug the script carefully to avoid unintended results.
- Previous CE10101    Next RE10139
+ Previous CE10117    Next RE10139
 
 ---
 
 
 
-# processed_54_RE10139_20260816_025723
+# processed_55_RE10139_20260819_030233
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -35134,7 +35943,7 @@ See the How do I filter trades by a date or time range? portion of our Strategie
 
 
 
-# processed_55_RE10143_20260816_025723
+# processed_56_RE10143_20260819_030233
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -35240,7 +36049,7 @@ max_bars_back(time, 500)
 
 
 
-# processed_56_general_20260816_025723
+# processed_57_general_20260819_030233
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we’ve added a Pine script on it:
@@ -35442,7 +36251,7 @@ plot(vw)  // all na values are replaced with the last non-empty valu
 
 
 
-# processed_57_alerts_20260816_025723
+# processed_58_alerts_20260819_030233
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -36002,7 +36811,7 @@ See the Telegram Bot API documentation for detailed technical information.
 
 
 
-# processed_58_data-structures_20260816_025723
+# processed_59_data-structures_20260819_030233
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -36884,7 +37693,7 @@ if session.isfirstbar_regular
 
 
 
-# processed_59_functions_20260816_025723
+# processed_60_functions_20260819_030233
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -37144,7 +37953,7 @@ Copied
 
 
 
-# processed_60_indicators_20260816_025723
+# processed_61_indicators_20260819_030233
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -37252,7 +38061,7 @@ To determine if a condition is true or false, use the plotshape() function, whic
 
 
 
-# processed_61_other-data-and-timeframes_20260816_025723
+# processed_62_other-data-and-timeframes_20260819_030233
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -37501,7 +38310,7 @@ For an extended list of factors with detailed explanations, refer to the Data fe
 
 
 
-# processed_62_programming_20260816_025723
+# processed_63_programming_20260819_030233
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -37638,7 +38447,7 @@ Additionally, right-clicking on the scale on the chart brings out the dropdown m
 
 
 
-# processed_63_strategies_20260816_025723
+# processed_64_strategies_20260819_030233
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -38743,7 +39552,7 @@ Copied
 
 
 
-# processed_64_strings-and-formatting_20260816_025723
+# processed_65_strings-and-formatting_20260819_030233
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -38963,7 +39772,7 @@ if barstate.islast
 
 
 
-# processed_65_techniques_20260816_025723
+# processed_66_techniques_20260819_030233
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -39809,7 +40618,7 @@ Alternatively, use Pine Logs or drawings to display values from within local sco
 
 
 
-# processed_66_times-dates-and-sessions_20260816_025723
+# processed_67_times-dates-and-sessions_20260819_030233
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in variable, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -40614,7 +41423,7 @@ indicator("Days in month")
 
 
 
-# processed_67_variables-and-operators_20260816_025723
+# processed_68_variables-and-operators_20260819_030233
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -40835,7 +41644,7 @@ To avoid unwanted false negatives, write code that checks for na values and, if 
 
 
 
-# processed_68_visuals_20260816_025723
+# processed_69_visuals_20260819_030233
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements — or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -41649,7 +42458,7 @@ To color the entire chart background based on a condition detected on the last b
 
 
 
-# processed_69_release-notes_20260816_025723
+# processed_70_release-notes_20260819_030233
 
 ## 2026
 ### August 2026
@@ -41950,30 +42759,13 @@ The time() and time_close() functions feature a new parameter: `timeframe_bars_b
 If a call to time() or time_close() includes arguments for _both_ the `bars_back` and `timeframe_bars_back` parameters, it determines the timestamp corresponding to the `bars_back` offset _first_. Then, it applies the `timeframe_bars_back` offset to that time to calculate the final timestamp. For example:
 Pine Script®
 Copied
-`//@version=6  
-indicator("`bars_back` and `timeframe_bars_back` demo")  
-  
-//@variable The number of bars back on the script's main timeframe (chart timeframe).  
-int barsBackInput = input.int(10, "Chart bar offset")  
-//@variable The number of bars back on the "1M" timeframe.  
-int tfBarsBackInput = input.int(3, "'1M' bar offset")  
-  
-//@variable The opening UNIX timestamp of the current "1M" bar.  
-int monthTime = time("1M")  
-//@variable The opening time of the "1M" bar that contains the bar from `barsBackInput` bars back on the main timeframe.   
-int offsetTime1 = time("1M", bars_back = barsBackInput)  
-//@variable The "1M" opening time that is `tfBarsBackInput` monthly bars back, relative to the "1M" bar that opens at `offsetTime1`.  
-//          This `time()` call first determines the "1M" bar time corresponding to `barsBackInput` bars back on the   
-//          main timeframe, just like the previous call. Then, it calculates and returns the "1M" opening time that is   
-//          `tfBarsBackInput` *monthly* bars back relative to that time.  
-int offsetTime2 = time("1M", bars_back = barsBackInput, timeframe_bars_back = tfBarsBackInput)  
-  
-// Plot the values for visual comparison.  
-plot(monthTime, "No offset")  
-plot(offsetTime1, "`bars_back`", color.red)  
-plot(offsetTime2, "`bars_back` + `timeframe_bars_back`", color.purple)  
-// Log formatted timestamps in the Pine Logs pane.  
-log.info("\n{0}\n{1}\n{2}", str.format_time(monthTime), str.format_time(offsetTime1), str.format_time(offsetTime2))  
+`//@version=4  
+study("My Script", overlay = true)  
+length = input(10, "Length", input.integer, minval = 1, maxval = 100)  
+avgBar = avg(highestbars(length), lowestbars(length))  
+float dynLen = nz(abs(avgBar) + 1, length)  
+dynSma = sma(close, int(dynLen))  
+plot(dynSma)  
 `
 ### September 2025
 The plot() function can now draw dotted and dashed lines via the new `linestyle` parameter, which takes one of the following arguments: plot.linestyle_solid, plot.linestyle_dashed, or plot.linestyle_dotted. The `linestyle` parameter setting takes effect only for `style` arguments that plot lines.
@@ -43183,7 +43975,7 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 
 
 
-# processed_70_overview_20260816_025723
+# processed_71_overview_20260819_030233
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -43195,7 +43987,7 @@ A script can be converted only if its code compiles successfully. In rare cases,
 
 
 
-# processed_71_to-pine-version-6_20260816_025723
+# processed_72_to-pine-version-6_20260819_030233
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -44185,7 +44977,7 @@ plot(belowCount, "Closes below OHLC4", color.blue, 3)
 
 
 
-# processed_72_to-pine-version-5_20260816_025723
+# processed_73_to-pine-version-5_20260819_030233
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -44617,7 +45409,7 @@ See the User Manual’s page on Inputs, and the Some function parameters now req
 
 
 
-# processed_73_to-pine-version-4_20260816_025723
+# processed_74_to-pine-version-4_20260819_030233
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -44662,7 +45454,7 @@ plot(src)
 
 
 
-# processed_74_to-pine-version-3_20260816_025723
+# processed_75_to-pine-version-3_20260819_030233
 
 ## Default behaviour of security function has changed
 Let’s look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -44783,10 +45575,10 @@ Function `bton` (abbreviation of boolean-to-number) explicitly converts any bool
 
 
 
-# processed_75_to-pine-version-2_20260816_025723
+# processed_76_to-pine-version-2_20260819_030233
 
-## 75_to-pine-version-2_20260816_025723
-# 75_to-pine-version-2
+## 76_to-pine-version-2_20260819_030233
+# 76_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
 
@@ -44797,7 +45589,7 @@ Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-ve
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -44812,7 +45604,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -44842,7 +45634,7 @@ plot(sma(src, length))
 
 
 
-# processed_76_where-can-i-get-more-information_20260816_025723
+# processed_77_where-can-i-get-more-information_20260819_030233
 
 ## External resources
 * You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.

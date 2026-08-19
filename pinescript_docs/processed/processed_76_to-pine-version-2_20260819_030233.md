@@ -1,5 +1,5 @@
-## 75_to-pine-version-2_20260816_025723
-# 75_to-pine-version-2
+## 76_to-pine-version-2_20260819_030233
+# 76_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
 
@@ -10,7 +10,7 @@ Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-ve
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -25,7 +25,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 

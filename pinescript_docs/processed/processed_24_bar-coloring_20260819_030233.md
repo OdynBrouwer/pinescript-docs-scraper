@@ -1,4 +1,4 @@
-## 24_bar-coloring_20260816_025723
+## 24_bar-coloring_20260819_030233
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -10,7 +10,7 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -25,7 +25,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 

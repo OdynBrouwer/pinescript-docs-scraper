@@ -1,4 +1,4 @@
-## 23_backgrounds_20260816_025723
+## 23_backgrounds_20260819_030233
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -10,7 +10,7 @@ Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -25,7 +25,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 

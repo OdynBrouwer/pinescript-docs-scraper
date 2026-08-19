@@ -1,4 +1,4 @@
-## 1_welcome_20260816_025723
+## 1_welcome_20260819_030233
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -10,7 +10,7 @@ Source: https://www.tradingview.com/pine-script-docs/welcome
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 
@@ -25,7 +25,7 @@ Search results
                                               * Concepts
                                                       * Writing scripts
                       * Errors and warnings
-                      * FAQ
+                          * FAQ
                                                         * Migration guides
                           
 

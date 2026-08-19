@@ -841,24 +841,15 @@ For example, the script below declares a `LENGTH` variable of the “const float
 Pine Script®
 Copied
 `//@version=6  
-indicator("Modifying global variables in conditional structures demo")  
+indicator("Invalid type demo", overlay = true)  
   
-//@variable The number of conditions that occur before the counter value resets.  
-int cycleSizeInput = input.int(10, "Cycle size", 1)  
+//@variable Holds a "const float" value intended for use in the `length` argument of `ta.sma()`.  
+float LENGTH = 10.0  
   
-//@variable A persistent global variable for counting occurrences of a condition in cycles.   
-var int counter = 0  
+// This line causes an error, because the `length` parameter has the expected type "series int".  
+float sma = ta.sma(close, length = LENGTH)  
   
-// Logic to update `counter` based on a pseudorandom condition.  
-if math.random() < 0.5  
-    // Increase the `counter` value by one when the condition occurs.  
-    counter += 1  
-    // Reset the `counter` value to 1 if it exceeds the value of `cycleSizeInput`.   
-    if counter > cycleSizeInput  
-        counter := 1  
-  
-// Plot the `counter` value.  
-plot(counter, "Counter value")  
+plot(sma)  
 `
 The above code causes the following compilation error:
 
