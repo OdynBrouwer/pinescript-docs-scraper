@@ -185,42 +185,26 @@ The following example illustrates how changing the level of historical bar detai
 Pine Script®
 Copied
 `//@version=6  
-strategy("Default historical detail demo", overlay = true, behind_chart = false)  
+strategy("Multiple limits without reduction demo", overlay = true, behind_chart = false)  
   
-//@variable The minimum opening timestamp for the bar on which to place the orders.  
-int orderTime = input.time(timestamp("08 April 2024 00:00"), "Order time")  
+var float stop   = na  
+var float limit1 = na  
+var float limit2 = na  
   
-// Declare variables to reference the lines for the entry and exit levels.  
-var line buyLine = na  
-var line exitLine  = na  
+bool longCondition = ta.crossover(ta.sma(close, 5), ta.sma(close, 9))  
+if longCondition and strategy.position_size == 0  
+    stop   := close * 0.99  
+    limit1 := close * 1.01  
+    limit2 := close * 1.02  
+    strategy.entry("Long",  strategy.long, 6)  
+    strategy.order("Stop",  strategy.short, stop = stop, qty = 6)  
+    strategy.order("Limit 1", strategy.short, limit = limit1, qty = 3)  
+    strategy.order("Limit 2", strategy.short, limit = limit2, qty = 3)  
   
-//@variable Translucent orange for the bar on which the script creates the orders, and `na` on all other bars.   
-color orderColor = na  
-  
-// Logic to place and visualize the orders  
-if time[1] < orderTime and time >= orderTime  
-    // Calculate the order price levels.  
-    float buyPrice  = hl2 - (high - low)  
-    float exitPrice = buyPrice + (high - low) * 0.25   
-  
-    // Place the "Buy" limit order at the `buyPrice` level.  
-    strategy.entry("Buy", strategy.long, limit = buyPrice)  
-    // Place the "Exit" limit order at the `exitPrice` level.  
-    strategy.exit("Exit", "Buy", limit = exitPrice)  
-  
-    // Set the `orderColor` value to a translucent orange for the chart's background.  
-    orderColor := #ff980033  
-    // Initialize horizontal lines to visualize the order prices.  
-    buyLine  := line.new(bar_index, buyPrice,  bar_index + 1, buyPrice,  color = #2962ff, width = 2)  
-    exitLine := line.new(bar_index, exitPrice, bar_index + 1, exitPrice, color = #d500f9, width = 2)  
-  
-// Extend the horizontal lines to the current bar when the position closes.   
-if ta.change(strategy.closedtrades) > 0  
-    buyLine.set_x2(bar_index)  
-    exitLine.set_x2(bar_index)  
-  
-// Highlight the chart's background on the order bar.   
-bgcolor(orderColor)  
+bool showPlot = strategy.position_size != 0  
+plot(showPlot ? stop   : na, "Stop",    color.red,   style = plot.style_linebr)  
+plot(showPlot ? limit1 : na, "Limit 1", color.green, style = plot.style_linebr)  
+plot(showPlot ? limit2 : na, "Limit 2", color.green, style = plot.style_linebr)  
 `
 If we apply this script to a weekly “NASDAQ:MSFT” chart, the broker emulator fills the “Buy” order one bar after the script creates the orders, then fills the “Exit” order several bars later. On the bar where the “Buy” order fills, the open is closer to the high than it is to the low, so the emulator assumes that the price moved from open to high, high to low, then low to close. Consequently, the emulator infers that after the market price crossed below the blue line, triggering the “Buy” order, it did not move back up and touch the fuchsia line to trigger the “Exit” order on the same bar. In other words, the strategy could not enter and exit the position in the _same_ week, according to the broker emulator’s assumptions:
 !image

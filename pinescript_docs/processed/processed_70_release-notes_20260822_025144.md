@@ -297,13 +297,30 @@ The time() and time_close() functions feature a new parameter: `timeframe_bars_b
 If a call to time() or time_close() includes arguments for _both_ the `bars_back` and `timeframe_bars_back` parameters, it determines the timestamp corresponding to the `bars_back` offset _first_. Then, it applies the `timeframe_bars_back` offset to that time to calculate the final timestamp. For example:
 Pine Script®
 Copied
-`//@version=4  
-study("My Script", overlay = true)  
-length = input(10, "Length", input.integer, minval = 1, maxval = 100)  
-avgBar = avg(highestbars(length), lowestbars(length))  
-float dynLen = nz(abs(avgBar) + 1, length)  
-dynSma = sma(close, int(dynLen))  
-plot(dynSma)  
+`//@version=6  
+indicator("`bars_back` and `timeframe_bars_back` demo")  
+  
+//@variable The number of bars back on the script's main timeframe (chart timeframe).  
+int barsBackInput = input.int(10, "Chart bar offset")  
+//@variable The number of bars back on the "1M" timeframe.  
+int tfBarsBackInput = input.int(3, "'1M' bar offset")  
+  
+//@variable The opening UNIX timestamp of the current "1M" bar.  
+int monthTime = time("1M")  
+//@variable The opening time of the "1M" bar that contains the bar from `barsBackInput` bars back on the main timeframe.   
+int offsetTime1 = time("1M", bars_back = barsBackInput)  
+//@variable The "1M" opening time that is `tfBarsBackInput` monthly bars back, relative to the "1M" bar that opens at `offsetTime1`.  
+//          This `time()` call first determines the "1M" bar time corresponding to `barsBackInput` bars back on the   
+//          main timeframe, just like the previous call. Then, it calculates and returns the "1M" opening time that is   
+//          `tfBarsBackInput` *monthly* bars back relative to that time.  
+int offsetTime2 = time("1M", bars_back = barsBackInput, timeframe_bars_back = tfBarsBackInput)  
+  
+// Plot the values for visual comparison.  
+plot(monthTime, "No offset")  
+plot(offsetTime1, "`bars_back`", color.red)  
+plot(offsetTime2, "`bars_back` + `timeframe_bars_back`", color.purple)  
+// Log formatted timestamps in the Pine Logs pane.  
+log.info("\n{0}\n{1}\n{2}", str.format_time(monthTime), str.format_time(offsetTime1), str.format_time(offsetTime2))  
 `
 ### September 2025
 The plot() function can now draw dotted and dashed lines via the new `linestyle` parameter, which takes one of the following arguments: plot.linestyle_solid, plot.linestyle_dashed, or plot.linestyle_dotted. The `linestyle` parameter setting takes effect only for `style` arguments that plot lines.
