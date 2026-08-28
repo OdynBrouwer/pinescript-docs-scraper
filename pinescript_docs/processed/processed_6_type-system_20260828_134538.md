@@ -482,16 +482,16 @@ Where:
 The following code block declares an enum named `maChoice`. Each field within the declaration represents a unique, constant member of the `maChoice` enum type with a distinct title:
 Pine Script®
 Copied
-`//@version=6  
-indicator("Explicit casting demo")  
-  
-//@variable Holds a "const float" value intended for use in the `length` argument of `ta.sma()`.  
-float LENGTH = 10.0  
-  
-// This line does not cause an error, because the `int()` function converts the `length` argument's type to "const int".  
-float sma = ta.sma(close, length = int(LENGTH))  
-  
-plot(sma)  
+`//@enum       An enumeration of named values for moving average selection.  
+//@field sma  Specifies a Simple Moving Average.  
+//@field ema  Specifies an Exponential Moving Average.  
+//@field wma  Specifies a Weighted Moving Average.  
+//@field hma  Specifies a Hull Moving Average.  
+enum maChoice  
+    sma = "Simple Moving Average"  
+    ema = "Exponential Moving Average"  
+    wma = "Weighted Moving Average"  
+    hma = "Hull Moving Average"  
 `
 The following script uses the input.enum() function to create a dropdown input from our `maChoice` enum in the “Settings/Inputs” tab. The dropdown displays each field’s _title_ as a possible choice. The value of `maInput` is the `maChoice` _member_ corresponding to the selected title. The script compares the `maChoice` value inside a switch structure to determine which `ta.*()` function it uses to calculate a moving average:
 Pine Script®
