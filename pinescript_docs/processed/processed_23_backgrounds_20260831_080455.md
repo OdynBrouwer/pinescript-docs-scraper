@@ -1,4 +1,4 @@
-## 23_backgrounds_20260828_134538
+## 23_backgrounds_20260831_080455
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds

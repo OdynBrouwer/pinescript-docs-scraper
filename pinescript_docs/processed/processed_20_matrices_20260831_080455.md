@@ -23,17 +23,7 @@ If a matrix variable is not initialized with na, specifying a type identifier is
 This code line declares a `myMatrix` variable to store the result of a call to `matrix.new<float>()`. The call creates a two-row, two-column “float” matrix with all initial elements set to 0, and then returns the ID of that matrix. An explicit type identifier is optional in this variable declaration, because the compiler uses the assigned ID to determine that the variable’s type is `matrix<float>`:
 Pine Script®
 Copied
-`//@version=6  
-indicator("Out of bounds demo")  
-  
-//@variable A 2x3 matrix with a max row index of 1 and max column index of 2.   
-matrix<float> m = matrix.new<float>(2, 3, 0.0)  
-  
-m.set(row = 2, column = 0, value = 1.0)     // The `row` index is out of bounds on this line. The max value is 1.  
-m.submatrix(from_column = 1, to_column = 4) // The `to_column` index is invalid on this line. The max value is 3.  
-  
-if bar_index == last_bar_index - 1  
-    label.new(bar_index, 0, str.tostring(m), color = color.navy, textcolor = color.white, size = size.huge)  
+`myMatrix = matrix.new<float>(2, 2, 0.0)  
 `
 ### Using ​`var`​ and ​`varip`​ keywords
 As with other variables, users can include the var or varip keywords to instruct a script to declare a matrix variable on only one bar instead of on every execution of the variable’s scope. A matrix variable declared with this keyword points to the same instance throughout the span of the chart unless the script explicitly assigns another matrix reference to it. This behavior allows a matrix and its elements to persist across bars.
