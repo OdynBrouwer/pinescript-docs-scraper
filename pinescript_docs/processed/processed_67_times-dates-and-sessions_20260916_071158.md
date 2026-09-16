@@ -120,11 +120,37 @@ In contrast, on the lower chart, which displays the “FX:EURUSD” symbol, the 
 Pine Script®
 Copied
 `//@version=6  
-indicator("Day number", overlay = true)  
-currTradingDay = dayofmonth  
-labelStr = "`time`: " + str.format_time(time, "dd MMM HH:mm 'ET'")  
-labelStr += "\n`dayofmonth`: " + str.tostring(currTradingDay)  
-label.new(bar_index, high, labelStr)  
+indicator("Countdown timer", overlay = true)  
+  
+if not ((timeframe.isdaily and timeframe.multiplier == 1) or timeframe.isintraday)  
+    runtime.error("This script functions only on daily or intraday timeframes.")  
+  
+// Inputs for bullish and bearish candle colors  
+color bullishCandleColor = input.color(color.green, "Bullish Candle Color")  
+color bearishCandleColor = input.color(color.red, "Bearish Candle Color")  
+  
+// Analyse the candle colors to see if black or white text has better contrast  
+f_contrastColor(bgColor) =>  
+    // Calculate luminance (relative brightness) using standard formula  
+    luminance = 0.2126 * color.r(bgColor) + 0.7152 * color.g(bgColor) + 0.0722 * color.b(bgColor)  
+    contrastColor = luminance > 127.5 ? color.black : color.white  
+  
+color bullishContrastColor = f_contrastColor(bullishCandleColor)  
+color bearishContrastColor = f_contrastColor(bearishCandleColor)  
+  
+int timeLeftInBar = time_close - math.min(timenow, time_close)  
+  
+var table timer = table.new(position = position.middle_right, columns = 1, rows = 1)  
+if barstate.isfirst  
+    table.cell(timer, 0, 0, text_color = chart.fg_color, text_size = 11)  
+else if barstate.islast  
+    string timeFormat = timeLeftInBar >= 60 * 60 * 1000 ? "HH:mm:ss" : "mm:ss"  
+    string countDown = str.format_time(timeLeftInBar, timeFormat, "UTC-0")  
+    table.cell_set_text(timer, 0, 0, countDown)  
+    bool isUpCandle = close >= open  
+    table.cell_set_text_color(timer, 0, 0, isUpCandle ? bullishContrastColor : bearishContrastColor)  
+    color bgcolor = isUpCandle ? bullishCandleColor : bearishCandleColor  
+    table.cell_set_bgcolor(timer, 0, 0, bgcolor)  
 `
 There is a way to avoid this issue. Each date-related variable like dayofmonth has a corresponding function with the same name, e.g., dayofmonth(). The function takes two parameters, `time` and `timezone`, which together allow you to specify the exact timestamp to convert to a date.
 In addition, the time_tradingday variable returns the timestamp of 00:00 UTC of the _trading day_ the bar belongs to, regardless of the bar’s actual opening time. You can pass this timestamp to the dayofmonth() function along with the `"UTC"` time zone to extract the date from the trading day of the bar, instead of its opening time. Below, we update our example script to use this method:

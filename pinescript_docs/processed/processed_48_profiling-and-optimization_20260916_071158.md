@@ -141,19 +141,30 @@ For example, the “Line time” for the switch structure in this script represe
 !image
 Pine Script®
 Copied
-`//@variable A faster user-defined function to calculate the highest `source` value over `length` bars.  
-//          This version only requires a loop when the highest value is removed from the window, the `length`   
-//          changes, or when the number of bars first becomes sufficient to calculate the result.   
-fasterPineHighest(float source, int length) =>  
-    var float result = na  
-    if source[length] == result or length != length[1] or bar_index + 1 == length  
-        result := source  
-        if length > 1  
-            for i = 1 to length - 1  
-                result := math.max(result, source[i])  
-    else  
-        result := math.max(result, source)  
-    result  
+`//@version=6  
+indicator("`switch` and `if...else if` results demo")  
+  
+//@variable The upper band for oscillator calculation.  
+var float upperBand = close  
+//@variable The lower band for oscillator calculation.  
+var float lowerBand = close  
+  
+// Update the `upperBand` and `lowerBand` based on the proximity of the `close` to the current band values.  
+// The "Line time" field on line 11 represents the time spent on all 4 conditional expressions in the structure.  
+switch  
+    close > upperBand                     => upperBand := close  
+    close < lowerBand                     => lowerBand := close  
+    upperBand - close > close - lowerBand => upperBand := 0.9 * upperBand + 0.1 * close  
+    close - lowerBand > upperBand - close => lowerBand := 0.9 * lowerBand + 0.1 * close  
+  
+//@variable The ratio of the difference between `close` and `lowerBand` to the band range.  
+float oscillator = 100.0 * (close - lowerBand) / (upperBand - lowerBand)  
+  
+// Plot the `oscillator` as columns with a dynamic color.  
+plot(  
+     oscillator, "Oscillator", oscillator > 50.0 ? color.teal : color.maroon,  
+     style = plot.style_columns, histbase = 50.0  
+ )  
 `
 When the conditional logic in such structures involves significant calculations, programmers may require more granular performance information for each calculated condition. An effective way to achieve this analysis is to use _nested_ if blocks instead of the more compact switch or `if...else if` structures. For example, instead of:
 Pine Script®
