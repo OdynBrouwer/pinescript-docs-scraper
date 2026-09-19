@@ -837,42 +837,49 @@ To verify that the script’s logic works as intended, we can inspect each of th
 Pine Script®
 Copied
 `//@version=6  
-indicator("Extracting from local scopes initial demo", overlay = true)  
+indicator("Plotting and coloring compound conditions demo")  
   
-//@variable The number of bars in the `customMA()` calculation.  
-int lengthInput = input.int(50, "Length", 2)  
+//@variable The length of the RSI and median RSI calculations.  
+int lengthInput = input.int(14, "Length", 2)  
   
-//@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
-//@param source  The series of values to process.  
-//@param length  The number of bars in the quartile calculation.  
-//@returns       The adaptive moving average value.  
-customMA(float source, int length) =>  
-    //@variable The custom moving average.  
-    var float result = na  
-    // Calculate the 25th and 75th `source` percentiles (first and third quartiles) over `length` bars.  
-    float q1 = ta.percentile_linear_interpolation(source, length, 25)  
-    float q3 = ta.percentile_linear_interpolation(source, length, 75)  
-    //@variable The distance from `source` to its interquartile range.   
-    float outerRange = 0.0  
-    // Calculate the `outerRange` value when `source` is not `na`.  
-    if not na(source)  
-        float upperRange = source - q3  
-        float lowerRange = q1 - source  
-        outerRange := math.max(upperRange, lowerRange, 0.0)  
-    //@variable The total range of `source` values over `length` bars.  
-    float totalRange = ta.range(source, length)  
-    //@variable Half the ratio of the `outerRange` to the `totalRange`.  
-    float alpha = 0.5 * outerRange / totalRange  
-    // Mix the `source` with the `result` based on the `alpha` value.  
-    result := (1.0 - alpha) * nz(result, source) + alpha * source  
-    // Return the `result`.  
-    result  
+//@variable The RSI over `lengthInput` bars.  
+float rsi = ta.rsi(close, lengthInput)  
+//@variable The median of the `rsi` over `lengthInput` bars.  
+float median = ta.median(rsi, lengthInput)  
   
-//@variable The `customMA()` of `close` over `lengthInput` bars.   
-float maValue = customMA(close, lengthInput)  
+//@variable Condition #1: Is `true` when the 1-bar `rsi` change switches from 1 to -1.  
+bool changeNegative = ta.change(math.sign(ta.change(rsi))) == -2  
+//@variable Condition #2: Is `true` when the previous bar's `rsi` is greater than 70.  
+bool prevAbove70 = rsi[1] > 70.0  
+//@variable Condition #3: Is `true` when the current `close` is lower than the previous bar's `open`.  
+bool closeBelow = close < open[1]  
+//@variable Condition #4: Is `true` when the `rsi` is between 60 and 70.  
+bool betweenLevels = bool(math.max(70.0 - rsi, 0.0) * math.max(rsi - 60.0, 0.0))  
+//@variable Condition #5: Is `true` when the `rsi` is above the `median`.  
+bool aboveMedian = rsi > median  
   
-// Plot the `maValue`.  
-plot(maValue, "Custom MA", color.blue, 3)  
+//@variable Is `true` when the first condition occurs alongside conditions 2 and 3 or 4 and 5.  
+bool compundCondition = changeNegative and ((prevAbove70 and closeBelow) or (betweenLevels and aboveMedian))  
+   
+//Plot the `rsi` and the `median`.  
+plot(rsi, "RSI", color.teal, 3)  
+plot(median, "RSI Median", color.gray, 2)  
+  
+// Highlight the background red when the `compundCondition` occurs.  
+bgcolor(compundCondition ? color.new(color.red, 60) : na, title = "compundCondition")  
+  
+// Use `plotshape()` to show `compundCondition` values in the status line and Data Window.  
+plotshape(  
+     compundCondition, "compundCondition (1 and (2 and 3) or (4 and 5))",   
+     color = chart.fg_color, display = display.all - display.pane  
+ )  
+  
+// Plot characters on the chart and numbers in the status line and Data Window when conditions 1-5 occur.  
+plotchar(changeNegative, "changeNegative (1)", "", location.top, text = "1",         textcolor = chart.fg_color)  
+plotchar(prevAbove70,    "prevAbove70 (2)",    "", location.top, text = "\n2",       textcolor = chart.fg_color)  
+plotchar(closeBelow,     "closeBelow (3)",     "", location.top, text = "\n\n3",     textcolor = chart.fg_color)  
+plotchar(betweenLevels,  "betweenLevels (4)",  "", location.top, text = "\n\n\n4",   textcolor = chart.fg_color)  
+plotchar(aboveMedian,    "aboveMedian (5)",    "", location.top, text = "\n\n\n\n5", textcolor = chart.fg_color)  
 `
 Note that:
   * The `char` argument of each plotchar() call is an empty string, meaning the function displays its `text` value without a character above it.
@@ -1699,12 +1706,6 @@ if time >= startTime and time <= endTime
 //                  The default is `na`.  
 //@param size       Optional. The size of the table's text in typographic points. The default is 18.  
 //@returns          A single-cell table with dynamic text.    
-
-
-@function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
-//@param source  The series of values to process.  
-//@param length  The number of bars in the quartile calculation.  
-//@returns       The adaptive moving average value.  
 
 
 @function      Calculates a moving average that changes only when `source` is outside the first and third quartiles.  
