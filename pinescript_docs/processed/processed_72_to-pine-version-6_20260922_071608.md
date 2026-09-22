@@ -423,15 +423,22 @@ For example, this strategy script places several orders on each bar in the datas
 Pine Script®
 Copied
 `//@version=5  
-strategy("Strategy order limit demo", overlay=true, pyramiding=5)  
+indicator("Lazy evaluation error showcase")  
   
-// Place several long orders on every even bar. This reaches the maximum orders limit in v5 and raises a runtime error.  
-if bar_index % 2 == 0  
-    for i = 1 to 5  
-        strategy.entry("Entry " + str.tostring(i), strategy.long, qty = 5)  
-// Place short orders on every odd bar.  
-else  
-    strategy.entry("Short", strategy.short, qty = 25)  
+array<bool> myArray = array.new<bool>()  
+  
+if close > open  
+    myArray.push(true)  
+  
+// Causes a runtime error in v5 when trying to call `array.first()` on an empty array.  
+// Works in v6 because `array.first()` is only called if the array is not empty.  
+if myArray.size() != 0 and myArray.first()  
+    label.new(bar_index, high, "Test")  
+  
+// A correct approach for v5: `array.first()` is only called when we're sure the array is not empty.  
+if myArray.size() != 0   
+    if myArray.first()  
+        label.new(bar_index, high, "Test")  
 `
 In v6, when the total number of orders exceeds 9000, the strategy does _not_ halt. Instead, the orders are _trimmed_ from the beginning until the limit is reached, meaning that the strategy only stores the information for the most recent orders.
 Trimmed orders no longer show in the strategy report, and referencing them using the `strategy.closedtrades.*` functions returns na. Use strategy.closedtrades.first_index to get the index of the first _non-trimmed_ trade:
