@@ -1,7 +1,7 @@
-## 8_identifiers_20260925_070611
-# 8_identifiers
+## 76_to-pine-version-2_20260928_081147
+# 76_to-pine-version-2
 
-Source: https://www.tradingview.com/pine-script-docs/language/identifiers
+Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
 
 Version 6
 Version 6Version 5Version 4Version 3
@@ -24,7 +24,7 @@ Version 6
 Version 6Version 5Version 4Version 3
 Search`Ctrl``K`
 DarkLightAuto
-![](https://www.tradingview.com/pine-script-docs/language/identifiers/)
+![](https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2/)
     * Pine Script® primer
               * Language
                                                                       * Visuals
@@ -35,33 +35,24 @@ DarkLightAuto
                                                         * Migration guides
                           
 
-User Manual/Language/Identifiers
-#  Identifiers
-Identifiers are names used for user-defined variables and functions:
-  * They must begin with an uppercase (`A-Z`) or lowercase (`a-z`) letter, or an underscore (`_`).
-  * The next characters can be letters, underscores or digits (`0-9`).
-  * They are case-sensitive.
-
-
-Here are some examples:
+User Manual/Migration guides/To Pine Script® version 2
+# To Pine Script® version 2
+Pine Script version 2 is fully backwards compatible with version 1. As a result, all v1 scripts can be converted to v2 by adding the `//@version=2` annotation to them.
+An example v1 script:
 Pine Script®
 Copied
-`myVar  
-_myVar  
-my123Var  
-functionName  
-MAX_LEN  
-max_len  
-maxLen  
-3barsDown  // NOT VALID!  
+`study("Simple Moving Average", shorttitle="SMA")  
+src = close  
+length = input(10)  
+plot(sma(src, length))  
 `
-The Pine Script® Style Guide recommends using uppercase SNAKE_CASE for constants, and camelCase for other identifiers:
+The converted v2 script:
 Pine Script®
 Copied
-`GREEN_COLOR = #4CAF50  
-MAX_LOOKBACK = 100  
-int fastLength = 7  
-// Returns 1 if the argument is `true`, 0 if it is `false` or `na`.  
-zeroOne(boolValue) => boolValue ? 1 : 0  
+`//@version=2  
+study("Simple Moving Average", shorttitle="SMA")  
+src = close  
+length = input(10)  
+plot(sma(src, length))  
 `
-Previous Script structureNext Declaration statements
+Previous To Pine Script® version 3

@@ -366,57 +366,26 @@ The script below calls `pass()` using an “int” value with the “const” qu
 !image
 Pine Script®
 Copied
-`//@function This annotation shows some common Markdown syntax that the Pine Editor can render in its pop-up window.  
-//  
-// ---  
-//  
-// `Monospace with gray background`  
-//  
-// *Italic text*  
-//  
-// **Bold text**  
-//  
-// ***Bold and italic***  
-//  
-// ~Strikethrough~  
-//  
-// ---  
-//  
-// > Block quotation  
-//  
-// ---  
-//  
-// Bulleted list:  
-// - Item 1  
-// - Item 2  
-//  
-// ---  
-//  
-// Numbered list:  
-// 1. Item 1  
-// 1. Item 2  
-//  
-// ---  
-//  
-// ```  
-// // Code block format  
-// float x = 1.5  
-// ```  
-//  
-// ---  
-//  
-// Hyperlink:  
-//  
-// The @function annotation is very flexible.  
-//  
-// ---  
-//  
-// # Heading 1  
-// ## Heading 2  
-// ### Heading 3  
-//  
-// ---  
-f() => int(na)  
+`//@version=6  
+indicator("Qualifier inheritance demo")  
+  
+//@function Returns the value of the `source` argument without modification.  
+//          Each written call to the function can accept an argument of *any* type except for "void".  
+pass(source) =>  
+    source  
+  
+//@variable The EMA smoothing length.  
+//          This `pass()` call's `source` parameter automatically inherits the "const" qualifier from its argument.  
+//          Therefore, the returned type is "const int".  
+int lengthVal = pass(14)  
+  
+//@variable The EMA of `close - open`.  
+//          This call works as expected, because the `length` parameter of `ta.ema()` can accept "int" values with  
+//          "simple" or weaker qualifiers.  
+float emaDiff = ta.ema(close - open, length = lengthVal)  
+  
+// Plot the `emaDiff` series.  
+plot(emaDiff, "Smoothed difference", color.purple, 3)  
 `
 If we add int to the `source` declaration, the parameter then requires an “int” value, but it **does not** directly inherit the _same_ type qualifier as its argument. Instead, the compiler first checks if it can assign _“series”_ to the parameter, then tries using _“simple”_ if “series” does not work.
 Our `pass()` function does not use the `source` parameter in any local function calls that require a “simple int” value, so the compiler sets its qualifier to **“series”**. Consequently, the function’s returned type is always _“series int”_ , even if the `source` argument is a “const” value. Adding this change to the previous script thus causes a _compilation error_ , because the `length` parameter of ta.ema() cannot accept a “series” argument; only “simple” or weaker qualifiers are allowed:
@@ -1133,12 +1102,6 @@ Previous Built-insNext Objects
 //
 ```
 
-```pine
-// // Code block format  
-// float x = 1.5  
-//
-```
-
 
 ## Function Documentation
 
@@ -1390,57 +1353,26 @@ The script below calls `pass()` using an “int” value with the “const” qu
 !image
 Pine Script®
 Copied
-`//@function This annotation shows some common Markdown syntax that the Pine Editor can render in its pop-up window.  
-//  
-// ---  
-//  
-// `Monospace with gray background`  
-//  
-// *Italic text*  
-//  
-// **Bold text**  
-//  
-// ***Bold and italic***  
-//  
-// ~Strikethrough~  
-//  
-// ---  
-//  
-// > Block quotation  
-//  
-// ---  
-//  
-// Bulleted list:  
-// - Item 1  
-// - Item 2  
-//  
-// ---  
-//  
-// Numbered list:  
-// 1. Item 1  
-// 1. Item 2  
-//  
-// ---  
-//  
-// ```  
-// // Code block format  
-// float x = 1.5  
-// ```  
-//  
-// ---  
-//  
-// Hyperlink:  
-//  
-// The @function annotation is very flexible.  
-//  
-// ---  
-//  
-// # Heading 1  
-// ## Heading 2  
-// ### Heading 3  
-//  
-// ---  
-f() => int(na)  
+`//@version=6  
+indicator("Qualifier inheritance demo")  
+  
+//@function Returns the value of the `source` argument without modification.  
+//          Each written call to the function can accept an argument of *any* type except for "void".  
+pass(source) =>  
+    source  
+  
+//@variable The EMA smoothing length.  
+//          This `pass()` call's `source` parameter automatically inherits the "const" qualifier from its argument.  
+//          Therefore, the returned type is "const int".  
+int lengthVal = pass(14)  
+  
+//@variable The EMA of `close - open`.  
+//          This call works as expected, because the `length` parameter of `ta.ema()` can accept "int" values with  
+//          "simple" or weaker qualifiers.  
+float emaDiff = ta.ema(close - open, length = lengthVal)  
+  
+// Plot the `emaDiff` series.  
+plot(emaDiff, "Smoothed difference", color.purple, 3)  
 `
 If we add int to the `source` declaration, the parameter then requires an “int” value, but it **does not** directly inherit the _same_ type qualifier as its argument. Instead, the compiler first checks if it can assign _“series”_ to the parameter, then tries using _“simple”_ if “series” does not work.
 Our `pass()` function does not use the `source` parameter in any local function calls that require a “simple int” value, so the compiler sets its qualifier to **“series”**. Consequently, the function’s returned type is always _“series int”_ , even if the `source` argument is a “const” value. Adding this change to the previous script thus causes a _compilation error_ , because the `length` parameter of ta.ema() cannot accept a “series” argument; only “simple” or weaker qualifiers are allowed:
