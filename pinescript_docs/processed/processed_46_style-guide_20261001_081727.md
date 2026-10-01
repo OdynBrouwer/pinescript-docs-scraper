@@ -188,32 +188,39 @@ plot(close, color = color.red)
 
 ## Line wrapping
 Line wrapping can make long lines of code easier to read by defining a _single line_ of code across _multiple_ lines in the script. Generally, scripts can wrap lines using any indentation length that is _not_ a multiple of four, because the four-space or tab indentation defines local blocks in Pine.
-However, if a wrapped line is enclosed in _parentheses_ , such as in function calls or parameter declarations, it can use any indentation length without restriction, _including_ a multiple of four. For example:
+However, if part of a wrapped line is enclosed in _parentheses_ `( )` or square brackets `[ ]`, that code can use _any_ number of spaces for indentation without restriction, including zero or a multiple of four. For example:
 Pine Script®
 Copied
 `//@version=6  
 indicator("Line wrapping demo")  
   
-// A wrapped line that is *not* enclosed in parentheses can use any indentation length *except* a multiple of four.  
-//@variable The difference between the current and previous `close` values.   
-float closeDiff =   
+// A wrapped line that is *not* enclosed in parentheses or brackets can use any indentation *except* a multiple of four.  
+float closeDiff =  
   close                         // Indented by two spaces.  
   - close[1]                    // Indented by two spaces.  
   
-// A wrapped line that *is* enclosed in parentheses *can* use four-space indentation.  
-//@variable The percentage difference between the current and previous `close` values.   
+// A wrapped line that *is* enclosed in parentheses *can* use multiples of four spaces for indentation.  
 float percentChange = (  
-    (closeDiff)                 // Indented by four spaces.  
-    / close[1] * 100  )         // Indented by four spaces.  
+    closeDiff) / close[         // Indented by four spaces.  
+    1] * 100                    // Indented by four spaces.  
   
-// Within the same expression, each wrapped line can use different indentation lengths.  
-// The parentheses enclosing wrapped lines can also be wrapped on separate lines.  
+// Within the same expression or statement, each wrapped line can use different indentation lengths.  
+// The parentheses or brackets enclosing wrapped lines can also be placed on separate lines.  
+color plotColor = percentChange > percentChange[  
+    1                           // Indented by four spaces.  
+] ? color.rgb(                  // No indentation.  
+  76, 175, 80                   // Indented by two spaces.  
+ ) : color.rgb(                 // Indented by one space.  
+        255, 82, 82             // Indented by eight spaces.  
+    )                           // Indented by four spaces.  
+  
 plot(  
- percentChange, title = "Percent change",                            // Indented by one space.  
-   color = (percentChange >= 0 ? color.green : color.red),           // Indented by three spaces.  
-    linewidth = 8,                                                   // Indented by four spaces.  
-        style = plot.style_histogram, format = format.percent        // Indented by eight spaces.  
-)                                                                    // No indentation.  
+ percentChange, title = "Percent change",   // Indented by one space.  
+   color = plotColor,                       // Indented by three spaces.  
+    linewidth = 2,                          // Indented by four spaces.  
+        style = plot.style_histogram,       // Indented by eight spaces.                    
+      format = format.percent               // Indented by six spaces.  
+)                                           // No indentation.  
 `
 Line wrapping is also useful when working with long single-line strings. For example, instead of defining a lengthy string on a single line of code, programmers can split that string into smaller parts and concatenate them using the + operator to wrap the expression across multiple lines for readability:
 Pine Script®
@@ -231,8 +238,8 @@ if barstate.isfirst
     // Output the `newString` result in the Pine Logs pane.  
     log.info(newString)  
 `
-It is possible to use various line wrapping styles within the same script and even within the same expression, as seen in the first example above. To keep the code organized and easy to read, we recommend maintaining a _consistent_ line wrapping style within the same script where possible. For instance, programmers can choose to align wrapped lines to their nearest tab space, or to wrap lines minimally only once they exceed the Pine Editor’s line length guide.
-This example script shows a consistent line wrapping style that lists each argument in a function call on a wrapped line indented by four spaces. It wraps the function’s closing parentheses on a separate line without indentation to align it vertically with the beginning of the expression and signify the end of the wrapped code:
+It is possible to use multiple line wrapping styles within the same script and even within the same statement, as shown in the first example above. However, to keep the code organized and easy to read, we recommend maintaining a _consistent_ line wrapping style within the same script where possible. For instance, programmers can choose to align wrapped lines to their nearest tab space, or to apply minimal wrapping only when the length of a line exceeds the Pine Editor’s line length guide.
+This example script shows a consistent line wrapping style that lists each argument in a function call on a wrapped line indented by four spaces. It wraps each call’s closing parenthesis on a separate line without indentation to align it vertically with the beginning of the expression and signify the end of the wrapped code:
 Pine Script®
 Copied
 `//@version=6  

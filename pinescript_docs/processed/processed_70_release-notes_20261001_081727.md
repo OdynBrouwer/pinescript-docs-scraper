@@ -1,4 +1,47 @@
 ## 2026
+### September 2026
+#### Tables in the bottom panel
+Users can now move tables drawn by a script into a _separate tab_ in the chart’s _bottom panel_. To move a script’s tables to the panel, open the “More” menu in the script’s status line and select the _“Move tables to bottom”_ option. To move the tables back to the chart, select _“Move tables to chart”_ from the “More” menu or from the _context menu_ opened at the top of the panel’s tab.
+Tables in the bottom panel have different positioning and cell-sizing rules from those on the chart. All tables stack _vertically_ in order from first to last, regardless of the `position` and `force_overlay` arguments of each table.new() call. The cells of each table also stretch as necessary to fit the allocated width and height within the pane, without truncating the displayed text. Additionally, users can select and copy the text from tables in the bottom panel, unlike tables displayed on the chart.
+See the Displaying tables in the bottom panel section of the Tables page to learn more about this feature and how it works.
+#### Improved line wrapping in square brackets
+We’ve improved the line wrapping behaviors for code within _square brackets_ (`[ ]`). Previously, all line-wrapped history-referencing operations or tuples required indenting each line after the first by any number of spaces that was _not_ a multiple of four. The only exception was for square brackets enclosed in a set of parentheses, because code within parentheses can contain any amount of indentation, whether zero or a multiple of four spaces.
+We’ve extended the indentation flexibility for code in parentheses to all code between square brackets. Now, wrapped code within square brackets can use any amount of indentation without restriction. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Four-space indentation in square brackets demo")  
+  
+// This function definition line wraps history-referencing operations and the tuple return using indentation  
+// in multiples of four spaces.  
+ohlcChange(int length) =>  
+    float oChange = open - open[  
+        length]                     // Indented by eight spaces.  
+    float hChange = high - high[  
+        length                      // Indented by eight spaces.  
+    ]                               // Indented by four spaces.  
+    float lChange = low - low[  
+            length                  // Indented by 12 spaces.  
+        ]                           // Indented by eight spaces.  
+    float cChange = close - close[  
+    length                          // Indented by four spaces.  
+            ]                       // Indented by 12 spaces.  
+    [  
+oChange, hChange,                   // No indentation.  
+                lChange, cChange    // Indented by 16 spaces.  
+    ]                               // Indented by four spaces.  
+  
+// This tuple declaration lists all identifiers on separate lines, using multiples of four spaces for indentation.  
+// Previously, such a declaration caused a compilation error.   
+[  
+    oc,                             // Indented by four spaces.  
+        hc,                         // Indented by eight spaces.  
+            lc,                     // Indented by 12 spaces.  
+                cc                  // Indented by 16 spaces.  
+] = ohlcChange(10)                  // No indentation.  
+  
+plotcandle(oc, hc, lc, cc, "Change candles")  
+`
 ### August 2026
 #### Pine Screener improvements
 We’ve made two improvements to the Pine Screener: adding indices as a symbol source option, and making the full “Indicators” dialog box available when selecting an indicator script for the screener.
@@ -71,7 +114,7 @@ Also no indentation.
   
 if barstate.islastconfirmedhistory  
     //@variable A multiline string with indentation defined in a local block.  
-    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
+    //          Although the block requires four spaces of indentation for its statements, the string itself does not.  
     //          Any indentation in the definition is still included literally in the string.  
     string localIndentedStr = """---  
 No indentation.  
@@ -1383,10 +1426,13 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 * The first version of Pine Script is introduced to all TradingView users, initially as an open beta, on December 13th.
 
 
-Previous FAQNext To Pine Script® version 5
+Previous FAQNext Overview
 
 ## * Overview
 * 2026
+  * September 2026
+  * Tables in the bottom panel
+  * Improved line wrapping in square brackets
   * August 2026
   * Pine Screener improvements
   * `once` conditional structure

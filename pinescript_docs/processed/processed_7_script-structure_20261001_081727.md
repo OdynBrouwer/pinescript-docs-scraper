@@ -99,14 +99,14 @@ Copied
      low +         // Indented by 5 spaces.  
           close    // Indented by 10 spaces.  
 `
-If parts of a wrapped expression are enclosed in _parentheses_ `( )`, such as function calls or parameter declarations, the wrapped lines within the parentheses _do not_ have any restriction on their indentation lengths. Therefore, those wrapped lines can use any indentation length _including_ multiples of four.
-For example, this script demonstrates various ways that expressions enclosed in parentheses can wrap across multiple lines:
+If parts of a line-wrapped statement or expression are within _parentheses_ `( )` or _square brackets_ `[ ]`, all code between those characters _does not_ have any restriction on indentation length; the code can use _any_ number of spaces for indentation, including zero and any multiple of four.
+For example, this script demonstrates various ways in which code enclosed in parentheses or square brackets can wrap across multiple lines:
 Pine Script®
 Copied
 `//@version=6  
-indicator("Line wrapping within parentheses demo")  
+indicator("Line wrapping within parentheses and brackets demo")  
   
-// We can enclose operations in parentheses to wrap them across multiple lines using a four-space indentation.  
+// We can enclose expressions in parentheses to wrap them across multiple lines using a four-space indentation.  
 float x = (open +  
     high +                
     low +            
@@ -114,27 +114,40 @@ float x = (open +
   
 // We can wrap a long function call across two lines, for a minimal line wrapping style.  
 plot(ta.sma(close, 14), title = "Avg close", color = color.new(color.purple, 70), style = plot.style_area,  
- force_overlay = true, display = display.all - display.status_line)     // Indented by one space.  
+force_overlay = true, display = display.all - display.status_line)  // No indentation.  
   
-// We can also wrap a long function call across multiple lines, each with different indentation lengths.  
-// The parentheses enclosing the wrapped lines can start and end on separate lines than the wrapped content.  
+// We can apply any indentation to line wraps in square brackets as well.  
+[  
+    macd, signal, hist  
+] = ta.macd(x, 12, 26, 9)  
+  
+// We can also apply different indentation lengths across the same line-wrapped expression.  
+// The enclosing parentheses or square brackets can start and end on separate lines from the wrapped content.  
+float osc = (  
+ signal                                                         // Indented by one space.  
+    + 2 * hist                                                  // Indented by four spaces.  
+        * math.abs(ta.change(macd, 10) / ta.stdev(macd, 10))    // Indented by eight spaces.  
+)                                                               // No indentation.  
+  
 plot(  
- series = x, title = "Sum OHLC",                              // Indented by one space.  
-   color = (x >= x[1] ? color.green : color.red),             // Indented by three spaces.  
-    linewidth = 4,                                            // Indented by four spaces.  
-        style = plot.style_stepline                           // Indented by eight spaces.  
-)                                                             // No indentation.  
+series = osc, title = "Custom osc",                             // No indentation.  
+  color = osc > osc[                                            // Indented by two spaces.  
+            1                                                   // Indented by 12 spaces.  
+    ] ? color.green : color.red,                                // Indented by four spaces.  
+      linewidth = 3                                             // Indented by six spaces.  
+         )                                                      // Indented by nine spaces.  
+  
 `
-Expressions inside _local_ code blocks can also use line wrapping. A local block requires indenting each line that belongs to its scope by four spaces or a tab relative to the local block’s header. Therefore, we recommend indenting any wrapped lines inside local blocks by a _larger_ indentation than that of the block’s scope for readability. For example:
+Expressions inside _local_ code blocks can also use line wrapping. A local block requires indenting each line that belongs to its scope by four spaces or a tab relative to the local block’s header. Therefore, we recommend indenting any wrapped lines inside a local block by a _larger_ number of spaces than that of the block to preserve scope readability. For example:
 Pine Script®
 Copied
 `upDown(float s) =>  
-    // These lines are indented by four spaces relative to the `upDown()` function header to belong to its local scope.  
+    // These lines are indented by four spaces relative to the `upDown()` function header because they belong to the function's scope.  
     var int ud = 0  
     bool isEqual   = s == s[1]  
     bool isGrowing = s > s[1]  
-    // Within the local block, this statement wraps across multiple lines, where each line uses     
-    // an indentation length that is larger than the indentation that signifies the local block's scope.    
+    // Within the local block, this statement wraps across multiple lines, where each part uses     
+    // an indentation length that is larger than the required indentation for the function block.    
     ud := isEqual ?  
            0 :  
            isGrowing ?  

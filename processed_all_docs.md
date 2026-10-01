@@ -1,8 +1,8 @@
 
 
-# processed_1_welcome_20260928_081147
+# processed_1_welcome_20261001_081727
 
-## 1_welcome_20260928_081147
+## 1_welcome_20261001_081727
 # 1_welcome
 
 Source: https://www.tradingview.com/pine-script-docs/welcome
@@ -51,7 +51,7 @@ Next First steps
 
 
 
-# processed_2_first-steps_20260928_081147
+# processed_2_first-steps_20261001_081727
 
 ## Introduction
 Welcome to the Pine Script® v6 User Manual, which will accompany you in your journey to learn to program your own trading tools in Pine Script. Welcome also to the very active community of Pine Script programmers on TradingView.
@@ -139,7 +139,7 @@ Next First indicator
 
 
 
-# processed_3_first-indicator_20260928_081147
+# processed_3_first-indicator_20261001_081727
 
 ## The Pine Editor
 The Pine Editor is where you will be working on your scripts. While you can use any text editor you want to write your Pine scripts, using the Pine Editor has many advantages:
@@ -250,7 +250,7 @@ Our second version of the script performs the same calculations as our first, bu
 
 
 
-# processed_4_next-steps_20260928_081147
+# processed_4_next-steps_20261001_081727
 
 ## ​“indicators” vs “strategies”
 Pine Script strategies are used to backtest on historical data and forward test on open markets. In addition to indicator calculations, they contain `strategy.*()` calls to send trade orders to the broker emulator, which can then simulate their execution. Strategies display trade markers on the chart and simulated backtest results in a strategy report within the chart’s bottom panel.
@@ -311,7 +311,7 @@ Previous First indicator
 
 
 
-# processed_5_execution-model_20260928_081147
+# processed_5_execution-model_20261001_081727
 
 ## Introduction
 Pine Script® relies on an event-driven, sequential execution model to control how a script’s compiled source code runs in charts, alerts, Deep Backtesting mode, and the Pine Screener.
@@ -1143,7 +1143,7 @@ The function `upDownColor()` should be called on each calculation for consistenc
 
 
 
-# processed_6_type-system_20260928_081147
+# processed_6_type-system_20261001_081727
 
 ## Introduction
 Pine Script® uses a system of _types_ and _type qualifiers_ to categorize the data in a script and indicate where and how the script can use it. This system applies to all values and references in a script, and to the variables, function parameters, and fields that store them.
@@ -2528,7 +2528,7 @@ Cannot call `ta.sma()` with the argument `length = LENGTH`. An argument of "cons
 
 
 
-# processed_7_script-structure_20260928_081147
+# processed_7_script-structure_20261001_081727
 
 ## Version
 A compiler annotation in the following form tells the compiler which of the versions of Pine Script® the script is written in:
@@ -2631,14 +2631,14 @@ Copied
      low +         // Indented by 5 spaces.  
           close    // Indented by 10 spaces.  
 `
-If parts of a wrapped expression are enclosed in _parentheses_ `( )`, such as function calls or parameter declarations, the wrapped lines within the parentheses _do not_ have any restriction on their indentation lengths. Therefore, those wrapped lines can use any indentation length _including_ multiples of four.
-For example, this script demonstrates various ways that expressions enclosed in parentheses can wrap across multiple lines:
+If parts of a line-wrapped statement or expression are within _parentheses_ `( )` or _square brackets_ `[ ]`, all code between those characters _does not_ have any restriction on indentation length; the code can use _any_ number of spaces for indentation, including zero and any multiple of four.
+For example, this script demonstrates various ways in which code enclosed in parentheses or square brackets can wrap across multiple lines:
 Pine Script®
 Copied
 `//@version=6  
-indicator("Line wrapping within parentheses demo")  
+indicator("Line wrapping within parentheses and brackets demo")  
   
-// We can enclose operations in parentheses to wrap them across multiple lines using a four-space indentation.  
+// We can enclose expressions in parentheses to wrap them across multiple lines using a four-space indentation.  
 float x = (open +  
     high +                
     low +            
@@ -2646,27 +2646,40 @@ float x = (open +
   
 // We can wrap a long function call across two lines, for a minimal line wrapping style.  
 plot(ta.sma(close, 14), title = "Avg close", color = color.new(color.purple, 70), style = plot.style_area,  
- force_overlay = true, display = display.all - display.status_line)     // Indented by one space.  
+force_overlay = true, display = display.all - display.status_line)  // No indentation.  
   
-// We can also wrap a long function call across multiple lines, each with different indentation lengths.  
-// The parentheses enclosing the wrapped lines can start and end on separate lines than the wrapped content.  
+// We can apply any indentation to line wraps in square brackets as well.  
+[  
+    macd, signal, hist  
+] = ta.macd(x, 12, 26, 9)  
+  
+// We can also apply different indentation lengths across the same line-wrapped expression.  
+// The enclosing parentheses or square brackets can start and end on separate lines from the wrapped content.  
+float osc = (  
+ signal                                                         // Indented by one space.  
+    + 2 * hist                                                  // Indented by four spaces.  
+        * math.abs(ta.change(macd, 10) / ta.stdev(macd, 10))    // Indented by eight spaces.  
+)                                                               // No indentation.  
+  
 plot(  
- series = x, title = "Sum OHLC",                              // Indented by one space.  
-   color = (x >= x[1] ? color.green : color.red),             // Indented by three spaces.  
-    linewidth = 4,                                            // Indented by four spaces.  
-        style = plot.style_stepline                           // Indented by eight spaces.  
-)                                                             // No indentation.  
+series = osc, title = "Custom osc",                             // No indentation.  
+  color = osc > osc[                                            // Indented by two spaces.  
+            1                                                   // Indented by 12 spaces.  
+    ] ? color.green : color.red,                                // Indented by four spaces.  
+      linewidth = 3                                             // Indented by six spaces.  
+         )                                                      // Indented by nine spaces.  
+  
 `
-Expressions inside _local_ code blocks can also use line wrapping. A local block requires indenting each line that belongs to its scope by four spaces or a tab relative to the local block’s header. Therefore, we recommend indenting any wrapped lines inside local blocks by a _larger_ indentation than that of the block’s scope for readability. For example:
+Expressions inside _local_ code blocks can also use line wrapping. A local block requires indenting each line that belongs to its scope by four spaces or a tab relative to the local block’s header. Therefore, we recommend indenting any wrapped lines inside a local block by a _larger_ number of spaces than that of the block to preserve scope readability. For example:
 Pine Script®
 Copied
 `upDown(float s) =>  
-    // These lines are indented by four spaces relative to the `upDown()` function header to belong to its local scope.  
+    // These lines are indented by four spaces relative to the `upDown()` function header because they belong to the function's scope.  
     var int ud = 0  
     bool isEqual   = s == s[1]  
     bool isGrowing = s > s[1]  
-    // Within the local block, this statement wraps across multiple lines, where each line uses     
-    // an indentation length that is larger than the indentation that signifies the local block's scope.    
+    // Within the local block, this statement wraps across multiple lines, where each part uses     
+    // an indentation length that is larger than the required indentation for the function block.    
     ud := isEqual ?  
            0 :  
            isGrowing ?  
@@ -2821,9 +2834,9 @@ Previous Type systemNext Identifiers
 
 
 
-# processed_8_identifiers_20260928_081147
+# processed_8_identifiers_20261001_081727
 
-## 8_identifiers_20260928_081147
+## 8_identifiers_20261001_081727
 # 8_identifiers
 
 Source: https://www.tradingview.com/pine-script-docs/language/identifiers
@@ -2895,7 +2908,7 @@ Previous Script structureNext Declaration statements
 
 
 
-# processed_9_declaration-statements_20260928_081147
+# processed_9_declaration-statements_20261001_081727
 
 ## Introduction
 In Pine Script®, a  _declaration statement_ is a mandatory function call that declares the script’s  _type_ and its _properties_ at _compile time_. The available declaration functions are indicator(), strategy(), and library(). Each type of script has different capabilities and behaviors, the compiler uses different rules to compile them, and Pine’s runtime system also executes them differently.
@@ -3585,7 +3598,7 @@ library(title, overlay, dynamic_requests) → void
 
 
 
-# processed_10_variable-declarations_20260928_081147
+# processed_10_variable-declarations_20261001_081727
 
 ## Introduction
 Variables are _named containers_ that store calculated values or other data for a script to access and use within a given scope. Variables in Pine Script® can hold data of any available type that is not void, including the direct values of value types, and the _IDs_ (references) of drawings, collections, plots or other instances of reference types.
@@ -4806,7 +4819,7 @@ Previous Declaration statementsNext Operators
 
 
 
-# processed_11_operators_20260928_081147
+# processed_11_operators_20261001_081727
 
 ## Introduction
 Some operators are used to build _expressions_ returning a result:
@@ -5064,7 +5077,7 @@ Previous Variable declarationsNext Conditional structures
 
 
 
-# processed_12_conditional-structures_20260928_081147
+# processed_12_conditional-structures_20261001_081727
 
 ## Introduction
 The conditional structures in Pine Script® are if, switch, and once.
@@ -5581,7 +5594,7 @@ once [<condition>]
 
 
 
-# processed_13_loops_20260928_081147
+# processed_13_loops_20261001_081727
 
 ## Introduction
 Loops are structures that repeatedly execute a block of statements based on specified criteria. They allow scripts to perform repetitive tasks without requiring duplicated lines of code. Pine Script® features three distinct loop types: for, while, and for…in.
@@ -6567,7 +6580,7 @@ Previous Conditional structuresNext Built-ins
 
 
 
-# processed_14_built-ins_20260928_081147
+# processed_14_built-ins_20261001_081727
 
 ## Introduction
 Pine Script® has hundreds of _built-in_ variables and functions. They provide your scripts with valuable information and make calculations for you, dispensing you from coding them. The better you know the built-ins, the more you will be able to do with your Pine scripts.
@@ -6683,7 +6696,7 @@ ta.vwma(source, length) → series float
 
 
 
-# processed_15_user-defined-functions_20260928_081147
+# processed_15_user-defined-functions_20261001_081727
 
 ## Introduction
 _User-defined functions_ are functions written by programmers, as opposed to the built-in functions provided by Pine Script®. They help to encapsulate custom calculations that scripts perform conditionally or repeatedly, or to isolate logic in a single location for modularity and readability. Programmers often write functions to extend the capabilities of their scripts when no existing built-ins fit their needs.
@@ -8520,7 +8533,7 @@ Copied
 
 
 
-# processed_16_objects_20260928_081147
+# processed_16_objects_20261001_081727
 
 ## Introduction
 Pine Script objects are instances of _user-defined types_ (UDTs). They are the equivalent of variables containing parts called _fields_ , each able to hold independent values that can be of various types.
@@ -8829,7 +8842,7 @@ Previous User-defined functionsNext Enums
 
 
 
-# processed_17_enums_20260928_081147
+# processed_17_enums_20261001_081727
 
 ## Introduction
 Pine Script Enums, otherwise known as _enumerations_ , _enumerated types_ , or enum types, are unique data types with all possible values (_members_) explicitly defined by the programmer in advance. They provide a human-readable, expressive way to declare distinct sets of _predefined values_ that variables, conditional expressions, and collections can accept, allowing more strict control over the values used in a script's logic.
@@ -9157,7 +9170,7 @@ Previous ObjectsNext Methods
 
 
 
-# processed_18_methods_20260928_081147
+# processed_18_methods_20261001_081727
 
 ## Introduction
 Pine Script methods are specialized functions associated with values of specific built-in types, user-defined types, or enum types. They behave the same as regular functions in most regards while offering a shorter, more convenient syntax. Users can access methods using _dot notation_ syntax on variables of the associated type, similar to accessing the fields of a Pine Script object.
@@ -9814,7 +9827,7 @@ Copied
 
 
 
-# processed_19_arrays_20260928_081147
+# processed_19_arrays_20261001_081727
 
 ## Introduction
 Pine Script _arrays_ are one-dimensional collections that can store multiple values or references in a single location. Arrays are a more robust alternative to declaring a set of similar variables (e.g., `price00`, `price01`, `price02`, ...).
@@ -11759,7 +11772,7 @@ indicator("Deep copies demo")
 
 
 
-# processed_20_matrices_20260928_081147
+# processed_20_matrices_20261001_081727
 
 ## Introduction
 Pine Script _matrices_ are collections that store values or references in a rectangular format. They are the equivalent of two-dimensional arrays with functions and methods for inspection, modification, and advanced calculations. As with arrays, all elements within a matrix must be of the same built-in type, user-defined type, or enum type.
@@ -14404,7 +14417,7 @@ indicator("Determinants example", "Cramer's Rule")
 
 
 
-# processed_21_maps_20260928_081147
+# processed_21_maps_20261001_081727
 
 ## Introduction
 Pine Script _maps_ are collections that store data in _key-value pairs_. They enable scripts to collect multiple values or references in a single location and associate those elements with specific _unique values (keys)_.
@@ -15452,7 +15465,7 @@ string txtSize = input.string(
 
 
 
-# processed_22_overview_20260928_081147
+# processed_22_overview_20261001_081727
 
 ## Introduction
 Well-designed visuals make indicators and strategies easier to use and less cluttered. Each visual element presents data differently:
@@ -15895,9 +15908,9 @@ Next Backgrounds
 
 
 
-# processed_23_backgrounds_20260928_081147
+# processed_23_backgrounds_20261001_081727
 
-## 23_backgrounds_20260928_081147
+## 23_backgrounds_20261001_081727
 # 23_backgrounds
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/backgrounds
@@ -16046,9 +16059,9 @@ bgcolor(color, offset, editable, show_last, title, force_overlay) → void
 
 
 
-# processed_24_bar-coloring_20260928_081147
+# processed_24_bar-coloring_20261001_081727
 
-## 24_bar-coloring_20260928_081147
+## 24_bar-coloring_20261001_081727
 # 24_bar-coloring
 
 Source: https://www.tradingview.com/pine-script-docs/visuals/bar-coloring
@@ -16129,7 +16142,7 @@ barcolor(color, offset, editable, show_last, title, display) → void
 
 
 
-# processed_25_bar-plotting_20260928_081147
+# processed_25_bar-plotting_20261001_081727
 
 ## Introduction
 The plotcandle() built-in function is used to plot candles. plotbar() is used to plot conventional bars.
@@ -16248,7 +16261,7 @@ plotbar(open, high, low, close, title, color, editable, show_last, display, forc
 
 
 
-# processed_26_colors_20260928_081147
+# processed_26_colors_20261001_081727
 
 ## Introduction
 Script visuals can play a critical role in the usability of the indicators we write in Pine Script®. Well-designed plots and drawings make indicators easier to use and understand. Good visual designs establish a visual hierarchy that allows the more important information to stand out, and the less important one to not get in the way.
@@ -16650,7 +16663,7 @@ Previous Bar plottingNext Fills
 
 
 
-# processed_27_fills_20260928_081147
+# processed_27_fills_20261001_081727
 
 ## Introduction
 Some of Pine Script's visual outputs, including plots, hlines, lines, boxes, and polylines, allow one to fill the chart space they occupy with colors. Three different mechanisms facilitate filling the space between such outputs:
@@ -16871,7 +16884,7 @@ linefill.new(line1, line2, color) → series linefill
 
 
 
-# processed_28_levels_20260928_081147
+# processed_28_levels_20261001_081727
 
 ## ​`hline()`​ levels
 Levels are lines plotted using the hline() function. It is designed to plot **horizontal** levels using a **single color** , i.e., it does not change on different bars. See the Levels section of the page on plot() for alternative ways to plot levels when hline() won't do what you need.
@@ -16966,7 +16979,7 @@ hline(price, title, color, linestyle, linewidth, editable, display) → hline
 
 
 
-# processed_29_lines-and-boxes_20260928_081147
+# processed_29_lines-and-boxes_20261001_081727
 
 ## Introduction
 Pine Script® facilitates drawing lines, boxes, and other geometric formations from code using the line, box, and polyline types. These types provide utility for programmatically drawing support and resistance levels, trend lines, price ranges, and other custom formations on a chart.
@@ -18178,7 +18191,7 @@ polyline.new(points, curved, closed, xloc, line_color, fill_color, line_style, l
 
 
 
-# processed_30_plots_20260928_081147
+# processed_30_plots_20261001_081727
 
 ## Introduction
 The plot() function is the most frequently used function used to display information calculated using Pine scripts. It is versatile and can plot different styles of lines, histograms, areas, columns (like volume columns), fills, circles or crosses.
@@ -18542,228 +18555,721 @@ plot(series, title, color, linewidth, style, trackprice, histbase, offset, join,
 
 
 
-# processed_31_tables_20260928_081147
+# processed_31_tables_20261001_081727
 
 ## Introduction
-Tables are objects that can be used to position information in specific and fixed locations in a script's visual space. Contrary to all other plots or objects drawn in Pine Script®, tables are not anchored to specific bars; they _float_ in a script's space, whether in overlay or pane mode, in studies or strategies, independently of the chart bars being viewed or the zoom factor used.
-Tables contain cells arranged in columns and rows, much like a spreadsheet. They are created and populated in two distincts steps:
-  1. A table's structure and key attributes are defined using table.new(), which returns a table ID that acts like a pointer to the table, just like label, line, or array IDs do. The table.new() call will create the table object but does not display it.
-  2. Once created, and for it to display, the table must be populated using one table.cell() call for each cell. Table cells can contain text, or not. This second step is when the width and height of cells are defined.
+_Tables_ are drawing objects that display text and colors within organized cells. They visually arrange cells in columns and rows, similar to a spreadsheet. Unlike other visuals in Pine Script®, tables do not anchor to specific bars or chart coordinates. Instead, scripts display each table drawing at one of nine _fixed positions_ within a chart pane – one of the four corners, one of the midpoints between the corners, or the space’s center – or stack the tables vertically in the bottom panel. Tables do not move or vanish as users scroll or zoom on the chart; they consistently remain visible at their position until the script directly modifies or deletes them.
+A script creates and displays tables in two distinct steps:
+  * First, it must call the table.new() function to create a table object. The function call defines specific _base properties_ of the table, including the table’s position, the number of columns and rows, and the default border and background colors, then returns the table’s reference (ID).
+  * After creating the table object, the script can pass its ID in calls to the table.cell() function to populate and display each cell. Each call to the function defines the properties for _one_ specific cell, including the cell’s text, colors, formatting, and size. The overall size of the table depends on the width and height of each displayed cell. See the Sizing table cells section to learn more.
 
 
-Most attributes of a previously created table can be changed using `table.set_*()` setter functions. Attributes of previously populated cells can be modified using `table.cell_set_*()` functions.
-A table is positioned in an indicator's space by anchoring it to one of nine references: the four corners or midpoints, including the center. Tables are positioned by expanding the table from its anchor, so a table anchored to the position.middle_right reference will be drawn by expanding up, down and left from that anchor.
-Two modes are available to determine the width/height of table cells:
-  * A default automatic mode calculates the width/height of cells in a column/row using the widest/highest text in them.
-  * An explicit mode allows programmers to define the width/height of cells using a percentage of the indicator's available x/y space.
+Scripts can modify all base properties of a table, excluding the `force_overlay` setting, and the number of columns and rows, by passing the object’s ID to the built-in `table.set_*()` functions. Likewise, they can modify all properties of _individual cells_ by passing the ID to either the `table.cell_set_*()` functions or to additional calls to the table.cell() function. Scripts can also _merge_ a specific subset of a table’s cells via the table.merge_cells() function. Refer to the Modifying table and cell properties and Merging cells sections to learn more about these functions and how to use them.
+A single script can display a maximum of _nine_ tables at once – one for each available position. If a script creates a table using the same position as an existing table, it _replaces_ the existing table with the new one. The contents of each table always reflect the _final_ state of the table as of the _last_ chart bar. Past states of the table, or any replaced tables, are _never visible_.
+NoteTables often require more computational resources than other types of drawings, especially if a script creates or updates them frequently across bars or populates many cells. See the Updating tables only when necessary section below to learn the best practices for minimizing the resource demands of table drawings. The examples across this page also demonstrate these practices in action.
+
+## Creating and displaying tables
+To create a table, start by calling the table.new() function. The function creates a table object with specified base properties and returns its ID. The function’s signature is as follows:
+
+```
+
+table.new(position, columns, rows, bgcolor, frame_color, frame_width, border_color, border_width, force_overlay) → series table
+
+```
+
+Where:
+  * The `position`, `columns`, and `rows` parameters require arguments. Supplying arguments to all other parameters is optional.
+  * The `position` parameter specifies the table’s position on the chart. It accepts one of the following `position.*` constants: position.top_left, position.top_center, position.top_right, position.middle_left, position.middle_center, position.middle_right, position.bottom_left, position.bottom_center, or position.bottom_right.
+  * The `columns` parameter requires an “int” value specifying the maximum number of columns that the table can display.
+  * The `rows` parameter requires an “int” value specifying the maximum number of rows that the table can display.
+  * The `bgcolor` parameter sets the table’s main background color. If not specified, the default background color is na (invisible). If the table’s cells also have specified background colors, those colors _overlay_ onto the table’s main background.
+  * The `frame_color` parameter sets the color of the table’s _outer frame_. The default color is na.
+  * The `frame_width` parameter sets the width of the frame, in pixels. It accepts an “int” value greater than or equal to 0. A value of 0 (the default) makes the frame invisible.
+  * The `border_color` parameter sets the color of the inner borders _between_ each table cell. The default color is na.
+  * The `border_width` parameter sets the width of the inner borders, in pixels. It does not affect the table’s outer frame. It accepts an “int” value greater than or equal to 0. A value of 0 (the default) makes the borders invisible.
+  * The `force_overlay` parameter accepts a “bool” value specifying which pane the table occupies when displayed on the chart. If `true`, the table appears on the main chart pane, even if the script occupies a separate pane. If `false`, it appears in the script’s pane. Users can _move_ the table into a tab in the chart’s _bottom panel_ , regardless of the `force_overlay` argument, by selecting “Move tables to bottom” from the script’s “More” menu. See the Displaying tables in the bottom panel section to learn more.
 
 
-Displayed table contents always represent the last state of the table, as it was drawn on the script's last execution, on the dataset's last bar. Contrary to values displayed in the Data Window or in indicator values, variable contents displayed in tables will thus not change as a script user moves his cursor over specific chart bars. For this reason, it is strongly recommended to always restrict execution of all `table.*()` calls to either the first or last bars of the dataset. Accordingly:
-  * Use the var keyword to declare tables.
-  * Enclose all other calls inside an if barstate.islast block.
+The table object created by a table.new() call _does not_ initially display any visuals, because it does not contain data for any _cells_. For the table to display visuals, the script must call the table.cell() function to define and populate at least one cell. The function has the following signature:
+
+```
+
+table.cell(table_id, column, row, text, width, height, text_color, text_halign, text_valign, text_size, bgcolor, tooltip, text_font_family, text_formatting) → void
+
+```
+
+Where:
+  * The `table_id`, `column`, and `row` parameters require arguments. Supplying arguments to all other parameters is optional.
+  * The `table_id` parameter requires the ID of the table object.
+  * The `column` parameter specifies the column index of the cell to populate. It requires an “int” value from 0 to one less than the `columns` argument in the table.new() call. A value of 0 refers to the first column, 1 refers to the second, and so on.
+  * The `row` parameter specifies the row index of the cell to populate. It requires an “int” value from 0 to one less than the `rows` argument in the table.new() call. A value of 0 refers to the table’s first row, 1 refers to the second, and so on.
+  * The `text` parameter accepts a “string” argument specifying the text to display in the table’s cell. The default is an empty string.
+  * The `width` parameter accepts a “float” value specifying the base width of the cell. A value greater than 0 sets the width as a percentage of the pane’s width if the table is on the chart, or as a proportion of the table’s total width if the table is in the bottom panel. A value of 0 (the default) specifies that the width automatically adjusts based on the cell’s text. The cell’s final width is the maximum of the base width and the widths of all other cells in the same column.
+  * The `height` parameter accepts a “float” value specifying the base height of the cell. A value greater than 0 sets the height as a percentage of the pane’s height if the table is on the chart, or as a proportion of the total allocated height if the table is in the bottom panel. A value of 0 (the default) specifies that the height automatically adjusts based on the cell’s text. The cell’s final height is the maximum of the base height and the heights of all other cells in the same row.
+  * The `text_color` parameter specifies the color of the displayed text. The default is `#363a45`.
+  * The `text_halign` parameter sets the horizontal alignment of the cell’s text. The possible arguments are text.align_left, text.align_center, and text.align_right. The default is text.align_center.
+  * The `text_valign` parameter sets the vertical alignment of the cell’s text. The possible arguments are text.align_top, text.align_center, and text.align_bottom. The default is text.align_center.
+  * The `text_size` parameter sets the size of the cell’s text. It accepts an “int” value greater than or equal to 0 for specifying the size in typographic points, or one of the `size.*` built-in “string” constants for specifying a preset size. The `size.*` constants and the equivalent “int” sizes are as follows: size.auto (0), size.tiny (8), size.small (10), size.normal (14), size.large (20), and size.huge (36). The default is size.normal.
+  * The `bgcolor` parameter controls the background color of the cell. The specified color _overlays_ onto the table’s main background defined by the table.new() call. If the `bgcolor` argument of the table.cell() call is na (the default), the cell displays the table’s main background color. If the argument is a “color” value with zero transparency, the cell displays that color instead of the main background color. If the argument represents a partially transparent color, the cell displays a _mixture_ between that color and the table’s main background color.
+  * The `tooltip` parameter accepts a “string” value that defines the _tooltip_ text for the cell. If not na or an empty string, the cell displays the specified text within a tooltip when the user hovers over the cell. The default is an empty string.
+  * The `text_font_family` parameter specifies the font family of the cell’s main text. The possible arguments are font.family_default and font.family_monospace. The default is font.family_default.
+  * The `text_formatting` parameter sets the formatting behavior of the displayed text. It accepts one of the `text.format_*` constants (text.format_none, text.format_italic, or text.format_bold) or an addition expression that combines formatting settings (e.g., `text.format_bold + text.format_italic` for bold, italicized text). The default is text.format_none.
 
 
-**Multiple tables can be used in one script, as long as they are each anchored to a different position. Each table object is identified by its own ID. Limits on the quantity of cells in all tables are determined by the total number of cells used in one script.**
-
-## Creating tables
-When creating a table using table.new(), three parameters are mandatory: the table's position and its number of columns and rows. Five other parameters are optional: the table's background color, the color and width of the table's outer frame, and the color and width of the borders around all cells, excluding the outer frame. All table attributes except its number of columns and rows can be modified using setter functions: table.set_position(), table.set_bgcolor(), table.set_frame_color(), table.set_frame_width(), table.set_border_color() and table.set_border_width().
-Tables can be deleted using table.delete(), and their content can be selectively removed using table.clear().
-When populating cells using table.cell(), you must supply an argument for four mandatory parameters: the table id the cell belongs to, its column and row index using indices that start at zero, and the text string the cell contains, which can be null. Other parameters are optional: the width and height of the cell, the text’s attributes (color, horizontal and vertical alignment, size, formatting), and the cell’s background color. All cell attributes can be modified using setter functions: table.cell_set_text(), table.cell_set_width(), table.cell_set_height(), table.cell_set_text_color(), table.cell_set_text_halign(), table.cell_set_text_valign(), table.cell_set_text_size(), table.cell_set_text_formatting(), and table.cell_set_bgcolor().
-Keep in mind that each successive call to table.cell() redefines **all** the cell's properties, deleting any properties set by previous table.cell() calls on the same cell.
-### Placing a single value in a fixed position
-Let's create our first table, which will place the value of ATR in the upper-right corner of the chart. We first create a one-cell table, then populate that cell:
+NoteThe `table.cell_set_*()` setter functions can also populate table cells. However, these functions define only one specific cell property at a time. For consistency, we recommend using the table.cell() function to set a cell’s initial properties, then using additional calls to the function or to the `table.cell_set_*()` functions to update the cell as needed. See the Modifying table and cell properties section below to learn more about updating cells.
+The following example script demonstrates how to create and display a basic table. It displays a fixed, single-cell table at an input-specified position on the first chart bar. The script first calls the table.new() function to create the table object, then assigns the returned ID to the persistent `displayTable` variable. Then, within a once structure, the script passes the variable to a table.cell() call to populate the table’s cell with a formatted string and display the result on the chart:
+!image
 Pine Script®
 Copied
 `//@version=6  
-indicator("ATR", "", true)  
-// We use `var` to only initialize the table on the first bar.  
-var table atrDisplay = table.new(position.top_right, 1, 1)  
-// We call `ta.atr()` outside the `if` block so it executes on each bar.  
-myAtr = ta.atr(14)  
+indicator("Creating and displaying tables demo", overlay = true, behind_chart = false)  
+  
+//@variable Sets the position of the table in the chart pane.  
+//          The "string" values of the `position.*` constants (e.g., `"middle_center"`) appear as the input's options.  
+string positionInput = input.string(  
+    position.middle_center, "Position",   
+    [  
+        position.top_left,    position.top_center,    position.top_right,  
+        position.middle_left, position.middle_center, position.middle_right,  
+        position.bottom_left, position.bottom_center, position.bottom_right  
+    ], tooltip = "Sets the table's position in the pane. The table does not move as you scroll or zoom on the chart."  
+)  
+  
+//@variable  References a `table` object that can display up to one cell.  
+//           This `table.new()` call **does not** display a table on the chart.  
+//           It only creates an empty `table` object and sets the object's base properties.   
+var table displayTable = table.new(positionInput, columns = 1, rows = 1, bgcolor = chart.fg_color)  
+  
+// This `once` structure executes its code block once, on the first bar.  
+once  
+    //@variable A formatted string containing the text to display in the table.   
+    string displayText = str.format(  
+        "Symbol: {0}\nTimeframe: {1}\nBars: {2}",   
+        ticker.standard(syminfo.tickerid), timeframe.period, last_bar_index - bar_index + 1  
+    )  
+    // Call `table.cell()` to create the table's cell and display it on the chart.  
+    // Without a call to this function, the script compiles but does not display any data.  
+    table.cell(displayTable, column = 0, row = 0, text = displayText, text_color = chart.bg_color, text_size = 30)  
+`
+Note that:
+  * The table.new() call does not display any visuals; it only creates the table object and defines the object’s base properties. The table displays data only after the script populates its cell with the table.cell() call.
+  * The script assigns the table.new() call to a persistent variable declared with the var keyword to prevent repeated table creation after the first bar. Without using the keyword, an alternative way to achieve the same effect in our example is to move the variable declaration into the once structure.
+  * The string input in the script displays the “string” values of the `position.*` constants as options. Programmers can use these strings directly in table.new() calls to set a table’s position.
+  * The table does not move as the user scrolls or zooms on the chart. It remains fixed at the input-specified pane position, even while viewing the first chart bar.
+  * The table.cell() call in this script does not specify a `width` or `height` argument. Therefore, the script sets the table to use the minimum width and height that accommodates the cell’s text. See the Sizing table cells section below for more information.
+  * This script creates and populates the table on only a single bar because the data it displays _does not change_ across bars. To display dynamic data in tables, the typical best approach is to use the table.cell() function or other `table.*()` setter functions inside conditional structures that execute code on the _last available bar_ (i.e., where the barstate.islast value is `true`). See the Modifying table and cell properties section to learn more about these functions and how to use them efficiently.
+
+
+A script _must_ call the table.cell() function or other setter functions for _each cell_ to display. If a script does not define data for a cell at least once, the table automatically _excludes_ that cell from its display. Likewise, if the script does not define cell data for an entire row or column, the table automatically _omits_ that row/column when possible.
+For example, the simple script below creates a table that can display up to three rows and three columns. It then uses one call to the table.cell() function to populate the table’s middle cell, but does not define data for the other cells. Consequently, the table displays only _one_ cell rather than nine:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Unpopulated cells demo")  
+  
+//@variable References a `table` object that can display up to three columns and three rows.   
+//          The table includes a frame and cell borders to visually separate displayed cells.  
+var table t = table.new(  
+    position.middle_center, columns = 3, rows = 3,   
+    frame_color = chart.fg_color, frame_width = 1,   
+    border_color = chart.fg_color, border_width = 1  
+)  
+  
+// On the first bar, call `table.cell()` as a method to populate the table's middle cell at column 1, row 1.  
+// Although the table can display nine cells, it displays only one, because the other possible cells are not defined.   
+once  
+    t.cell(1, 1, "Col 1\nRow 1", text_color = color.white, text_size = 30, bgcolor = color.blue)  
+`
+Note that:
+  * Most built-in functions for reference types, including tables, are callable as functions or methods. This script calls the table.cell() function using _method syntax_ for convenience. We also use method syntax across other examples on this page.
+
+
+To configure the table to display all possible cells, the script must call the table.cell() function separately for each one. The modified script below calls the function within nested for loops. The outer loop iterates over the table’s _column_ indices, and the inner loop iterates over the _row_ indices. Each iteration of the inner loop calls the function to populate the cell at the current column and row. The table in this version displays all nine cells, because the script directly defines data for each one:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Populating all cells demo")  
+  
+//@variable References a `table` object that can display up to three columns and three rows.   
+//          The table includes a frame and cell borders to visually separate displayed cells.  
+var table t = table.new(  
+    position.middle_center, columns = 3, rows = 3,   
+    frame_color = chart.fg_color, frame_width = 1,   
+    border_color = chart.fg_color, border_width = 1  
+)  
+  
+once  
+    // Loop through all column indices from 0 to 2.  
+    for col = 0 to 2  
+        // Loop through all row indices from 0 to 2 once for each column index.  
+        for row = 0 to 2  
+            //@variable A formatted string indicating the current column and row indices.  
+            string displayText = str.format("Col {0}\nRow {1}", col, row)  
+            // Define the cell at the `col` and `row` indices and populate it with the formatted text.   
+            t.cell(col, row, displayText, text_color = color.white, text_size = 30, bgcolor = color.blue)  
+`
+### Sizing table cells
+The total width and height of a table depend on the width and height of each displayed _cell_. The `width`, `height`, `text`, and `text_size` arguments in each call to the table.cell() function and the corresponding `table.cell_set_*()` functions affect the visual sizes of table cells. When a table displays on the _chart_ , the script sizes each cell using the following logic:
+  * If the `width` or `height` value specified for a cell is 0, the script sets the initial width or height of the cell to fit the horizontal or vertical span of the text, which depends on both the `text` and `text_size` values.
+  * If the `width` or `height` value for a cell is a positive number, the script sets the initial width or height as a _percentage_ of the chart pane’s total width or height. For example, a `width` value of 50 specifies that the cell is at least half (50%) of the width of the chart pane. The specified width/height takes precedence over the cell’s text; if the values are too small to fit the entire text, the cell shows only a _truncated portion_ of the text.
+  * After determining the initial width and height of a cell, the script checks the width of all other cells in the same column and the height of all other cells on the same row. If necessary, it then _increases_ the cell’s width or height to align with the neighboring cells.
+  * The directions in which the table expands the width and height of its cells depend on the table’s _position_ in the pane. For instance, a table in the middle-center position of the pane expands in all directions, whereas a table in the bottom-right corner expands leftward and upward.
+
+
+NoteTable cells follow _different_ sizing rules when displayed in the chart’s _bottom panel_. Refer to the Displaying tables in the bottom panel section below for details.
+The following script provides an interactive way to understand the sizing behavior of table cells on the chart. The script creates a single-cell table that displays the text from a text area input. It also includes other inputs to specify the text size, the cell width, the cell height, and the table’s chart position. The table expands in all possible directions from the input position based on the span of the rendered text, or the specified “Cell width” and “Cell height” inputs if their values are greater than 0:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Sizing table cells demo")  
+  
+//@variable Sets the position of the table in the chart pane.  
+string positionInput = input.string(  
+    position.middle_center, "Position",   
+    [  
+        position.top_left,    position.top_center,    position.top_right,  
+        position.middle_left, position.middle_center, position.middle_right,  
+        position.bottom_left, position.bottom_center, position.bottom_right  
+    ]  
+)  
+//@variable A string containing the text to display in the table. Uses "Lorem ipsum" placeholder text by default.  
+string textInput = input.text_area(  
+"""Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do   
+eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut   
+enim ad minim veniam, quis nostrud exercitation ullamco laboris   
+nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor   
+in reprehenderit in voluptate velit esse cillum dolore eu fugiat   
+nulla pariatur. Excepteur sint occaecat cupidatat non proident,   
+sunt in culpa qui officia deserunt mollit anim id est laborum."""  
+)  
+//@variable The size of the table's text, in typographic points. Use 0 for the "auto" size.   
+int textSizeInput = input.int(24, "Text size", minval = 0)  
+  
+//@variable Specifies the width of the table cell. Use 0 to set the width based on the width of the text.  
+int widthInput = input.int(0, "Cell width", minval = 0)  
+//@variable Specifies the height of the table cell. Use 0 to set the height based on the height of the text.   
+int heightInput = input.int(0, "Cell height", minval = 0)  
+  
+// Create and populate the table on the first bar.   
+once  
+    //@variable References a single-cell table with a blue default background.  
+    table t = table.new(positionInput, 1, 1, bgcolor = color.blue)  
+    // Populate the table's cell using the input values.   
+    t.cell(  
+        0, 0, textInput, widthInput, heightInput, color.white,   
+        text_size = textSizeInput, text_halign = text.align_left  
+    )  
+`
+Note that:
+  * The script uses a multiline literal string to set the text area input’s default value. The string automatically includes the newline control character for each separate line of text, without requiring the `\n` escape sequence. See the Multiline strings section of the Strings page for more information.
+
+
+When explicitly sizing table cells with nonzero `width` and `height` arguments, we recommend configuring each cell’s dimensions carefully to ensure the total width and height of the table do not exceed 100% of the available space, and configuring the text in each cell to avoid truncation. If a table exceeds the available display space, or if a cell’s width or height percentage is too small to display the specified text, there is no way to view all of the table’s contents when displaying it on the chart. However, users _can_ view all the contents by moving the table to the _bottom panel_. See the next section below to learn more.
+NoteThe _exact_ horizontal and vertical span of a table varies with the user’s viewport, and tables are limited in the minimum cell width and height they can display. Consequently, in some cases, a table can span _past_ the chart’s space even if both the total width and height are specified as 100%, especially if it contains many cells. To ensure the best results when programming tables, we recommend testing the visuals on multiple pane and viewport sizes.
+A common technique to fit multi-cell tables into a specified space is to divide the required total width and height of a table by the number of columns and rows it contains. For instance, if a table contains five columns, and the required total width is 50% of the pane, set each cell’s `width` value to 10 (50 / 5). If a table requires _non-uniform_ cell sizes, one possible technique to set dimensions is to compute normalized width and height weights that sum to one, then multiply the weights by the table’s total required width/height percentage.
+For example, the advanced script below includes a user-defined function named `calcCellDims()`, which creates an array containing the cell width or height percentages for fitting a specified total pane percentage. The function divides elements from an array of arbitrary weights by the array’s sum to normalize them, then multiplies the elements by a total percentage to calculate the final width or height values. The script uses the function to calculate cell widths and heights for a multi-cell table on the chart. Each cell in the table displays formatted text indicating the cell’s final width and height percentages:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Non-uniform cell sizing demo")  
+  
+//@function            Calculates an array of width or height percentages for sizing table cells.  
+//@param numCells      The number of cells per row (for width) or column (for height).  
+//@param totalPercent  The total percentage of the chart pane's width or height.   
+//@param weights       Optional. The ID of an array containing a proportional weight for each cell.  
+//                     If `na`, the function creates an array of uniform percentages.  
+//@returns             The ID of an array of width or height percentages. The script can use the elements in   
+//                     `table.cell()` calls to fit a multi-cell table within a specific percentage of the pane.   
+calcCellDims(int numCells, float totalPercent, array<float> weights = na) =>  
+    if na(weights)  
+        array<float> result = array.new<float>(numCells, totalPercent / numCells)  
+    else  
+        array<float> result = array.new<float>()  
+        float totalWt = weights.sum()  
+        for weight in weights  
+            float cellPercent = totalPercent * weight / totalWt  
+            result.push(cellPercent)  
+        result  
+  
+//@variable References an array containing relative weights for both the width and height of the table cells.  
+//          These weights represent relative proportions of the table's display space.  
+var array<float> cellWeights = array.from(1.0, 2.0, 3.0, 4.0)  
+  
+once  
+    //@variable The number of columns and rows in the table.  
+    int numColsRows = cellWeights.size()  
+    //@variable References a table supporting `numColsRows` columns and rows, with visible cell borders.   
+    table t = table.new(  
+        position.middle_center, columns = numColsRows, rows = numColsRows,   
+        bgcolor = chart.bg_color, border_color = chart.fg_color, border_width = 1  
+    )  
+    //@variable References an array containing the width and height percentages for each row and column.  
+    array<float> cellPercents = calcCellDims(numColsRows, 90, cellWeights)  
+    // Loop through the `cellPercents` array to get column indices and width values.  
+    for [col, width] in cellPercents  
+        // Loop through the array again, once for each column, to get the row index and height.   
+        for [row, height] in cellPercents  
+            //@variable A formatted string containing the calculated width and height of each cell.  
+            string cellText = str.format("W: {0}%, H: {1}%", width, height)  
+            // Define the cell at the `col` and `row` indices and display the `cellText` value.   
+            table.cell(t, col, row, cellText, width = width, height = height, text_color = chart.fg_color)  
+`
+### Displaying tables in the bottom panel
+When a user applies a table-drawing script to the chart, the tables appear in the script’s pane by default, or in the main chart pane if the `force_overlay` argument of the table.new() call is `true`. Users can then optionally display the tables within a _tab_ in the chart’s _bottom panel_ by selecting the “Move tables to bottom” option from the “More” menu in the script’s status line:
+!image
+Selecting the option moves all tables drawn by the script into the same tab in the bottom panel, regardless of which chart pane each table occupies. The user can move the tables back onto the chart at any time by selecting “Move tables to chart” from the script’s “More” menu, or from the _context menu_ opened by a dropdown arrow in the tab’s header:
+!image
+Users can move the tables from more than one script into the bottom panel’s tab. However, the panel displays the tables from only **one** script at a time. To specify which script’s tables to analyze, select the script name from the list in the tab’s context menu:
+!image
+Tables use different positioning and sizing rules in the bottom panel, and often appear differently from how they appear on the chart. Key differences in the display behaviors include the following:
+  * The panel stacks all tables _vertically_ based on the _order_ in which the script creates them, regardless of the `position` or `force_overlay` argument in each table.new() call. The _first_ table created by the script automatically appears at the _top_ , and the _last_ table appears at the _bottom_.
+  * Each table automatically _stretches horizontally_ to at least the width of the panel, regardless of the `width` argument in the table.cell() calls.
+  * The cells of tables in the bottom panel do not truncate displayed text to fit a specified width or height. They fit the entire text when possible. If a table’s text is too tall or wide to fit within the panel’s visible space, the panel adds vertical or horizontal scroll bars as necessary to make the full text viewable.
+  * If a table contains more than one column, a positive `width` argument in each table.cell() call specifies the width of the cell as a relative _proportion_ of the table’s total width rather than a percentage of the panel’s width. For example, suppose a two-column table defines a width of 10 for the cells in the first column and a width of 30 for those in the second. In this case, the first column spans approximately _one-fourth_ (10 / (10 + 30)) of the table’s total width, and the second spans approximately _three-fourths_ (30 / (10 + 30)) of the width.
+  * If at least _one_ table.cell() call includes a positive `height` argument, the corresponding table automatically stretches other necessary rows _vertically_ to fit the allocated display space in the pane, and it treats the specified value as a relative proportion of the space’s height rather than a direct percentage. Otherwise, the table automatically uses the minimum amount of vertical space required to display the specified text.
+  * The available vertical space for each table depends on the total number of tables and the rows that they contain. If a specified height proportion is _too small_ for the text on a row, the table automatically adjusts its row height to fit the text.
+
+
+NoteThere are no script parameters for selectively activating this feature or moving tables to the bottom by default. When creating a script that displays tables, we recommend manually checking their outputs on the chart and in the bottom panel to confirm they appear as intended.
+The following example demonstrates how tables behave differently when moved to the bottom panel. The script below creates up to nine tables on the first bar, one for each `position.*` constant. It stores each `position.*` string in an array, then loops through a slice of the array. On each loop iteration, the script calls table.new() to create a table that supports two columns and three rows, then populates it with table.cell() calls using defined widths and heights. The first row in each table includes a number indicating the table’s creation order, where 0 refers to the first one, as well as the string indicating the table’s chart position:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Displaying tables in the bottom panel demo")  
+  
+//@variable Specifies the number of tables to draw.  
+int tableNumInput = input.int(9, "# of tables to draw", 1, 9)  
+  
+once  
+    //@variable References a slice of an array containing each position string.  
+    //          The script loops through the slice and draws a table for each element.  
+    array<string> positions = array.from(  
+        position.bottom_left, position.bottom_center, position.bottom_right,  
+        position.middle_left, position.middle_center, position.middle_right,  
+        position.top_left,    position.top_center,    position.top_right  
+    ).slice(0, tableNumInput)  
+  
+    //@variable The width of the first table column. The width increments by two on each loop iteration.  
+    float col1Width = 5  
+  
+    // Loop over the indices and position strings in the `positions` array slice.  
+    for [i, pos] in positions  
+        //@variable References a two-column, three-row table with a thin black frame and inner borders.  
+        table t = table.new(  
+            pos, 2, 3, frame_color = #000000, frame_width = 1, border_color = #000000, border_width = 1  
+        )  
+        // Merge both cells on the first row.  
+        t.merge_cells(0, 0, 1, 0)  
+  
+        // Increment the first column width by two, and subtract it from 30 to calculate the second column's width.  
+        col1Width += 2  
+        float col2Width = 30 - col1Width  
+          
+        // Populate the merged cell in the first row with text indicating the table's creation order.  
+        // The cell uses a height of 10.   
+        t.cell(  
+            0, 0, str.format("Table {0} ({1})", i, pos), height = 10, text_color = #000000, bgcolor = color.silver  
+        )  
+        // Populate the other cells with row and column information.   
+        // The second row uses a height of 5, and the third uses a height of 15.  
+        t.cell(0, 1, "Col 0, Row 1", width = col1Width, height = 5,  text_color = #000000, bgcolor = color.aqua)  
+        t.cell(1, 1, "Col 1, Row 1", width = col2Width, height = 5,  text_color = #000000, bgcolor = color.orange)  
+        t.cell(0, 2, "Col 0, Row 2", width = col1Width, height = 15, text_color = #000000, bgcolor = color.lime)  
+        t.cell(1, 2, "Col 1, Row 2", width = col2Width, height = 15, text_color = #000000, bgcolor = color.red)  
+`
+Note that:
+  * The script uses the table.merge_cells() function to merge the cells on each table’s first row. The merged cell inherits all properties, excluding width and height, from the _first cell_ in the merge range (at column 0, row 0). See the Merging cells section below to learn more about this function.
+
+
+When we apply the script to a chart, it displays all the tables in a separate chart pane at their specified positions by default. The total defined width and height of each table is 30. Therefore, when displaying in the pane, each table occupies approximately 30% of the pane’s total width and height:
+!image
+If we select “Move tables to bottom” from the script’s “More” menu, all tables move into a tab in the chart’s bottom panel, and their display behavior changes. Rather than appearing at the same relative positions in the panel, the tables stack vertically in order from first to last. Each table stretches horizontally to fit the tab, and the tab automatically allocates the necessary amount of vertical space required to display each one:
+!image
+Note that:
+  * The columns in each table span a proportional amount of the table’s width when they display in the panel. For instance, the first table defines a width of 7 (5 + 2) for the first column and 23 (30 - 7) for the second. Therefore, the first column spans approximately 7 / 30 of the total width, and the second spans approximately 23 / 30 of the total width.
+  * The rows in each table also span a proportional amount of the total allocated height when possible. However, the available height for each table depends on the total number of tables and their contents. If the bottom panel displays more than one table, it automatically adjusts the row heights to fit the space, because the table.cell() calls specify `height` arguments. If the panel displays enough tables to require scrolling, it sets each row to use the _minimum_ height that fits the displayed text. To see this behavior in action, adjust the “# of tables to draw” input in the script’s “Settings/Inputs” tab.
+
+
+Tables in the bottom panel also process text differently from those on the chart. When a table displays on the chart, there is no direct way to interact with the table’s text. Users can only view the text or hover over cells to inspect defined tooltips. By contrast, when a table displays in the bottom panel, users can select any of the main text in the table and copy it to their clipboard. For instance, in the following image, we selected all the text in the first table from our example script. We can then copy the entire text at once and paste it elsewhere:
+!image
+Note that:
+  * This behavior applies only to the _main text_ in a table’s cells. Users can view any tooltips in a bottom-panel table by hovering over its cells, just like with tables on the chart, but they cannot select the text from those tooltips.
+
+## Modifying table and cell properties
+The `table` namespace features multiple _setter functions_ , which enable scripts to update the data and visual properties of a table and its cells over time. Programmers often use these functions when creating tables that display dynamic “series” data, or when modifying the appearance of a table in response to specific conditions.
+The `table.set_*()` functions modify specific _base properties_ of a table, including its position, frame settings, and border settings. The available `table.set_*()` functions are table.set_bgcolor(), table.set_border_color(), table.set_border_width(), table.set_frame_color(), table.set_frame_width(), and table.set_position(). Each of these functions has the following general signature:
+
+```
+
+function_name(table_id, table_property) → void
+
+```
+
+Where:
+  * `function_name` is the function’s identifier.
+  * The `table_id` parameter requires the ID of the table object.
+  * `table_property` refers to the table’s base property to update. The corresponding parameter name in each function matches one of the parameters in the table.new() function (e.g., `position` for table.set_position()).
+
+
+For updating specific table _cells_ , scripts can use either the table.cell() function or the `table.cell_set_*()` functions. Each successive call to these functions overwrites the current properties for a specific cell. The table.cell() function overwrites _all_ cell properties at once. In essence, it redefines the cell entirely on each call. By contrast, each `table.cell_set_*()` function updates only _one_ specific cell property, such as the cell’s width, height, text, or background color, while leaving all other properties unchanged.
+The available `table.cell_set_*()` functions include table.cell_set_bgcolor(), table.cell_set_width(), table.cell_set_height(), table.cell_set_text(), table.cell_set_text_color(), table.cell_set_text_size(), table.cell_set_text_halign(), table.cell_set_text_valign(), table.cell_set_text_font_family(), table.cell_set_text_formatting(), and table.cell_set_tooltip(). The general signature for each of these functions is as follows:
+
+```
+
+function_name(table_id, column, row, cell_property) → void
+
+```
+
+Where:
+  * `function_name` is the function’s identifier.
+  * The `table_id` parameter requires the ID of the table object.
+  * The `column` parameter requires the column index of the cell to modify. The index of the first column is 0, and the index of the last is one less than the `columns` argument of the table.new() call.
+  * The `row` parameter requires the row index of the cell to modify. The index of the first row is 0, and the index of the last is one less than the `rows` argument of the table.new() call.
+  * `cell_property` refers to the cell property to update. The corresponding parameter name in each function matches one of the parameters of the table.cell() function (e.g., `text` for table.cell_set_text()).
+
+
+To learn more about the table.cell() function and its signature, refer to the Creating and displaying tables section above.
+When using any of these functions to update a table, remember that only the _latest state_ of the table, as of the _last available bar_ , is visible to the user. All previous states of a table are **never visible**. Therefore, updating tables _before_ the last available bar is typically **unnecessary**. Furthermore, updating tables across a chart’s history can significantly _increase_ the script’s runtime requirements, especially if the tables display many dynamic strings or colors.
+The most efficient way to populate a table with dynamic data is to call the `table.set_*()`, table.cell(), or `table.cell_set_*()` functions only on the bars where the output is _visible_ , i.e., the last historical bar or the current realtime bar. Restricting these calls to the latest available bar avoids consuming resources on repeated display updates that users cannot view. The simplest approach to achieve this effect is to place the setter calls that must work across bars into an if structure that uses barstate.islast in its condition. If the table’s outputs depend on data from previous historical bars, use variables, collections, or history-referencing operations to make necessary data available for the setter calls on the last bar.
+The following example script calculates the change in the close series over multiple lengths and displays formatted values in a two-column, nine-row table. It performs all calculations on the _last bar_ , within an if structure that uses barstate.islast as the condition. On the first bar where the condition is `true`, the script executes multiple table.cell() calls within a nested once structure to set the initial properties of all the table cells. Then, within a loop that executes on all bars where the if structure executes, the script calculates the change values and updates all cells after the first in the second column. The script calls the table.cell_set_text() function to update each cell’s text, and it calls table.cell_set_bgcolor() to update the background color:
+!image
+Pine Script®
+Copied
+`//@version=6  
+indicator("Modifying table and cell properties demo", overlay = true, behind_chart = false)  
+  
 if barstate.islast  
-    // We only populate the table on the last bar.  
-    table.cell(atrDisplay, 0, 0, str.tostring(myAtr))  
+    //@variable References a `table` object that supports two columns and nine rows.   
+    var table t = table.new(  
+        position.top_right, 2, 9, bgcolor = #ffffff, frame_color = #000000, frame_width = 1,   
+        border_color = #000000, border_width = 1  
+    )  
+    // This `once` structure's block executes only on the first bar where `barstate.islast` is `true`.    
+    once  
+        // Set the column header cells with fixed, black text and defaults for all other properties.  
+        t.cell(0, 0, "Length", text_color = #000000, bgcolor = #cccccc)  
+        t.cell(1, 0, "Change", text_color = #000000, bgcolor = #cccccc)  
+          
+        //@variable The offset value for the row header text. The value starts at 1 and then doubles within a loop.   
+        int offset = 1  
+        // Loop to initialize the cells for the remaining eight rows.  
+        for row = 1 to 8  
+            // Set the cells in the first column to display the `offset` value with black text.  
+            t.cell(0, row, str.tostring(offset), text_color = #000000)  
+            // Set the cells in the second column to use a white text color. No text is initially specified.   
+            t.cell(1, row, text_color = #ffffff)  
+            offset *= 2  
+  
+    // The code in this scope executes on all bars where `barstate.islast` is `true`.   
+  
+    //@variable The bar offset for `[]` operations. The value starts at 1 and then doubles within a loop.  
+    int offset = 1  
+  
+    // Loop through all row indices after the first.  
+    for row = 1 to 8  
+        // Calculate the absolute and percentage difference between the current `close` value and the   
+        // value from `offset` bars back.  
+        float change = close - close[offset]  
+        float changePct = 100 * change / close[offset]  
+        // Multiply the `offset` value by two for the next iteration.   
+        offset *= 2  
+  
+        // Both of these function calls modify a specific property of a cell without overwriting other properties.  
+  
+        // Set the cell in the second column on the row to display formatted text representing the current change values.   
+        t.cell_set_text(1, row, str.format("{0,number,0.0000} ({1,number,0.000}%)", change, changePct))  
+        // Set the cell's background to teal if the `change` value is positive, and maroon otherwise.   
+        t.cell_set_bgcolor(1, row, change > 0 ? color.teal : color.maroon)  
 `
-!image
 Note that:
-  * We use the var keyword when creating the table with table.new().
-  * We populate the cell inside an if barstate.islast block using table.cell().
-  * When populating the cell, we do not specify the `width` or `height`. The width and height of our cell will thus adjust automatically to the text it contains.
-  * We call `ta.atr(14)` prior to entry in our if block so that it evaluates on each bar. Had we used `str.tostring(ta.atr(14))` inside the if block, the function would not have evaluated correctly because it would be called on the dataset's last bar without having calculated the necessary values from the previous bars.
+  * This script can produce the same result by calling the table.cell() function instead of the table.cell_set_text() and table.cell_set_bgcolor() functions. However, each call to the function overwrites _all_ properties of a cell. If a property is not specified, the table.cell() function uses the default property when updating a cell. Therefore, all necessary properties must be _explicitly defined_ in each call. For instance, if we replace the two `table.cell_set_*()` calls with a single table.cell() call, the script displays the same result only if the call includes `text`, `bgcolor`, _and_ `text_color` arguments.
+
+## Clearing cells
+Scripts can _clear_ specific cells within a table by using the table.clear() function. The function deletes the properties for one or more cells within a rectangular region from a starting column and row to an ending column and row. The function’s signature is as follows:
+
+```
+
+table.clear(table_id, start_column, start_row, end_column, end_row) → void
+
+```
+
+Where:
+  * The `table_id` parameter requires the ID of the table object.
+  * The `start_column` parameter requires the column index of the first cell to clear. The argument must be less than or equal to the `end_column` value.
+  * The `start_row` parameter requires the row index of the first cell to clear. The argument must be less than or equal to the `end_row` value.
+  * The `end_column` parameter requires the column index of the last cell to clear. The argument must be greater than or equal to the `start_column` value.
+  * The `end_row` parameter requires the row index of the last cell to clear. The argument must be greater than or equal to the `start_row` value.
 
 
-Let's improve the usability and aesthethics of our script:
+This function is often useful if a script must dynamically reduce the number of cells in a table’s display. After a script clears a table cell with this function, the cell’s data is no longer defined. Therefore, the table automatically _excludes_ the cell from its display. If the call clears an entire row or column, the table automatically omits that row/column when possible. To display a cell after clearing it, the script must _repopulate_ the cell by calling the table.cell() or `table.cell_set_*()` functions.
+The following example script demonstrates the behavior of cleared cells. The script populates and then clears a table in 50-bar cycles, starting on the last bar. The script first creates a table that supports 10 columns and 5 rows. It then calls the table.cell() function to populate one specific cell on each successive bar. After the script populates all 50 cells, it calls the table.clear() function on the next bar to clear the cells, then begins populating the table again:
+!image
 Pine Script®
 Copied
-`//@version=6  
-indicator("ATR", "", true)  
-atrPeriodInput = input.int(14,  "ATR period", minval = 1, tooltip = "Using a period of 1 yields True Range.")  
+`//@version=6   
+indicator("Clearing cells demo")  
   
-var table atrDisplay = table.new(position.top_right, 1, 1, bgcolor = color.gray, frame_width = 2, frame_color = color.black)  
-myAtr = ta.atr(atrPeriodInput)  
 if barstate.islast  
-    table.cell(atrDisplay, 0, 0, str.tostring(myAtr, format.mintick), text_color = color.white)  
+    //@variable References a table that supports 10 columns and 5 rows.   
+    var table t = table.new(position.middle_center, 10, 5, chart.bg_color, chart.fg_color, 1, chart.fg_color, 1)  
+  
+    //@variable The number of cells currently populated by `table.cell()` calls.   
+    var int cellCount = 0  
+  
+    // If the `cellCount` value is 50, clear all cells from column 0, row 0 to column 9, row 4, then reset the value to 0.  
+    if cellCount == 50  
+        t.clear(start_column = 0, start_row = 0, end_column = 9, end_row = 4)  
+        cellCount := 0  
+  
+    // Calculate the column and row indices of the cell to populate. The script populates each row from left to right.  
+    int col = cellCount % 10  
+    int row = int(cellCount / 10)  
+    //@variable The color of the current cell, based on the direction of the latest change in the `close` value.  
+    color cellColor = close > close[1] ? color.aqua : close < close[1] ? color.fuchsia : na  
+    //@variable A string representing the current bar's opening date and time in the exchange time zone.  
+    //          Each cell displays this text in a tooltip.  
+    string cellTooltip = str.format_time(time)  
+    // Populate the cell at the `col` and `row` indices.   
+    t.cell(col, row, str.tostring(close), text_color = #000000, bgcolor = cellColor, tooltip = cellTooltip)  
+    // Increment the `cellCount` value by one.   
+    cellCount += 1  
 `
-!image
 Note that:
-  * We used table.new() to define a background color, a frame color and its width.
-  * When populating the cell with table.cell(), we set the text to display in white.
-  * We pass format.mintick as a second argument to the str.tostring() function to restrict the precision of ATR to the chart's tick precision.
-  * We now use an input to allow the script user to specify the period of ATR. The input also includes a tooltip, which the user can see when he hovers over the “i” icon in the script's “Settings/Inputs” tab.
+  * The table does not initially display any data after each table.clear() call, because the call in our example erases the properties of every cell. The table displays data again only after the table.cell() call. The table gradually expands its display across bars to show all columns and rows as the script redefines them.
+
+## Merging cells
+Scripts can _merge_ multiple cells within a table into a single cell by calling the table.merge_cells() function. The function merges all cells within a rectangular region from a starting column and row to an ending column and row. After a table merges cells, it cannot separate those cells or merge them with other cells. The final merged cell inherits all properties from the _first cell_ in the merge range, excluding its width and height. The dimensions of the merged cell depend on the width and height of all neighboring cells in the columns and rows covered by the range.
+The signature of the table.merge_cells() function is as follows:
+
+```
+
+table.merge_cells(table_id, start_column, start_row, end_column, end_row) → void
+
+```
+
+Where:
+  * The `table_id` parameter requires the ID of the table object.
+  * The `start_column` parameter requires the column index of the first cell to merge. The argument must be less than or equal to the `end_column` value.
+  * The `start_row` parameter requires the row index of the first cell to merge. The argument must be less than or equal to the `end_row` value.
+  * The `end_column` parameter requires the column index of the final cell to merge. The argument must be greater than or equal to the `start_column` value.
+  * The `end_row` parameter requires the row index of the final cell to merge. The argument must be greater than or equal to the `start_row` value.
 
 
-### Coloring the chart's background
-This example uses a one-cell table to color the chart's background on the bull/bear state of RSI:
+NoteA merged cell _ignores_ the text and styling of all cells in the merge range except for the first. Therefore, to modify the properties of a merged cell, scripts must call the table.cell() or `table.cell_set_*()` functions using the **first** column and row indices in the merge range. For instance, to update a merged cell from column 0, row 1 to column 2, row 3, the calls must use 0 as the `column` argument and 1 as the `row` argument. Using other indices from the merge range _does not_ affect the cell.
+The following example script demonstrates the behavior of merged cells. On the first bar, the script creates a five-column, five-row table with a white background and a black border and frame, then populates its cells with single-character alphabetical strings from `"A"` to `"Y"`. The script calls the table.merge_cells() function as a method to merge all cells from an input start column and row to an input end column and row. It also uses the table.cell_set_bgcolor() function to color the background of the first cell in the merge range blue:
+!image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Chart background", "", true)  
-bullColorInput = input.color(color.new(color.green, 95), "Bull", inline = "1")  
-bearColorInput = input.color(color.new(color.red, 95), "Bear", inline = "1")  
-// ————— Function colors chart bg on RSI bull/bear state.  
-colorChartBg(bullColor, bearColor) =>  
-    var table bgTable = table.new(position.middle_center, 1, 1)  
-    float r = ta.rsi(close, 20)  
-    color bgColor = r > 50 ? bullColor : r < 50 ? bearColor : na  
-    if barstate.islast  
-        table.cell(bgTable, 0, 0, width = 100, height = 100, bgcolor = bgColor)  
+indicator("Merging cells demo")  
   
-colorChartBg(bullColorInput, bearColorInput)  
+// Define inputs specifying the indices of the cells to merge.   
+int startColInput = input.int(1, "Start column", 0, 4)  
+int startRowInput = input.int(1, "Start row", 0, 4)  
+int endColInput   = input.int(3, "End column", 0, 4)  
+int endRowInput   = input.int(3, "End row", 0, 4)  
+  
+if barstate.isfirst  
+    //@variable References a table that can display five rows and five columns.  
+    var table t = table.new(position.middle_center, 5, 5, #ffffff, #000000, 1, #000000, 1)  
+  
+    // Merge all cells from the specified starting column and row to the ending column and row.  
+    // This function can define merged cell positions before or after any `table.cell()` calls.   
+    t.merge_cells(startColInput, startRowInput, endColInput, endRowInput)  
+      
+    //@variable References an array of single-character strings.  
+    var array<string> cellStrings = str.split("ABCDEFGHIJKLMNOPQRSTUVWXY", "")  
+    // Loop through the `cellStrings` array's indices and elements and populate the table.  
+    for [i, letter] in cellStrings  
+        // Calculate the column and row index for the cell based on the `i` value.  
+        // These indices access cells in order from left to right, moving to the next row for each multiple of five.  
+        int col = i % 5  
+        int row = math.floor(i / 5)  
+        // Populate the cell at the `col` and `row` indices.  
+        t.cell(col, row, letter, width = 16, height = 16, text_color = #000000)  
+        // Set the background color of the first cell in the merge range to blue.  
+        // This setter call causes the entire merged cell to inherit a blue background.   
+        if col == startColInput and row == startRowInput  
+            t.cell_set_bgcolor(col, row, color.blue)  
 `
 Note that:
-  * We provide users with inputs allowing them to specify the bull/bear colors to use for the background, and send those input colors as arguments to our `colorChartBg()` function.
-  * We create a new table only once, using the var keyword to declare the table.
-  * We use table.cell() on the last bar only, to specify the cell's properties. We make the cell the width and height of the indicator's space, so it covers the whole chart.
+  * The merged cell automatically displays the text and background color of the first cell in the merge range. It ignores the properties of all other cells in the range, even though the script also defines them with the looped table.cell() call.
+  * If the start and end column indices are equal, as well as the start and end row indices, the table.merge_cells() call does not affect the table’s appearance, because the merge range spans only a single cell. If the start row or column index is greater than the end index, a runtime error occurs, because tables merge cells exclusively from top to bottom and left to right.
+  * The table.merge_cells() function can merge cells _before or after_ the script defines their properties with the table.cell() function. In this example, we placed the call before the loop that executes the table.cell() calls. Moving the call after the loop achieves the same effect.
+
+## Deleting and replacing tables
+Tables _persist_ indefinitely on the chart or in the bottom panel until a script deletes them. Scripts can delete a table, if necessary, by doing either of the following:
+  * Calling the table.delete() function. Each call explicitly deletes a table object and removes its ID. Any variables or collections that reference the table store na after the call. This function is most useful if a script must display a table on only _some_ of the latest bars.
+  * Calling the table.new() function with the same `position` argument as a previous call. Each successive call to the function automatically _deletes_ the existing table using the specified position and _replaces_ it with a new table object that displays cells at that position. Replacing a table can be useful if a script must increase the number of cells in a table or dynamically change merged cell ranges.
 
 
-### Creating a display panel
-Tables are ideal to create sophisticated display panels. Not only do they make it possible for display panels to always be visible in a constant position, they provide more flexible formatting because each cell's properties are controlled separately: background, text color, size and alignment, etc.
-Here, we create a basic display panel showing a user-selected quantity of MAs values. We display their period in the first column, then their value with a green/red/gray background that varies with price's position with regards to each MA. When price is above/below the MA, the cell's background is colored with the bull/bear color. When the MA falls between the current bar's open and close, the cell's background is of the neutral color:
+The following example script uses tables to create a right-to-left scrolling display of colors indicating the direction of changes in the close series over the latest 30 bars. The script uses an array as a queue to store the change direction values. Then, on the last historical bar or the current realtime bar, it creates a new table object and loops through the array to populate the cells. It populates the second row’s cells by calling the table.cell() function for each element that does not match the previous element. For consecutive elements that have the same value, the script calls table.merge_cells() instead to merge all the corresponding cells in the second row, preventing the table’s black border from appearing between each one.
+Each execution of the table.new() call automatically replaces the table from the previous bar with a new one, because the call uses an unchanging `position` argument. Replacing the table on each realtime bar is useful for our intended effect in this case, as the script cannot dynamically overwrite the merged cell ranges in a single table across bars:
 !image
 Pine Script®
 Copied
 `//@version=6  
-indicator("Price vs MA", "", true)  
+indicator("Replacing tables demo", overlay = true, behind_chart = false)  
   
-var string GP1 = "Moving averages"  
-int     masQtyInput    = input.int(20, "Quantity", minval = 1, maxval = 40, group = GP1, tooltip = "1-40")  
-int     masStartInput  = input.int(20, "Periods begin at", minval = 2, maxval = 200, group = GP1, tooltip = "2-200")  
-int     masStepInput   = input.int(20, "Periods increase by", minval = 1, maxval = 100, group = GP1, tooltip = "1-100")  
+//@variable References an array whose elements represent the direction of the latest 30 `close` values.  
+var array<float> directions = array.new<float>(30, 0)  
+// Push the sign of the change in the current `close` value into the end of the array, and remove the first element.   
+directions.push(math.sign(close - close[1]))  
+directions.shift()  
   
-var string GP2 = "Display"  
-string  tableYposInput = input.string("top", "Panel position", inline = "11", options = ["top", "middle", "bottom"], group = GP2)  
-string  tableXposInput = input.string("right", "", inline = "11", options = ["left", "center", "right"], group = GP2)  
-color   bullColorInput = input.color(color.new(color.green, 30), "Bull", inline = "12", group = GP2)  
-color   bearColorInput = input.color(color.new(color.red, 30), "Bear", inline = "12", group = GP2)  
-color   neutColorInput = input.color(color.new(color.gray, 30), "Neutral", inline = "12", group = GP2)  
-  
-//@variable The table's `position.*` argument based on the chosen `tableXposInput` and `tableYposInput`.  
-var string tablePosition = switch  
-    tableXposInput == "left"   and tableYposInput == "top"    => position.top_left  
-    tableXposInput == "left"   and tableYposInput == "middle" => position.middle_left  
-    tableXposInput == "left"   and tableYposInput == "bottom" => position.bottom_left  
-    tableXposInput == "center" and tableYposInput == "top"    => position.top_center  
-    tableXposInput == "center" and tableYposInput == "middle" => position.middle_center  
-    tableXposInput == "center" and tableYposInput == "bottom" => position.bottom_center  
-    tableXposInput == "right"  and tableYposInput == "top"    => position.top_right  
-    tableXposInput == "right"  and tableYposInput == "middle" => position.middle_right  
-    tableXposInput == "right"  and tableYposInput == "bottom" => position.bottom_right  
-  
-var table panel = table.new(tablePosition, 2, masQtyInput + 1)  
 if barstate.islast  
-    // Table header.  
-    table.cell(panel, 0, 0, "MA", bgcolor = neutColorInput)  
-    table.cell(panel, 1, 0, "Value", bgcolor = neutColorInput)  
+    // Call `table.new()` to create a new 30-column, 2-row `table` object on each bar.  
+    // Because each successive execution of this call uses the same position, it automatically deletes the previous   
+    // table and creates a new table to populate.   
+    table t = table.new(position.bottom_right, 30, 2, #ececec, #000000, 1, #000000, 1)  
   
-int period = masStartInput  
-for i = 1 to masQtyInput  
-    // ————— Call MAs on each bar.  
-    float ma = ta.sma(close, period)  
-    // ————— Only execute table code on last bar.  
-    if barstate.islast  
-        // Period in left column.  
-        table.cell(panel, 0, i, str.tostring(period), bgcolor = neutColorInput)  
-        // If MA is between the open and close, use neutral color. If close is lower/higher than MA, use bull/bear color.  
-        bgColor = close > ma ? open < ma ? neutColorInput : bullColorInput : open > ma ? neutColorInput : bearColorInput  
-        // MA value in right column.  
-        table.cell(panel, 1, i, str.tostring(ma, format.mintick), text_color = color.black, bgcolor = bgColor)  
-    period += masStepInput  
+    // Declare variables to track the starting index and previous direction state for setting merged cells in the loop.  
+    int mergeStart = 0  
+    float prevDir = 0  
+  
+    // Loop through the `directions` array.  
+    for [i, dir] in directions  
+        // Set each cell in the first row to display the analyzed bar offset.  
+        t.cell(i, 0, str.tostring(29 - i), width = 2, height = 5, text_color = #000000)  
+        // Set the properties of the first cell on the second row and set `prevDir` during the first iteration.  
+        if i == 0  
+            t.cell(i, 1, height = 10, bgcolor = dir == 1 ? color.green : dir == -1 ? color.red : color.gray)  
+            prevDir := dir  
+            continue  
+        // On each successive iteration where the `dir` and `prevDir` values do not match, merge the second row's   
+        // cells from the `mergeStart` column to the `i - 1` column, update the `mergeStart` and `prevDir` variables,  
+        // then set the properties of the cell at column `i` cell in the second row.   
+        if dir != prevDir  
+            t.merge_cells(mergeStart, 1, i - 1, 1)  
+            mergeStart := i  
+            prevDir := dir  
+            t.cell(i, 1, height = 10, bgcolor = dir == 1 ? color.green : dir == -1 ? color.red : color.gray)  
+    // Merge all remaining cells if the `mergeStart` index is less than the final column index.  
+    if mergeStart < 29  
+        t.merge_cells(mergeStart, 1, 29, 1)  
 `
-Note that:
-  * Users can select the table's position from the inputs, as well as the bull/bear/neutral colors to be used for the background of the right column's cells.
-  * The table's quantity of rows is determined using the number of MAs the user chooses to display. We add one row for the column headers.
-  * Even though we populate the table cells on the last bar only, we need to execute the calls to ta.sma() on every bar so they produce the correct results. The compiler warning that appears when you compile the code can be safely ignored.
-  * We separate our inputs in two sections using `group`, and join the relevant ones on the same line using `inline`. We supply tooltips to document the limits of certain fields using `tooltip`.
-
-
-### Displaying a heatmap
-Our next project is a heatmap, which will indicate the bull/bear relationship of the current price relative to its past values. To do so, we will use a table positioned at the bottom of the chart. We will display colors only, so our table will contain no text; we will simply color the background of its cells to produce our heatmap. The heatmap uses a user-selectable lookback period. It loops across that period to determine if price is above/below each bar in that past, and displays a progressively lighter intensity of the bull/bear color as we go further in the past:
-!image
-Pine Script®
-Copied
-`//@version=6  
-indicator("Price vs Past", "", true)  
-  
-var int MAX_LOOKBACK = 300  
-  
-int     lookBackInput  = input.int(150, minval = 1, maxval = MAX_LOOKBACK, step = 10)  
-color   bullColorInput = input.color(#00FF00ff, "Bull", inline = "11")  
-color   bearColorInput = input.color(#FF0080ff, "Bear", inline = "11")  
-  
-// ————— Function draws a heatmap showing the position of the current `_src` relative to its past `_lookBack` values.  
-drawHeatmap(src, lookBack) =>  
-    // float src     : evaluated price series.  
-    // int   lookBack: number of past bars evaluated.  
-    // Dependency: MAX_LOOKBACK  
-  
-    // Force historical buffer to a sufficient size.  
-    max_bars_back(src, MAX_LOOKBACK)  
-    // Only run table code on last bar.  
-    if barstate.islast  
-        var heatmap = table.new(position.bottom_center, lookBack, 1)  
-        for i = 1 to lookBackInput  
-            float transp = 100. * i / lookBack  
-            if src > src[i]  
-                table.cell(heatmap, lookBack - i, 0, bgcolor = color.new(bullColorInput, transp))  
-            else  
-                table.cell(heatmap, lookBack - i, 0, bgcolor = color.new(bearColorInput, transp))  
-  
-drawHeatmap(high, lookBackInput)  
-`
-Note that:
-  * We define a maximum lookback period as a `MAX_LOOKBACK` constant. This is an important value and we use it for two purposes: to specify the number of columns we will create in our one-row table, and to specify the lookback period required for the `_src` argument in our function, so that we force Pine Script to create a historical buffer size that will allow us to refer to the required quantity of past values of `_src` in our for loop.
-  * We offer users the possibility of configuring the bull/bear colors in the inputs and we use `inline` to place the color selections on the same line.
-  * Inside our function, we enclose our table-creation code in an if barstate.islast construct so that it only runs on the last bar of the chart.
-  * The initialization of the table is done inside the if statement. Because of that, and the fact that it uses the var keyword, initialization only occurs the first time the script executes on a last bar. Note that this behavior is different from the usual var declarations in the script's global scope, where initialization occurs on the first bar of the dataset, at bar_index zero.
-  * We do not specify an argument to the `text` parameter in our table.cell() calls, so an empty string is used.
-  * We calculate our transparency in such a way that the intensity of the colors decreases as we go further in history.
-  * We use dynamic color generation to create different transparencies of our base colors as needed.
-  * Contrary to other objects displayed in Pine scripts, this heatmap's cells are not linked to chart bars. The configured lookback period determines how many table cells the heatmap contains, and the heatmap will not change as the chart is panned horizontally, or scaled.
-  * The maximum number of cells that can be displayed in the script’s visual space will depend on your viewing device's resolution and the portion of the display used by your chart. Higher resolution screens and wider windows will allow more table cells to be displayed.
 
 ## Tips
-* When creating tables in strategy scripts, keep in mind that unless the strategy uses `calc_on_every_tick = true`, table code enclosed in if barstate.islast blocks will not execute on each realtime update, so the table will not display as you expect.
-  * Keep in mind that successive calls to table.cell() overwrite the cell's properties specified by previous table.cell() calls. Use the setter functions to modify a cell's properties.
-  * Remember to control the execution of your table code wisely by restricting it to the necessary bars only. This saves server resources and your charts will display faster, so everybody wins.
+Follow these tips to use tables efficiently, and to display updates to tables dynamically in strategies.
+### Updating tables only when necessary
+As mentioned in the introduction, tables often require more computational resources than other types of drawings, especially if a script creates or updates them frequently or populates many cells. In some cases, excessive table creation or updates can significantly increase a script’s runtime requirements.
+To minimize resource use when working with tables, ensure the script creates and updates them **only when necessary**. Below are the best practices for optimizing table performance:
+  * If the table or cell properties do not require changes across bars, place all the required `table.*()` function calls inside a conditional structure that executes its local block on a **single bar**. All table visuals persist across executions until explicitly deleted or replaced. Therefore, calling `table.*()` functions repeatedly is **not** necessary to display fixed visuals continuously.
+  * If any table or cell properties do require changes across bars, place the required `table.set_*()`, table.cell(), or `table.cell_set_*()` calls inside a conditional structure that executes only on the **last** available bar, where the result is **visible**. Users cannot view the past states of tables. Therefore, updating tables repeatedly across history is an unnecessary waste of runtime resources.
+  * When creating and modifying tables, it is typically best to assign the table.new() call to a persistent variable declared with the var keyword to prevent repeated table creation. Each successive call with the same `position` argument replaces any existing table at that position with a new one to populate, as explained above. Replacing tables when not required can cause excessive resource use.
+  * If a script _must_ replace a table over time to change its cell count, merged cells, etc., keep all successive table.new() calls inside a conditional structure that executes only on the _last bar_. Repeatedly recreating and repopulating tables across history can significantly elevate resource use.
 
 
+TipSimilar best practices can apply to other drawing types. For example, if a script draws a label that always displays only the latest values from a series, limiting label.new() and `label.set_*()` calls to the latest bar, where the output is visible, can help improve script performance. See the Profiling and optimization page to learn more about runtime optimization techniques.
+### Displaying dynamic tables in strategies
+Strategies differ from indicators in the way they execute across a dataset. By default, they execute only on the _closing tick_ of each bar, regardless of whether that bar has a historical or realtime state. Consequently, with this behavior, if a strategy populates tables with data that can fluctuate during realtime bars, the tables _lag_ behind the latest data while a bar is open and show new results only when the bar _closes_.
+For a strategy to update its tables or other drawings on each update to an open realtime bar, the script must execute on _each new tick_ – not just each bar’s close. Programmers can configure a strategy to execute on each new tick by default by including `calc_on_every_tick = true` in the strategy() declaration statement. Script users can also override a strategy’s default calculation behavior and enable executions on each new tick by selecting “On realtime bar tick” in the strategy’s Script execution settings.
+NoteEnabling strategy executions on each realtime tick can cause the strategy’s orders to behave _differently_ on realtime bars. Each new update from the data feed is a valid tick for filling orders on realtime bars, while executions on historical bars are limited to filling orders on chart prices or the prices from a lower timeframe. See the `calc_on_every_tick` section of the Strategies page for more information. If a script must place orders only after a realtime bar closes for historical consistency, regardless of this setting, include barstate.isconfirmed in the conditions that control the script’s order placement commands.
+The example strategy below places market orders to enter and close trades based on the value of a 14-length RSI. The script also draws a two-column, two-row table to display the current strategy.equity value and its one-bar change. The script includes `calc_on_every_tick = true` in the strategy() statement, enabling the table to update after each tick in a realtime bar by default. To promote consistency in the order logic across historical and realtime bars, the script uses the order placement commands inside an if structure that executes only when the barstate.isconfirmed value is `true`:
+Pine Script®
+Copied
+`//@version=6  
+strategy(  
+    "Dynamic tables in strategies demo", calc_on_every_tick = true,   
+    default_qty_type = strategy.percent_of_equity, default_qty_value = 2  
+)  
+  
+//@variable The 14-length RSI of the `close` series.  
+float rsi = ta.rsi(close, 14)  
+  
+// On a closed bar, place an entry market order if the RSI is above 60, or a closing market order if it's below 50.  
+if barstate.isconfirmed  
+    switch  
+        rsi > 60 => strategy.entry("Long", strategy.long)  
+        rsi < 50 => strategy.close_all()  
+  
+// Plot the RSI and the entry and exit levels on every bar.  
+plot(rsi, "RSI")  
+hline(60, "Entry level", color.green)  
+hline(50, "Exit level", color.red)  
+  
+// Limit the table logic to the last bar, where the output is visible.  
+// Because we use `calc_on_every_tick = true` in the declaration statement, this logic executes on each realtime   
+// tick by default, enabling the display to update in real time.   
+// Without this argument, the display updates only after a bar closes by default.   
+if barstate.islast  
+    //@variable References a table that supports two columns and two rows. Displays on the main chart pane by default.  
+    var table infoDisplay = table.new(  
+        position.top_right, 2, 2, na, chart.fg_color, 1, chart.fg_color, 1, force_overlay = true  
+    )  
+    // Populate the table's header cells on one bar, because their visuals do not require changes.   
+    once  
+        infoDisplay.cell(0, 0, "Equity", text_color = #ffffff, bgcolor = #2196f3)  
+        infoDisplay.cell(1, 0, "Change", text_color = #ffffff, bgcolor = #2196f3)  
+    // Update the other cells that display dynamic values on every subsequent bar.   
+    infoDisplay.cell(0, 1, str.tostring(strategy.equity, "0.00"), text_color = chart.fg_color)  
+    infoDisplay.cell(1, 1, str.tostring(strategy.equity - strategy.equity[1], "0.00"), text_color = chart.fg_color)  
+`
 Previous PlotsNext Text and shapes
 
 ## * Introduction
-* Creating tables
-  * Placing a single value in a fixed position
-  * Coloring the chart's background
-  * Creating a display panel
-  * Displaying a heatmap
-  * Tips 
+* Creating and displaying tables
+  * Sizing table cells
+  * Displaying tables in the bottom panel
+  * Modifying table and cell properties
+  * Clearing cells
+  * Merging cells
+  * Deleting and replacing tables
+  * Tips
+  * Updating tables only when necessary
+  * Displaying dynamic tables in strategies 
 
 []
+
+
+## Code Examples
+
+
+```pine
+table.new(position, columns, rows, bgcolor, frame_color, frame_width, border_color, border_width, force_overlay) → series table
+```
+
+```pine
+table.cell(table_id, column, row, text, width, height, text_color, text_halign, text_valign, text_size, bgcolor, tooltip, text_font_family, text_formatting) → void
+```
+
+```pine
+function_name(table_id, table_property) → void
+```
+
+```pine
+function_name(table_id, column, row, cell_property) → void
+```
+
+```pine
+table.clear(table_id, start_column, start_row, end_column, end_row) → void
+```
+
+```pine
+table.merge_cells(table_id, start_column, start_row, end_column, end_row) → void
+```
+
+
+## Function Documentation
+
+
+@function            Calculates an array of width or height percentages for sizing table cells.  
+//@param numCells      The number of cells per row (for width) or column (for height).  
+//@param totalPercent  The total percentage of the chart pane's width or height.   
+//@param weights       Optional. The ID of an array containing a proportional weight for each cell.  
+//                     If `na`, the function creates an array of uniform percentages.  
+//@returns             The ID of an array of width or height percentages. The script can use the elements in   
+
 
 ---
 
 
 
-# processed_32_text-and-shapes_20260928_081147
+# processed_32_text-and-shapes_20261001_081727
 
 ## Introduction
 Pine Script® features five different ways to display text or shapes on the chart:
@@ -19327,7 +19833,7 @@ label.delete(id) → void
 
 
 
-# processed_33_alerts_20260928_081147
+# processed_33_alerts_20261001_081727
 
 ## Introduction
 TradingView alerts run 24x7 on our servers and do not require users to be logged in to execute. Alerts are created from the charts user interface (_UI_). You will find all the information necessary to understand how alerts work and how to create them from the charts UI in the Help Center's About TradingView alerts page.
@@ -19684,7 +20190,7 @@ alertcondition(condition, title, message)
 
 
 
-# processed_34_bar-states_20260928_081147
+# processed_34_bar-states_20261001_081727
 
 ## Introduction
 A set of built-in variables in the `barstate` namespace allow your script to detect different properties of the bar on which the script is currently executing.
@@ -19833,7 +20339,7 @@ Previous AlertsNext Chart information
 
 
 
-# processed_35_chart-information_20260928_081147
+# processed_35_chart-information_20261001_081727
 
 ## Introduction
 Scripts can retrieve multiple types of information about the current chart and its dataset by using a subset of built-in variables. The chart data that scripts can access using these variables includes the following:
@@ -20196,7 +20702,7 @@ Previous Bar statesNext Inputs
 
 
 
-# processed_36_inputs_20260928_081147
+# processed_36_inputs_20261001_081727
 
 ## Introduction
 Inputs receive values that users can change from a script's “Settings/Inputs” tab. By utilizing inputs, programmers can write scripts that users can more easily adapt to their preferences.
@@ -20829,7 +21335,7 @@ input.float(defval, title, options, tooltip, inline, group, confirm, display, ac
 
 
 
-# processed_37_libraries_20260928_081147
+# processed_37_libraries_20261001_081727
 
 ## Introduction
 Pine Script® libraries are publications containing functions that can be reused in indicators, strategies, or in other libraries. They are useful to define frequently-used functions so their source code does not have to be included in every script where they are needed.
@@ -21213,7 +21719,7 @@ import <username>/<libraryName>/<libraryVersion> [as <alias>]
 
 
 
-# processed_38_non-standard-charts-data_20260928_081147
+# processed_38_non-standard-charts-data_20261001_081727
 
 ## Introduction
 Pine Script® features several `ticker.*()` functions that generate _ticker identifiers_ for requesting data from _non-standard_ chart feeds. The available functions that create these ticker IDs are ticker.heikinashi(), ticker.renko(), ticker.linebreak(), ticker.kagi(), and ticker.pointfigure(). Scripts can use these functions’ returned values as the `symbol` argument in request.security() calls to access non-standard chart data while running on _any_ chart type.
@@ -21332,7 +21838,7 @@ Previous LibrariesNext Other timeframes and data
 
 
 
-# processed_39_other-timeframes-and-data_20260928_081147
+# processed_39_other-timeframes-and-data_20261001_081727
 
 ## Introduction
 Pine Script® allows users to request data from sources and contexts other than those their charts use. The functions we present on this page can fetch data from a variety of alternative sources:
@@ -24514,7 +25020,7 @@ library("DynamicRequests")
 
 
 
-# processed_40_repainting_20260928_081147
+# processed_40_repainting_20261001_081727
 
 ## Introduction
 We define repainting as: **script behavior causing historical vs realtime calculations or plots to behave differently**.
@@ -24784,7 +25290,7 @@ Previous Other timeframes and dataNext Sessions
 
 
 
-# processed_41_sessions_20260928_081147
+# processed_41_sessions_20261001_081727
 
 ## Introduction
 Exchanges define a _session_ for every symbol, which represents the times of day and days of the week in which the symbol can be traded. Exchanges might also define sessions other than the default one, which are called _subsessions_. Subsessions can be shorter or longer than the default session. If different sessions are available for a symbol, users can switch between them either from the “Sessions” controls in the bottom-right corner of the chart or from the chart’s “Settings/Symbol/Session” menu.
@@ -25151,7 +25657,7 @@ Previous RepaintingNext Strategies
 
 
 
-# processed_42_strategies_20260928_081147
+# processed_42_strategies_20261001_081727
 
 ## Introduction
 Pine Script® strategies are specialized scripts that simulate trades across historical and realtime bars, allowing users to backtest and forward test their trading systems. Strategy scripts have many of the same capabilities as indicator scripts, and they provide the ability to place, modify, and cancel hypothetical orders and analyze performance results.
@@ -27430,7 +27936,7 @@ Margin Call Size: -27763 * 4 = - 111052
 
 
 
-# processed_43_strings_20260928_081147
+# processed_43_strings_20261001_081727
 
 ## Introduction
 Pine Script® strings are immutable values containing sequences of up to 40,960 encoded characters, such as letters, digits, symbols, spaces, control characters, or other Unicode characters and code points. Strings allow scripts to represent a wide range of data as character patterns and human-readable text.
@@ -29145,7 +29651,7 @@ str.match(source, regex) → string
 
 
 
-# processed_44_time_20260928_081147
+# processed_44_time_20261001_081727
 
 ## Introduction
 In Pine Script®, the following key aspects apply when working with date and time values:
@@ -30677,7 +31183,7 @@ str.format_time(time, format, timezone) → series string
 
 
 
-# processed_45_timeframes_20260928_081147
+# processed_45_timeframes_20261001_081727
 
 ## Introduction
 The _timeframe_ of a chart is sometimes also referred to as its _interval_ or _resolution_. It is the unit of time represented by one bar on the chart. All standard chart types use a timeframe: “Bars”, “Candles”, “Hollow Candles”, “Line”, “Area” and “Baseline”. One non-standard chart type also uses timeframes: “Heikin Ashi”.
@@ -30731,7 +31237,7 @@ Previous Time
 
 
 
-# processed_46_style-guide_20260928_081147
+# processed_46_style-guide_20261001_081727
 
 ## Introduction
 This style guide provides recommendations on how to name variables and organize your Pine scripts in a standard way that works well. Scripts that follow our best practices will be easier to read, understand and maintain.
@@ -30923,32 +31429,39 @@ plot(close, color = color.red)
 
 ## Line wrapping
 Line wrapping can make long lines of code easier to read by defining a _single line_ of code across _multiple_ lines in the script. Generally, scripts can wrap lines using any indentation length that is _not_ a multiple of four, because the four-space or tab indentation defines local blocks in Pine.
-However, if a wrapped line is enclosed in _parentheses_ , such as in function calls or parameter declarations, it can use any indentation length without restriction, _including_ a multiple of four. For example:
+However, if part of a wrapped line is enclosed in _parentheses_ `( )` or square brackets `[ ]`, that code can use _any_ number of spaces for indentation without restriction, including zero or a multiple of four. For example:
 Pine Script®
 Copied
 `//@version=6  
 indicator("Line wrapping demo")  
   
-// A wrapped line that is *not* enclosed in parentheses can use any indentation length *except* a multiple of four.  
-//@variable The difference between the current and previous `close` values.   
-float closeDiff =   
+// A wrapped line that is *not* enclosed in parentheses or brackets can use any indentation *except* a multiple of four.  
+float closeDiff =  
   close                         // Indented by two spaces.  
   - close[1]                    // Indented by two spaces.  
   
-// A wrapped line that *is* enclosed in parentheses *can* use four-space indentation.  
-//@variable The percentage difference between the current and previous `close` values.   
+// A wrapped line that *is* enclosed in parentheses *can* use multiples of four spaces for indentation.  
 float percentChange = (  
-    (closeDiff)                 // Indented by four spaces.  
-    / close[1] * 100  )         // Indented by four spaces.  
+    closeDiff) / close[         // Indented by four spaces.  
+    1] * 100                    // Indented by four spaces.  
   
-// Within the same expression, each wrapped line can use different indentation lengths.  
-// The parentheses enclosing wrapped lines can also be wrapped on separate lines.  
+// Within the same expression or statement, each wrapped line can use different indentation lengths.  
+// The parentheses or brackets enclosing wrapped lines can also be placed on separate lines.  
+color plotColor = percentChange > percentChange[  
+    1                           // Indented by four spaces.  
+] ? color.rgb(                  // No indentation.  
+  76, 175, 80                   // Indented by two spaces.  
+ ) : color.rgb(                 // Indented by one space.  
+        255, 82, 82             // Indented by eight spaces.  
+    )                           // Indented by four spaces.  
+  
 plot(  
- percentChange, title = "Percent change",                            // Indented by one space.  
-   color = (percentChange >= 0 ? color.green : color.red),           // Indented by three spaces.  
-    linewidth = 8,                                                   // Indented by four spaces.  
-        style = plot.style_histogram, format = format.percent        // Indented by eight spaces.  
-)                                                                    // No indentation.  
+ percentChange, title = "Percent change",   // Indented by one space.  
+   color = plotColor,                       // Indented by three spaces.  
+    linewidth = 2,                          // Indented by four spaces.  
+        style = plot.style_histogram,       // Indented by eight spaces.                    
+      format = format.percent               // Indented by six spaces.  
+)                                           // No indentation.  
 `
 Line wrapping is also useful when working with long single-line strings. For example, instead of defining a lengthy string on a single line of code, programmers can split that string into smaller parts and concatenate them using the + operator to wrap the expression across multiple lines for readability:
 Pine Script®
@@ -30966,8 +31479,8 @@ if barstate.isfirst
     // Output the `newString` result in the Pine Logs pane.  
     log.info(newString)  
 `
-It is possible to use various line wrapping styles within the same script and even within the same expression, as seen in the first example above. To keep the code organized and easy to read, we recommend maintaining a _consistent_ line wrapping style within the same script where possible. For instance, programmers can choose to align wrapped lines to their nearest tab space, or to wrap lines minimally only once they exceed the Pine Editor’s line length guide.
-This example script shows a consistent line wrapping style that lists each argument in a function call on a wrapped line indented by four spaces. It wraps the function’s closing parentheses on a separate line without indentation to align it vertically with the beginning of the expression and signify the end of the wrapped code:
+It is possible to use multiple line wrapping styles within the same script and even within the same statement, as shown in the first example above. However, to keep the code organized and easy to read, we recommend maintaining a _consistent_ line wrapping style within the same script where possible. For instance, programmers can choose to align wrapped lines to their nearest tab space, or to apply minimal wrapping only when the length of a line exceeds the Pine Editor’s line length guide.
+This example script shows a consistent line wrapping style that lists each argument in a function call on a wrapped line indented by four spaces. It wraps each call’s closing parenthesis on a separate line without indentation to align it vertically with the beginning of the expression and signify the end of the wrapped code:
 Pine Script®
 Copied
 `//@version=6  
@@ -31111,7 +31624,7 @@ Next Debugging
 
 
 
-# processed_47_debugging_20260928_081147
+# processed_47_debugging_20261001_081727
 
 ## Introduction
 TradingView’s close integration between the Pine Editor and the Supercharts interface enables efficient, interactive debugging of Pine Script® code. Pine scripts can create dynamic outputs in multiple locations, on and off the chart. Programmers can use these outputs to validate their scripts’ behaviors and ensure everything works as expected.
@@ -32847,7 +33360,7 @@ if time >= startTime and time <= endTime
 
 
 
-# processed_48_profiling-and-optimization_20260928_081147
+# processed_48_profiling-and-optimization_20261001_081727
 
 ## Introduction
 Pine Script® is a cloud-based compiled language geared toward efficient repeated script execution. When a user adds a Pine script to a chart, it executes _numerous_ times, once for each available bar or tick in the data feeds it accesses, as explained in this manual's Execution model page.
@@ -34477,7 +34990,7 @@ Previous DebuggingNext Publishing scripts
 
 
 
-# processed_49_publishing_20260928_081147
+# processed_49_publishing_20261001_081727
 
 ## Introduction
 TradingView hosts a large global community of Pine Script® programmers, and millions of traders. Script authors can publish their custom indicator scripts, strategies, and libraries publicly in the Community scripts repository, allowing others in our community to use and learn from them. They can also publish _private_ scripts to create _drafts_ for public releases, test features, or collaborate with friends.
@@ -34713,7 +35226,7 @@ Previous Profiling and optimizationNext Limitations
 
 
 
-# processed_50_limitations_20260928_081147
+# processed_50_limitations_20261001_081727
 
 ## Introduction
 As is mentioned in our Welcome page:
@@ -35083,7 +35596,7 @@ Previous Publishing scripts
 
 
 
-# processed_51_overview_20260928_081147
+# processed_51_overview_20261001_081727
 
 ## Introduction
 Pine Script® uses _runtime errors_ , _compilation errors_ , and _compiler warnings_ to help prevent unintended or erroneous script behaviors:
@@ -35116,7 +35629,7 @@ Next CE10101
 
 
 
-# processed_52_CE10101_20260928_081147
+# processed_52_CE10101_20261001_081727
 
 ## The condition of the “X” statement must evaluate to a “bool” value
 This compilation error occurs if one or more of the _conditions_ that control the flow of a conditional structure (an if or switch statement) returns a value that is _not_ of the “bool” type. These structures _cannot_ use values other than `true` and `false` as conditions.
@@ -35211,7 +35724,7 @@ Previous OverviewNext CE10117
 
 
 
-# processed_53_CE10117_20260928_081147
+# processed_53_CE10117_20261001_081727
 
 ## Compiled code contains too many tokens
 This compilation error indicates that a script’s compiled code is _too large_ for the runtime system to execute.
@@ -36051,7 +36564,7 @@ indicator("Removing unused code demo")
 
 
 
-# processed_54_CW10003_20260928_081147
+# processed_54_CW10003_20261001_081727
 
 ## The function “X” should be called on each calculation for consistency. It is recommended to extract the call from this scope.
 This compiler warning occurs if a call to a built-in function or user-defined function (or method) inside a conditional structure or loop retrieves data from its calculations on _past bars_ by using the [`[]` history-referencing operator] or other functions that rely on history internally. History-dependent function calls that execute either conditionally or iteratively can cause **unintended results**. A similar warning also occurs if a ternary or and/or operation executes a history-dependent function call conditionally.
@@ -36196,7 +36709,7 @@ Previous CE10117Next RE10139
 
 
 
-# processed_55_RE10139_20260928_081147
+# processed_55_RE10139_20261001_081727
 
 ## Memory limits exceeded
 The most common cause of this error is the retrieval of custom objects and collections from `request.*()` functions such as request.security(). Other possible causes include unnecessary drawing updates, excess historical buffer capacity, or inefficient use of max_bars_back().
@@ -36464,7 +36977,7 @@ Previous CW10003Next RE10143
 
 
 
-# processed_56_RE10143_20260928_081147
+# processed_56_RE10143_20261001_081727
 
 ## The requested historical offset (X) is beyond the historical buffer’s limit (Y)
 In Pine Script®, a single script executes from start to end on each bar of the chart. After each execution on a confirmed bar, Pine’s runtime system _commits (saves)_ data for a script’s variables and expressions on that bar to _fixed-sized_ historical buffers. The script can retrieve past bar values from these buffers by using the [`[]` history-referencing operator] or the functions that reference history internally. For example, the expression `myVar[500]` retrieves the last saved value of the `myVar` variable as of 500 bars back.
@@ -36572,7 +37085,7 @@ Previous RE10139
 
 
 
-# processed_57_general_20260928_081147
+# processed_57_general_20261001_081727
 
 ## Get real OHLC price on a Heikin Ashi chart
 Suppose, we have a Heikin Ashi chart (or Renko, Kagi, PriceBreak etc) and we've added a Pine script on it:
@@ -36776,7 +37289,7 @@ Previous LimitationsNext Alerts
 
 
 
-# processed_58_alerts_20260928_081147
+# processed_58_alerts_20261001_081727
 
 ## How do I make an alert available from my script?
 In indicator scripts, there are two ways to define triggers for alerts:
@@ -37338,7 +37851,7 @@ Previous GeneralNext Data structures
 
 
 
-# processed_59_data-structures_20260928_081147
+# processed_59_data-structures_20261001_081727
 
 ## What data structures can I use in Pine Script®?
 Pine data structures resemble those in other programming languages, with some important differences:
@@ -38222,7 +38735,7 @@ Previous AlertsNext Functions
 
 
 
-# processed_60_functions_20260928_081147
+# processed_60_functions_20261001_081727
 
 ## Can I use a variable length in functions?
 Many built-in technical analysis (TA) functions have a `length` parameter, such as `ta.sma(source, length)`. A majority of these functions can process “series” lengths, i.e., lengths that can change from bar to bar. Some functions, however, only accept “simple” integer lengths, which must be known on bar zero and not change during the execution of the script.
@@ -38484,7 +38997,7 @@ Previous Data structuresNext Indicators
 
 
 
-# processed_61_indicators_20260928_081147
+# processed_61_indicators_20261001_081727
 
 ## Can I create an indicator that plots like the built-in Volume or Volume Profile indicators?
 The Volume and Visible Range Volume Profile indicators (along with some other built-in indicators) are written in Java. They display data on the main chart pane in a unique way:
@@ -38594,7 +39107,7 @@ Previous FunctionsNext Other data and timeframes
 
 
 
-# processed_62_other-data-and-timeframes_20260928_081147
+# processed_62_other-data-and-timeframes_20261001_081727
 
 ## What kinds of data can I get from a higher timeframe?
 Generally speaking, the request.security() function can get the same kinds of data from another timeframe that is available on the chart timeframe. Scripts can retrieve built-in variables like open, high, low, close, volume, and bar_index.
@@ -38845,7 +39358,7 @@ Previous IndicatorsNext Programming
 
 
 
-# processed_63_programming_20260928_081147
+# processed_63_programming_20261001_081727
 
 ## What does “scope” mean?
 The _scope_ of a variable is the part of a script that defines the variable and in which it can be referenced. There are two main types of scope: _global_ and _local_.
@@ -38984,7 +39497,7 @@ Previous Other data and timeframesNext Strategies
 
 
 
-# processed_64_strategies_20260928_081147
+# processed_64_strategies_20261001_081727
 
 ## Strategy basics
 ### How can I turn my indicator into a strategy?
@@ -40090,7 +40603,7 @@ Previous ProgrammingNext Strings and formatting
 
 
 
-# processed_65_strings-and-formatting_20260928_081147
+# processed_65_strings-and-formatting_20261001_081727
 
 ## How can I place text on the chart?
 Scripts can display text using the following methods:
@@ -40312,7 +40825,7 @@ Previous StrategiesNext Techniques
 
 
 
-# processed_66_techniques_20260928_081147
+# processed_66_techniques_20261001_081727
 
 ## How can I prevent the “Bar index value of the ​`x`​ argument is too far from the current bar index. Try using ​`time`​ instead” and “Objects positioned using xloc.bar_index cannot be drawn further than X bars into the future” errors?
 Both these errors occur when creating objects too distant from the current bar. An x point on a line, label, or box can not be more than 9999 bars in the past or more than 500 bars in the future relative to the bar on which the script draws it.
@@ -41160,7 +41673,7 @@ Previous Strings and formattingNext Times, dates, and sessions
 
 
 
-# processed_67_times-dates-and-sessions_20260928_081147
+# processed_67_times-dates-and-sessions_20261001_081727
 
 ## How can I get the time of the first bar in the dataset?
 The following example script initializes a variable using the var keyword on the first bar and then never updates it again. The variable stores the value of the time built-in variable, which represents the time of the bar open in UNIX format (milliseconds since 00:00:00 UTC on 1 January 1970).
@@ -41490,8 +42003,42 @@ The following example script calculates pre-market highs and lows from 15-minute
 !image
 Pine Script®
 Copied
-`bool isNewWeek = timeframe.change("1W")  
-bool isNewMonth = timeframe.change("1M")  
+`//@version=6  
+indicator("Pre-market high/low", overlay = true)  
+  
+// Inputs  
+string timeAllowedInput = input.session("0700-0930", "Allowed Hours")  
+string lowerTfInput     = input.timeframe("15",      "Intrabar Resolution")  
+string timezoneInput    = input.string("Default",      "Time zone", options = ["Default", "GMT-12", "GMT-11", "GMT-10",  
+  "GMT-9", "GMT-8", "GMT-7", "GMT-6", "GMT-5", "GMT-4", "GMT-3", "GMT-2",  "GMT-1",  "GMT-0",  "GMT+1",  "GMT+2",  
+  "GMT+3", "GMT+4", "GMT+5", "GMT+6", "GMT+7", "GMT+8", "GMT+9", "GMT+10", "GMT+11", "GMT+12", "GMT+13", "GMT+14"])  
+  
+// @function        Tracks the highest high and lowest low between specified session times.  
+// @param sess      (simple string) Session duration in the format "start time - end time". Example: "0930-1600"  
+// @param timeZone  (simple string) Time zone of the session in "GMT-0" format. Optional. Default is the symbol's time zone.  
+// @returns         ([float, float]) A tuple of the highest high and lowest low between the specified session times.  
+hiLoBetweenTime(simple string sess, simple string timeZone = "Default") =>  
+    var float hi = na, var float lo = na  
+    // Check to see if we are in allowed hours using session and time zone information.  
+    bool inSession = not na(time("", sess, timeZone == "Default" ? syminfo.timezone : timeZone))  
+    if inSession  
+        if not inSession[1]  // We are entering allowed hours; reset hi/lo.  
+            hi := high, lo := low  
+        else  // We are in allowed hours; track high and low.  
+            hi := math.max(hi, high), lo := math.min(lo, low)  
+    [hi, lo]  
+  
+// Request data from lower timeframe using the `hiLoBetweenTime()` function.  
+[highAtTime, lowAtTime] = request.security(ticker.modify(syminfo.tickerid, session.extended), lowerTfInput,  
+     hiLoBetweenTime(timeAllowedInput, timezoneInput))  
+  
+// Plot the most recent value.  
+plot(highAtTime, "High", color.green)  
+plot(lowAtTime,  "Low",  color.red)  
+  
+// Raise error if lower tf is the same or greater than chart's tf.  
+if timeframe.in_seconds() <= timeframe.in_seconds(lowerTfInput)  
+    runtime.error("The lower timeframe for intrabar inspection must be lower than the chart's timeframe.")  
 `
 **Note that:**
   * The script raises an error using runtime.error() if the chosen lower timeframe for intrabar inspection is not shorter than the main chart’s timeframe. Including error-checking such as this when working with timeframes makes the script more robust.
@@ -41909,6 +42456,12 @@ indicator("Days in month")
 // @returns                 (int) The number of days in the `monthNumber` month of the `yearNumber` year.  
 
 
+@function        Tracks the highest high and lowest low between specified session times.  
+// @param sess      (simple string) Session duration in the format "start time - end time". Example: "0930-1600"  
+// @param timeZone  (simple string) Time zone of the session in "GMT-0" format. Optional. Default is the symbol's time zone.  
+// @returns         ([float, float]) A tuple of the highest high and lowest low between the specified session times.  
+
+
 @function                Calculates the number of days in a specified month, accounting for leap years.  
 // @param yearNumber        (int) The year of the `monthNumber` month. Optional. Default is the current year.  
 // @param monthNumber       (int, optional) The month for which to find the number of days. Optional. Default is the current month.  
@@ -41927,7 +42480,7 @@ indicator("Days in month")
 
 
 
-# processed_68_variables-and-operators_20260928_081147
+# processed_68_variables-and-operators_20261001_081727
 
 ## What is the variable name for the current price?
 In Pine Script®, the close variable represents the current price. It provides the _closing price_ of each historical bar, and, for indicator scripts, the _current price_ of the most recent realtime bar. The close value of an open bar can change on each tick to reflect the latest price.
@@ -42150,7 +42703,7 @@ Previous Times, dates, and sessionsNext Visuals
 
 
 
-# processed_69_visuals_20260928_081147
+# processed_69_visuals_20261001_081727
 
 ## Why can’t I use a plot in an ​`if`​ or ​`for`​ statement?
 In Pine Script®, scripts cannot place plot() calls directly within if or for statements – or in any other local scopes. The compiler needs to know about all plots during script compilation.
@@ -42966,9 +43519,52 @@ Previous Variables and operators
 
 
 
-# processed_70_release-notes_20260928_081147
+# processed_70_release-notes_20261001_081727
 
 ## 2026
+### September 2026
+#### Tables in the bottom panel
+Users can now move tables drawn by a script into a _separate tab_ in the chart’s _bottom panel_. To move a script’s tables to the panel, open the “More” menu in the script’s status line and select the _“Move tables to bottom”_ option. To move the tables back to the chart, select _“Move tables to chart”_ from the “More” menu or from the _context menu_ opened at the top of the panel’s tab.
+Tables in the bottom panel have different positioning and cell-sizing rules from those on the chart. All tables stack _vertically_ in order from first to last, regardless of the `position` and `force_overlay` arguments of each table.new() call. The cells of each table also stretch as necessary to fit the allocated width and height within the pane, without truncating the displayed text. Additionally, users can select and copy the text from tables in the bottom panel, unlike tables displayed on the chart.
+See the Displaying tables in the bottom panel section of the Tables page to learn more about this feature and how it works.
+#### Improved line wrapping in square brackets
+We’ve improved the line wrapping behaviors for code within _square brackets_ (`[ ]`). Previously, all line-wrapped history-referencing operations or tuples required indenting each line after the first by any number of spaces that was _not_ a multiple of four. The only exception was for square brackets enclosed in a set of parentheses, because code within parentheses can contain any amount of indentation, whether zero or a multiple of four spaces.
+We’ve extended the indentation flexibility for code in parentheses to all code between square brackets. Now, wrapped code within square brackets can use any amount of indentation without restriction. For example:
+Pine Script®
+Copied
+`//@version=6  
+indicator("Four-space indentation in square brackets demo")  
+  
+// This function definition line wraps history-referencing operations and the tuple return using indentation  
+// in multiples of four spaces.  
+ohlcChange(int length) =>  
+    float oChange = open - open[  
+        length]                     // Indented by eight spaces.  
+    float hChange = high - high[  
+        length                      // Indented by eight spaces.  
+    ]                               // Indented by four spaces.  
+    float lChange = low - low[  
+            length                  // Indented by 12 spaces.  
+        ]                           // Indented by eight spaces.  
+    float cChange = close - close[  
+    length                          // Indented by four spaces.  
+            ]                       // Indented by 12 spaces.  
+    [  
+oChange, hChange,                   // No indentation.  
+                lChange, cChange    // Indented by 16 spaces.  
+    ]                               // Indented by four spaces.  
+  
+// This tuple declaration lists all identifiers on separate lines, using multiples of four spaces for indentation.  
+// Previously, such a declaration caused a compilation error.   
+[  
+    oc,                             // Indented by four spaces.  
+        hc,                         // Indented by eight spaces.  
+            lc,                     // Indented by 12 spaces.  
+                cc                  // Indented by 16 spaces.  
+] = ohlcChange(10)                  // No indentation.  
+  
+plotcandle(oc, hc, lc, cc, "Change candles")  
+`
 ### August 2026
 #### Pine Screener improvements
 We’ve made two improvements to the Pine Screener: adding indices as a symbol source option, and making the full “Indicators” dialog box available when selecting an indicator script for the screener.
@@ -43041,7 +43637,7 @@ Also no indentation.
   
 if barstate.islastconfirmedhistory  
     //@variable A multiline string with indentation defined in a local block.  
-    //          Although the block requires four spaces of intendation for its statements, the string itself does not.  
+    //          Although the block requires four spaces of indentation for its statements, the string itself does not.  
     //          Any indentation in the definition is still included literally in the string.  
     string localIndentedStr = """---  
 No indentation.  
@@ -44353,10 +44949,13 @@ Pine Script v4 contains built-in functions with side effects ( ``line.
 * The first version of Pine Script is introduced to all TradingView users, initially as an open beta, on December 13th.
 
 
-Previous FAQNext To Pine Script® version 5
+Previous FAQNext Overview
 
 ## * Overview
 * 2026
+  * September 2026
+  * Tables in the bottom panel
+  * Improved line wrapping in square brackets
   * August 2026
   * Pine Screener improvements
   * `once` conditional structure
@@ -44511,7 +45110,7 @@ Previous FAQNext To Pine Script® version 5
 
 
 
-# processed_71_overview_20260928_081147
+# processed_71_overview_20261001_081727
 
 ## Pine converter
 Scripts written in every Pine Script version starting from v3 can be converted to the next version automatically using the converter available in the “Manage Scripts” menu:
@@ -44523,7 +45122,7 @@ Next To Pine Script® version 6
 
 
 
-# processed_72_to-pine-version-6_20260928_081147
+# processed_72_to-pine-version-6_20261001_081727
 
 ## Introduction
 Pine Script v6 introduces a number of changes and new features. See the Release Notes for a list of all new features.
@@ -45515,7 +46114,7 @@ Previous OverviewNext To Pine Script® version 5
 
 
 
-# processed_73_to-pine-version-5_20260928_081147
+# processed_73_to-pine-version-5_20261001_081727
 
 ## Introduction
 This guide documents the **changes** made to Pine Script from v4 to v5. It will guide you in the adaptation of existing Pine scripts to Pine Script v5. See our Release notes for a list of the **new** features in Pine Script v5.
@@ -45949,7 +46548,7 @@ Previous To Pine Script® version 6Next To Pine Script® version 4
 
 
 
-# processed_74_to-pine-version-4_20260928_081147
+# processed_74_to-pine-version-4_20261001_081727
 
 ## Converter
 The Pine Editor can automatically convert v3 indicators and strategies to v4. The Pine converter is described in the Overview page.
@@ -45996,7 +46595,7 @@ Previous To Pine Script® version 5Next To Pine Script® version 3
 
 
 
-# processed_75_to-pine-version-3_20260928_081147
+# processed_75_to-pine-version-3_20261001_081727
 
 ## Default behaviour of security function has changed
 Let's look at the simple `security` function use case. Add this indicator on an intraday chart:
@@ -46119,9 +46718,9 @@ Previous To Pine Script® version 4Next To Pine Script® version 2
 
 
 
-# processed_76_to-pine-version-2_20260928_081147
+# processed_76_to-pine-version-2_20261001_081727
 
-## 76_to-pine-version-2_20260928_081147
+## 76_to-pine-version-2_20261001_081727
 # 76_to-pine-version-2
 
 Source: https://www.tradingview.com/pine-script-docs/migration-guides/to-pine-version-2
@@ -46184,14 +46783,15 @@ Previous To Pine Script® version 3
 
 
 
-# processed_77_where-can-i-get-more-information_20260928_081147
+# processed_77_where-can-i-get-more-information_20261001_081727
 
 ## External resources
-* You can ask questions about programming in Pine Script in the `[pine-script]` tag on StackOverflow.
-  * The `/r/TradingView` subreddit is the place for all TradingView-related feature requests, including suggestions about Pine Script functionality.
+* PineCoders maintain a public Telegram chat, PineCoders Pine Script Q&A, where programmers can ask questions about how to achieve their goals with Pine Script.
+  * To raise, vote on, and discuss TradingView-related feature requests, including suggestions about Pine Script , see the `/r/TradingView` subreddit.
+  * Programmers can also ask questions about Pine Script in the `[pine-script]` tag on StackOverflow.
 
 
-Previous To Pine Script® version 3
+Previous Overview
 
 ---
 
